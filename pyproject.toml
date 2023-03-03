@@ -1,19 +1,68 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+# Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
+name = "ansys-motorcad-aedt-toolkits"
+dynamic = ["version"]
+description = "A python toolkit to build motor deisgn workflow."
+readme = "README.rst"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [
+    {name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"},
+]
+maintainers = [
+    {name = "PyAnsys developers", email = "pyansys.maintainers@ansys.com"},
+]
+
+classifiers = [
+    "Development Status :: 1 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "build==0.8.0",
+    "pyaedt @ git+https://github.com/pyansys/pyaedt.git",
+    "pymotorcad @ git+https://github.com/pyansys/pymotorcad.git"
+]
+
+[project.optional-dependencies]
+tests = [
+    "pytest==7.2.1",
+    "pytest-cov==4.0.0",
+]
+doc = [
+    "ansys-sphinx-theme==0.8.2",
+    "numpydoc==1.5.0",
+    "sphinx==5.3.0",
+    "sphinx-copybutton==0.5.1",
+    "enum-tools[sphinx]==0.9.0.post1",
+]
+
+[tool.flit.module]
+name = "ansys.aedt.toolkits.antennas"
+
+[project.urls]
+Source = "https://github.com/pyansys/pymotorcad-pyaedt-toolkit.git"
+Tracker = "https://github.com/pyansys/pymotorcad-pyaedt-toolkit.git/issues"
+Homepage = "https://github.com/pyansys/pymotorcad-pyaedt-toolkit.git"
+
 
 [tool.black]
-line-length = 100
+line-length = 120
 
 [tool.isort]
 profile = "black"
 force_sort_within_sections = true
-line_length = 100
+line_length = 120
 default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["ansys.pymotorcad_pyaedt_toolkit"]
+source = ["ansys.pyaedt_toolkits"]
 
 [tool.coverage.report]
 show_missing = true
