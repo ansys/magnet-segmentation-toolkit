@@ -43,7 +43,7 @@ doc = [
 ]
 
 [tool.flit.module]
-name = "ansys.aedt.toolkits.antennas"
+name = "ansys.motorcad.aedt.toolkits"
 
 [project.urls]
 Source = "https://github.com/pyansys/pymotorcad-pyaedt-toolkit.git"
