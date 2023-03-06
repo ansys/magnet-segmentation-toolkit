@@ -16,7 +16,7 @@ html_short_title = html_title = "pypymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-t
 
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pypymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-toolkit",
+    "github_url": "https://github.com/pyansys/pymotorcad-pyaedt-toolkit",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "additional_breadcrumbs": [
