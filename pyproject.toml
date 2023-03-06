@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-motorcad-aedt-toolkits"
 dynamic = ["version"]
-description = "A python toolkit to build motor deisgn workflow."
+description = "A python toolkit to build motor design workflow."
 readme = "README.rst"
 requires-python = ">=3.9"
 license = {file = "LICENSE"}
