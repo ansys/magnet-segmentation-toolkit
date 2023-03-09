@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
-name = "ansys-motorcad-aedt-toolkits"
+name = "ansys-aedt-toolkits-motor"
 dynamic = ["version"]
 description = "A python toolkit to build motor design workflow."
 readme = "README.rst"
@@ -24,9 +24,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "build==0.8.0",
-    "pyaedt @ git+https://github.com/pyansys/pyaedt.git",
-    "pymotorcad @ git+https://github.com/pyansys/pymotorcad.git"
+    "build==0.10.0",
+    "pyaedt @ ",
+    "ansys-motorcad-core @ git+https://github.com/pyansys/pymotorcad.git",
 ]
 
 [project.optional-dependencies]
@@ -43,7 +43,7 @@ doc = [
 ]
 
 [tool.flit.module]
-name = "ansys.motorcad.aedt.toolkits"
+name = "ansys.aedt.toolkits.motor"
 
 [project.urls]
 Source = "https://github.com/pyansys/pymotorcad-pyaedt-toolkit.git"
