@@ -25,7 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "build==0.10.0",
-    "pyaedt @ https://github.com/pyansys/pyaedt.git",
+    "pyaedt @ git+https://github.com/pyansys/pyaedt.git",
     "ansys-motorcad-core @ git+https://github.com/pyansys/pymotorcad.git",
 ]
 
