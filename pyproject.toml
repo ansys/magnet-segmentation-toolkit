@@ -8,7 +8,7 @@ name = "ansys-aedt-toolkits-motor"
 dynamic = ["version"]
 description = "A python toolkit to build motor design workflow."
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 license = {file = "LICENSE"}
 authors = [
     {name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"},
