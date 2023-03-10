@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: '3.8'
+  MAIN_PYTHON_VERSION: '3.9'
   DOCUMENTATION_CNAME: 'pymotorcad_pyaedt_toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-pymotorcad_pyaedt_toolkit-pymotorcad_pyaedt_toolkit'
   LIBRARY_NAMESPACE: 'ansys.pymotorcad_pyaedt_toolkit.pymotorcad_pyaedt_toolkit'
