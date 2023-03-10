@@ -42,7 +42,7 @@ At least two installation modes are provided: user and developer.
 For users
 ^^^^^^^^^
 
-In order to install Pypymotorcad-pyaedt-toolkit pymotorcad-pyaedt-toolkit, make sure you
+In order to install ansys-aedt-toolkits-motor, make sure you
 have the latest version of `pip`_. To do so, run:
 
 .. code:: bash
@@ -53,12 +53,12 @@ Then, you can simply execute:
 
 .. code:: bash
 
-    python -m pip install ansys-pymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-toolkit
+    python -m pip install ansys-aedt-toolkits-motor
 
 For developers
 ^^^^^^^^^^^^^^
 
-Installing Pypymotorcad-pyaedt-toolkit pymotorcad-pyaedt-toolkit in developer mode allows
+Installing ansys-aedt-toolkits-motor in developer mode allows
 you to modify the source and enhance it.
 
 Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will 
@@ -68,7 +68,7 @@ need to follow these steps:
 
    .. code:: bash
 
-      git clone https://github.com/pyansys/pypymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-toolkit
+      git clone https://github.com/pyansys/pymotorcad-pyaedt-toolkit
 
 #. Create a fresh-clean Python environment and activate it:
 
@@ -91,16 +91,13 @@ need to follow these steps:
    .. code:: bash
 
       python -m pip install -U pip setuptools tox
-      python -m pip install -r requirements/requirements_build.txt
-      python -m pip install -r requirements/requirements_doc.txt
-      python -m pip install -r requirements/requirements_tests.txt
 
 
 #. Install the project in editable mode:
 
     .. code:: bash
     
-      python -m pip install --editable ansys-pymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-toolkit
+      python -m pip install --editable ansys-aedt-toolkits-motor
     
     #. Finally, verify your development installation by running:
 
@@ -174,7 +171,7 @@ the building requirements and then executing the build module:
 
 .. code:: bash
 
-    python -m pip install -r requirements/requirements_build.txt
+    python -m pip install -U pip
     python -m build
     python -m twine check dist/*
 
