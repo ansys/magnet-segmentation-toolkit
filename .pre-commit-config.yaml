@@ -27,12 +27,13 @@ repos:
   - id: codespell
     args: ["--ignore-words=ignore_words.txt"]
 
-#- repo: https://github.com/pycqa/pydocstyle
-#  rev: 6.1.1
-#  hooks:
-#  - id: pydocstyle
-#    additional_dependencies: [toml]
-#    exclude: tests/|examples/
+- repo: https://github.com/pycqa/pydocstyle
+  rev: 6.1.1
+  hooks:
+  - id: pydocstyle
+    args: ["--ignore=D100, D203, D213, D413"]
+    additional_dependencies: [toml]
+    exclude: tests/|examples/
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.4.0
