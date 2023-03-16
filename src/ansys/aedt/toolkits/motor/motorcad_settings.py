@@ -7,6 +7,7 @@ from pyaedt import generate_unique_folder_name
 class MotorCADSettings:
     def __init__(self, working_dir=None):
         self.mcad = pymotorcad.MotorCAD()
+        self.mcad.set_variable("MessageDisplayState", 2)
         if working_dir:
             self.working_dir = working_dir
         else:
@@ -16,7 +17,6 @@ class MotorCADSettings:
         self.vbs_file_path = os.path.join(self.working_dir, "{}.vbs".format(self.mcad_name))
 
     def set_geometry_model(self):
-        self._init_motorcad()
         self.mcad.load_template(self.mcad_name)
         self.mcad.show_magnetic_context()
         self.mcad.display_screen("Scripting")
@@ -40,10 +40,10 @@ class MotorCADSettings:
         self.mcad.set_variable("BuildLossModel_MotorLAB", True)  # Enable Loss model
 
         # Build the model.
-        # mcad.clear_model_build_lab()
-        # mcad.build_model_lab()
+        self.mcad.clear_model_build_lab()
+        self.mcad.build_model_lab()
 
-        # mcad.load_template("Test_e9_built")
+        #self.mcad.load_template("Test_e9_built")
 
         # Peak performance  Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)  # Calc type: Max Torque speed curve
@@ -88,7 +88,6 @@ class MotorCADSettings:
         self.mcad.set_variable("TorqueCalculation", True)
 
         self.mcad.do_magnetic_calculation()
-        output_power = self.mcad.get_variable("OutputPower")
 
     def export_settings(self):
         self.mcad.set_variable("AnsysExportFormat", 1)
@@ -100,15 +99,3 @@ class MotorCADSettings:
         self.mcad.set_variable("Ansys_WindingGroups", 0)
         self.mcad.set_variable("AnsysRotationDirection", 0)
         self.mcad.export_to_ansys_electronics_desktop(self.vbs_file_path)
-
-    def _init_motorcad(self):
-        if os.path.isdir(self.working_dir) is False:
-            print("Working folder does not exist. Please choose a folder that exists and try again.")
-            print(self.working_dir)
-            exit()
-
-        print("Start Initialisation")
-
-        self.mcad.set_variable("MessageDisplayState", 2)
-        print("Initialisation Complete")
-        print("Running Simulation")

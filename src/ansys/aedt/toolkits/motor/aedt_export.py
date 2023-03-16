@@ -15,17 +15,18 @@ class AEDTexport:
 
     def set_model(self):
         self.maxwell["HalfAxial"] = 1
-        # clear unclassified objects ? -> Uncheck model in Properties
+        for obj in self.maxwell.modeler.unclassified_objects:
+            obj.model = False
 
     def mesh_settings(self):
         # apply mesh sizing
-        # windings (5mm)
+        # windings
         copper_objs_list = self.maxwell.modeler.get_objects_by_material("Copper (Pure)_50C")
         self.maxwell.mesh.assign_length_mesh(copper_objs_list, maxlength=8, meshop_name="copper_objs_mesh")
-        # rotor - stator (8mm)
+        # rotor - stator
         rotor_stator = self.maxwell.modeler.get_objects_by_material("M250-35A_20C")
         self.maxwell.mesh.assign_length_mesh(rotor_stator, maxlength=8, meshop_name="rotor_stator_mesh")
-        # magnets (2mm)
+        # magnets
         magnets = self.maxwell.modeler.get_objects_by_material("N30UH_20C")
         self.maxwell.mesh.assign_length_mesh(magnets, maxlength=2, meshop_name="magnets_mesh")
 
@@ -34,18 +35,16 @@ class AEDTexport:
         magnets = self.maxwell.modeler.get_objects_by_material("N30UH_20C")
         self.maxwell.assign_insulating(magnets, "magnets_insulation")
         # apply symmetry (flux tangential) on symmetry plane
-        # HOW TO GET ALL FACES GIVEN A SPECIFIC PLANE?
-
+        face_ids = []
+        for obj in self.maxwell.modeler.solid_objects:
+            if obj.bounding_box[2] == 0.0:
+                face_ids.append(self.maxwell.modeler[obj].bottom_face_z.id)
+        self.maxwell.assign_insulating(face_ids)
         # Set Eddy Effects on Magnets (already done by export)
 
+    def analyze_model(self):
+        self.maxwell.analyze_setup(self.maxwell.setups[0])
+
     def save_and_close(self):
-
         self.maxwell.save_project(os.path.join(self.working_dir, "{}.aedt".format(self.maxwell.project_name)))
-
         self._desktop.release_desktop(False, False)
-
-        # maxwell.analyze_all()
-        # maxwell.create_output_variable("Mech_deg_1", "cum_integ(Moving1.Speed)*4")
-        # maxwell.post.create_report("-Moving1.Torque", primary_sweep_variable="Mech_deg_1", domain="Sweep", variations={"Time": ["All"]})
-        # solutions = maxwell.post.get_solution_data("-Moving1.Torque", primary_sweep_variable="Time")
-        # solutions.plot()
