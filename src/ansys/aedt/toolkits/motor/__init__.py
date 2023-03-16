@@ -1,7 +1,4 @@
-"""
-pyaedt-toolkits.
-ansys.pymotorcad_pyaedt_toolkit
-"""
+"""pymotorcad-pyaedt-toolkits."""
 
 try:
     import importlib.metadata as importlib_metadata
