@@ -55,10 +55,9 @@ class MotorCADSettings:
         self.mcad.save_to_file(self.mcad_file_path)
 
     def set_lab_model(self):
-        """Set lab model."""
+        """Set lab model build parameters and build the model."""
         # LAB Module
         self.mcad.set_motorlab_context()
-
         self.mcad.set_variable("ModelType_MotorLAB", 2)
         self.mcad.set_variable("SatModelPoints_MotorLAB", 1)
         self.mcad.set_variable("LossModel_Lab", 1)
@@ -74,6 +73,9 @@ class MotorCADSettings:
 
         # self.mcad.load_template("Test_e9_built")
 
+    def lab_performance_calculation(self):
+        """Calculate lab electromagnetic performance curves-
+           Maximum Torque-speed and Efficiency Map ."""
         # Peak performance Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)
         self.mcad.set_variable("SpeedMax_MotorLAB", 10000)
@@ -82,6 +84,8 @@ class MotorCADSettings:
         self.mcad.set_variable("OperatingMode_Lab", 0)
         self.mcad.calculate_magnetic_lab()
 
+    def lab_operating_point(self):
+        """Set lab operating point based on given input conditions."""
         # Continuous performance operating points
         self.mcad.set_variable("LabMagneticCoupling", 1)
         self.mcad.set_variable("OpPointSpec_MotorLAB", 2)
@@ -99,7 +103,7 @@ class MotorCADSettings:
         print("Efficiency", round(efficiency, 2), "%")
 
     def emag_calculation(self):
-        """Set emag calculation."""
+        """Set Emag calculation."""
         self.mcad.show_magnetic_context()
 
         self.mcad.set_variable("BackEMFCalculation", False)
@@ -111,11 +115,17 @@ class MotorCADSettings:
         self.mcad.set_variable("InductanceCalc", False)
         self.mcad.set_variable("BPMShortCircuitCalc", False)
         self.mcad.set_variable("TorqueCalculation", True)
-
+        self.mcad.set_variable("MagneticThermalCoupling", 1)
         self.mcad.do_magnetic_calculation()
+
+    def losses_emag_to_thermal(self):
+        """Transfers emag losses to thermal module"""
+        self.mcad.set_variable("MagneticThermalCoupling", 1)
+        self.mcad.show_thermal_context()
 
     def export_settings(self):
         """Set export settings."""
+        self.mcad.show_magnetic_context()
         self.mcad.set_variable("AnsysExportFormat", 1)
         # 3D export
         self.mcad.set_variable("AnsysModelType", 1)
@@ -125,3 +135,27 @@ class MotorCADSettings:
         self.mcad.set_variable("Ansys_WindingGroups", 0)
         self.mcad.set_variable("AnsysRotationDirection", 0)
         self.mcad.export_to_ansys_electronics_desktop(self.vbs_file_path)
+
+    def mcad_save(self):
+        """Save the motorcad file """
+        self.mcad.save_to_file(self.mcad_file_path)
+
+
+    def mcad_close(self):
+        """Closes the motorcad instance"""
+        self.mcad.quit()
+
+    def set_thermal(self):
+        """Set the motorcad thermal calculations, cooling and losses ."""
+        self.mcad.show_thermal_context()
+        self.mcad.set_variable("ThermalCalcType", 0)
+
+    def thermal_calculation(self):
+        """Perform thermal calculation."""
+        print("input wind temp",self.mcad.get_variable("Winding_Temperature_at_which_Pcu_Input"))
+        self.mcad.do_steady_state_analysis()
+        print("output avg wind 13859",self.mcad.get_variable("Temp_Winding_Average"))
+
+
+    def load_mcad_file(self):
+        self.mcad.load_from_file(self.mcad_file_path)
