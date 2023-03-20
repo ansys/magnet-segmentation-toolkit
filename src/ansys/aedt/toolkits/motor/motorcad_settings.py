@@ -118,10 +118,7 @@ class MotorCADSettings:
         self.mcad.set_variable("MagneticThermalCoupling", 1)
         self.mcad.do_magnetic_calculation()
 
-    def losses_emag_to_thermal(self):
-        """Transfers emag losses to thermal module"""
-        self.mcad.set_variable("MagneticThermalCoupling", 1)
-        self.mcad.show_thermal_context()
+
 
     def export_settings(self):
         """Set export settings."""
@@ -145,17 +142,21 @@ class MotorCADSettings:
         """Closes the motorcad instance"""
         self.mcad.quit()
 
-    def set_thermal(self):
+    def set_thermal(self, Magnet_loss=None):
         """Set the motorcad thermal calculations, cooling and losses ."""
         self.mcad.show_thermal_context()
         self.mcad.set_variable("ThermalCalcType", 0)
+        if Magnet_loss:
+            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", Magnet_loss)
+
 
     def thermal_calculation(self):
-        """Perform thermal calculation."""
-        print("input wind temp",self.mcad.get_variable("Winding_Temperature_at_which_Pcu_Input"))
+        """Perform  steady state thermal calculation."""
         self.mcad.do_steady_state_analysis()
-        print("output avg wind 13859",self.mcad.get_variable("Temp_Winding_Average"))
+        print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
+
 
 
     def load_mcad_file(self):
+        """Load the motorcad file  from file path saved in instance"""
         self.mcad.load_from_file(self.mcad_file_path)
