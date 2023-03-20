@@ -156,7 +156,6 @@ class MotorCADSettings:
         print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
 
 
-
     def load_mcad_file(self):
         """Load the motorcad file  from file path saved in instance"""
         self.mcad.load_from_file(self.mcad_file_path)
