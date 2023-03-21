@@ -6,7 +6,7 @@ from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.DataHandlers import json_to_dict
 
 
-class AEDTExport:
+class AedtExport:
     """Provides an AEDT instance.
 
      Create a Maxwell3D instance and the motor 3D model by running .vbs script.
