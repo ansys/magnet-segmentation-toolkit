@@ -137,7 +137,6 @@ class MotorCADSettings:
         """Save the motorcad file """
         self.mcad.save_to_file(self.mcad_file_path)
 
-
     def mcad_close(self):
         """Closes the motorcad instance"""
         self.mcad.quit()
