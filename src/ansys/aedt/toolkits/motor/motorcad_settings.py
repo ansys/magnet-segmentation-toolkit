@@ -74,8 +74,7 @@ class MotorCADSettings:
         # self.mcad.load_template("Test_e9_built")
 
     def lab_performance_calculation(self):
-        """Calculate lab electromagnetic performance curves-
-           Maximum Torque-speed and Efficiency Map ."""
+        """Calculate lab performance curves-Maximum Torque-speed and Efficiency Map."""
         # Peak performance Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)
         self.mcad.set_variable("SpeedMax_MotorLAB", 10000)
@@ -118,8 +117,6 @@ class MotorCADSettings:
         self.mcad.set_variable("MagneticThermalCoupling", 1)
         self.mcad.do_magnetic_calculation()
 
-
-
     def export_settings(self):
         """Set export settings."""
         self.mcad.show_magnetic_context()
@@ -134,11 +131,11 @@ class MotorCADSettings:
         self.mcad.export_to_ansys_electronics_desktop(self.vbs_file_path)
 
     def mcad_save(self):
-        """Save the motorcad file """
+        """Save the motorcad file."""
         self.mcad.save_to_file(self.mcad_file_path)
 
     def mcad_close(self):
-        """Closes the motorcad instance"""
+        """Close the motorcad instance."""
         self.mcad.quit()
 
     def set_thermal(self, Magnet_loss=None):
@@ -148,13 +145,11 @@ class MotorCADSettings:
         if Magnet_loss:
             self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", Magnet_loss)
 
-
     def thermal_calculation(self):
         """Perform  steady state thermal calculation."""
         self.mcad.do_steady_state_analysis()
         print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
 
-
     def load_mcad_file(self):
-        """Load the motorcad file  from file path saved in instance"""
+        """Load the motorcad file  from file path saved in instance."""
         self.mcad.load_from_file(self.mcad_file_path)
