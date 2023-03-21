@@ -1,0 +1,30 @@
+{
+  "HalfAxial": 1,
+  "Materials" : {
+    "Windings" : {
+      "Name" : "Copper (Pure)",
+      "Temp" : "140"
+    },
+    "Rotor" : {
+      "Name" : "M250-35A",
+      "Temp" : "20"
+    },
+    "Stator" : {
+      "Name" : "M250-35A",
+      "Temp" : "20"
+    },
+    "Magnets" : {
+      "Name" : "N30UH",
+      "Temp" : "130"
+    }
+  },
+  "Mesh" : {
+    "Windings" : 5,
+    "WindingsMeshName" : "windings_mesh",
+    "RotorAndStator" : 8,
+    "RotorAndStatorMeshName" : "rotor_and_stator_mesh",
+    "Magnets" : 2,
+    "MagnetsMeshName" : "magnets_mesh"
+  },
+  "SetupToAnalyze" : "Setup1"
+}
