@@ -1,9 +1,11 @@
 import itertools
 import os
 
-from pyaedt import Desktop, Maxwell3d
+from pyaedt import Maxwell3d
 from pyaedt.application.Variables import decompose_variable_value
-from pyaedt.generic.DataHandlers import json_to_dict
+from pyaedt.generic.constants import unit_converter
+
+from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 
 
 class AedtExport:
@@ -18,7 +20,7 @@ class AedtExport:
 
     Examples
     --------
-    >>> aedt = AEDTExport()
+    >>> aedt = AedtExport()
     Set the geometry model such as the axial length,
     apply boundary conditions and
     remove from model unclassified objects
@@ -31,33 +33,48 @@ class AedtExport:
     >>> aedt.save_and_close()
     """
 
-    def __init__(self, vbs_file_path):
+    def __init__(self, vbs_file_path=None, m3d=None):
         """Init."""
         self._vbs_file_path = vbs_file_path
-        self.__configuration_dict = json_to_dict(
+        self.configuration_dict = CommonSettings().load_json(
             os.path.join(
                 os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
             )
         )
-        self._aedt_dict = json_to_dict(
+        self.aedt_dict = CommonSettings().load_json(
             os.path.join(
                 os.path.dirname(__file__), "configuration_settings", "aedt_parameters.json"
             )
         )
-        self._desktop = Desktop(specified_version=self.__configuration_dict["AEDTVersion"])
-        self._desktop.odesktop.RunScript(self._vbs_file_path)
-        self.maxwell = Maxwell3d()
-        self.working_dir = self.__configuration_dict["WorkingDirectory"]
+        self.working_dir = self.configuration_dict["WorkingDirectory"]
+        self.maxwell = m3d
+
+    def init_maxwell(self):
+        """Initialize Maxwell and run .vbs script.
+
+        Needed if an instance of Maxwell3d is not given in input of AedtExport class.
+        """
+        if not self.maxwell:
+            self.maxwell = Maxwell3d(
+                specified_version=self.configuration_dict["AEDTVersion"],
+                non_graphical=self.configuration_dict["NonGraphical"],
+            )
+        if self._vbs_file_path:
+            self.maxwell.odesktop.RunScript(self._vbs_file_path)
 
     def set_model(self):
         """Set geometry model.
 
         Set axial length, boundary conditions and remove from model unclassified objects.
         """
-        self.maxwell["HalfAxial"] = self._aedt_dict["HalfAxial"]
+        self.maxwell["HalfAxial"] = self.aedt_dict["HalfAxial"]
+        self.maxwell["NumTorqueCycles"] = self.aedt_dict["ModelParameters"]["NumberTorqueCycles"]
+        self.maxwell["NumTorquePointsPerCycle"] = self.aedt_dict["ModelParameters"][
+            "NumberPointsTorqueCycles"
+        ]
         for obj in self.maxwell.modeler.unclassified_objects:
             obj.model = False
-        if self._aedt_dict["HalfAxial"] == 1:
+        if self.aedt_dict["HalfAxial"] == 1:
             self._apply_boundary_conditions()
 
     def mesh_settings(self):
@@ -66,16 +83,16 @@ class AedtExport:
         Apply mesh to rotor, stator, windings and magnets.
         """
         # windings
-        windings_material = self._materials_check(self._aedt_dict["Materials"]["Windings"])
+        windings_material = self._materials_check(self.aedt_dict["Materials"]["Windings"])
         copper_objs_list = self.maxwell.modeler.get_objects_by_material(windings_material)
         self.maxwell.mesh.assign_length_mesh(
             copper_objs_list,
-            maxlength=self._aedt_dict["Mesh"]["Windings"],
-            meshop_name=self._aedt_dict["Mesh"]["WindingsMeshName"],
+            maxlength=self.aedt_dict["Mesh"]["Windings"]["Length"],
+            meshop_name=self.aedt_dict["Mesh"]["Windings"]["Name"],
         )
         # rotor - stator
-        rotor_material = self._materials_check(self._aedt_dict["Materials"]["Rotor"])
-        stator_material = self._materials_check(self._aedt_dict["Materials"]["Stator"])
+        rotor_material = self._materials_check(self.aedt_dict["Materials"]["Rotor"])
+        stator_material = self._materials_check(self.aedt_dict["Materials"]["Stator"])
         if rotor_material == stator_material:
             rotor_stator = self.maxwell.modeler.get_objects_by_material(rotor_material)
         else:
@@ -84,11 +101,11 @@ class AedtExport:
             rotor_stator = [rotor, stator]
         self.maxwell.mesh.assign_length_mesh(
             rotor_stator,
-            maxlength=self._aedt_dict["Mesh"]["RotorAndStator"],
-            meshop_name=self._aedt_dict["Mesh"]["RotorAndStatorMeshName"],
+            maxlength=self.aedt_dict["Mesh"]["RotorAndStator"]["Length"],
+            meshop_name=self.aedt_dict["Mesh"]["RotorAndStator"]["Name"],
         )
         # magnets
-        magnets_material = self._materials_check(self._aedt_dict["Materials"]["Magnets"])
+        magnets_material = self._materials_check(self.aedt_dict["Materials"]["Magnets"])
         magnets = [
             magnet
             for magnet in self.maxwell.modeler.get_objects_by_material(magnets_material)
@@ -96,29 +113,50 @@ class AedtExport:
         ]
         self.maxwell.mesh.assign_length_mesh(
             magnets,
-            maxlength=self._aedt_dict["Mesh"]["Magnets"],
-            meshop_name=self._aedt_dict["Mesh"]["MagnetsMeshName"],
+            maxlength=self.aedt_dict["Mesh"]["Magnets"]["Length"],
+            meshop_name=self.aedt_dict["Mesh"]["Magnets"]["Name"],
         )
 
     def analyze_model(self):
         """Analyze model."""
-        self.maxwell.analyze_setup(self._aedt_dict["SetupToAnalyze"])
+        self.maxwell.analyze_setup(self.aedt_dict["SetupToAnalyze"])
 
-    def create_report_magnet_losses(self):
-        """Create report magnet losses."""
-        self.maxwell.post.create_report(
-            expressions="SolidLoss", plotname="Losses", primary_sweep_variable="Time"
-        )
+    def average_values_from_reports(self):
+        """Create report magnet losses.
+
+        Returns
+        -------
+        dict
+            Average values + units for each report in the project.
+        """
+        # TO FIX BECAUSE IT WORKS ONLY WITH POWER
+        report_dict = {}
+        for x in self.aedt_dict["Reports"]:
+            self.maxwell.post.create_report(
+                expressions=x["Expression"], plotname=x["PlotName"], primary_sweep_variable="Time"
+            )
+            data = self.maxwell.post.get_solution_data(
+                expressions=x["Expression"], primary_sweep_variable="Time"
+            )
+            avg = sum(data.data_magnitude()) / len(data.data_magnitude())
+            avg = unit_converter(avg, "Power", data.units_data[x["Expression"]], "W")
+            report_dict[x["Expression"]] = {"Value": round(avg, 4), "Unit": "W"}
+        return report_dict
 
     def save_and_close(self):
         """Save and close."""
-        self.maxwell.save_project(
+        self.maxwell.close_project(
             os.path.join(self.working_dir, "{}.aedt".format(self.maxwell.project_name))
         )
-        self._desktop.release_desktop(False, False)
 
     def _apply_boundary_conditions(self):
-        magnets_material = self._materials_check(self._aedt_dict["Materials"]["Magnets"])
+        for bound in self.maxwell.boundaries[:]:
+            if (
+                bound.type == "Insulating"
+                and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
+            ):
+                bound.delete()
+        magnets_material = self._materials_check(self.aedt_dict["Materials"]["Magnets"])
         magnets = [
             magnet
             for magnet in self.maxwell.modeler.get_objects_by_material(magnets_material)
@@ -129,7 +167,7 @@ class AedtExport:
         for obj in self.maxwell.modeler.solid_objects:
             if obj.bounding_box[2] == 0.0:
                 face_ids.append(self.maxwell.modeler[obj].bottom_face_z.id)
-        self.maxwell.assign_symmetry(face_ids)
+        self.maxwell.assign_symmetry(face_ids, symmetry_name="model_symmetry")
 
     def _materials_check(self, material_to_check):
         try:

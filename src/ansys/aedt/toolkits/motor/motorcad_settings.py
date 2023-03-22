@@ -68,10 +68,10 @@ class MotorCADSettings:
         self.mcad.set_variable("BuildLossModel_MotorLAB", True)
 
         # Build the model.
-        self.mcad.clear_model_build_lab()
-        self.mcad.build_model_lab()
+        # self.mcad.clear_model_build_lab()
+        # self.mcad.build_model_lab()
 
-        # self.mcad.load_template("Test_e9_built")
+        self.mcad.load_template("Test_e9_built")
 
         # Peak performance Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)

@@ -25,6 +25,9 @@ classifiers = [
 ]
 dependencies = [
     "build==0.10.0",
+    "matplotlib==3.7.1",
+    "numpy==1.24.2",
+    "pyvista==0.38.5",
     "pyaedt @ git+https://github.com/pyansys/pyaedt.git",
     "ansys-motorcad-core @ git+https://github.com/pyansys/pymotorcad.git",
 ]

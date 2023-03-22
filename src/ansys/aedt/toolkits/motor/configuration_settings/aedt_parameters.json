@@ -1,4 +1,8 @@
 {
+  "ModelParameters" : {
+    "NumberTorqueCycles" : 2,
+    "NumberPointsTorqueCycles" : 90
+  },
   "HalfAxial": 1,
   "Materials" : {
     "Windings" : {
@@ -19,12 +23,24 @@
     }
   },
   "Mesh" : {
-    "Windings" : 5,
-    "WindingsMeshName" : "windings_mesh",
-    "RotorAndStator" : 8,
-    "RotorAndStatorMeshName" : "rotor_and_stator_mesh",
-    "Magnets" : 2,
-    "MagnetsMeshName" : "magnets_mesh"
+    "Windings" : {
+      "Length" : 5,
+      "Name" : "windings_mesh"
+    },
+    "RotorAndStator" : {
+      "Length" : 8,
+      "Name" : "rotor_and_stator_mesh"
+    },
+    "Magnets" : {
+      "Length" : 2,
+      "Name" : "magnets_mesh"
+    }
   },
-  "SetupToAnalyze" : "Setup1"
+  "SetupToAnalyze" : "Setup1",
+  "Reports" : [
+    {
+      "Expression" : "SolidLoss",
+      "PlotName" : "Losses"
+    }
+  ]
 }
