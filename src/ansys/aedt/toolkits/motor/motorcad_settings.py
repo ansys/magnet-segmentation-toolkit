@@ -81,20 +81,20 @@ class MotorCADSettings:
         self.mcad.set_variable(
             "SatModelPoints_MotorLAB", self.mcad_dict["LAB_settings"]["Model_Res_Fine"]
         )
-        self.mcad.set_variable(
-            "LossModel_Lab", self.mcad_dict["LAB_settings"]["Loss_Model_FEAMap"]
-        )
-        self.mcad.set_variable(
-            "ACLossMethod_Lab", self.mcad_dict["LAB_settings"]["AC_Loss_Hybrid"]
-        )
+        self.mcad.set_variable("LossModel_Lab", self.mcad_dict["LAB_settings"]["Loss_Model_FEAMap"])
+        self.mcad.set_variable("ACLossMethod_Lab", self.mcad_dict["LAB_settings"]["AC_Loss_Hybrid"])
         self.mcad.set_variable(
             "ModelBuildSpeed_MotorLAB", self.mcad_dict["LAB_settings"]["Max_Speed"]
         )
         self.mcad.set_variable(
             "MaxModelCurrent_MotorLAB", self.mcad_dict["LAB_settings"]["Max_Stator_Current"]
         )
-        self.mcad.set_variable("BuildSatModel_MotorLAB", self.mcad_dict["LAB_settings"]["Build_Sat_Model"])
-        self.mcad.set_variable("BuildLossModel_MotorLAB", self.mcad_dict["LAB_settings"]["Build_Loss_Model"])
+        self.mcad.set_variable(
+            "BuildSatModel_MotorLAB", self.mcad_dict["LAB_settings"]["Build_Sat_Model"]
+        )
+        self.mcad.set_variable(
+            "BuildLossModel_MotorLAB", self.mcad_dict["LAB_settings"]["Build_Loss_Model"]
+        )
 
         # Build the model.
         self.mcad.clear_model_build_lab()
@@ -153,15 +153,31 @@ class MotorCADSettings:
         """Set Emag calculation."""
         self.mcad.show_magnetic_context()
 
-        self.mcad.set_variable("BackEMFCalculation",  self.mcad_dict["E_mag_settings"]["Test_Back_EMF"])
-        self.mcad.set_variable("CoggingTorqueCalculation", self.mcad_dict["E_mag_settings"][ "Test_Cogging"])
-        self.mcad.set_variable("ElectromagneticForcesCalc_OC",self.mcad_dict["E_mag_settings"]["Test_OC_Forces"])
-        self.mcad.set_variable("TorqueSpeedCalculation",self.mcad_dict["E_mag_settings"]["Test_TS_curce"])
-        self.mcad.set_variable("DemagnetizationCalc", self.mcad_dict["E_mag_settings"][ "Test_Demag"])
-        self.mcad.set_variable("ElectromagneticForcesCalc_Load", self.mcad_dict["E_mag_settings"][ "Test_Load_Forces"])
-        self.mcad.set_variable("InductanceCalc", self.mcad_dict["E_mag_settings"][ "Test_Indcutances"])
-        self.mcad.set_variable("BPMShortCircuitCalc",  self.mcad_dict["E_mag_settings"][ "Test_ShortCircuit"])
-        self.mcad.set_variable("TorqueCalculation", self.mcad_dict["E_mag_settings"][  "Test_Torque"])
+        self.mcad.set_variable(
+            "BackEMFCalculation", self.mcad_dict["E_mag_settings"]["Test_Back_EMF"]
+        )
+        self.mcad.set_variable(
+            "CoggingTorqueCalculation", self.mcad_dict["E_mag_settings"]["Test_Cogging"]
+        )
+        self.mcad.set_variable(
+            "ElectromagneticForcesCalc_OC", self.mcad_dict["E_mag_settings"]["Test_OC_Forces"]
+        )
+        self.mcad.set_variable(
+            "TorqueSpeedCalculation", self.mcad_dict["E_mag_settings"]["Test_TS_curce"]
+        )
+        self.mcad.set_variable(
+            "DemagnetizationCalc", self.mcad_dict["E_mag_settings"]["Test_Demag"]
+        )
+        self.mcad.set_variable(
+            "ElectromagneticForcesCalc_Load", self.mcad_dict["E_mag_settings"]["Test_Load_Forces"]
+        )
+        self.mcad.set_variable(
+            "InductanceCalc", self.mcad_dict["E_mag_settings"]["Test_Indcutances"]
+        )
+        self.mcad.set_variable(
+            "BPMShortCircuitCalc", self.mcad_dict["E_mag_settings"]["Test_ShortCircuit"]
+        )
+        self.mcad.set_variable("TorqueCalculation", self.mcad_dict["E_mag_settings"]["Test_Torque"])
         self.mcad.set_variable(
             "MagneticThermalCoupling", self.mcad_dict["E_mag_settings"]["Emag_Thermal_Coupling"]
         )
