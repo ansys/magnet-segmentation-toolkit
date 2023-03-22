@@ -2,7 +2,7 @@ import os
 
 import ansys.motorcad.core as pymotorcad
 from pyaedt import generate_unique_folder_name
-from pyaedt.generic.DataHandlers import json_to_dict
+
 
 class MotorCADSettings:
     """Creates a MotorCAD instance and load a predefined template.
@@ -19,24 +19,29 @@ class MotorCADSettings:
 
     Examples
     --------
-    >>>> mcad = MotorCADSettings()
+    >>> mcad = MotorCADSettings()
     Set the geometry model
-    >>>> mcad.set_geometry_model()
+    >>> mcad.set_geometry_model()
     Set LAB module, build LAB model, calculate Emag performance,
     Set continuous performance operating points
-    >>>> mcad.set_lab_model()
+    >>> mcad.set_lab_model()
     Set and run emag calculation
-    >>>> mcad.emag_calculation()
+    >>> mcad.emag_calculation()
     Set export settings to get .vbs script
-    >>>> mcad.export_settings()
+    >>> mcad.export_settings()
     """
 
-    def __init__(self, working_dir=None):
+    def __init__(self):
         """Init."""
         self.mcad = pymotorcad.MotorCAD()
         self.mcad.set_variable("MessageDisplayState", 2)
-        if working_dir:
-            self.working_dir = working_dir
+        self.__configuration_dict = json_to_dict(
+            os.path.join(
+                os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
+            )
+        )
+        if self.__configuration_dict["WorkingDirectory"]:
+            self.working_dir = self.__configuration_dict["WorkingDirectory"]
         else:
             self.working_dir = generate_unique_folder_name(folder_name="pymotorcad_pyaedt_toolkit")
         self.mcad_name = "e9"
@@ -53,7 +58,7 @@ class MotorCADSettings:
         self.mcad.load_template(self.mcad_name)
         self.mcad.show_magnetic_context()
         self.mcad.display_screen("Scripting")
-        self.mcad.set_variable("ProximityLossModel",self._mcad_dict["E_mag_settings"]["AC_Winding_Loss_Model"]) # Hybrid FEA 
+        self.mcad.set_variable("ProximityLossModel",self._mcad_dict["E_mag_settings"]["AC_Winding_Loss_Model"]) # Hybrid FEA
         self.mcad.set_variable("NumberOfCuboids", self._mcad_dict["E_mag_settings"]["Number_of_Cuboids"])
         self.mcad.set_variable("AxialSegments", self._mcad_dict["Geometry"]["Magnet_Axial_Segments"])
 

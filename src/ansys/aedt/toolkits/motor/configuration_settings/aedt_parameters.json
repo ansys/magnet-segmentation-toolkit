@@ -1,0 +1,46 @@
+{
+  "ModelParameters" : {
+    "NumberTorqueCycles" : 2,
+    "NumberPointsTorqueCycles" : 90
+  },
+  "HalfAxial": 1,
+  "Materials" : {
+    "Windings" : {
+      "Name" : "Copper (Pure)",
+      "Temp" : "140"
+    },
+    "Rotor" : {
+      "Name" : "M250-35A",
+      "Temp" : "20"
+    },
+    "Stator" : {
+      "Name" : "M250-35A",
+      "Temp" : "20"
+    },
+    "Magnets" : {
+      "Name" : "N30UH",
+      "Temp" : "130"
+    }
+  },
+  "Mesh" : {
+    "Windings" : {
+      "Length" : 5,
+      "Name" : "windings_mesh"
+    },
+    "RotorAndStator" : {
+      "Length" : 8,
+      "Name" : "rotor_and_stator_mesh"
+    },
+    "Magnets" : {
+      "Length" : 2,
+      "Name" : "magnets_mesh"
+    }
+  },
+  "SetupToAnalyze" : "Setup1",
+  "Reports" : [
+    {
+      "Expression" : "SolidLoss",
+      "PlotName" : "Losses"
+    }
+  ]
+}
