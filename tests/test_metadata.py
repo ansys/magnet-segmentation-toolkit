@@ -1,4 +1,4 @@
-from ansys.pymotorcad_pyaedt_toolkit.pymotorcad_pyaedt_toolkit import __version__
+from ansys.aedt.toolkits.motor import __version__
 
 
 def test_pkg_version():

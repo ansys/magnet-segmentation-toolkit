@@ -2,6 +2,7 @@ import os
 
 import ansys.motorcad.core as pymotorcad
 from pyaedt import generate_unique_folder_name
+from pyaedt.generic.DataHandlers import json_to_dict
 
 
 class MotorCADSettings:
@@ -10,33 +11,31 @@ class MotorCADSettings:
     Provides a Motor-CAD instance to set geometry,
     LAB and electromagnetic settings in order to export the model.
 
-    Parameters
-    ----------
-    working_dir : str, optional
-        Working directory to store results and .mot file.
-        If nothing is provided a new temp folder is created.
-        Default value is ``None``.
-
     Examples
     --------
-    >>>> mcad = MotorCADSettings()
+    >>> mcad = MotorCADSettings()
     Set the geometry model
-    >>>> mcad.set_geometry_model()
+    >>> mcad.set_geometry_model()
     Set LAB module, build LAB model, calculate Emag performance,
     Set continuous performance operating points
-    >>>> mcad.set_lab_model()
+    >>> mcad.set_lab_model()
     Set and run emag calculation
-    >>>> mcad.emag_calculation()
+    >>> mcad.emag_calculation()
     Set export settings to get .vbs script
-    >>>> mcad.export_settings()
+    >>> mcad.export_settings()
     """
 
-    def __init__(self, working_dir=None):
+    def __init__(self):
         """Init."""
         self.mcad = pymotorcad.MotorCAD()
         self.mcad.set_variable("MessageDisplayState", 2)
-        if working_dir:
-            self.working_dir = working_dir
+        self.__configuration_dict = json_to_dict(
+            os.path.join(
+                os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
+            )
+        )
+        if self.__configuration_dict["WorkingDirectory"]:
+            self.working_dir = self.__configuration_dict["WorkingDirectory"]
         else:
             self.working_dir = generate_unique_folder_name(folder_name="pymotorcad_pyaedt_toolkit")
         self.mcad_name = "e9"
@@ -69,10 +68,10 @@ class MotorCADSettings:
         self.mcad.set_variable("BuildLossModel_MotorLAB", True)
 
         # Build the model.
-        self.mcad.clear_model_build_lab()
-        self.mcad.build_model_lab()
+        # self.mcad.clear_model_build_lab()
+        # self.mcad.build_model_lab()
 
-        # self.mcad.load_template("Test_e9_built")
+        self.mcad.load_template("Test_e9_built")
 
         # Peak performance Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)
