@@ -2,7 +2,7 @@ import os
 
 import ansys.motorcad.core as pymotorcad
 from pyaedt import generate_unique_folder_name
-
+from pyaedt.generic.DataHandlers import json_to_dict
 
 class MotorCADSettings:
     """Creates a MotorCAD instance and load a predefined template.
@@ -42,15 +42,20 @@ class MotorCADSettings:
         self.mcad_name = "e9"
         self.mcad_file_path = os.path.join(self.working_dir, "{}.mot".format(self.mcad_name))
         self.vbs_file_path = os.path.join(self.working_dir, "{}.vbs".format(self.mcad_name))
+        self._mcad_dict = json_to_dict(
+            os.path.join(
+                os.path.dirname(__file__), "configuration_settings", "motorcad_parameters.json"
+            )
+        )
 
     def set_geometry_model(self):
         """Set geometry model."""
         self.mcad.load_template(self.mcad_name)
         self.mcad.show_magnetic_context()
         self.mcad.display_screen("Scripting")
-        self.mcad.set_variable("ProximityLossModel", 1)
-        self.mcad.set_variable("NumberOfCuboids", 6)
-        self.mcad.set_variable("AxialSegments", 6)
+        self.mcad.set_variable("ProximityLossModel",self._mcad_dict["E_mag_settings"]["AC_Winding_Loss_Model"]) # Hybrid FEA 
+        self.mcad.set_variable("NumberOfCuboids", self._mcad_dict["E_mag_settings"]["Number_of_Cuboids"])
+        self.mcad.set_variable("AxialSegments", self._mcad_dict["Geometry"]["Magnet_Axial_Segments"])
 
         self.mcad.save_to_file(self.mcad_file_path)
 
@@ -58,12 +63,12 @@ class MotorCADSettings:
         """Set lab model build parameters and build the model."""
         # LAB Module
         self.mcad.set_motorlab_context()
-        self.mcad.set_variable("ModelType_MotorLAB", 2)
-        self.mcad.set_variable("SatModelPoints_MotorLAB", 1)
-        self.mcad.set_variable("LossModel_Lab", 1)
-        self.mcad.set_variable("ACLossMethod_Lab", 0)
-        self.mcad.set_variable("ModelBuildSpeed_MotorLAB", 10000)
-        self.mcad.set_variable("MaxModelCurrent_MotorLAB", 480)
+        self.mcad.set_variable("ModelType_MotorLAB", self._mcad_dict["LAB_settings"]["Saturation_Full_cycle"])
+        self.mcad.set_variable("SatModelPoints_MotorLAB", self._mcad_dict["LAB_settings"]["Model_Res_Fine"])
+        self.mcad.set_variable("LossModel_Lab", self._mcad_dict["LAB_settings"]["Loss_Model_FEAMap"])
+        self.mcad.set_variable("ACLossMethod_Lab",self._mcad_dict["LAB_settings"]["AC_Loss_Hybrid"])
+        self.mcad.set_variable("ModelBuildSpeed_MotorLAB", self._mcad_dict["LAB_settings"][ "Max_Speed"])
+        self.mcad.set_variable("MaxModelCurrent_MotorLAB",  self._mcad_dict["LAB_settings"]["Max_Stator_Current"])
         self.mcad.set_variable("BuildSatModel_MotorLAB", True)
         self.mcad.set_variable("BuildLossModel_MotorLAB", True)
 
@@ -77,24 +82,24 @@ class MotorCADSettings:
         """Calculate lab performance curves-Maximum Torque-speed and Efficiency Map."""
         # Peak performance Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)
-        self.mcad.set_variable("SpeedMax_MotorLAB", 10000)
-        self.mcad.set_variable("SpeedMin_MotorLAB", 0)
-        self.mcad.set_variable("Speedinc_MotorLAB", 500)
-        self.mcad.set_variable("OperatingMode_Lab", 0)
+        self.mcad.set_variable("SpeedMax_MotorLAB", self._mcad_dict["LAB_settings"]["Max_Speed"])
+        self.mcad.set_variable("SpeedMin_MotorLAB",self._mcad_dict["LAB_settings"]["Speed_Min"])
+        self.mcad.set_variable("Speedinc_MotorLAB", self._mcad_dict["LAB_settings"]["Speed_Step"])
+        self.mcad.set_variable("OperatingMode_Lab", self._mcad_dict["LAB_settings"]["Max_TS_Curve"])
         self.mcad.calculate_magnetic_lab()
 
     def lab_operating_point(self):
         """Set lab operating point based on given input conditions."""
         # Continuous performance operating points
-        self.mcad.set_variable("LabMagneticCoupling", 1)
-        self.mcad.set_variable("OpPointSpec_MotorLAB", 2)
-        self.mcad.set_variable("ThermCalcType_MotorLAB", 0)
-        self.mcad.set_variable("ThermalMapType_Lab", 0)
-        self.mcad.set_variable("MaxWindTemp_MotorLAB", 140)
-        self.mcad.set_variable("StatorTempDemand_Lab", 140)
-        self.mcad.set_variable("MaxMagnet_MotorLAB", 160)
-        self.mcad.set_variable("RotorTempDemand_Lab", 160)
-        self.mcad.set_variable("SpeedDemand_MotorLAB", 4500)
+        self.mcad.set_variable("OpPointSpec_MotorLAB", self._mcad_dict["LAB_settings"]["OP_Def_Max_Temp"])
+        self.mcad.set_variable("LabMagneticCoupling", self._mcad_dict["LAB_settings"]["OP_Link_Lab_Emag"])
+        self.mcad.set_variable("ThermCalcType_MotorLAB", self._mcad_dict["LAB_settings"]["OP_Link_Lab_Thermal"])
+        self.mcad.set_variable("ThermalMapType_Lab", self._mcad_dict["LAB_settings"]["Thermal_Envelop"])
+        self.mcad.set_variable("MaxWindTemp_MotorLAB", self._mcad_dict["LAB_settings"]["Lab_Max_Temp_St_Wind"])
+        self.mcad.set_variable("StatorTempDemand_Lab", self._mcad_dict["LAB_settings"]["Lab_Max_Temp_St_Wind"])
+        self.mcad.set_variable("MaxMagnet_MotorLAB", self._mcad_dict["LAB_settings"]["Lab_Max_Temp_Magnet"])
+        self.mcad.set_variable("RotorTempDemand_Lab", self._mcad_dict["LAB_settings"]["Lab_Max_Temp_Magnet"])
+        self.mcad.set_variable("SpeedDemand_MotorLAB", self._mcad_dict["LAB_settings"]["OP_Speed"])
         self.mcad.calculate_operating_point_lab()
         shaft_power = self.mcad.get_variable("LabOpPoint_ShaftPower")
         efficiency = self.mcad.get_variable("LabOpPoint_Efficiency")
@@ -114,7 +119,7 @@ class MotorCADSettings:
         self.mcad.set_variable("InductanceCalc", False)
         self.mcad.set_variable("BPMShortCircuitCalc", False)
         self.mcad.set_variable("TorqueCalculation", True)
-        self.mcad.set_variable("MagneticThermalCoupling", 1)
+        self.mcad.set_variable("MagneticThermalCoupling",self._mcad_dict["E_mag_settings"]["Emag_Thermal_Coupling"])
         self.mcad.do_magnetic_calculation()
 
     def export_settings(self):
