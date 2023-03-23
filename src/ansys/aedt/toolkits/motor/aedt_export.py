@@ -33,7 +33,7 @@ class AedtExport:
     >>> aedt.save_and_close()
     """
 
-    def __init__(self, settings_path, vbs_file_path=None, m3d=None):
+    def __init__(self, settings_path, vbs_file_path, m3d=None):
         """Init."""
         self.working_dir = os.path.dirname(settings_path)
         self.vbs_file_path = vbs_file_path
