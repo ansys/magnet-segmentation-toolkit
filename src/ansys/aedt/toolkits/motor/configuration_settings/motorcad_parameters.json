@@ -1,4 +1,5 @@
 {
+    "MotorCAD_filepath" : "C:\\Test\\pymotorcad_pyaedt_workflow\\e9_test_webinar\\e9.mot",
     "Geometry":{
         "Magnet_Axial_Segments" : 6
     },

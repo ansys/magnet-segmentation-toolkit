@@ -2,8 +2,7 @@ import os
 
 import ansys.motorcad.core as pymotorcad
 
-# from ansys.aedt.toolkits.motor.common_settings import CommonSettings
-from common_settings import CommonSettings
+from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 
 
 class MotorCADSettings:
@@ -11,13 +10,6 @@ class MotorCADSettings:
 
     Provides a Motor-CAD instance to set geometry,
     LAB and electromagnetic settings in order to export the model.
-
-    Parameters
-    ----------
-    working_dir : str, optional
-        Working directory to store results and .mot file.
-        If nothing is provided a new temp folder is created.
-        Default value is ``None``.
 
     Examples
     --------
@@ -47,17 +39,16 @@ class MotorCADSettings:
             )
         )
         self.working_dir = self.configuration_dict["WorkingDirectory"]
-        self.mcad_name = "e9"
-        self.mcad_file_path = os.path.join(self.working_dir, "{}.mot".format(self.mcad_name))
-        self.vbs_file_path = os.path.join(self.working_dir, "{}.vbs".format(self.mcad_name))
+        self.mcad_file_path = self.mcad_dict["MotorCAD_filepath"]
+        self.vbs_file_path = os.path.join(
+            self.working_dir, "{}.vbs".format(os.path.splitext(self.mcad_file_path)[0])
+        )
 
     def init_motorcad(self):
         """Initialize MotorCAD."""
         if not self.mcad:
             self.mcad = pymotorcad.MotorCAD()
         self.mcad.set_variable("MessageDisplayState", 2)
-        self.mcad.load_template(self.mcad_name)
-        self.mcad.save_to_file(self.mcad_file_path)
 
     def set_geometry_model(self):
         """Set geometry model."""
@@ -65,7 +56,7 @@ class MotorCADSettings:
         self.mcad.display_screen("Scripting")
         self.mcad.set_variable(
             "ProximityLossModel", self.mcad_dict["E_mag_settings"]["AC_Winding_Loss_Model"]
-        )  # Hybrid FEA
+        )
         self.mcad.set_variable(
             "NumberOfCuboids", self.mcad_dict["E_mag_settings"]["Number_of_Cuboids"]
         )
@@ -75,7 +66,6 @@ class MotorCADSettings:
 
     def set_lab_model(self):
         """Set lab model build parameters and build the model."""
-        # LAB Module
         self.mcad.set_motorlab_context()
         self.mcad.set_variable(
             "ModelType_MotorLAB", self.mcad_dict["LAB_settings"]["Saturation_Full_cycle"]
@@ -99,14 +89,13 @@ class MotorCADSettings:
         )
 
         # Build the model.
-        self.mcad.clear_model_build_lab()
-        self.mcad.build_model_lab()
+        # self.mcad.clear_model_build_lab()
+        # self.mcad.build_model_lab()
 
-        # self.mcad.load_template("Test_e9_built")
+        self.mcad.load_template("Test_e9_built")
 
     def lab_performance_calculation(self):
         """Calculate lab performance curves-Maximum Torque-speed and Efficiency Map."""
-        # Peak performance Torque-Speed curve
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)
         self.mcad.set_variable("SpeedMax_MotorLAB", self.mcad_dict["LAB_settings"]["Max_Speed"])
         self.mcad.set_variable("SpeedMin_MotorLAB", self.mcad_dict["LAB_settings"]["Speed_Min"])
@@ -115,11 +104,7 @@ class MotorCADSettings:
         self.mcad.calculate_magnetic_lab()
 
     def lab_operating_point(self):
-        """Set lab operating point based on given input conditions.
-
-        fgdfgd
-        """
-        # Continuous performance operating points
+        """Set lab operating point based on given input conditions."""
         self.mcad.set_variable(
             "OpPointSpec_MotorLAB", self.mcad_dict["LAB_settings"]["OP_Def_Max_Temp"]
         )
@@ -189,7 +174,6 @@ class MotorCADSettings:
         """Set export settings."""
         self.mcad.show_magnetic_context()
         self.mcad.set_variable("AnsysExportFormat", 1)
-        # 3D export
         self.mcad.set_variable("AnsysModelType", 1)
         self.mcad.set_variable("AnsysSolve", 1)
         self.mcad.set_variable("AnsysArcSegmentMethod", 0)
