@@ -89,10 +89,10 @@ class MotorCADSettings:
         )
 
         # Build the model.
-        # self.mcad.clear_model_build_lab()
-        # self.mcad.build_model_lab()
+        self.mcad.clear_model_build_lab()
+        self.mcad.build_model_lab()
 
-        self.mcad.load_template("Test_e9_built")
+        # self.mcad.load_template("Test_e9_built")
 
     def lab_performance_calculation(self):
         """Calculate lab performance curves-Maximum Torque-speed and Efficiency Map."""
