@@ -29,9 +29,6 @@ class MotorCADSettings:
         """Init."""
         self.mcad = motorcad
         self.working_dir = os.path.dirname(settings_path)
-        self.configuration_dict = CommonSettings().load_json(
-            os.path.join(settings_path, "configuration_settings.json")
-        )
         self.mcad_dict = CommonSettings().load_json(
             os.path.join(settings_path, "motorcad_parameters.json")
         )
@@ -45,6 +42,10 @@ class MotorCADSettings:
         if not self.mcad:
             self.mcad = pymotorcad.MotorCAD()
         self.mcad.set_variable("MessageDisplayState", 2)
+
+    def load_mcad_file(self):
+        """Load the motorcad file  from file path saved in instance."""
+        self.mcad.load_from_file(self.mcad_file_path)
 
     def set_geometry_model(self):
         """Set geometry model."""
@@ -166,6 +167,18 @@ class MotorCADSettings:
         )
         self.mcad.do_magnetic_calculation()
 
+    def set_thermal(self, magnet_loss=None):
+        """Set the motorcad thermal calculations, cooling and losses ."""
+        self.mcad.show_thermal_context()
+        self.mcad.set_variable("ThermalCalcType", 0)
+        if magnet_loss:
+            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss)
+
+    def thermal_calculation(self):
+        """Perform  steady state thermal calculation."""
+        self.mcad.do_steady_state_analysis()
+        print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
+
     def export_settings(self):
         """Set export settings."""
         self.mcad.show_magnetic_context()
@@ -185,19 +198,3 @@ class MotorCADSettings:
     def mcad_close(self):
         """Close the motorcad instance."""
         self.mcad.quit()
-
-    def set_thermal(self, magnet_loss=None):
-        """Set the motorcad thermal calculations, cooling and losses ."""
-        self.mcad.show_thermal_context()
-        self.mcad.set_variable("ThermalCalcType", 0)
-        if magnet_loss:
-            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss)
-
-    def thermal_calculation(self):
-        """Perform  steady state thermal calculation."""
-        self.mcad.do_steady_state_analysis()
-        print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
-
-    def load_mcad_file(self):
-        """Load the motorcad file  from file path saved in instance."""
-        self.mcad.load_from_file(self.mcad_file_path)

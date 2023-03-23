@@ -1,4 +1,5 @@
 {
   "AEDTVersion" : "2023.2",
-  "NonGraphical" : false
+  "NonGraphical" : false,
+  "AEDTProjectPath" : ""
 }

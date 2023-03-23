@@ -36,7 +36,7 @@ class AedtExport:
     def __init__(self, settings_path, vbs_file_path=None, m3d=None):
         """Init."""
         self.working_dir = os.path.dirname(settings_path)
-        self._vbs_file_path = vbs_file_path
+        self.vbs_file_path = vbs_file_path
         self.configuration_dict = CommonSettings().load_json(
             os.path.join(self.working_dir, "configuration_settings.json")
         )
@@ -55,8 +55,8 @@ class AedtExport:
                 specified_version=self.configuration_dict["AEDTVersion"],
                 non_graphical=self.configuration_dict["NonGraphical"],
             )
-        if self._vbs_file_path:
-            self.maxwell.odesktop.RunScript(self._vbs_file_path)
+        if self.vbs_file_path:
+            self.maxwell.odesktop.RunScript(self.vbs_file_path)
 
     def set_model(self):
         """Set geometry model.
