@@ -1,11 +1,11 @@
 import itertools
 import os
 
+# from ansys.aedt.toolkits.motor.common_settings import CommonSettings
+from common_settings import CommonSettings
 from pyaedt import Maxwell3d
 from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
-
-from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 
 
 class AedtExport:

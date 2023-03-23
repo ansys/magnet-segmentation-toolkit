@@ -2,7 +2,8 @@ import os
 
 import ansys.motorcad.core as pymotorcad
 
-from ansys.aedt.toolkits.motor.common_settings import CommonSettings
+# from ansys.aedt.toolkits.motor.common_settings import CommonSettings
+from common_settings import CommonSettings
 
 
 class MotorCADSettings:
@@ -56,6 +57,7 @@ class MotorCADSettings:
             self.mcad = pymotorcad.MotorCAD()
         self.mcad.set_variable("MessageDisplayState", 2)
         self.mcad.load_template(self.mcad_name)
+        self.mcad.save_to_file(self.mcad_file_path)
 
     def set_geometry_model(self):
         """Set geometry model."""
