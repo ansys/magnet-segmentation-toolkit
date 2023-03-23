@@ -33,20 +33,16 @@ class AedtExport:
     >>> aedt.save_and_close()
     """
 
-    def __init__(self, vbs_file_path=None, m3d=None):
+    def __init__(self, settings_path, vbs_file_path=None, m3d=None):
         """Init."""
+        self.working_dir = os.path.dirname(settings_path)
         self._vbs_file_path = vbs_file_path
         self.configuration_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
-            )
+            os.path.join(self.working_dir, "configuration_settings.json")
         )
         self.aedt_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "aedt_parameters.json"
-            )
+            os.path.join(self.working_dir, "aedt_parameters.json")
         )
-        self.working_dir = self.configuration_dict["WorkingDirectory"]
         self.maxwell = m3d
 
     def init_maxwell(self):

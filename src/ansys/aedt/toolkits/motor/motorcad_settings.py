@@ -25,20 +25,16 @@ class MotorCADSettings:
     >>> mcad.export_settings()
     """
 
-    def __init__(self, motorcad=None):
+    def __init__(self, settings_path, motorcad=None):
         """Init."""
         self.mcad = motorcad
+        self.working_dir = os.path.dirname(settings_path)
         self.configuration_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
-            )
+            os.path.join(settings_path, "configuration_settings.json")
         )
         self.mcad_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "motorcad_parameters.json"
-            )
+            os.path.join(settings_path, "motorcad_parameters.json")
         )
-        self.working_dir = self.configuration_dict["WorkingDirectory"]
         self.mcad_file_path = self.mcad_dict["MotorCAD_filepath"]
         self.vbs_file_path = os.path.join(
             self.working_dir, "{}.vbs".format(os.path.splitext(self.mcad_file_path)[0])
