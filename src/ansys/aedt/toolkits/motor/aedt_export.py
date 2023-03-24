@@ -37,13 +37,20 @@ class AedtExport:
         """Init."""
         self.working_dir = os.path.dirname(settings_path)
         self.vbs_file_path = vbs_file_path
-        self.configuration_dict = CommonSettings(settings_path).load_json(
-            os.path.join(settings_path, "configuration_settings.json")
-        )
-        self.aedt_dict = CommonSettings(settings_path).load_json(
+        self.maxwell = m3d
+        self.aedt_dict = CommonSettings(self.working_dir).load_json(
             os.path.join(settings_path, "aedt_parameters.json")
         )
-        self.maxwell = m3d
+        self.conf_dict = CommonSettings(self.working_dir).load_json(
+            os.path.join(settings_path, "configuration_settings.json")
+        )
+
+    def set_aedt_dict_props(self, key, value):
+        """Set AEDT props."""
+        try:
+            self.aedt_dict[key] = value
+        except:
+            raise ValueError("Provided key doesn't exist.")
 
     def init_maxwell(self):
         """Initialize Maxwell and run .vbs script.
@@ -52,8 +59,8 @@ class AedtExport:
         """
         if not self.maxwell:
             self.maxwell = Maxwell3d(
-                specified_version=self.configuration_dict["AEDTVersion"],
-                non_graphical=self.configuration_dict["NonGraphical"],
+                specified_version=self.conf_dict["AEDTVersion"],
+                non_graphical=self.conf_dict["NonGraphical"],
             )
         if self.vbs_file_path:
             self.maxwell.odesktop.RunScript(self.vbs_file_path)

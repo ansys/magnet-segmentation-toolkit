@@ -37,8 +37,8 @@
         "OP_Link_Lab_Emag":1,
         "OP_Link_Lab_Thermal":0,
         "Thermal_Envelop":0,
-        "Lab_Max_Temp_St_Wind":160,
-        "Lab_Max_Temp_Magnet":140,
+        "Lab_Max_Temp_St_Wind":140,
+        "Lab_Max_Temp_Magnet":160,
         "OP_Speed":4500,
         "Build_Sat_Model":true,
         "Build_Loss_Model":true

@@ -10,7 +10,19 @@ class CommonSettings:
     def __init__(self, working_dir):
         """Init."""
         self.working_dir = working_dir
-        self.configuration_dict = None
+        self.conf_dict = self.load_json(
+            os.path.join(
+                os.path.join(self.working_dir, "configuration_settings"),
+                "configuration_settings.json",
+            )
+        )
+
+    def set_conf_dict_props(self, key, value):
+        """Set configuration properties."""
+        try:
+            self.conf_dict[key] = value
+        except:
+            raise ValueError("Provided key doesn't exist.")
 
     def load_json(self, json_file_path):
         """Convert a json file to a dictionary."""
@@ -22,7 +34,4 @@ class CommonSettings:
         settings_path = os.path.join(self.working_dir, "configuration_settings")
         if not os.path.exists(settings_path):
             shutil.copytree(conf_folder, settings_path)
-        self.configuration_dict = self.load_json(
-            os.path.join(settings_path, "configuration_settings.json")
-        )
         return settings_path
