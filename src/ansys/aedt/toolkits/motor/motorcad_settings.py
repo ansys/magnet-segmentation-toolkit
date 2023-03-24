@@ -29,7 +29,7 @@ class MotorCADSettings:
         """Init."""
         self.mcad = motorcad
         self.working_dir = os.path.dirname(settings_path)
-        self.mcad_dict = CommonSettings().load_json(
+        self.mcad_dict = CommonSettings(settings_path).load_json(
             os.path.join(settings_path, "motorcad_parameters.json")
         )
         self.mcad_file_path = self.mcad_dict["MotorCAD_filepath"]
@@ -44,7 +44,7 @@ class MotorCADSettings:
         self.mcad.set_variable("MessageDisplayState", 2)
 
     def load_mcad_file(self):
-        """Load the motorcad file  from file path saved in instance."""
+        """Load a .mot file."""
         self.mcad.load_from_file(self.mcad_file_path)
 
     def set_geometry_model(self):
@@ -172,7 +172,7 @@ class MotorCADSettings:
         self.mcad.show_thermal_context()
         self.mcad.set_variable("ThermalCalcType", 0)
         if magnet_loss:
-            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss)
+            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss["SolidLoss"]["Value"])
 
     def thermal_calculation(self):
         """Perform  steady state thermal calculation."""
@@ -191,10 +191,10 @@ class MotorCADSettings:
         self.mcad.set_variable("AnsysRotationDirection", 0)
         self.mcad.export_to_ansys_electronics_desktop(self.vbs_file_path)
 
-    def mcad_save(self):
+    def save(self):
         """Save the motorcad file."""
         self.mcad.save_to_file(self.mcad_file_path)
 
-    def mcad_close(self):
+    def close(self):
         """Close the motorcad instance."""
         self.mcad.quit()
