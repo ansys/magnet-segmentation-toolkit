@@ -32,9 +32,9 @@ class MotorCADSettings:
         self.mcad_dict = CommonSettings(settings_path).load_json(
             os.path.join(settings_path, "motorcad_parameters.json")
         )
-        self.mcad_file_path = self.mcad_dict["MotorCAD_filepath"]
         self.vbs_file_path = os.path.join(
-            self.working_dir, "{}.vbs".format(os.path.splitext(self.mcad_file_path)[0])
+            self.working_dir,
+            "{}.vbs".format(os.path.splitext(self.mcad_dict["MotorCAD_filepath"])[0]),
         )
 
     def init_motorcad(self):
@@ -45,7 +45,7 @@ class MotorCADSettings:
 
     def load_mcad_file(self):
         """Load a .mot file."""
-        self.mcad.load_from_file(self.mcad_file_path)
+        self.mcad.load_from_file(self.mcad_dict["MotorCAD_filepath"])
 
     def set_geometry_model(self):
         """Set geometry model."""
@@ -59,7 +59,7 @@ class MotorCADSettings:
         )
         self.mcad.set_variable("AxialSegments", self.mcad_dict["Geometry"]["Magnet_Axial_Segments"])
 
-        self.mcad.save_to_file(self.mcad_file_path)
+        self.mcad.save_to_file(self.mcad_dict["MotorCAD_filepath"])
 
     def set_lab_model(self):
         """Set lab model build parameters and build the model."""
@@ -193,7 +193,7 @@ class MotorCADSettings:
 
     def save(self):
         """Save the motorcad file."""
-        self.mcad.save_to_file(self.mcad_file_path)
+        self.mcad.save_to_file(self.mcad_dict["MotorCAD_filepath"])
 
     def close(self):
         """Close the motorcad instance."""
