@@ -29,13 +29,24 @@ class MotorCADSettings:
         """Init."""
         self.mcad = motorcad
         self.working_dir = os.path.dirname(settings_path)
-        self.mcad_dict = CommonSettings(settings_path).load_json(
+        self.mcad_dict = self._mcad_dict = CommonSettings(self.working_dir).load_json(
             os.path.join(settings_path, "motorcad_parameters.json")
         )
-        self.vbs_file_path = os.path.join(
+
+    @property
+    def vbs_file_path(self):
+        """Path to .vbs file exported from Motor-CAD."""
+        return os.path.join(
             self.working_dir,
             "{}.vbs".format(os.path.splitext(self.mcad_dict["MotorCAD_filepath"])[0]),
         )
+
+    def set_mcad_dict_props(self, key, value):
+        """Set Motor-CAD properties."""
+        try:
+            self.mcad_dict[key] = value
+        except:
+            raise ValueError("Provided key doesn't exist.")
 
     def init_motorcad(self):
         """Initialize MotorCAD."""
