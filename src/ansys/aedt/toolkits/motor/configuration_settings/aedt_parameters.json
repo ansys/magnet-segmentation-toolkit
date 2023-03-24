@@ -1,6 +1,6 @@
 {
   "ModelParameters" : {
-    "NumberTorqueCycles" : 2,
+    "NumberTorqueCycles" : 1,
     "NumberPointsTorqueCycles" : 90
   },
   "HalfAxial": 1,
