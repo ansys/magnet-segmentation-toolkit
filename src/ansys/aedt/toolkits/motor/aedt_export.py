@@ -33,20 +33,16 @@ class AedtExport:
     >>> aedt.save_and_close()
     """
 
-    def __init__(self, vbs_file_path=None, m3d=None):
+    def __init__(self, settings_path, vbs_file_path=None, m3d=None):
         """Init."""
-        self._vbs_file_path = vbs_file_path
-        self.configuration_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
-            )
+        self.working_dir = os.path.dirname(settings_path)
+        self.vbs_file_path = vbs_file_path
+        self.configuration_dict = CommonSettings(settings_path).load_json(
+            os.path.join(settings_path, "configuration_settings.json")
         )
-        self.aedt_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "aedt_parameters.json"
-            )
+        self.aedt_dict = CommonSettings(settings_path).load_json(
+            os.path.join(settings_path, "aedt_parameters.json")
         )
-        self.working_dir = self.configuration_dict["WorkingDirectory"]
         self.maxwell = m3d
 
     def init_maxwell(self):
@@ -59,8 +55,8 @@ class AedtExport:
                 specified_version=self.configuration_dict["AEDTVersion"],
                 non_graphical=self.configuration_dict["NonGraphical"],
             )
-        if self._vbs_file_path:
-            self.maxwell.odesktop.RunScript(self._vbs_file_path)
+        if self.vbs_file_path:
+            self.maxwell.odesktop.RunScript(self.vbs_file_path)
 
     def set_model(self):
         """Set geometry model.
@@ -121,7 +117,7 @@ class AedtExport:
         """Analyze model."""
         self.maxwell.analyze_setup(self.aedt_dict["SetupToAnalyze"])
 
-    def average_values_from_reports(self):
+    def get_values_from_reports(self):
         """Create report magnet losses.
 
         Returns
@@ -145,9 +141,8 @@ class AedtExport:
 
     def save_and_close(self):
         """Save and close."""
-        self.maxwell.close_project(
-            os.path.join(self.working_dir, "{}.aedt".format(self.maxwell.project_name))
-        )
+        self.maxwell.close_project()
+        self.maxwell.release_desktop()
 
     def _apply_boundary_conditions(self):
         for bound in self.maxwell.boundaries[:]:

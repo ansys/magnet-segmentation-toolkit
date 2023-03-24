@@ -25,20 +25,13 @@ class MotorCADSettings:
     >>> mcad.export_settings()
     """
 
-    def __init__(self, motorcad=None):
+    def __init__(self, settings_path, motorcad=None):
         """Init."""
         self.mcad = motorcad
-        self.configuration_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "configuration_settings.json"
-            )
+        self.working_dir = os.path.dirname(settings_path)
+        self.mcad_dict = CommonSettings(settings_path).load_json(
+            os.path.join(settings_path, "motorcad_parameters.json")
         )
-        self.mcad_dict = CommonSettings().load_json(
-            os.path.join(
-                os.path.dirname(__file__), "configuration_settings", "motorcad_parameters.json"
-            )
-        )
-        self.working_dir = self.configuration_dict["WorkingDirectory"]
         self.mcad_file_path = self.mcad_dict["MotorCAD_filepath"]
         self.vbs_file_path = os.path.join(
             self.working_dir, "{}.vbs".format(os.path.splitext(self.mcad_file_path)[0])
@@ -49,6 +42,10 @@ class MotorCADSettings:
         if not self.mcad:
             self.mcad = pymotorcad.MotorCAD()
         self.mcad.set_variable("MessageDisplayState", 2)
+
+    def load_mcad_file(self):
+        """Load a .mot file."""
+        self.mcad.load_from_file(self.mcad_file_path)
 
     def set_geometry_model(self):
         """Set geometry model."""
@@ -89,10 +86,10 @@ class MotorCADSettings:
         )
 
         # Build the model.
-        # self.mcad.clear_model_build_lab()
-        # self.mcad.build_model_lab()
+        self.mcad.clear_model_build_lab()
+        self.mcad.build_model_lab()
 
-        self.mcad.load_template("Test_e9_built")
+        # self.mcad.load_template("Test_e9_built")
 
     def lab_performance_calculation(self):
         """Calculate lab performance curves-Maximum Torque-speed and Efficiency Map."""
@@ -170,6 +167,18 @@ class MotorCADSettings:
         )
         self.mcad.do_magnetic_calculation()
 
+    def set_thermal(self, magnet_loss=None):
+        """Set the motorcad thermal calculations, cooling and losses ."""
+        self.mcad.show_thermal_context()
+        self.mcad.set_variable("ThermalCalcType", 0)
+        if magnet_loss:
+            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss["SolidLoss"]["Value"])
+
+    def thermal_calculation(self):
+        """Perform  steady state thermal calculation."""
+        self.mcad.do_steady_state_analysis()
+        print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
+
     def export_settings(self):
         """Set export settings."""
         self.mcad.show_magnetic_context()
@@ -182,26 +191,10 @@ class MotorCADSettings:
         self.mcad.set_variable("AnsysRotationDirection", 0)
         self.mcad.export_to_ansys_electronics_desktop(self.vbs_file_path)
 
-    def mcad_save(self):
+    def save(self):
         """Save the motorcad file."""
         self.mcad.save_to_file(self.mcad_file_path)
 
-    def mcad_close(self):
+    def close(self):
         """Close the motorcad instance."""
         self.mcad.quit()
-
-    def set_thermal(self, magnet_loss=None):
-        """Set the motorcad thermal calculations, cooling and losses ."""
-        self.mcad.show_thermal_context()
-        self.mcad.set_variable("ThermalCalcType", 0)
-        if magnet_loss:
-            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss)
-
-    def thermal_calculation(self):
-        """Perform  steady state thermal calculation."""
-        self.mcad.do_steady_state_analysis()
-        print("Avg Winding Temp", self.mcad.get_variable("Temp_Winding_Average"))
-
-    def load_mcad_file(self):
-        """Load the motorcad file  from file path saved in instance."""
-        self.mcad.load_from_file(self.mcad_file_path)
