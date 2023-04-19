@@ -41,13 +41,6 @@ class MotorCADSettings:
             "{}.vbs".format(os.path.splitext(self.mcad_dict["MotorCAD_filepath"])[0]),
         )
 
-    def set_mcad_dict_props(self, key, value):
-        """Set Motor-CAD properties."""
-        try:
-            self.mcad_dict[key] = value
-        except:
-            raise ValueError("Provided key doesn't exist.")
-
     def init_motorcad(self):
         """Initialize MotorCAD."""
         if not self.mcad:
@@ -178,12 +171,11 @@ class MotorCADSettings:
         )
         self.mcad.do_magnetic_calculation()
 
-    def set_thermal(self, magnet_loss=None):
+    def set_thermal(self, magnet_loss):
         """Set the motorcad thermal calculations, cooling and losses ."""
         self.mcad.show_thermal_context()
         self.mcad.set_variable("ThermalCalcType", 0)
-        if magnet_loss:
-            self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss["SolidLoss"]["Value"])
+        self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss["SolidLoss"]["Value"])
 
     def thermal_calculation(self):
         """Perform  steady state thermal calculation."""

@@ -5,33 +5,51 @@ from pyaedt.generic.DataHandlers import json_to_dict
 
 
 class CommonSettings:
-    """Provides common reusable methods."""
+    """Provide common reusable methods.
+
+    Parameters
+    ----------
+    working_dir : str
+        Path to working directory.
+    """
 
     def __init__(self, working_dir):
-        """Init."""
         self.working_dir = working_dir
-        self.conf_dict = self.load_json(
-            os.path.join(
-                os.path.join(self.working_dir, "configuration_settings"),
-                "configuration_settings.json",
+        self.config_settings_path = os.path.join(self.working_dir, "configuration_settings")
+        if not os.path.exists(self.config_settings_path):
+            shutil.copytree(
+                os.path.join(os.path.dirname(__file__), "configuration_settings"),
+                self.config_settings_path,
             )
-        )
-
-    def set_conf_dict_props(self, key, value):
-        """Set configuration properties."""
-        try:
-            self.conf_dict[key] = value
-        except:
-            raise ValueError("Provided key doesn't exist.")
 
     def load_json(self, json_file_path):
-        """Convert a json file to a dictionary."""
+        """Convert a json file into a dictionary.
+
+        Parameters
+        ----------
+        json_file_path : str
+            Path to json file to convert into a dictionary.
+        """
         return json_to_dict(json_file_path)
 
-    def copy_json_settings(self):
-        """Copy json files folder from site-packages to working directory."""
-        conf_folder = os.path.join(os.path.dirname(__file__), "configuration_settings")
-        settings_path = os.path.join(self.working_dir, "configuration_settings")
-        if not os.path.exists(settings_path):
-            shutil.copytree(conf_folder, settings_path)
-        return settings_path
+    def update_dict_props(self, dictionary, key, value, remove=False):
+        """Remove or add dictionary properties.
+
+        Parameters
+        ----------
+        dictionary : dict
+            Dictionary to update.
+        key : str
+            Dictionary key to point to in order to update its value.
+        value : str
+            Value in dictionary to update.
+        remove : bool, optional
+            Whether to remove or add a new value in a specific dictionary key.
+            Default value is ``False``.
+        """
+        if key not in dictionary.keys():
+            raise ValueError("Provided key doesn't exist.")
+        if remove:
+            dictionary[key].remove(value)
+        elif isinstance(dict[key], list):
+            dictionary[key].append(value)

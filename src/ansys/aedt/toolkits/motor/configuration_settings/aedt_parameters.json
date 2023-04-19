@@ -1,4 +1,9 @@
 {
+  "AEDT" : {
+    "AEDTVersion" : "",
+    "NonGraphical" : false,
+    "AEDTProjectPath" : ""
+  },
   "ModelParameters" : {
     "NumberTorqueCycles" : 1,
     "NumberPointsTorqueCycles" : 90
@@ -7,7 +12,7 @@
   "Materials" : {
     "Windings" : {
       "Name" : "Copper (Pure)",
-      "Temp" : "140"
+      "Temp" : "160"
     },
     "Rotor" : {
       "Name" : "M250-35A",
@@ -19,7 +24,7 @@
     },
     "Magnets" : {
       "Name" : "N30UH",
-      "Temp" : "130"
+      "Temp" : "140"
     }
   },
   "Mesh" : {
