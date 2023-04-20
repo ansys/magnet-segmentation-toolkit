@@ -18,7 +18,7 @@ class AedtExport:
     vbs_file_path : str, optional
         File path of the vbs script to automatically get the 3D model.
     m3d : :class:`pyaedt.maxwell.Maxwell3D`, optional
-        Instance of Maxwell 3D.
+        Instance of Maxwell 3D. The default is ``None``.
 
     Examples
     --------
