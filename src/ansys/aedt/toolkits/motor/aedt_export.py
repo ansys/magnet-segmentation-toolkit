@@ -16,7 +16,7 @@ class AedtExport:
     settings_path : str
         Path to the ``configuration_settings`` folder where all json files are located.
     vbs_file_path : str, optional
-        File path of the vbs script to automatically get the 3D model.
+        File path of the vbs script to automatically get the 3D model. The default is ``None``.
     m3d : :class:`pyaedt.maxwell.Maxwell3D`, optional
         Instance of Maxwell 3D. The default is ``None``.
 
