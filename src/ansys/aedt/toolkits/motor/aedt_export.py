@@ -1,7 +1,7 @@
 import itertools
 import os
 
-from pyaedt import Maxwell3d
+from pyaedt import Desktop, Maxwell3d
 from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
 
@@ -9,18 +9,20 @@ from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 
 
 class AedtExport:
-    """Provides an AEDT instance.
-
-     Create a Maxwell3D instance and the motor 3D model by running .vbs script.
+    """Provide the 3D Maxwell model by running the .vbs script or by giving a Maxwell 3D instance.
 
     Parameters
     ----------
-    vbs_file_path : str
-        File path of the vbs script.
+    settings_path : str
+        Path to the ``configuration_settings`` folder where all json files are located.
+    vbs_file_path : str, optional
+        File path of the vbs script to automatically get the 3D model. The default is ``None``.
+    m3d : :class:`pyaedt.maxwell.Maxwell3D`, optional
+        Instance of Maxwell 3D. The default is ``None``.
 
     Examples
     --------
-    >>> aedt = AedtExport()
+    >>> aedt = AedtExport(settings_path=settings_path)
     Set the geometry model such as the axial length,
     apply boundary conditions and
     remove from model unclassified objects
@@ -34,36 +36,27 @@ class AedtExport:
     """
 
     def __init__(self, settings_path, vbs_file_path=None, m3d=None):
-        """Init."""
         self.working_dir = os.path.dirname(settings_path)
         self.vbs_file_path = vbs_file_path
         self.maxwell = m3d
         self.aedt_dict = CommonSettings(self.working_dir).load_json(
             os.path.join(settings_path, "aedt_parameters.json")
         )
-        self.conf_dict = CommonSettings(self.working_dir).load_json(
-            os.path.join(settings_path, "configuration_settings.json")
-        )
-
-    def set_aedt_dict_props(self, key, value):
-        """Set AEDT props."""
-        try:
-            self.aedt_dict[key] = value
-        except:
-            raise ValueError("Provided key doesn't exist.")
 
     def init_maxwell(self):
-        """Initialize Maxwell and run .vbs script.
+        """Initialize Maxwell.
 
-        Needed if an instance of Maxwell3d is not given in input of AedtExport class.
+        If the .vbs script is provided it automatically runs it.
+        If a Maxwell3D instance is provided it attaches to it.
         """
-        if not self.maxwell:
-            self.maxwell = Maxwell3d(
-                specified_version=self.conf_dict["AEDTVersion"],
-                non_graphical=self.conf_dict["NonGraphical"],
-            )
+        if not self.maxwell and not self.vbs_file_path:
+            raise TypeError("Maxwell 3D and .vbs script file path are both invalid.")
         if self.vbs_file_path:
-            self.maxwell.odesktop.RunScript(self.vbs_file_path)
+            dktp = Desktop(specified_version=self.aedt_dict["AEDT"]["AEDTVersion"])
+            dktp.odesktop.RunScript(self.vbs_file_path)
+            self.maxwell = Maxwell3d(
+                specified_version=self.aedt_dict["AEDT"]["AEDTVersion"],
+            )
 
     def set_model(self):
         """Set geometry model.
@@ -130,9 +123,8 @@ class AedtExport:
         Returns
         -------
         dict
-            Average values + units for each report in the project.
+            Average values + units for reports specified in json file.
         """
-        # TO FIX BECAUSE IT WORKS ONLY WITH POWER
         report_dict = {}
         for x in self.aedt_dict["Reports"]:
             self.maxwell.post.create_report(
@@ -147,7 +139,7 @@ class AedtExport:
         return report_dict
 
     def save_and_close(self):
-        """Save and close."""
+        """Save and close the project."""
         self.maxwell.close_project()
         self.maxwell.release_desktop()
 
