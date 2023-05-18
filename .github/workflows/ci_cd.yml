@@ -37,13 +37,12 @@ jobs:
 
   smoke-tests:
     name: "Build and Smoke tests"
-    runs-on: ${{ matrix.os }}
-    needs: [code-style]
+    runs-on: ubuntu-latest
+    # needs: [code-style]
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.9']
+        python-version: [ '3.9' ]
     steps:
       - uses: pyansys/actions/build-wheelhouse@v4
         with:
@@ -54,17 +53,40 @@ jobs:
 
   tests:
     name: "Tests"
-    runs-on: ${{ matrix.os }}
-    needs: [smoke-tests]
-    strategy:
-      matrix:
-       os: [ubuntu-latest, windows-latest]
-       python-version: ['3.8', '3.9', '3.10']
-      fail-fast: false
+    runs-on: [ self-hosted, pyaedt-toolkits ]
+    # needs: [smoke-tests]
     steps:
-      - uses: pyansys/actions/tests-pytest@v4
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          pytest-extra-args: "--cov=ansys --cov-report=term --cov-report=html:.cov/html"
+          python-version: '3.9'
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
 
   doc-build:
     name: "Build documentation"
