@@ -6,7 +6,7 @@ import tempfile
 import ansys.motorcad.core as pymotorcad
 from pyaedt.generic.filesystem import Scratch
 
-from tests.tests_mcad.RPC_test_common import get_dir_path, get_temp_files_dir_path
+from RPC_test_common import get_dir_path, get_temp_files_dir_path
 
 
 class BasisTest(object):

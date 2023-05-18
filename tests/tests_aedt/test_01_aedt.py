@@ -59,6 +59,8 @@ class TestClass(BasisTest, object):
 
     def test_05_reports(self):
         self.aedt.aedt_dict["ModelParameters"]["NumberPointsTorqueCycles"] = 10
+        self.aedt.maxwell.setups[0].props["StopTime"] = "0.001s"
+        self.aedt.maxwell.setups[0].props["TimesStep"] = "0.0002s"
         self.aedt.analyze_model()
         reports = self.aedt.get_values_from_reports()
         assert isinstance(reports, dict)

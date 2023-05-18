@@ -2,7 +2,7 @@ import os
 
 from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 from ansys.aedt.toolkits.motor.motorcad_settings import MotorCADSettings
-from tests.tests_mcad.conftest import BasisTest
+from conftest import BasisTest
 
 
 class TestClass(BasisTest, object):
