@@ -80,6 +80,7 @@ jobs:
         run: |
           .\.venv\Scripts\Activate.ps1
           pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
+          pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_mcad
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3
