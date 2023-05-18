@@ -4,7 +4,7 @@ from pyaedt import Maxwell3d
 
 from ansys.aedt.toolkits.motor.aedt_export import AedtExport
 from ansys.aedt.toolkits.motor.common_settings import CommonSettings
-from tests.tests_aedt.conftest import BasisTest
+from conftest import BasisTest
 
 test_project_name = "e9_ANSYSEM_3D"
 
