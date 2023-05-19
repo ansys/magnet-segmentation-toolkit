@@ -21,11 +21,11 @@ class BasisTest(object):
         shutil.rmtree(self.local_scratch.path, ignore_errors=True)
 
     def add_app(self):
-        self.reset_temp_file_folder(self)
+        #self.reset_temp_file_folder(self)
         self.mcadapp = pymotorcad.MotorCAD()
         # Disable messages if opened with UI
         self.mcadapp.set_variable("MessageDisplayState", 2)
-        self.reset_to_default_file(self)
+        #self.reset_to_default_file(self)
 
         # Disable messages if opened with UI
         self.mcadapp.set_variable("MessageDisplayState", 2)
