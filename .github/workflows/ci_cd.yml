@@ -62,40 +62,40 @@ jobs:
        # python-version: ['3.8', '3.9', '3.10']
       # fail-fast: false
     steps:
-       - uses: ansys/actions/tests-pytest@v4
-         with:
-           pytest-extra-args: "--cov=ansys --cov-report=term --cov-report=html:.cov/html"
-#      - uses: actions/checkout@v3
-#
-#      - name: Set up Python
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: '3.9'
-#
-#      - name: Create Python venv
-#        run: |
-#          python -m venv .venv
-#          .\.venv\Scripts\Activate.ps1
-#
-#      - name: Install packages for testing
-#        run: |
-#          .\.venv\Scripts\Activate.ps1
-#          python -m pip install --upgrade pip
-#          pip install --upgrade build wheel
-#          pip install .[tests]
-#
-#      - name: Testing
-#        timeout-minutes: 30
-#        run: |
-#          .\.venv\Scripts\Activate.ps1
-#          pytest -v --cov=pyaedt-antenna-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests
+#       - uses: ansys/actions/tests-pytest@v4
+#         with:
+#           pytest-extra-args: "--cov=ansys --cov-report=term --cov-report=html:.cov/html"
+      - uses: actions/checkout@v3
 
-#      - name: Upload Coverage Results
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: coverage-html
-#          path: .cov/html
-#          retention-days: 7
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=ansys --cov-report=term --junitxml=junit/test-results.xml --cov-report=html:.cov/html
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
 
   doc-build:
     name: "Build documentation"
