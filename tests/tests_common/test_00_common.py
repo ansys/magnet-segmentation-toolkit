@@ -1,7 +1,7 @@
 import os
 
 from ansys.aedt.toolkits.motor.common_settings import CommonSettings
-from tests.tests_aedt.conftest import BasisTest
+from conftest import BasisTest
 
 
 class TestClass(BasisTest, object):
