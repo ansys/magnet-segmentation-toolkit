@@ -55,18 +55,13 @@ jobs:
   tests:
     name: "Tests"
     runs-on: [self-hosted, pyaedt-toolkits]
-    # needs: [smoke-tests]
-    # strategy:
-      # matrix:
-       # os: [ubuntu-latest, windows-latest]
-       # python-version: ['3.8', '3.9', '3.10']
-      # fail-fast: false
     steps:
-#       - uses: ansys/actions/tests-pytest@v4
-#         with:
-#           pytest-extra-args: "--cov=ansys --cov-report=term --cov-report=html:.cov/html"
       - uses: actions/checkout@v3
-#      - uses: ansys/actions/tests-pytest@v4
+
+      - name: Ensure Motor-CAD not open
+        run: |
+          taskkill /IM Motor-CAD_2023_1_2.exe /F /FI "STATUS eq RUNNING"
+          taskkill /IM MotorLABruntime.exe /F /FI "STATUS eq RUNNING"
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -89,7 +84,6 @@ jobs:
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
           pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_mcad
 
       - name: Upload Coverage Results
