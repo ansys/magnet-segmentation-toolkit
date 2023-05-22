@@ -162,20 +162,6 @@ However, the recommended way of checking documentation integrity is using:
 
     tox -e doc && your_browser_name .tox/doc_out/index.html
 
-
-Distributing
-------------
-
-If you would like to create either source or wheel files, start by installing
-the building requirements and then executing the build module:
-
-.. code:: bash
-
-    python -m pip install -U pip
-    python -m build
-    python -m twine check dist/*
-
-
 .. LINKS AND REFERENCES
 .. _black: https://github.com/psf/black
 .. _flake8: https://flake8.pycqa.org/en/latest/
