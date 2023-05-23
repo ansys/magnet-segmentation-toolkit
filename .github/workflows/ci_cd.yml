@@ -84,7 +84,7 @@ jobs:
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_mcad
+          pytest -v --cov=ansys.pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_mcad
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3
