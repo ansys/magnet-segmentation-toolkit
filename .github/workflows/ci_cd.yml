@@ -73,36 +73,25 @@ jobs:
           python -m venv .venv
           .\.venv\Scripts\Activate.ps1
 
-      - name: Install dependencies
+      - name: Install packages for testing
         run: |
-          python -m pip install --upgrade pip tox tox-gh-actions
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
 
-      - name: Test with tox
-        # Only the tox environment specified in the tox.ini gh-actions is run
-        run: tox -e py310-coverage
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_mcad
 
-      - uses: codecov/codecov-action@v3
-        name: 'Upload coverage to Codecov'
-
-#      - name: Install packages for testing
-#        run: |
-#          .\.venv\Scripts\Activate.ps1
-#          python -m pip install --upgrade pip
-#          pip install --upgrade build wheel
-#          pip install .[tests]
-#
-#      - name: Testing
-#        timeout-minutes: 30
-#        run: |
-#          .\.venv\Scripts\Activate.ps1
-#          pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_mcad
-#
-#      - name: Upload Coverage Results
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: coverage-html
-#          path: .cov/html
-#          retention-days: 7
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
 
   doc-build:
     name: "Build documentation"
