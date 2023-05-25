@@ -54,7 +54,7 @@ jobs:
 
   tests:
     name: "Tests"
-    runs-on: [self-hosted, pyaedt-toolkits]
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
     steps:
       - uses: actions/checkout@v3
 
