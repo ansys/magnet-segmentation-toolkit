@@ -4,7 +4,7 @@ Getting started
 
 To run this toolkit, you must have a licensed copy of Ansys Electronics Desktop (AEDT) and Motor-CAD installed.
 
-To access the toolkit functionalities an IDE is needed.
+To access the toolkit functionalities an IDE (Integrated Development Environment) is needed.
 
 Install the toolkit
 -------------------
