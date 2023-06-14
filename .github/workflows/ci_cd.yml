@@ -52,8 +52,8 @@ jobs:
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
-  tests:
-    name: "Tests"
+  tests_mcad:
+    name: "Motor-CAD tests"
     runs-on: [self-hosted, motorcad, toolkits, Windows]
     steps:
       - uses: actions/checkout@v3
@@ -85,6 +85,42 @@ jobs:
         run: |
           .\.venv\Scripts\Activate.ps1
           pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_mcad
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
+  tests_aedt:
+    name: "AEDT tests"
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
+    needs: [tests_mcad]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_aedt
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3
