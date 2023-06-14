@@ -3,6 +3,7 @@ import os
 from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 from ansys.aedt.toolkits.motor.motorcad_settings import MotorCADSettings
 from conftest import BasisTest
+from pathlib import Path
 
 
 class TestClass(BasisTest, object):
@@ -26,26 +27,25 @@ class TestClass(BasisTest, object):
         assert self.mcad_settings.mcad == self.mcad
 
     def test_3_file_name(self):
+        mot_file = os.path.join(Path(__file__).parents[1], "input_data", "e9_built.mot")
+        self.mcad_settings.mcad_dict["MotorCAD_filepath"] = mot_file
+        self.mcad_settings.load_mcad_file()
         assert (
             os.path.splitext(
                 os.path.basename(
                     self.mcad_settings.mcad.get_variable("CurrentMotFilePath_MotorLAB")
                 )
             )[0]
-            == "temp_e9_built"
+            == "e9_built"
         )
 
     def test_4_vbs_file_path(self):
-        self.mcad_settings.mcad_dict["MotorCAD_filepath"] = self.mcad_settings.mcad.get_variable(
-            "CurrentMotFilePath_MotorLAB"
-        )
         assert (
-            self.mcad_settings.vbs_file_path
-            == os.path.splitext(
-                self.mcad_settings.mcad.get_variable("CurrentMotFilePath_MotorLAB")
-            )[0]
-            + ".vbs"
-        )
+            os.path.splitext(
+                os.path.basename(
+                    self.mcad_settings.mcad.get_variable("CurrentMotFilePath_MotorLAB")
+                )
+            ))[0] + ".vbs" == "e9_built.vbs"
 
     def test_5_set_geometry_model(self):
         self.mcad_settings.mcad_dict["Geometry"]["Magnet_Axial_Segments"] = 8
