@@ -163,7 +163,7 @@ jobs:
   build-library:
     name: "Build library basic example"
     runs-on: ubuntu-latest
-    needs: [tests, doc-deploy-stable]
+    needs: [tests_mcad, tests_aedt, doc-deploy-stable]
     steps:
       - uses: ansys/actions/build-library@v4
         with:
