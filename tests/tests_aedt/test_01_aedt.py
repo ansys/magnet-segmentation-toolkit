@@ -29,11 +29,11 @@ class TestClass(BasisTest, object):
 
     def test_03_set_model(self):
         self.aedt.aedt_dict["ModelParameters"]["NumberTorqueCycles"] = 1
-        self.aedt.aedt_dict["ModelParameters"]["NumberPointsTorqueCycles"] = 15
+        self.aedt.aedt_dict["ModelParameters"]["NumberPointsTorqueCycles"] = 2
         self.aedt.set_model()
         assert self.aedt.maxwell["HalfAxial"] == "1"
         assert self.aedt.maxwell["NumTorqueCycles"] == "1"
-        assert self.aedt.maxwell["NumTorquePointsPerCycle"] == "15"
+        assert self.aedt.maxwell["NumTorquePointsPerCycle"] == "2"
         assert [bound for bound in self.aedt.maxwell.boundaries if "Insulating" == bound.type]
         assert [bound for bound in self.aedt.maxwell.boundaries if "Symmetry" == bound.type]
 
@@ -58,8 +58,8 @@ class TestClass(BasisTest, object):
         assert magnets_mesh[0].props["MaxLength"] == "2mm"
 
     def test_05_reports(self):
-        self.aedt.maxwell.setups[0].props["StopTime"] = "0.001s"
-        self.aedt.maxwell.setups[0].props["TimeStep"] = "0.0005s"
+        self.aedt.maxwell.setups[0].props["StopTime"] = "0.002s"
+        self.aedt.maxwell.setups[0].props["TimeStep"] = "0.001s"
         self.aedt.maxwell.setups[0].props["SaveFieldsType"] = "None"
         self.aedt.analyze_model()
         reports = self.aedt.get_values_from_reports()
