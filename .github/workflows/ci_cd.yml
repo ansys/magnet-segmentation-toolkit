@@ -9,7 +9,7 @@ on:
 
 env:
   MAIN_PYTHON_VERSION: '3.9'
-  DOCUMENTATION_CNAME: 'aedt.antenna.toolkit.docs.pyansys.com'
+  DOCUMENTATION_CNAME: 'aedt.motor.toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-aedt-toolkits-motor'
   LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.motor'
 
