@@ -30,10 +30,9 @@ import pytest
 
 local_path = os.path.dirname(os.path.realpath(__file__))
 
+from pathlib import Path
 from pyaedt import Desktop, Maxwell3d
 from pyaedt.generic.filesystem import Scratch
-
-test_project_name = "test_motor"
 
 sys.path.append(local_path)
 # from _unittest.launch_desktop_tests import run_desktop_tests
@@ -106,10 +105,10 @@ class BasisTest(object):
             self.desktop.disable_autosave()
         if project_name:
             example_project = os.path.join(
-                local_path, "../input_data", subfolder, project_name + ".aedt"
+                Path(local_path).parent, "input_data", project_name + ".aedt"
             )
             example_folder = os.path.join(
-                local_path, "example_models", subfolder, project_name + ".aedb"
+                Path(local_path).parent, "input_data", project_name + ".aedb"
             )
             if os.path.exists(example_project):
                 self.test_project = self.local_scratch.copyfile(example_project)

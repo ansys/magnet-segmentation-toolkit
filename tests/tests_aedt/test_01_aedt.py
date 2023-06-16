@@ -7,14 +7,19 @@ from ansys.aedt.toolkits.motor.common_settings import CommonSettings
 from conftest import BasisTest
 
 test_project_name = "e9_ANSYSEM_3D"
+test_project_name_analyzed = "e9_ANSYSEM_3D_analyzed"
+design_name = "Motor-CAD e9"
 
 
 class TestClass(BasisTest, object):
     def setup_class(self):
         BasisTest.my_setup(self)
         self.common_settings = CommonSettings(working_dir=self.local_scratch.path)
+        self.aedtapp_analyzed = BasisTest.add_app(
+            self, application=Maxwell3d, project_name=test_project_name_analyzed
+        )
         self.aedtapp = BasisTest.add_app(
-            self, application=Maxwell3d, project_name=test_project_name
+            self, application=Maxwell3d, project_name=test_project_name, design_name=design_name
         )
         self.aedt = AedtExport(self.common_settings.config_settings_path, m3d=self.aedtapp)
 
@@ -58,10 +63,7 @@ class TestClass(BasisTest, object):
         assert magnets_mesh[0].props["MaxLength"] == "2mm"
 
     def test_05_reports(self):
-        self.aedt.maxwell.setups[0].props["StopTime"] = "0.002s"
-        self.aedt.maxwell.setups[0].props["TimeStep"] = "0.001s"
-        self.aedt.maxwell.setups[0].props["SaveFieldsType"] = "None"
-        self.aedt.analyze_model()
+        self.aedt = AedtExport(self.common_settings.config_settings_path, m3d=self.aedtapp_analyzed)
         reports = self.aedt.get_values_from_reports()
         assert reports
         assert isinstance(reports, dict)
