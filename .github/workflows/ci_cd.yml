@@ -9,7 +9,7 @@ on:
 
 env:
   MAIN_PYTHON_VERSION: '3.9'
-  DOCUMENTATION_CNAME: 'aedt.antenna.toolkit.docs.pyansys.com'
+  DOCUMENTATION_CNAME: 'aedt.motor.toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-aedt-toolkits-motor'
   LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.motor'
 
@@ -37,8 +37,8 @@ jobs:
 
   smoke-tests:
     name: "Build and Smoke tests"
-    runs-on: ${{ matrix.os }}
-    needs: [code-style]
+    runs-on: ubuntu-latest
+    # needs: [code-style]
     strategy:
       fail-fast: false
       matrix:
@@ -52,19 +52,82 @@ jobs:
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
-  tests:
-    name: "Tests"
-    runs-on: ${{ matrix.os }}
-    needs: [smoke-tests]
-    strategy:
-      matrix:
-       os: [ubuntu-latest, windows-latest]
-       python-version: ['3.8', '3.9', '3.10']
-      fail-fast: false
+  tests_mcad:
+    name: "Motor-CAD tests"
+    runs-on: [self-hosted, motorcad, toolkits, Windows]
     steps:
-      - uses: ansys/actions/tests-pytest@v4
+      - uses: actions/checkout@v3
+
+      - name: Ensure Motor-CAD not open
+        run: |
+          taskkill /IM Motor-CAD_2023_1_2.exe /F /FI "STATUS eq RUNNING"
+          taskkill /IM MotorLABruntime.exe /F /FI "STATUS eq RUNNING"
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          pytest-extra-args: "--cov=ansys --cov-report=term --cov-report=html:.cov/html"
+          python-version: '3.10'
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_mcad
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
+  tests_aedt:
+    name: "AEDT tests"
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
+    needs: [tests_mcad]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_aedt
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
 
   doc-build:
     name: "Build documentation"
@@ -100,7 +163,7 @@ jobs:
   build-library:
     name: "Build library basic example"
     runs-on: ubuntu-latest
-    needs: [tests, doc-deploy-stable]
+    needs: [tests_mcad, tests_aedt, doc-deploy-stable]
     steps:
       - uses: ansys/actions/build-library@v4
         with:

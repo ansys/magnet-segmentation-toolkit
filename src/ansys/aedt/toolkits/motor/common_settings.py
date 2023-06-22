@@ -47,9 +47,12 @@ class CommonSettings:
             Whether to remove or add a new value in a specific dictionary key.
             Default value is ``False``.
         """
-        if key not in dictionary.keys():
-            raise ValueError("Provided key doesn't exist.")
-        if remove:
-            dictionary[key].remove(value)
-        elif isinstance(dict[key], list):
-            dictionary[key].append(value)
+        try:
+            if key not in dictionary.keys():
+                raise ValueError("Provided key doesn't exist.")
+            if remove:
+                dictionary[key].remove(value)
+            elif isinstance(dictionary[key], list):
+                dictionary[key].append(value)
+        except ValueError as e:
+            return False
