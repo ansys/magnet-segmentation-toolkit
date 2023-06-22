@@ -31,6 +31,13 @@ extensions = [
     "numpydoc",
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
+    "nbsphinx",
+    "sphinx_gallery.load_style",
+    "myst_parser",
+    "jupyter_sphinx",
+    "sphinx_design",
+    "sphinx.ext.mathjax",
+    "sphinx_subfigure",
 ]
 
 # Intersphinx mapping
