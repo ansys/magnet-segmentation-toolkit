@@ -39,8 +39,11 @@ documentation only.
 You can set ``non_graphical`` either to ``True`` or ``False``.
 
 ```{code-cell} ipython3
-motorcad_file = "path_to_mot_file"
-project_name = pyaedt.generate_unique_project_name(project_name="array")
+motor_name = "built_e9"
+input_folder = '..\\..\\tests\\input_data\\'
+motor_fn = input_folder + motor_name + '.mot'
+
+maxwell_fn = pyaedt.generate_unique_project_name(project_name="array")
 hfss = pyaedt.Maxwell(projectname=project_name,
                    specified_version="2023.1",
                    designname="Array_Simple",
