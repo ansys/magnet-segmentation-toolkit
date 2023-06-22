@@ -31,7 +31,9 @@ Pypymotorcad-pyaedt-toolkit pymotorcad-pyaedt-toolkit
    :alt: Black
 
 
-Motor design workflow
+Motor Design Workflow
+----------------------
+This repository contains examples that show how to simplify motor design using Ansys Motor-CAD and Maxwell.
 
 
 How to install
@@ -106,7 +108,7 @@ need to follow these steps:
       tox
 
 
-How to testing
+How to test
 --------------
 
 This project takes advantage of `tox`_. This tool allows to automate common
@@ -148,6 +150,22 @@ encouraged to install this tool via:
 
 Documentation
 -------------
+Many workflows are documented using `Jupyter Notebooks <https://docs.jupyter.org/en/latest/>`_.
+Notebooks are built using `MyST NB <https://myst-nb.readthedocs.io/en/latest/>`_.
+
+The notebooks in this repository have a ``*.mystnb`` extension.  The file format is
+a rich, human-readable text format known as
+`Markedly Structured Text <https://myst-parser.readthedocs.io/en/latest/>`_
+
+The ``*.mystnb`` files can be edited as text or edited in Jupyter. The following packages
+are included when you run ``pip install .[doc]``
+
+- `MyST NB <https://myst-nb.readthedocs.io/en/latest/>`_
+- `Notebook <https://pypi.org/project/notebook/>`_
+- `Jupyter <https://jupyter.org/try>`_
+
+When documentation is built, the noteooks will be published as standard Jupyter notebooks ``*.ipynb``
+so the end-user does not need to install ``myst-nb`` or the ``myst-parser``.
 
 For building documentation, you can either run the usual rules provided in the
 `Sphinx`_ Makefile, such us:
