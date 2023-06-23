@@ -1,10 +1,12 @@
 import os
-import ansys.motorcad.core as pymotorcad
 import tempfile
+
+import ansys.motorcad.core as pymotorcad
+
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
+from ansys.aedt.toolkits.motor.backend.common.api_generic import thread
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.backend.common.properties import properties
-from ansys.aedt.toolkits.motor.backend.common.api_generic import thread
 
 
 class Toolkit(ToolkitGeneric):
@@ -37,6 +39,7 @@ class Toolkit(ToolkitGeneric):
     def vbs_file_path(self):
         """Path to .vbs file exported from Motor-CAD."""
         motorcad_filepath = properties.MotorCAD_filepath
+
         if not motorcad_filepath:
             return False
         return os.path.join(
@@ -79,12 +82,8 @@ class Toolkit(ToolkitGeneric):
             return False
         self.mcad.show_magnetic_context()
         self.mcad.display_screen("Scripting")
-        self.mcad.set_variable(
-            "ProximityLossModel", properties.E_mag_settings["AC_Winding_Loss_Model"]
-        )
-        self.mcad.set_variable(
-            "NumberOfCuboids", properties.E_mag_settings["Number_of_Cuboids"]
-        )
+        self.mcad.set_variable("ProximityLossModel", properties.E_mag_settings["AC_Winding_Loss_Model"])
+        self.mcad.set_variable("NumberOfCuboids", properties.E_mag_settings["Number_of_Cuboids"])
         self.mcad.set_variable("AxialSegments", properties.Geometry["Magnet_Axial_Segments"])
 
         self.mcad.save_to_file(properties.MotorCAD_filepath)
@@ -109,30 +108,14 @@ class Toolkit(ToolkitGeneric):
         if not self.mcad:
             logger.error("MotorCAD not initialized")
             return False
-        self.mcad.set_variable(
-            "OpPointSpec_MotorLAB", properties.LAB_settings["OP_Def_Max_Temp"]
-        )
-        self.mcad.set_variable(
-            "LabMagneticCoupling", properties.LAB_settings["OP_Link_Lab_Emag"]
-        )
-        self.mcad.set_variable(
-            "ThermCalcType_MotorLAB", properties.LAB_settings["OP_Link_Lab_Thermal"]
-        )
-        self.mcad.set_variable(
-            "ThermalMapType_Lab", properties.LAB_settings["Thermal_Envelop"]
-        )
-        self.mcad.set_variable(
-            "MaxWindTemp_MotorLAB", properties.LAB_settings["Lab_Max_Temp_St_Wind"]
-        )
-        self.mcad.set_variable(
-            "StatorTempDemand_Lab", properties.LAB_settings["Lab_Max_Temp_St_Wind"]
-        )
-        self.mcad.set_variable(
-            "MaxMagnet_MotorLAB", properties.LAB_settings["Lab_Max_Temp_Magnet"]
-        )
-        self.mcad.set_variable(
-            "RotorTempDemand_Lab", properties.LAB_settings["Lab_Max_Temp_Magnet"]
-        )
+        self.mcad.set_variable("OpPointSpec_MotorLAB", properties.LAB_settings["OP_Def_Max_Temp"])
+        self.mcad.set_variable("LabMagneticCoupling", properties.LAB_settings["OP_Link_Lab_Emag"])
+        self.mcad.set_variable("ThermCalcType_MotorLAB", properties.LAB_settings["OP_Link_Lab_Thermal"])
+        self.mcad.set_variable("ThermalMapType_Lab", properties.LAB_settings["Thermal_Envelop"])
+        self.mcad.set_variable("MaxWindTemp_MotorLAB", properties.LAB_settings["Lab_Max_Temp_St_Wind"])
+        self.mcad.set_variable("StatorTempDemand_Lab", properties.LAB_settings["Lab_Max_Temp_St_Wind"])
+        self.mcad.set_variable("MaxMagnet_MotorLAB", properties.LAB_settings["Lab_Max_Temp_Magnet"])
+        self.mcad.set_variable("RotorTempDemand_Lab", properties.LAB_settings["Lab_Max_Temp_Magnet"])
         self.mcad.set_variable("SpeedDemand_MotorLAB", properties.LAB_settings["OP_Speed"])
         self.mcad.calculate_operating_point_lab()
         shaft_power = self.mcad.get_variable("LabOpPoint_ShaftPower")
@@ -148,34 +131,16 @@ class Toolkit(ToolkitGeneric):
             return False
         self.mcad.show_magnetic_context()
 
-        self.mcad.set_variable(
-            "BackEMFCalculation", properties.E_mag_settings["Test_Back_EMF"]
-        )
-        self.mcad.set_variable(
-            "CoggingTorqueCalculation", properties.E_mag_settings["Test_Cogging"]
-        )
-        self.mcad.set_variable(
-            "ElectromagneticForcesCalc_OC", properties.E_mag_settings["Test_OC_Forces"]
-        )
-        self.mcad.set_variable(
-            "TorqueSpeedCalculation", properties.E_mag_settings["Test_TS_curce"]
-        )
-        self.mcad.set_variable(
-            "DemagnetizationCalc", properties.E_mag_settings["Test_Demag"]
-        )
-        self.mcad.set_variable(
-            "ElectromagneticForcesCalc_Load", properties.E_mag_settings["Test_Load_Forces"]
-        )
-        self.mcad.set_variable(
-            "InductanceCalc", properties.E_mag_settings["Test_Indcutances"]
-        )
-        self.mcad.set_variable(
-            "BPMShortCircuitCalc", properties.E_mag_settings["Test_ShortCircuit"]
-        )
+        self.mcad.set_variable("BackEMFCalculation", properties.E_mag_settings["Test_Back_EMF"])
+        self.mcad.set_variable("CoggingTorqueCalculation", properties.E_mag_settings["Test_Cogging"])
+        self.mcad.set_variable("ElectromagneticForcesCalc_OC", properties.E_mag_settings["Test_OC_Forces"])
+        self.mcad.set_variable("TorqueSpeedCalculation", properties.E_mag_settings["Test_TS_curce"])
+        self.mcad.set_variable("DemagnetizationCalc", properties.E_mag_settings["Test_Demag"])
+        self.mcad.set_variable("ElectromagneticForcesCalc_Load", properties.E_mag_settings["Test_Load_Forces"])
+        self.mcad.set_variable("InductanceCalc", properties.E_mag_settings["Test_Indcutances"])
+        self.mcad.set_variable("BPMShortCircuitCalc", properties.E_mag_settings["Test_ShortCircuit"])
         self.mcad.set_variable("TorqueCalculation", properties.E_mag_settings["Test_Torque"])
-        self.mcad.set_variable(
-            "MagneticThermalCoupling", properties.E_mag_settings["Emag_Thermal_Coupling"]
-        )
+        self.mcad.set_variable("MagneticThermalCoupling", properties.E_mag_settings["Emag_Thermal_Coupling"])
         self.mcad.do_magnetic_calculation()
 
     def set_thermal(self, magnet_loss):
