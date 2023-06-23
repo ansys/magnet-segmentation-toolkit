@@ -501,7 +501,7 @@ class ToolkitGeneric(object):
 
         elif app_name in list(self.aedt_apps.keys()):
             design_name = pyaedt.generate_unique_name(app_name)
-            aedt_app_attr = getattr(pyaedt, app_name)
+            aedt_app_attr = getattr(pyaedt, self.aedt_apps[app_name])
             self.aedtapp = aedt_app_attr(
                 specified_version=properties.aedt_version,
                 aedt_process_id=properties.selected_process,
