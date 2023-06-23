@@ -1,8 +1,7 @@
-"""pymotorcad-pyaedt-toolkits."""
+"""
+pyaedt-toolkits.
 
-try:
-    import importlib.metadata as importlib_metadata
-except ModuleNotFoundError:
-    import importlib_metadata
+ansys.aedt.toolkits.motor
+"""
 
-__version__ = "0.1.dev0"
+__version__ = "0.2.dev"

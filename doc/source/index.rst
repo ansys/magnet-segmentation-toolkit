@@ -1,6 +1,22 @@
+PyAEDT toolkit template documentation  |version|
+================================================
+
 ..
-   Just reuse the root readme to avoid duplicating the documentation.
-   Provide any documentation specific to your online documentation
-   here.
+   Simply reuse the root readme
 
 .. include:: ../../README.rst
+
+.. toctree::
+   :hidden:
+
+   Toolkit_template
+   Getting_started
+   Toolkit/ui
+   Toolkit/index
+   Contributing
+
+
+Indices and tables
+==================
+* :ref:`genindex`
+* :ref:`search`

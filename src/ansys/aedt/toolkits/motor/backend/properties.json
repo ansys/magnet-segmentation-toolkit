@@ -1,0 +1,46 @@
+{
+    "MotorCAD_filepath" : "",
+    "Geometry" : {
+        "Magnet_Axial_Segments" : 6
+    },
+    "E_mag_settings" : {
+        "AC_Winding_Loss_Model":1,
+        "Number_of_Cuboids":6,
+        "Emag_Thermal_Coupling":1,
+        "Test_Back_EMF": false,
+        "Test_Cogging":false,
+        "Test_OC_Forces":false,
+        "Test_Torque":true,
+        "Test_TS_curce":false,
+        "Test_Demag":false,
+        "Test_Load_Forces":false,
+        "Test_Indcutances":false,
+        "Test_ShortCircuit":false
+    },
+    "LAB_settings" : {
+        "Saturation_Fixed_Inductance":0,
+        "Saturation_Single_Step":1,
+        "Saturation_Full_cycle":2,
+        "Model_Res_Coarse":0,
+        "Model_Res_Fine":1,
+        "Loss_Model_None":0,
+        "Loss_Model_FEAMap":1,
+        "AC_Loss_Hybrid":0,
+        "AC_Loss_Full_FEA":1,
+        "Max_Speed":10000,
+        "Max_Stator_Current":480,
+        "Speed_Step":500,
+        "Speed_Min":0,
+        "Max_TS_Curve":0,
+        "Efficiency_MAP":1,
+        "OP_Def_Max_Temp":2,
+        "OP_Link_Lab_Emag":1,
+        "OP_Link_Lab_Thermal":0,
+        "Thermal_Envelop":0,
+        "Lab_Max_Temp_St_Wind":160,
+        "Lab_Max_Temp_Magnet":140,
+        "OP_Speed":4500,
+        "Build_Sat_Model":true,
+        "Build_Loss_Model":true
+    }
+}
