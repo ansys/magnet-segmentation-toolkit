@@ -9,10 +9,13 @@ import os
 with open(os.path.join(os.path.dirname(__file__), "general_properties.json")) as fh:
     _general_properties = json.load(fh)
 
-with open(os.path.join(os.path.dirname(__file__), "..", "properties.json")) as fh:
-    _properties = json.load(fh)
+with open(os.path.join(os.path.dirname(__file__), "..", "motorcad_properties.json")) as fh:
+    _motorcad_properties = json.load(fh)
 
-_default_properties = {**_general_properties, **_properties}
+with open(os.path.join(os.path.dirname(__file__), "..", "aedt_properties.json")) as fh:
+    _aedt_properties = json.load(fh)
+
+_default_properties = {**_general_properties, **_motorcad_properties, **_aedt_properties}
 properties = PropertiesData(_default_properties)
 
 

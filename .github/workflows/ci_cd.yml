@@ -58,13 +58,61 @@ jobs:
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
-  tests_windows:
+  tests_windows_mcad:
+    name: "Windows Tests Motor-CAD"
+    strategy:
+      matrix:
+        python-version: [ '3.7', '3.10' ]
+      fail-fast: false
+    runs-on: [ self-hosted, motorcad, toolkits, Windows ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Ensure Motor-CAD not open
+        run: |
+          taskkill /IM Motor-CAD_2023_1_2.exe /F /FI "STATUS eq RUNNING"
+          taskkill /IM MotorLABruntime.exe /F /FI "STATUS eq RUNNING"
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+        env:
+          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+
+      - name: Testing
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad_pyaedt_toolkit --cov-report=term --cov-report=xml:.cov/xml --cov-report=html:.cov/html tests\tests_mcad
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
+
+  tests_windows_aedt:
     name: "Windows Tests"
     strategy:
       matrix:
         python-version: [ '3.7', '3.10' ]
       fail-fast: false
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
+    needs: [tests_mcad]
     steps:
       - uses: actions/checkout@v3
 
@@ -92,58 +140,6 @@ jobs:
         run: |
           .\.venv\Scripts\Activate.ps1
           pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests
-
-      - name: Upload Coverage Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-html
-          path: .cov/html
-          retention-days: 7
-
-  tests_linux:
-    name: "Linux Tests"
-    strategy:
-      matrix:
-        python-version: [ '3.7', '3.10' ]
-      fail-fast: false
-    runs-on: [ self-hosted, pyaedt, toolkits, Linux ]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Create Python venv
-        run: |
-          python -m venv .venv_linux
-          export ANSYSEM_ROOT231=/ansys_inc/v231/Linux64
-          export LD_LIBRARY_PATH=$ANSYSEM_ROOT231/common/mono/Linux64/lib64:$ANSYSEM_ROOT231/Delcross:$LD_LIBRARY_PATH
-
-      - name: Install packages for testing
-        run: |
-          source .venv_linux/bin/activate
-          python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pip -U
-          python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org wheel setuptools -U
-          python -c "import sys; print(sys.executable)"
-          python -m pip install --upgrade pip
-          pip install --upgrade build wheel
-          pip install .[tests]
-          pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pytest-azurepipelines
-        env:
-          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
-
-      - name: Testing
-        timeout-minutes: 30
-        run: |
-          export ANS_NODEPCHECK=1
-          export ANSYSEM_ROOT231=/ansys_inc/v231/Linux64
-          export LD_LIBRARY_PATH=$ANSYSEM_ROOT231/common/mono/Linux64/lib64:$ANSYSEM_ROOT231/Delcross:$LD_LIBRARY_PATH
-          source .venv_linux/bin/activate
-          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests
-        env:
-          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3

@@ -76,9 +76,9 @@ def launch_aedt_call():
 
     response = service.launch_aedt()
     if response:
-        return jsonify("AEDT properties loaded"), 200
+        return jsonify("AEDT session launched."), 200
     else:
-        return jsonify("Fail to launch to AEDT"), 500
+        return jsonify("Fail to launch to AEDT."), 500
 
 
 @app.route("/close_aedt", methods=["POST"])

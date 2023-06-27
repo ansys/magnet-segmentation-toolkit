@@ -1,8 +1,8 @@
-from ansys.aedt.toolkits.motor.backend.motor_workflow.aedt_flow import Aedt_Flow
-from ansys.aedt.toolkits.motor.backend.motor_workflow.motorcad_flow import MotorCAD_Flow
+from ansys.aedt.toolkits.motor.backend.motor_workflow.aedtflow import AedtFlow
+from ansys.aedt.toolkits.motor.backend.motor_workflow.motorcadflow import MotorCADFlow
 
 
-class Toolkit(MotorCAD_Flow, Aedt_Flow):
+class Toolkit(MotorCADFlow, AedtFlow):
     """Template API to control the toolkit workflow.
 
     This class provides methods to connect to a selected design and create geometries.
@@ -18,5 +18,5 @@ class Toolkit(MotorCAD_Flow, Aedt_Flow):
     """
 
     def __init__(self):
-        MotorCAD_Flow.__init__(self)
-        Aedt_Flow.__init__(self)
+        MotorCADFlow.__init__(self)
+        AedtFlow.__init__(self)

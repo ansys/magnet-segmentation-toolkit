@@ -1,0 +1,11 @@
+{
+  "HalfAxial": 0,
+  "Magnets" : [{
+    "Name": "",
+    "Material": "",
+    "MeshLength": 2,
+    "MeshName": "",
+    "NumberOfSegments": 8
+  }],
+  "SetupToAnalyze" : "Setup1"
+}
