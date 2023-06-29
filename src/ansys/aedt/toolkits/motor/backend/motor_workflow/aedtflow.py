@@ -80,7 +80,7 @@ class AedtFlow(ToolkitGeneric):
         for obj in self.maxwell.modeler.unclassified_objects:
             obj.model = False
         if properties.HalfAxial == 1:
-            self._apply_boundary_conditions(mcad_magnets_material)
+            return self._apply_boundary_conditions(mcad_magnets_material)
         return True
 
     def mesh_settings(self, mcad_magnets_material):

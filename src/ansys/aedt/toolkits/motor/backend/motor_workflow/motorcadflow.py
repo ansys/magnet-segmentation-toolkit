@@ -104,8 +104,8 @@ class MotorCADFlow(ToolkitGeneric):
         self.mcad.calculate_operating_point_lab()
         shaft_power = self.mcad.get_variable("LabOpPoint_ShaftPower")
         efficiency = self.mcad.get_variable("LabOpPoint_Efficiency")
-        logger.debug("Shaft Power", round(shaft_power / 1000, 2), "kW")
-        logger.debug("Efficiency", round(efficiency, 2), "%")
+        logger.debug("Shaft Power: {} kW".format(str(round(shaft_power / 1000, 2))))
+        logger.debug("Efficiency: {} %".format(str(round(efficiency, 2))))
         return True
 
     def emag_calculation(self):
