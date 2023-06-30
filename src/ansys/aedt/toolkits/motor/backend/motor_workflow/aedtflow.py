@@ -97,11 +97,12 @@ class AedtFlow(ToolkitGeneric):
 
         try:
             magnets = self._get_magnets(mcad_magnets_material)
-            self.maxwell.mesh.assign_length_mesh(
+            if not self.maxwell.mesh.assign_length_mesh(
                 magnets,
                 maxlength=2,
                 meshop_name="magnets_mesh",
-            )
+            ):
+                return False
             return True
         except:
             return False
@@ -174,7 +175,7 @@ class AedtFlow(ToolkitGeneric):
                         maxlength=magnet["MeshLength"],
                         meshop_name=magnet["MeshName"],
                     )
-                return True
+            return True
         except:
             return False
 
@@ -193,6 +194,7 @@ class AedtFlow(ToolkitGeneric):
                 if obj.bounding_box[2] == 0.0:
                     face_ids.append(self.maxwell.modeler[obj].bottom_face_z.id)
             self.maxwell.assign_symmetry(face_ids, symmetry_name="model_symmetry")
+            return True
         except:
             return False
 

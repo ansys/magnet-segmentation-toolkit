@@ -12,10 +12,8 @@ class TestClass(BasisTest, object):
     def setup_class(self):
         BasisTest.my_setup(self)
         self.toolkit = Toolkit()
-        self.mcad = self.toolkit.mcad
         src_folder = os.path.join(Path(__file__).parents[0], "input_data")
         self.temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
-        self.maxwell = self.toolkit.maxwell
 
     def teardown_class(self):
         BasisTest.my_teardown(self)
@@ -84,6 +82,12 @@ class TestClass(BasisTest, object):
         vbs_file_path = self.toolkit.get_properties()["vbs_file_path"]
         os.path.exists(vbs_file_path)
 
+    def test_11_save(self):
+        assert self.toolkit.save()
+
+    def test_12_close(self):
+        assert self.toolkit.close_motorcad()
+
     def test_11_init_aedt(self):
         aedt_file = os.path.join(self.temp_folder, "e9_ANSYSEM_3D.aedt")
         vbs_file_path = os.path.join(self.temp_folder, "e9_built.vbs")
@@ -98,10 +102,12 @@ class TestClass(BasisTest, object):
 
     def test_12_set_model(self):
         assert not self.toolkit.set_model(mcad_magnets_material=None)
-        assert self.toolkit.set_model(mcad_magnets_material="N30UH")
+        test = self.toolkit.set_model(mcad_magnets_material="N30UH")
+        assert test
         self.toolkit.set_properties({"HalfAxial": 1})
         assert not self.toolkit.set_model(mcad_magnets_material="Invalid")
-        assert self.toolkit.set_model(mcad_magnets_material="N30UH")
+        test = self.toolkit.set_model(mcad_magnets_material="N30UH")
+        assert test
 
     def test_13_set_mesh(self):
         assert not self.toolkit.mesh_settings(mcad_magnets_material=None)
@@ -121,8 +127,9 @@ class TestClass(BasisTest, object):
         assert isinstance(magnet_losses[1]["SolidLoss"]["Unit"], str)
 
     def test_16_magnets_segmentation(self):
-        aedt_file = os.path.join(Path(__file__).parents[1], "input_data", "Motor3D_obj_segments.aedt")
+        aedt_file = os.path.join(self.temp_folder, "Motor3D_obj_segments.aedt")
         self.toolkit.set_properties({"active_project": aedt_file})
+        self.toolkit.set_properties({"active_design": {"Maxwell3d": "Maxwell3DDesign1"}})
         self.toolkit.set_properties(
             {
                 "Magnets": [
@@ -143,4 +150,6 @@ class TestClass(BasisTest, object):
                 ]
             }
         )
+        self.toolkit.init_aedt()
         assert self.toolkit.magnets_segmentation()
+        self.toolkit.aedtapp.close_desktop()
