@@ -112,7 +112,7 @@ jobs:
         python-version: [ '3.7', '3.10' ]
       fail-fast: false
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
-    needs: [tests_mcad]
+    needs: [tests_windows_mcad]
     steps:
       - uses: actions/checkout@v3
 
