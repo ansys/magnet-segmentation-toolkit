@@ -62,7 +62,7 @@ jobs:
     name: "Windows Tests Motor-CAD"
     strategy:
       matrix:
-        python-version: [ '3.7', '3.10' ]
+        python-version: [ '3.10' ]
       fail-fast: false
     runs-on: [ self-hosted, motorcad, toolkits, Windows ]
     steps:
@@ -109,7 +109,7 @@ jobs:
     name: "Windows Tests"
     strategy:
       matrix:
-        python-version: [ '3.7', '3.10' ]
+        python-version: [ '3.10' ]
       fail-fast: false
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
     needs: [tests_windows_mcad]
