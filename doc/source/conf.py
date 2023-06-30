@@ -13,7 +13,7 @@ sys.path.append(pathlib.Path(__file__).parent.parent.parent)
 path = os.path.join(pathlib.Path(__file__).parent.parent.parent, "src")
 print(path)
 sys.path.append(path)
-from ansys.aedt.toolkits.template import __version__
+from ansys.aedt.toolkits.motor import __version__
 
 print(__version__)
 # Project information
@@ -32,8 +32,8 @@ html_short_title = html_title = "ansys-aedt-toolkits-motor"
 
 # specify the location of your GitHub repo
 html_context = {
-    "github_user": "pyansys",
-    "github_repo": "pyaedt-toolkit-motor",
+    "github_user": "ansys",
+    "github_repo": "pymotorcad-pyaedt-toolkit",
     "github_version": "main",
     "doc_path": "doc/source",
 }
@@ -43,7 +43,7 @@ html_theme_options = {
         "version_match": switcher_version,
     },
     "check_switcher": False,
-    "github_url": "https://github.com/pyansys/pyaedt-toolkit-template.git",
+    "github_url": "https://github.com/ansys/pymotorcad-pyaedt-toolkit",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "collapse_navigation": True,
