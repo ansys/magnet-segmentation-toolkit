@@ -4,11 +4,11 @@ build-backend = "flit_core.buildapi"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
-name = "ansys-aedt-toolkits-template"
+name = "ansys-aedt-toolkits-motor"
 dynamic = ["version"]
-description = "Template repository to create your own toolkit using PyAEDT."
+description = "Toolkit to calculate magnet losses for an IPM motor accounting for 3D effects."
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"},
