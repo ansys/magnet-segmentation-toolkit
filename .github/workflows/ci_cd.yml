@@ -65,6 +65,7 @@ jobs:
         python-version: [ '3.7', '3.10' ]
       fail-fast: false
     runs-on: [ self-hosted, motorcad, toolkits, Windows ]
+    needs: [doc-style]
     steps:
       - uses: actions/checkout@v3
 
