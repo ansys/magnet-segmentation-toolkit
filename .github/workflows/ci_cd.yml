@@ -107,7 +107,7 @@ jobs:
           retention-days: 7
 
   tests_windows_aedt:
-    name: "Windows Tests"
+    name: "Windows Tests AEDT"
     strategy:
       matrix:
         python-version: [ '3.7', '3.10' ]
