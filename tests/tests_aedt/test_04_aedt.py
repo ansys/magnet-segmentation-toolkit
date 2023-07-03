@@ -5,14 +5,14 @@ import shutil
 from pyaedt import generate_unique_folder_name
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
-from tests.conftest import BasisTest
+from conftest import BasisTest
 
 
 class TestClass(BasisTest, object):
     def setup_class(self):
         BasisTest.my_setup(self)
         self.toolkit = Toolkit()
-        src_folder = os.path.join(Path(__file__).parents[0], "input_data")
+        src_folder = os.path.join(Path(__file__).parents[1], "input_data")
         self.temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
 
     def teardown_class(self):
