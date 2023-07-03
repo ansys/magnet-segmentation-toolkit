@@ -136,11 +136,16 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
-      - name: Testing
+      - name: Generic Test
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests
+          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_generic_aedt
+
+      - name: Toolkit Test
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
           pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
 
       - name: Upload Coverage Results
