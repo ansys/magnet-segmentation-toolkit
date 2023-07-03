@@ -1,0 +1,13 @@
+2023-06-22 21:59:55,367 - INFO - Frontend initialization...
+2023-06-22 21:59:55,540 - DEBUG - Check backend connection
+2023-06-22 21:59:56,569 - DEBUG - Toolkit not connected to AEDT
+2023-06-22 22:00:01,961 - DEBUG - Launching AEDT
+2023-06-22 22:00:23,325 - INFO - Frontend thread finished
+2023-06-22 22:01:13,195 - DEBUG - Create geometry call launched
+2023-06-22 22:01:18,656 - INFO - Frontend thread finished
+2023-06-22 22:02:11,376 - DEBUG - Create geometry call launched
+2023-06-22 22:02:11,423 - INFO - Frontend thread finished
+2023-06-22 22:02:37,843 - DEBUG - Create geometry call launched
+2023-06-22 22:02:39,162 - INFO - Frontend thread finished
+2023-06-22 22:02:41,594 - DEBUG - Create geometry call launched
+2023-06-22 22:02:43,462 - INFO - Frontend thread finished

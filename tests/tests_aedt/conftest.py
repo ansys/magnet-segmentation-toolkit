@@ -1,17 +1,20 @@
 """
 Unit Test Configuration Module
 -------------------------------
+
 Description
 ===========
+
 This module contains the configuration and fixture for the pytest-based unit tests for pyaedt.
+
 The default configuration can be changed by placing a file called local_config.json in the same
 directory as this module. An example of the contents of local_config.json
 {
-  "desktopVersion": "2023.1",
-  "NonGraphical": false,
-  "NewThread": false,
-  "test_desktops": true
+  "desktop_version": "2023.1",
+  "non_graphical": false,
+  "use_grpc": true
 }
+
 """
 import datetime
 import gc
@@ -21,7 +24,8 @@ import shutil
 import sys
 import tempfile
 
-from pyaedt import pyaedt_logger, settings
+from pyaedt import pyaedt_logger
+from pyaedt import settings
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
@@ -30,9 +34,11 @@ import pytest
 
 local_path = os.path.dirname(os.path.realpath(__file__))
 
-from pathlib import Path
-from pyaedt import Desktop, Maxwell3d
+from pyaedt import Desktop
+from pyaedt import Hfss
 from pyaedt.generic.filesystem import Scratch
+
+test_project_name = "test_antenna"
 
 sys.path.append(local_path)
 # from _unittest.launch_desktop_tests import run_desktop_tests
@@ -41,9 +47,8 @@ sys.path.append(local_path)
 default_version = "2023.1"
 
 config = {
-    "desktopVersion": default_version,
-    "NonGraphical": True,
-    "NewThread": True,
+    "desktop_version": default_version,
+    "non_graphical": True,
     "use_grpc": True,
 }
 
@@ -55,7 +60,7 @@ if os.path.exists(local_config_file):
     config.update(local_config)
 
 settings.use_grpc_api = config.get("use_grpc", True)
-settings.non_graphical = config["NonGraphical"]
+settings.non_graphical = config["non_graphical"]
 
 test_folder = "unit_test" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 scratch_path = os.path.join(tempfile.gettempdir(), test_folder)
@@ -101,14 +106,14 @@ class BasisTest(object):
         subfolder="",
     ):
         if "oDesktop" not in dir(self._main):
-            self.desktop = Desktop(desktop_version, settings.non_graphical, new_thread)
+            self.desktop = Desktop(desktop_version, settings.non_graphical, True)
             self.desktop.disable_autosave()
         if project_name:
             example_project = os.path.join(
-                Path(local_path).parent, "input_data", project_name + ".aedt"
+                local_path, "example_models", subfolder, project_name + ".aedt"
             )
             example_folder = os.path.join(
-                Path(local_path).parent, "input_data", project_name + ".aedb"
+                local_path, "example_models", subfolder, project_name + ".aedb"
             )
             if os.path.exists(example_project):
                 self.test_project = self.local_scratch.copyfile(example_project)
@@ -123,7 +128,7 @@ class BasisTest(object):
         else:
             self.test_project = None
         if not application:
-            application = Maxwell3d
+            application = Hfss
         self.aedtapps.append(
             application(
                 projectname=self.test_project,
@@ -148,13 +153,12 @@ class BasisTest(object):
 
 
 # Define desktopVersion explicitly since this is imported by other modules
-desktop_version = config["desktopVersion"]
-new_thread = config["NewThread"]
+desktop_version = config["desktop_version"]
 
 
 @pytest.fixture(scope="session", autouse=True)
 def desktop_init():
-    desktop = Desktop(desktop_version, settings.non_graphical, new_thread)
+    desktop = Desktop(desktop_version, settings.non_graphical, True)
     yield
     desktop.release_desktop(True, True)
     del desktop

@@ -1,34 +1,34 @@
 files: |
     (?x)(
-        ^src/|
+        src/ansys/aedt/toolkits/template/ui/common/frontend_ui.py
     )
 exclude: |
     (?x)(
-        tests/
+        tests/input_data/*
     )
 
 repos:
 
 - repo: https://github.com/psf/black
-  rev: 23.1.0  # IF VERSION CHANGES --> MODIFY "blacken-docs" MANUALLY AS WELL!!
+  rev: 23.3.0  # IF VERSION CHANGES --> MODIFY "blacken-docs" MANUALLY AS WELL!!
   hooks:
   - id: black
-
-- repo: https://github.com/adamchainz/blacken-docs
-  rev: 1.13.0
-  hooks:
-  - id: blacken-docs
-    additional_dependencies: [black==23.1.0]
+    args:
+      - --line-length=120
 
 - repo: https://github.com/pycqa/isort
   rev: 5.12.0
   hooks:
-  - id: isort
+    - id: isort
+      name: isort (python)
+      args: ['--force-single-line-imports', '--profile', 'black']
 
 - repo: https://github.com/PyCQA/flake8
   rev: 6.0.0
   hooks:
   - id: flake8
+    args:
+      - --max-line-length=120
 
 - repo: https://github.com/codespell-project/codespell
   rev: v2.2.2
@@ -36,22 +36,20 @@ repos:
   - id: codespell
     args: ["--ignore-words=ignore_words.txt"]
 
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.1.1
-  hooks:
-  - id: pydocstyle
-    args: ["--ignore=D100, D107, D203, D213, D413"]
-    additional_dependencies: [toml]
-    exclude: tests/|examples/
+# - repo: https://github.com/python-jsonschema/check-jsonschema
+#   rev: 0.21.0
+#   hooks:
+#     - id: check-github-workflows
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
-  hooks:
-  - id: check-merge-conflict
-  - id: debug-statements
+# - repo: https://github.com/pycqa/pydocstyle
+#   rev: 6.1.1
+#   hooks:
+#   - id: pydocstyle
+#     additional_dependencies: [toml]
+#     exclude: "tests/"
 
-# this validates our github workflow files
-- repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.21.0
+- repo: https://github.com/asottile/blacken-docs
+  rev: 1.14.0
   hooks:
-    - id: check-github-workflows
+  -   id: blacken-docs
+      additional_dependencies: [black==23.1.0]

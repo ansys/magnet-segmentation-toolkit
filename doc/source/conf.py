@@ -1,48 +1,84 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
+import os
+import pathlib
+import sys
 
-from ansys_sphinx_theme import pyansys_logo_black as logo
+from ansys_sphinx_theme import ansys_favicon
+from ansys_sphinx_theme import get_version_match
+from ansys_sphinx_theme import pyansys_logo_black
 
+sys.path.append(pathlib.Path(__file__).parent.parent.parent)
+
+path = os.path.join(pathlib.Path(__file__).parent.parent.parent, "src")
+print(path)
+sys.path.append(path)
+from ansys.aedt.toolkits.motor import __version__
+
+print(__version__)
 # Project information
-project = "ansys-pymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-toolkit"
+project = "ansys-aedt-toolkits-motor"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
-release = version = "0.1.dev0"
+release = version = __version__
+cname = os.getenv("DOCUMENTATION_CNAME", "nocname.com")
+switcher_version = get_version_match(__version__)
+print(copyright)
 
 # Select desired logo, theme, and declare the html title
-html_logo = logo
+html_logo = pyansys_logo_black
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "pypymotorcad-pyaedt-toolkit-pymotorcad-pyaedt-toolkit"
+html_short_title = html_title = "ansys-aedt-toolkits-motor"
 
-# specify the location of your github repo
+# specify the location of your GitHub repo
+html_context = {
+    "github_user": "ansys",
+    "github_repo": "pymotorcad-pyaedt-toolkit",
+    "github_version": "main",
+    "doc_path": "doc/source",
+}
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pymotorcad-pyaedt-toolkit",
+    "switcher": {
+        "json_url": f"https://{cname}/versions.json",
+        "version_match": switcher_version,
+    },
+    "check_switcher": False,
+    "github_url": "https://github.com/ansys/pymotorcad-pyaedt-toolkit",
     "show_prev_next": False,
     "show_breadcrumbs": True,
+    "collapse_navigation": True,
+    "use_edit_page_button": True,
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
+    "icon_links": [
+        {
+            "name": "Support",
+            "url": "https://github.com/pyansys/pyaedt-toolkit-template/discussions",
+            "icon": "fa fa-comment fa-fw",
+        },
+    ],
+    "collapse_navigation": True,
 }
 
 # Sphinx extensions
 extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
-    "numpydoc",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.coverage",
     "sphinx_copybutton",
+    "recommonmark",
+    "numpydoc",
+    "nbsphinx",
 ]
 
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None),
-    # kept here as an example
-    # "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
-    # "numpy": ("https://numpy.org/devdocs", None),
-    # "matplotlib": ("https://matplotlib.org/stable", None),
-    # "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-    # "pyvista": ("https://docs.pyvista.org/", None),
-    # "grpc": ("https://grpc.github.io/grpc/python/", None),
+    "python": ("https://docs.python.org/3", None),
 }
 
 # numpydoc configuration
@@ -70,6 +106,12 @@ numpydoc_validation_checks = {
 
 # static path
 html_static_path = ["_static"]
+
+html_css_files = [
+    "custom.css",
+]
+
+html_favicon = ansys_favicon
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
