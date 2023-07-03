@@ -2,7 +2,7 @@ Generic API
 ===========
 This section list the available generic methods in the backend, these methods are the same for all toolkits:
 
-.. currentmodule:: ansys.aedt.toolkits.template.backend.common.api_generic
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.api_generic
 
 .. autosummary::
    :toctree: _autosummary

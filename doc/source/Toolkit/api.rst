@@ -2,7 +2,7 @@ Toolkit API
 ===========
 This section list the available toolkit methods in the backend:
 
-.. currentmodule:: ansys.aedt.toolkits.template.backend.api
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
 
 .. autosummary::
    :toctree: _autosummary

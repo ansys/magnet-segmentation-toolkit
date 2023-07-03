@@ -28,8 +28,6 @@ This template shows how to use `Flask <https://flask.palletsprojects.com/en/2.3.
 and `Pyside6 <https://doc.qt.io/qtforpython-6/quickstart.html>`_ for the frontend.
 
 
-If you want to start a new toolkit, go to `New toolkit guidelines <https://aedt.toolkit.template.docs.pyansys.com/version/dev/Toolkit_template.html>`_ section.
-
 If you want to test the template, go to `Getting Started <https://aedt.toolkit.template.docs.pyansys.com/version/dev/Getting_started.html>`_ section.
 
 
