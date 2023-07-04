@@ -113,7 +113,7 @@ jobs:
         python-version: [ '3.7', '3.10' ]
       fail-fast: false
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
-    needs: [tests_windows_mcad]
+    needs: [doc-style]
     steps:
       - uses: actions/checkout@v3
 
@@ -136,12 +136,17 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
-      - name: Testing
+      - name: Generic Test
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests
-          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
+          pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_generic_aedt
+
+      - name: Toolkit Test
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v --cov=pymotorcad-pyaedt-toolkit --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3
