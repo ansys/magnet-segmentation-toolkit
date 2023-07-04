@@ -140,13 +140,13 @@ jobs:
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_generic_aedt
+          pytest -v --cov=pyaedt-toolkit-motor --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_generic_aedt
 
       - name: Toolkit Test
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=pyaedt-toolkit-template --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
+          pytest -v --cov=pyaedt-toolkit-motor --cov-report=xml --junitxml=junit/test-results.xml --cov-report=html tests\tests_aedt
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3
