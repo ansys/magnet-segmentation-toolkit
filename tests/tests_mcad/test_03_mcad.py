@@ -1,7 +1,8 @@
+import gc
 import os
 from pathlib import Path
 import shutil
-import gc
+
 from pyaedt import generate_unique_folder_name
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
