@@ -1,9 +1,6 @@
-files: |
-    (?x)(
-        src/ansys/aedt/toolkits/motor/ui/common/frontend_ui.py
-    )
 exclude: |
     (?x)(
+        src/ansys/aedt/toolkits/motor/ui/common/frontend_ui.py |
         tests/input_data/*
     )
 
