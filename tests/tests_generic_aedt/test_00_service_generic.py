@@ -1,9 +1,8 @@
 import os
 import time
 
-import requests
-
 from conftest import BasisTest
+import requests
 
 
 class TestClass(BasisTest, object):

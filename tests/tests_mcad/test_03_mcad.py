@@ -1,3 +1,4 @@
+import gc
 import os
 from pathlib import Path
 import shutil
@@ -16,6 +17,8 @@ class TestClass(object):
     def teardown_class(self):
         if self.toolkit.mcad:
             self.toolkit.mcad.quit()
+        # Register the cleanup function to be called on script exit
+        gc.collect()
         shutil.rmtree(self.temp_folder, ignore_errors=True)
 
     def test_1_init_motorcad(self):
@@ -87,3 +90,4 @@ class TestClass(object):
 
     def test_12_close(self):
         assert self.toolkit.close_motorcad()
+        self.toolkit.mcad = None
