@@ -1,6 +1,6 @@
 files: |
     (?x)(
-        src/ansys/aedt/toolkits/template/ui/common/frontend_ui.py
+        src/ansys/aedt/toolkits/motor/ui/common/frontend_ui.py
     )
 exclude: |
     (?x)(
