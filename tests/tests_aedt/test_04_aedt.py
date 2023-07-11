@@ -2,10 +2,10 @@ import os
 from pathlib import Path
 import shutil
 
+from conftest import BasisTest
 from pyaedt import generate_unique_folder_name
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
-from conftest import BasisTest
 
 
 class TestClass(BasisTest, object):
