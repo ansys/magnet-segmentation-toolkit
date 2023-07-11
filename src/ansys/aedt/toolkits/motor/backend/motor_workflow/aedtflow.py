@@ -41,6 +41,11 @@ class AedtFlow(ToolkitGeneric):
 
         If the .vbs script is provided it automatically runs it.
         If a Maxwell3D instance is provided it attaches to it.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
         """
         if properties.vbs_file_path and properties.active_project:
             logger.error("User can decide whether to run a .vbs script or open a Maxwell3D project at a time.")
@@ -68,6 +73,11 @@ class AedtFlow(ToolkitGeneric):
         """Set geometry model.
 
         Set axial length, boundary conditions and remove from model unclassified objects.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
         """
         if not self.maxwell:
             logger.error("AEDT not initialized")
@@ -87,6 +97,11 @@ class AedtFlow(ToolkitGeneric):
         """Apply mesh settings.
 
         Apply mesh to magnets.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
         """
         if not self.maxwell:
             logger.error("AEDT not initialized")
@@ -108,7 +123,13 @@ class AedtFlow(ToolkitGeneric):
             return False
 
     def analyze_model(self):
-        """Analyze model."""
+        """Analyze model.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
         if not self.maxwell:
             logger.error("AEDT not initialized")
             return False
@@ -150,6 +171,11 @@ class AedtFlow(ToolkitGeneric):
         apply_mesh_sheets : bool
             Whether to apply mesh sheets inside magnet.
             Default value is ``False``.
+
+        Returns
+        -------
+        list
+            list of segments the magnets have been split into.
         """
         if not self.maxwell:
             logger.error("AEDT not initialized")
@@ -168,13 +194,26 @@ class AedtFlow(ToolkitGeneric):
                     segments_number=magnet["NumberOfSegments"],
                     apply_mesh_sheets=apply_mesh_sheets,
                 )
-                if apply_mesh_sheets:
-                    mesh_sheet_ids = [sheet.id for sheet in segments[1][magnet["Name"]]]
-                    self.maxwell.mesh.assign_length_mesh(
-                        mesh_sheet_ids,
-                        maxlength=magnet["MeshLength"],
-                        meshop_name=magnet["MeshName"],
-                    )
+            return segments
+        except:
+            return False
+
+    def apply_mesh_magnets_sheets(self, segments):
+        """Apply mesh to magnets sheets.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
+        try:
+            for magnet in properties.Magnets:
+                mesh_sheet_ids = [sheet.id for sheet in segments[1][magnet["Name"]]]
+                self.maxwell.mesh.assign_length_mesh(
+                    mesh_sheet_ids,
+                    maxlength=magnet["MeshLength"],
+                    meshop_name=magnet["MeshName"],
+                )
             return True
         except:
             return False
