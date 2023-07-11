@@ -5,7 +5,7 @@ from pyaedt.modeler.geometry_operators import GeometryOperators as go
 active_design = "Motor-CAD e9_eMobility_IPM"
 m3d = Maxwell3d(specified_version="2023.1", projectname="", designname=active_design)
 
-magnet_material = "N42UH"
+magnet_material = "N30UH_65C"
 
 magnets = [x for x in m3d.modeler.get_objects_by_material(magnet_material) if x.object_type == "Solid"]
 magnets_cs_dict = {}

@@ -69,7 +69,7 @@ class AedtFlow(ToolkitGeneric):
             return False
         return True
 
-    def set_model(self, mcad_magnets_material):
+    def set_model(self):
         """Set geometry model.
 
         Set axial length, boundary conditions and remove from model unclassified objects.
@@ -82,45 +82,13 @@ class AedtFlow(ToolkitGeneric):
         if not self.maxwell:
             logger.error("AEDT not initialized")
             return False
-        if not mcad_magnets_material:
-            logger.error("Magnets material not provided.")
-            return False
 
-        self.maxwell["HalfAxial"] = properties.HalfAxial
+        self.maxwell["RotorSlices"] = properties.RotorSlices
+        self.maxwell["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
+        self.maxwell["SkewAngle"] = properties.SkewAngle
         for obj in self.maxwell.modeler.unclassified_objects:
             obj.model = False
-        if properties.HalfAxial == 1:
-            return self._apply_boundary_conditions(mcad_magnets_material)
         return True
-
-    def mesh_settings(self, mcad_magnets_material):
-        """Apply mesh settings.
-
-        Apply mesh to magnets.
-
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed.
-        """
-        if not self.maxwell:
-            logger.error("AEDT not initialized")
-            return False
-        if not mcad_magnets_material:
-            logger.error("Magnets material not provided.")
-            return False
-
-        try:
-            magnets = self._get_magnets(mcad_magnets_material)
-            if not self.maxwell.mesh.assign_length_mesh(
-                magnets,
-                maxlength=2,
-                meshop_name="magnets_mesh",
-            ):
-                return False
-            return True
-        except:
-            return False
 
     def analyze_model(self):
         """Analyze model.
@@ -163,19 +131,14 @@ class AedtFlow(ToolkitGeneric):
         except:
             return False
 
-    def magnets_segmentation(self, apply_mesh_sheets=False):
-        """Apply magnets segmentation.
-
-        Parameters
-        ----------
-        apply_mesh_sheets : bool
-            Whether to apply mesh sheets inside magnet.
-            Default value is ``False``.
+    def segmentation(self):
+        """Apply objects segmentation.
+        It automatically segments rotor, rotor pockets and magnets.
 
         Returns
         -------
-        list
-            list of segments the magnets have been split into.
+        bool
+            ``True`` when successful, ``False`` when failed.
         """
         if not self.maxwell:
             logger.error("AEDT not initialized")
@@ -188,95 +151,51 @@ class AedtFlow(ToolkitGeneric):
                     and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
                 ):
                     bound.delete()
-            for magnet in properties.Magnets:
-                segments = self.maxwell.modeler.objects_segmentation(
-                    magnet["Name"],
-                    segments_number=magnet["NumberOfSegments"],
-                    apply_mesh_sheets=apply_mesh_sheets,
-                )
-            return segments
-        except:
-            return False
 
-    def apply_mesh_magnets_sheets(self, segments):
-        """Apply mesh to magnets sheets.
+            self.maxwell["RotorSlices"] = properties.RotorSlices
+            self.maxwell["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
+            self.maxwell["SkewAngle"] = properties.SkewAngle
 
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed.
-        """
-        try:
-            for magnet in properties.Magnets:
-                mesh_sheet_ids = [sheet.id for sheet in segments[1][magnet["Name"]]]
-                self.maxwell.mesh.assign_length_mesh(
-                    mesh_sheet_ids,
-                    maxlength=magnet["MeshLength"],
-                    meshop_name=magnet["MeshName"],
-                )
+            self.maxwell.duplicate_design(properties.active_design["Maxwell3d"])
+
+            magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
+            if len(self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)) > 1:
+                for obj in self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial):
+                    if len([i for i in magnets if i in self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box)]) == len(
+                            magnets):
+                        rotor = obj
+            else:
+                rotor = self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)[0]
+
+            vacuum_objects = self.maxwell.modeler.get_objects_by_material("vacuum")
+            rotor_pockets = []
+            for obj in vacuum_objects:
+                obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box, check_lines=False, check_sheets=False)
+                if isinstance(obj_in_bb, list) and len([obj_in_bb.pop(0)]) == 1:
+                    rotor_pockets.append(obj)
+
+            if int(self.maxwell.variable_manager["RotorSlices"].numeric_value) > 1:
+                # rotor segmentation
+                rotor_slices = self.maxwell.modeler.objects_segmentation(rotor.id, segments_number=int(self.maxwell["RotorSlices"]),
+                                                                apply_mesh_sheets=False)
+                # rotor and rotor pockets split
+                rotor_objs = [rotor.name]
+                magnets_names = [x.name for x in magnets]
+                if len(rotor_pockets) > 0:
+                    rotor_pockets_names = [x.name for x in rotor_pockets]
+                for slice in rotor_slices[rotor.name]:
+                    cs = self.maxwell.modeler.create_coordinate_system(slice.faces[0].center, name=slice.name + "_cs")
+                    rotor_objs = self.maxwell.modeler.split(rotor_objs, "XY")
+                    magnets_names = self.maxwell.modeler.split(magnets_names, "XY")
+                    if len(rotor_pockets) > 0:
+                        rotor_pockets_names = self.maxwell.modeler.split(rotor_pockets_names, "XY")
+
+            magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
+            for magnet in magnets:
+                magnet_segments = self.maxwell.modeler.objects_segmentation(magnet.id, segments_number=self.maxwell.variable_manager[
+                    "MagnetsSegmentsPerSlice"].numeric_value, apply_mesh_sheets=False)
+                faces = [x.bottom_face_z for x in magnet_segments[magnet.name]]
+                self.maxwell.assign_insulating(faces, "{}_segments".format(magnet.name))
             return True
-        except:
-            return False
-
-    def _apply_boundary_conditions(self, mcad_magnets_material):
-        try:
-            for bound in self.maxwell.boundaries[:]:
-                if (
-                    bound.type == "Insulating"
-                    and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
-                ):
-                    bound.delete()
-            magnets = self._get_magnets(mcad_magnets_material)
-            self.maxwell.assign_insulating(magnets, "magnets_insulation")
-            face_ids = []
-            for obj in self.maxwell.modeler.solid_objects:
-                if obj.bounding_box[2] == 0.0:
-                    face_ids.append(self.maxwell.modeler[obj].bottom_face_z.id)
-            self.maxwell.assign_symmetry(face_ids, symmetry_name="model_symmetry")
-            return True
-        except:
-            return False
-
-    def _materials_check(self, material_to_check):
-        try:
-            database_materials = list(
-                itertools.chain(
-                    self.maxwell.materials.conductors,
-                    self.maxwell.materials.dielectrics,
-                    self.maxwell.materials.gases,
-                    self.maxwell.materials.liquids,
-                )
-            )
-            database_mat_names = [mat.split("_")[0] for mat in database_materials]
-            database_mat_temps = [
-                decompose_variable_value(temp.split("_")[1])[0] for temp in database_materials if "_" in temp
-            ]
-            check = 0
-            for i in range(0, len(database_mat_names)):
-                if material_to_check[0].lower() in database_mat_names[i].lower():
-                    check = 1
-                    if float(material_to_check[1]) - database_mat_temps[i] < 0.1:
-                        return database_materials[i]
-                    else:
-                        self.maxwell.logger.error(
-                            "Wrong temperature provided for material: {}."
-                            "Same material in database with correct "
-                            "temperature will be used.".format(material_to_check[0])
-                        )
-                        return database_materials[i]
-            if check == 0:
-                raise ValueError("Provided material {} doesn't exist in current design.".format(material_to_check[0]))
-            return True
-        except:
-            return False
-
-    def _get_magnets(self, mcad_magnets_material):
-        """Get all magnets objects."""
-        try:
-            magnets_material = self._materials_check(mcad_magnets_material)
-            magnets = [
-                magnet for magnet in self.maxwell.modeler.get_objects_by_material(magnets_material) if magnet.model
-            ]
-            return magnets
         except:
             return False

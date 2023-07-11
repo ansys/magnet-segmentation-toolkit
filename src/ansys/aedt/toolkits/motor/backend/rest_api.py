@@ -145,26 +145,13 @@ def init_aedt_call():
 
 @app.route("/set_aedt_model", methods=["POST"])
 def set_aedt_model_call():
-    mcad_magnets_material = request.args.get("mcad_magnets_material")
     logger.info("[POST] /Set AEDT model.")
 
-    response = service.set_model(mcad_magnets_material)
+    response = service.set_model()
     if response:
         return jsonify("AEDT model set successfully."), 200
     else:
         return jsonify("Failure: AEDT model unsuccessfully set."), 500
-
-
-@app.route("/set_aedt_mesh", methods=["POST"])
-def set_aedt_mesh_call():
-    mcad_magnets_material = request.args.get("mcad_magnets_material")
-    logger.info("[POST] /Set mesh for AEDT model.")
-
-    response = service.mesh_settings(mcad_magnets_material)
-    if response:
-        return jsonify("Mesh for AEDT set successfully."), 200
-    else:
-        return jsonify("Failure: Mesh for AEDT unsuccessfully set."), 500
 
 
 @app.route("/analyze_model", methods=["POST"])
@@ -192,12 +179,11 @@ def get_magnet_losses_call():
         return jsonify("Failure: Magnet losses unsuccessfully calculated."), 500
 
 
-@app.route("/apply_magnets_segmentation", methods=["POST"])
+@app.route("/apply_segmentation", methods=["POST"])
 def magnets_segmentation_call():
-    apply_mesh_sheets = eval(request.args.get("apply_mesh_sheets"))
     logger.info("[POST] /Apply magnets segmentation.")
 
-    response = service.magnets_segmentation(apply_mesh_sheets)
+    response = service.segmentation()
     if response:
         return (
             jsonify("Magnets segmentation successfully applied."),
