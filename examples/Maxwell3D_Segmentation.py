@@ -1,18 +1,20 @@
 """
 Maxwell 3D Segmentation
 -----------------------
-This example shows how you can use PyMotorCAD-PyAEDT toolkit to segment your AEDT motor model.
+This example shows how you can use PyMotorCAD-PyAEDT toolkit to segment
+your AEDT motor model.
 """
 #################################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports.
 import os
+from pathlib import Path
 import shutil
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
-from pathlib import Path
 from pyaedt import generate_unique_folder_name
+
+from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
 #################################################################################
 # Initialize Temporary Folder and Project settings
@@ -48,7 +50,7 @@ data = {
     "MagnetsMaterial": "N30UH_65C",
     "MagnetsSegmentsPerSlice": "5",
     "RotorMaterial": "M250-35A_20C",
-    "RotorSlices": "3"
+    "RotorSlices": "3",
 }
 #################################################################################
 # Set properties
@@ -80,7 +82,7 @@ toolkit.segmentation()
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Save and Release desktop.
 
-#toolkit.save_project()
+# toolkit.save_project()
 toolkit.release_aedt(True, True)
 
 #################################################################################

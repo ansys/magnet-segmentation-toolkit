@@ -1,6 +1,3 @@
-import itertools
-
-from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
@@ -161,8 +158,9 @@ class AedtFlow(ToolkitGeneric):
             magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
             if len(self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)) > 1:
                 for obj in self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial):
-                    if len([i for i in magnets if i in self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box)]) == len(
-                            magnets):
+                    if len(
+                        [i for i in magnets if i in self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box)]
+                    ) == len(magnets):
                         rotor = obj
             else:
                 rotor = self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)[0]
@@ -170,14 +168,17 @@ class AedtFlow(ToolkitGeneric):
             vacuum_objects = self.maxwell.modeler.get_objects_by_material("vacuum")
             rotor_pockets = []
             for obj in vacuum_objects:
-                obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box, check_lines=False, check_sheets=False)
+                obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
+                    obj.bounding_box, check_lines=False, check_sheets=False
+                )
                 if isinstance(obj_in_bb, list) and len([obj_in_bb.pop(0)]) == 1:
                     rotor_pockets.append(obj)
 
             if int(self.maxwell.variable_manager["RotorSlices"].numeric_value) > 1:
                 # rotor segmentation
-                rotor_slices = self.maxwell.modeler.objects_segmentation(rotor.id, segments_number=int(self.maxwell["RotorSlices"]),
-                                                                apply_mesh_sheets=False)
+                rotor_slices = self.maxwell.modeler.objects_segmentation(
+                    rotor.id, segments_number=int(self.maxwell["RotorSlices"]), apply_mesh_sheets=False
+                )
                 # rotor and rotor pockets split
                 rotor_objs = [rotor.name]
                 magnets_names = [x.name for x in magnets]
@@ -192,8 +193,11 @@ class AedtFlow(ToolkitGeneric):
 
             magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
             for magnet in magnets:
-                magnet_segments = self.maxwell.modeler.objects_segmentation(magnet.id, segments_number=self.maxwell.variable_manager[
-                    "MagnetsSegmentsPerSlice"].numeric_value, apply_mesh_sheets=False)
+                magnet_segments = self.maxwell.modeler.objects_segmentation(
+                    magnet.id,
+                    segments_number=self.maxwell.variable_manager["MagnetsSegmentsPerSlice"].numeric_value,
+                    apply_mesh_sheets=False,
+                )
                 faces = [x.bottom_face_z for x in magnet_segments[magnet.name]]
                 self.maxwell.assign_insulating(faces, "{}_segments".format(magnet.name))
             return True
