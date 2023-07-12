@@ -1,7 +1,8 @@
 exclude: |
     (?x)(
         src/ansys/aedt/toolkits/motor/ui/common/frontend_ui.py |
-        tests/input_data/.*
+        tests/input_data/.* |
+        examples/input_files/.*
     )
 
 repos:
