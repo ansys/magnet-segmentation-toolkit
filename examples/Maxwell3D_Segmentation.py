@@ -47,6 +47,7 @@ data = {
     "active_project": active_project,
     "active_design": {"Maxwell3d": active_design},
     "design_list": {project_name: [{"Maxwell3d": active_design}]},
+    "IsSkewed": False,
     "MagnetsMaterial": "N30UH_65C",
     "MagnetsSegmentsPerSlice": "5",
     "RotorMaterial": "M250-35A_20C",

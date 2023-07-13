@@ -140,6 +140,11 @@ class AedtFlow(ToolkitGeneric):
         if not self.maxwell:
             logger.error("AEDT not initialized")
             return False
+        if properties.IsSkewed is None:
+            logger.error("``IsSkewed`` property has to be set to perform segmentation.")
+            return False
+
+        self.maxwell.duplicate_design(properties.active_design["Maxwell3d"])
 
         try:
             for bound in self.maxwell.boundaries[:]:
@@ -149,50 +154,51 @@ class AedtFlow(ToolkitGeneric):
                 ):
                     bound.delete()
 
-            self.maxwell["RotorSlices"] = properties.RotorSlices
             self.maxwell["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
-            self.maxwell["SkewAngle"] = properties.SkewAngle
-
-            self.maxwell.duplicate_design(properties.active_design["Maxwell3d"])
-
             magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
-            if len(self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)) > 1:
-                for obj in self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial):
-                    if len(
-                        [i for i in magnets if i in self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box)]
-                    ) == len(magnets):
-                        rotor = obj
-            else:
-                rotor = self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)[0]
 
-            vacuum_objects = [
-                x for x in self.maxwell.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"
-            ]
-            rotor_pockets = []
-            for obj in vacuum_objects:
-                obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
-                    obj.bounding_box, check_lines=False, check_sheets=False
-                )
-                obj_in_bb.remove(obj)
-                if isinstance(obj_in_bb, list) and len(obj_in_bb) == 1:
-                    rotor_pockets.append(obj)
+            if not properties.IsSkewed:
+                self.maxwell["RotorSlices"] = properties.RotorSlices
 
-            if int(self.maxwell.variable_manager["RotorSlices"].numeric_value) > 1:
-                # rotor segmentation
-                rotor_slices = self.maxwell.modeler.objects_segmentation(
-                    rotor.id, segments_number=int(self.maxwell["RotorSlices"]), apply_mesh_sheets=False
-                )
-                # rotor and rotor pockets split
-                rotor_objs = [rotor.name]
-                magnets_names = [x.name for x in magnets]
-                if len(rotor_pockets) > 0:
-                    rotor_pockets_names = [x.name for x in rotor_pockets]
-                for slice in rotor_slices[rotor.name]:
-                    cs = self.maxwell.modeler.create_coordinate_system(slice.faces[0].center, name=slice.name + "_cs")
-                    rotor_objs = self.maxwell.modeler.split(rotor_objs, "XY")
-                    magnets_names = self.maxwell.modeler.split(magnets_names, "XY")
+                if len(self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)) > 1:
+                    for obj in self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial):
+                        if len(
+                            [i for i in magnets if i in self.maxwell.modeler.objects_in_bounding_box(obj.bounding_box)]
+                        ) == len(magnets):
+                            rotor = obj
+                else:
+                    rotor = self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)[0]
+
+                vacuum_objects = [
+                    x for x in self.maxwell.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"
+                ]
+                rotor_pockets = []
+                for obj in vacuum_objects:
+                    obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
+                        obj.bounding_box, check_lines=False, check_sheets=False
+                    )
+                    obj_in_bb.remove(obj)
+                    if isinstance(obj_in_bb, list) and len(obj_in_bb) == 1:
+                        rotor_pockets.append(obj)
+
+                if int(properties.RotorSlices) > 1:
+                    # rotor segmentation
+                    rotor_slices = self.maxwell.modeler.objects_segmentation(
+                        rotor.id, segments_number=int(self.maxwell["RotorSlices"]), apply_mesh_sheets=False
+                    )
+                    # rotor and rotor pockets split
+                    rotor_objs = [rotor.name]
+                    magnets_names = [x.name for x in magnets]
                     if len(rotor_pockets) > 0:
-                        rotor_pockets_names = self.maxwell.modeler.split(rotor_pockets_names, "XY")
+                        rotor_pockets_names = [x.name for x in rotor_pockets]
+                    for slice in rotor_slices[rotor.name]:
+                        cs = self.maxwell.modeler.create_coordinate_system(
+                            slice.faces[0].center, name=slice.name + "_cs"
+                        )
+                        rotor_objs = self.maxwell.modeler.split(rotor_objs, "XY")
+                        magnets_names = self.maxwell.modeler.split(magnets_names, "XY")
+                        if len(rotor_pockets) > 0:
+                            rotor_pockets_names = self.maxwell.modeler.split(rotor_pockets_names, "XY")
 
             magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
             for magnet in magnets:

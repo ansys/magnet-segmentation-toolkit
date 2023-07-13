@@ -56,6 +56,8 @@ class TestClass(BasisTest, object):
         aedt_file = os.path.join(self.temp_folder, "Motor3D_obj_segments.aedt")
         self.toolkit.set_properties({"active_project": aedt_file})
         self.toolkit.set_properties({"active_design": {"Maxwell3d": "Maxwell3DDesign1"}})
+        assert not self.toolkit.segmentation()
+        self.toolkit.set_properties({"IsSkewed": False})
         self.toolkit.set_properties({"MagnetsMaterial": "Arnold_Magnetics_N30UH_80C_new"})
         self.toolkit.set_properties({"MagnetsSegmentsPerSlice": "5"})
         self.toolkit.set_properties({"RotorMaterial": "30DH_20C_smooth"})
