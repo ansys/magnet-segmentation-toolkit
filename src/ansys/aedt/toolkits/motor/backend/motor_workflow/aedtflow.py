@@ -165,13 +165,16 @@ class AedtFlow(ToolkitGeneric):
             else:
                 rotor = self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)[0]
 
-            vacuum_objects = self.maxwell.modeler.get_objects_by_material("vacuum")
+            vacuum_objects = [
+                x for x in self.maxwell.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"
+            ]
             rotor_pockets = []
             for obj in vacuum_objects:
                 obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
                     obj.bounding_box, check_lines=False, check_sheets=False
                 )
-                if isinstance(obj_in_bb, list) and len([obj_in_bb.pop(0)]) == 1:
+                obj_in_bb.remove(obj)
+                if isinstance(obj_in_bb, list) and len(obj_in_bb) == 1:
                     rotor_pockets.append(obj)
 
             if int(self.maxwell.variable_manager["RotorSlices"].numeric_value) > 1:
