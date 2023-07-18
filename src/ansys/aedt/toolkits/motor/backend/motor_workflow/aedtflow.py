@@ -219,7 +219,18 @@ class AedtFlow(ToolkitGeneric):
             return False
 
     def _get_rotor_pockets(self, vacuum_objects):
-        """Rotor pockets."""
+        """Return the rotor pockets if any.
+
+        Parameters
+        ----------
+        vacuum_objects : list
+            List of vacuum objects.
+
+        Returns
+        -------
+        list
+            list of class:`pyaedt.modeler.cad.object3d.Object3d`
+        """
         rotor_pockets = []
         for obj in vacuum_objects:
             obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
@@ -231,26 +242,40 @@ class AedtFlow(ToolkitGeneric):
         return rotor_pockets
 
     def _update_cs(self, cs):
-        """Move cs if skewing is applied."""
-        x_pointing = [
-            decompose_variable_value(cs.props["XAxisXvec"])[0],
-            decompose_variable_value(cs.props["XAxisYvec"])[0],
-            decompose_variable_value(cs.props["XAxisZvec"])[0],
-        ]
-        y_pointing = [
-            decompose_variable_value(cs.props["YAxisXvec"])[0],
-            decompose_variable_value(cs.props["YAxisYvec"])[0],
-            decompose_variable_value(cs.props["YAxisZvec"])[0],
-        ]
-        x, y, z = go.pointing_to_axis(x_pointing, y_pointing)
-        phi, theta, psi = go.axis_to_euler_zyz(x, y, z)
-        magnet_angle = go.rad2deg(phi)
-        cs.change_cs_mode(2)
-        cs.props["Phi"] = "{}deg".format(str(magnet_angle))
-        cs.props["Psi"] = "90deg"
-        cs.props["Theta"] = "0deg"
-        cs.update()
-        return phi, theta, psi
+        """Update the cs to Euler ZYZ mode.
+
+        Parameters
+        ----------
+        cs : :class:`pyaedt.modeler.Modeler.CoordinateSystem`
+            Coordinate system.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
+        try:
+            x_pointing = [
+                decompose_variable_value(cs.props["XAxisXvec"])[0],
+                decompose_variable_value(cs.props["XAxisYvec"])[0],
+                decompose_variable_value(cs.props["XAxisZvec"])[0],
+            ]
+            y_pointing = [
+                decompose_variable_value(cs.props["YAxisXvec"])[0],
+                decompose_variable_value(cs.props["YAxisYvec"])[0],
+                decompose_variable_value(cs.props["YAxisZvec"])[0],
+            ]
+            x, y, z = go.pointing_to_axis(x_pointing, y_pointing)
+            phi, theta, psi = go.axis_to_euler_zyz(x, y, z)
+            magnet_angle = go.rad2deg(phi)
+            cs.change_cs_mode(2)
+            cs.props["Phi"] = "{}deg".format(str(magnet_angle))
+            cs.props["Psi"] = "90deg"
+            cs.props["Theta"] = "0deg"
+            cs.update()
+            return True
+        except:
+            return False
 
     # def _apply_skew_to_cs(self, cs):
     #     """"""
