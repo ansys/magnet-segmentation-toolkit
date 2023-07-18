@@ -24,9 +24,9 @@ from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
 src_folder = os.path.join(Path(__file__).parents[0], "input_files")
 temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_files"))
-project_name = "e9_eMobility_IPM_ANSYSEM_3D"
+project_name = "e9_eMobility_IPM_1seg_cs_test_ANSYSEM_3D"
 active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
-active_design = "Motor-CAD e9_eMobility_IPM"
+active_design = "Motor-CAD e9_eMobility_IPM_1seg_cs_test"
 
 #################################################################################
 # Initialize Toolkit
@@ -75,7 +75,7 @@ toolkit.set_model()
 #################################################################################
 # Apply segmentation
 # ~~~~~~~~~~~~~~~~~~
-# Apply segmentation.
+# Apply segmentation and assign relative coordinate system.
 toolkit.segmentation()
 
 #################################################################################
