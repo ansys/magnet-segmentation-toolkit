@@ -1,5 +1,6 @@
 from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
+from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
@@ -146,15 +147,17 @@ class AedtFlow(ToolkitGeneric):
             logger.error("``IsSkewed`` property has to be set to perform segmentation.")
             return False
 
+        self.maxwell.set_active_design(properties.active_design["Maxwell3d"])
         self.maxwell.duplicate_design(properties.active_design["Maxwell3d"])
 
         try:
-            for bound in self.maxwell.boundaries[:]:
-                if (
-                    bound.type == "Insulating"
-                    and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
-                ):
-                    bound.delete()
+            if [bound for bound in self.maxwell.boundaries if bound.type == "Insulating"]:
+                for bound in self.maxwell.boundaries[:]:
+                    if (
+                        bound.type == "Insulating"
+                        and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
+                    ):
+                        bound.delete()
 
             self.maxwell["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
 
@@ -198,7 +201,6 @@ class AedtFlow(ToolkitGeneric):
             magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
             for magnet in magnets:
                 cs = self.maxwell.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
-                cs.origin = magnet.top_face_z.center
                 magnet.part_coordinate_system = cs.name
                 self.maxwell.modeler.set_working_coordinate_system("Global")
                 magnet_segments = self.maxwell.modeler.objects_segmentation(
@@ -209,11 +211,11 @@ class AedtFlow(ToolkitGeneric):
                 faces = []
                 for face in magnet_segments[magnet.name]:
                     obj = self.maxwell.modeler.create_object_from_face(face.top_face_z)
-                    obj.part_coordinate_system = cs.name
                     faces.append(obj.top_face_z)
                 [face.delete() for face in magnet_segments[magnet.name]]
                 self.maxwell.assign_insulating(faces, "{}_segments".format(magnet.name))
-                self._update_cs(cs)
+                if isinstance(cs, CoordinateSystem):
+                    self._update_cs(cs)
             return True
         except:
             return False
