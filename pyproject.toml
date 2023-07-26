@@ -29,7 +29,7 @@ dependencies = [
     "pyaedt @ git+https://github.com/ansys/pyaedt.git",
     "ansys-motorcad-core",
     "importlib-metadata >=4.0",
-    "pyside6==6.5.1.1",
+    "pyside6==6.5.2",
     "pyqtgraph",
     "qdarkstyle",
     "flask",
