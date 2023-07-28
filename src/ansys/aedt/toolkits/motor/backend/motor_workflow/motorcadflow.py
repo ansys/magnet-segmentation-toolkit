@@ -68,7 +68,7 @@ class MotorCADFlow(ToolkitGeneric):
         self.mcad.display_screen("Scripting")
         self.mcad.set_variable("ProximityLossModel", 1)
         self.mcad.set_variable("NumberOfCuboids", properties.E_mag_settings["NumberOfCuboids"])
-        self.mcad.set_variable("AxialSegments", properties.Geometry["MagnetAxialSegments"])
+        self.mcad.set_variable("AxialSegments", 1)
 
         # self.mcad.save_to_file(properties.MotorCAD_filepath)
         return True

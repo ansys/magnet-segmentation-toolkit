@@ -45,9 +45,8 @@ class TestClass(object):
 
     def test_4_set_emag_model(self):
         self.toolkit.set_properties({"E_mag_settings": {"NumberOfCuboids": 6}})
-        self.toolkit.set_properties({"Geometry": {"MagnetAxialSegments": 8}})
         self.toolkit.set_emag_model()
-        assert self.toolkit.mcad.get_variable("AxialSegments") == 8
+        assert self.toolkit.mcad.get_variable("AxialSegments") == 1
         assert self.toolkit.mcad.get_variable("NumberOfCuboids") == 6
 
     def test_5_lab_performance_calculation(self):
