@@ -49,9 +49,7 @@ data = {
     "design_list": {project_name: [{"Maxwell3d": active_design}]},
     "IsSkewed": True,
     "MagnetsMaterial": "N42EH_80C",
-    "MagnetsSegmentsPerSlice": "5",
-    "RotorMaterial": "NO18-1160_140C",
-    "RotorSlices": "3",
+    "MagnetsSegmentsPerSlice": "2",
 }
 #################################################################################
 # Set properties
