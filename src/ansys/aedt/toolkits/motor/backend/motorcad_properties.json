@@ -1,9 +1,6 @@
 {
     "MotorCAD_filepath" : "",
     "vbs_file_path" : "",
-    "Geometry":{
-        "MagnetAxialSegments" : 8
-    },
     "E_mag_settings":{
         "NumberOfCuboids":6,
         "TorquePointsPerCycle": 30,
