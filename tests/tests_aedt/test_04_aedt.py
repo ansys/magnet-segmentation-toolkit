@@ -19,7 +19,7 @@ class TestClass(BasisTest, object):
         BasisTest.my_teardown(self)
 
     def test_1_init_aedt(self):
-        aedt_file = os.path.join(self.temp_folder, "e9_ANSYSEM_3D.aedt")
+        aedt_file = os.path.join(self.temp_folder, "e9_eMobility_IPM__ANSYSEM_3D.aedt")
         vbs_file_path = os.path.join(self.temp_folder, "e9_built.vbs")
         self.toolkit.set_properties({"active_project": aedt_file})
         self.toolkit.set_properties({"vbs_file_path": vbs_file_path})
@@ -27,7 +27,7 @@ class TestClass(BasisTest, object):
         self.toolkit.set_properties({"vbs_file_path": ""})
         self.toolkit.set_properties({"selected_process": 1})
         self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
-        self.toolkit.set_properties({"design_list": {"e9_ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
+        self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
         assert self.toolkit.init_aedt()
 
     def test_2_set_model(self):
@@ -40,7 +40,6 @@ class TestClass(BasisTest, object):
         assert self.toolkit.set_model()
 
     def test_3_analyze_model(self):
-        self.toolkit.maxwell["HalfAxial"] = 1
         self.toolkit.set_properties({"SetupToAnalyze": "Setup1"})
         assert self.toolkit.analyze_model()
 
@@ -53,15 +52,14 @@ class TestClass(BasisTest, object):
         assert isinstance(magnet_losses[1]["SolidLoss"]["Unit"], str)
 
     def test_5_segmentation(self):
-        aedt_file = os.path.join(self.temp_folder, "Motor3D_obj_segments.aedt")
-        self.toolkit.set_properties({"active_project": aedt_file})
-        self.toolkit.set_properties({"active_design": {"Maxwell3d": "Maxwell3DDesign1"}})
+        self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
+        self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
+        self.toolkit.connect_design()
         assert not self.toolkit.segmentation()
         self.toolkit.set_properties({"IsSkewed": False})
-        self.toolkit.set_properties({"MagnetsMaterial": "Arnold_Magnetics_N30UH_80C_new"})
-        self.toolkit.set_properties({"MagnetsSegmentsPerSlice": "5"})
-        self.toolkit.set_properties({"RotorMaterial": "30DH_20C_smooth"})
-        self.toolkit.set_properties({"RotorSlices": "3"})
-        self.toolkit.init_aedt()
+        self.toolkit.set_properties({"MagnetsMaterial": "N30UH_65C"})
+        self.toolkit.set_properties({"MagnetsSegmentsPerSlice": "2"})
+        self.toolkit.set_properties({"RotorMaterial": "M250-35A_20C"})
+        self.toolkit.set_properties({"RotorSlices": "2"})
         assert self.toolkit.segmentation()
         self.toolkit.aedtapp.close_desktop()

@@ -1,4 +1,7 @@
+from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
+from pyaedt.modeler.cad.Modeler import CoordinateSystem
+from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
@@ -144,22 +147,24 @@ class AedtFlow(ToolkitGeneric):
             logger.error("``IsSkewed`` property has to be set to perform segmentation.")
             return False
 
+        self.maxwell.set_active_design(properties.active_design["Maxwell3d"])
         self.maxwell.duplicate_design(properties.active_design["Maxwell3d"])
 
         try:
-            for bound in self.maxwell.boundaries[:]:
-                if (
-                    bound.type == "Insulating"
-                    and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
-                ):
-                    bound.delete()
+            if [bound for bound in self.maxwell.boundaries if bound.type == "Insulating"]:
+                for bound in self.maxwell.boundaries[:]:
+                    if (
+                        bound.type == "Insulating"
+                        and bound.name in self.maxwell.odesign.GetChildObject("Boundaries").GetChildNames()
+                    ):
+                        bound.delete()
 
             self.maxwell["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
-            magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
 
             if not properties.IsSkewed:
                 self.maxwell["RotorSlices"] = properties.RotorSlices
 
+                magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
                 if len(self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)) > 1:
                     for obj in self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial):
                         if len(
@@ -172,14 +177,7 @@ class AedtFlow(ToolkitGeneric):
                 vacuum_objects = [
                     x for x in self.maxwell.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"
                 ]
-                rotor_pockets = []
-                for obj in vacuum_objects:
-                    obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
-                        obj.bounding_box, check_lines=False, check_sheets=False
-                    )
-                    obj_in_bb.remove(obj)
-                    if isinstance(obj_in_bb, list) and len(obj_in_bb) == 1:
-                        rotor_pockets.append(obj)
+                rotor_pockets = self._get_rotor_pockets(vacuum_objects)
 
                 if int(properties.RotorSlices) > 1:
                     # rotor segmentation
@@ -202,13 +200,90 @@ class AedtFlow(ToolkitGeneric):
 
             magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
             for magnet in magnets:
+                cs = self.maxwell.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
+                magnet.part_coordinate_system = cs.name
+                self.maxwell.modeler.set_working_coordinate_system("Global")
                 magnet_segments = self.maxwell.modeler.objects_segmentation(
                     magnet.id,
                     segments_number=self.maxwell.variable_manager["MagnetsSegmentsPerSlice"].numeric_value,
                     apply_mesh_sheets=False,
                 )
-                faces = [x.bottom_face_z for x in magnet_segments[magnet.name]]
+                faces = []
+                for face in magnet_segments[magnet.name]:
+                    obj = self.maxwell.modeler.create_object_from_face(face.top_face_z)
+                    faces.append(obj.top_face_z)
+                [face.delete() for face in magnet_segments[magnet.name]]
                 self.maxwell.assign_insulating(faces, "{}_segments".format(magnet.name))
+                if isinstance(cs, CoordinateSystem):
+                    self._update_cs(cs)
             return True
         except:
             return False
+
+    def _get_rotor_pockets(self, vacuum_objects):
+        """Return the rotor pockets if any.
+
+        Parameters
+        ----------
+        vacuum_objects : list
+            List of vacuum objects.
+
+        Returns
+        -------
+        list
+            list of class:`pyaedt.modeler.cad.object3d.Object3d`
+        """
+        rotor_pockets = []
+        for obj in vacuum_objects:
+            obj_in_bb = self.maxwell.modeler.objects_in_bounding_box(
+                obj.bounding_box, check_lines=False, check_sheets=False
+            )
+            obj_in_bb.remove(obj)
+            if isinstance(obj_in_bb, list) and len(obj_in_bb) == 1:
+                rotor_pockets.append(obj)
+        return rotor_pockets
+
+    def _update_cs(self, cs):
+        """Update the cs to Euler ZYZ mode.
+
+        Parameters
+        ----------
+        cs : :class:`pyaedt.modeler.Modeler.CoordinateSystem`
+            Coordinate system.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
+        try:
+            x_pointing = [
+                decompose_variable_value(cs.props["XAxisXvec"])[0],
+                decompose_variable_value(cs.props["XAxisYvec"])[0],
+                decompose_variable_value(cs.props["XAxisZvec"])[0],
+            ]
+            y_pointing = [
+                decompose_variable_value(cs.props["YAxisXvec"])[0],
+                decompose_variable_value(cs.props["YAxisYvec"])[0],
+                decompose_variable_value(cs.props["YAxisZvec"])[0],
+            ]
+            x, y, z = go.pointing_to_axis(x_pointing, y_pointing)
+            phi, theta, psi = go.axis_to_euler_zyz(x, y, z)
+            magnet_angle = go.rad2deg(phi)
+            cs.change_cs_mode(2)
+            cs.props["Phi"] = "{}deg".format(str(magnet_angle))
+            cs.props["Psi"] = "90deg"
+            cs.props["Theta"] = "0deg"
+            cs.update()
+            return True
+        except:
+            return False
+
+    # def _apply_skew_to_cs(self, cs):
+    #     """"""
+    #     rad_skew_angle = go.deg2rad(properties.SkewAngle)
+    #     cs.props["OriginX"] = "{}mm*cos({})-{}mm*sin({})".format(str(x), str(rad_skew_angle), str(y),
+    #                                                              str(rad_skew_angle))
+    #     cs.props["OriginY"] = "{}mm*sin({})+{}mm*cos({})".format(str(x), str(rad_skew_angle), str(y),
+    #                                                              str(rad_skew_angle))
+    #     cs.props["Phi"] = "{}deg+SkewAngle".format(str(cs.props["Phi"]))
