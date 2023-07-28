@@ -24,7 +24,6 @@ import shutil
 import sys
 import tempfile
 
-from pyaedt import pyaedt_logger
 from pyaedt import settings
 
 settings.enable_error_handler = False
@@ -36,6 +35,7 @@ local_path = os.path.dirname(os.path.realpath(__file__))
 
 from pyaedt import Desktop
 from pyaedt import Hfss
+from pyaedt.aedt_logger import pyaedt_logger
 from pyaedt.generic.filesystem import Scratch
 
 test_project_name = "test_antenna"
