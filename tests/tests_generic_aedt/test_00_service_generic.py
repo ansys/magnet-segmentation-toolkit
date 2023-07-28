@@ -54,6 +54,7 @@ class TestClass(BasisTest, object):
         response = requests.post(self.url + "/save_project", json=file_name)
         assert response.ok
         response = requests.get(self.url + "/get_status")
+        
         while response.json() != "Backend free":
             time.sleep(1)
             response = requests.get(self.url + "/get_status")
