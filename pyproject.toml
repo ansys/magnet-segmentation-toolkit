@@ -29,7 +29,7 @@ dependencies = [
     "pyaedt @ git+https://github.com/ansys/pyaedt.git",
     "ansys-motorcad-core",
     "importlib-metadata >=4.0",
-    "pyside6==6.5.1.1",
+    "pyside6==6.5.2",
     "pyqtgraph",
     "qdarkstyle",
     "flask",
@@ -41,10 +41,10 @@ tests = [
     "pytest-cov==4.1.0",
 ]
 doc = [
-    "ansys-sphinx-theme==0.10.0",
+    "ansys-sphinx-theme==0.10.2",
     "numpydoc==1.5.0",
     "recommonmark==0.7.1",
-    "sphinx==7.1.1",
+    "sphinx==7.1.2",
     "sphinx-copybutton==0.5.2",
     "enum-tools[sphinx]==0.10.0",
     "sphinx-autoapi==2.1.1",
