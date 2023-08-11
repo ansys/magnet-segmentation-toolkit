@@ -5,13 +5,14 @@ import shutil
 from conftest import BasisTest
 from pyaedt import generate_unique_folder_name
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
+test_project_name = "e9_eMobility_IPM__ANSYSEM_3D"
+design_name = "Motor-CAD e9"
 
 
 class TestClass(BasisTest, object):
     def setup_class(self):
         BasisTest.my_setup(self)
-        self.toolkit = Toolkit()
+        self.toolkit = BasisTest.add_app(self)
         src_folder = os.path.join(Path(__file__).parents[1], "input_data")
         self.temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
 
@@ -25,10 +26,10 @@ class TestClass(BasisTest, object):
         self.toolkit.set_properties({"vbs_file_path": vbs_file_path})
         assert not self.toolkit.init_aedt()
         self.toolkit.set_properties({"vbs_file_path": ""})
-        self.toolkit.set_properties({"selected_process": 1})
         self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
         self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
         assert self.toolkit.init_aedt()
+        # add another test with simpler vbs to test run script
 
     def test_2_set_model(self):
         self.toolkit.set_properties({"MagnetsMaterial": "N30UH_139.999983577095C"})
@@ -62,4 +63,7 @@ class TestClass(BasisTest, object):
         self.toolkit.set_properties({"RotorMaterial": "M250-35A_20C"})
         self.toolkit.set_properties({"RotorSlices": "2"})
         assert self.toolkit.segmentation()
-        self.toolkit.aedtapp.close_desktop()
+
+    def test_6_apply_skew(self):
+        self.toolkit.set_properties({"SkewAngle": "2deg"})
+        assert self.toolkit.apply_skew()

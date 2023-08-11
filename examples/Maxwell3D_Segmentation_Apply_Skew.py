@@ -41,9 +41,7 @@ toolkit = Toolkit()
 # Initialize Properties dictionary.
 
 data = {
-    "selected_process": 19676,
     "aedt_version": "2023.1",
-    "use_grpc": False,
     "active_project": active_project,
     "active_design": {"Maxwell3d": active_design},
     "design_list": {project_name: [{"Maxwell3d": active_design}]},
@@ -52,7 +50,7 @@ data = {
     "MagnetsSegmentsPerSlice": "2",
     "RotorMaterial": "M250-35A_20C",
     "RotorSlices": "2",
-    "SkewAngle": "2deg",
+    "SkewAngle": "0.5deg",
 }
 #################################################################################
 # Set properties
