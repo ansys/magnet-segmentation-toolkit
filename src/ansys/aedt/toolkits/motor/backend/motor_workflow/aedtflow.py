@@ -1,6 +1,11 @@
+from operator import attrgetter
+import os
+import time
+
 from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
 from pyaedt.modeler.cad.Modeler import CoordinateSystem
+from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
@@ -51,15 +56,22 @@ class AedtFlow(ToolkitGeneric):
             logger.error("User can decide whether to run a .vbs script or open a Maxwell3D project at a time.")
             return False
 
-        self.connect_aedt()
-
-        if properties.active_project:
-            self.open_project(properties.active_project)
-        elif properties.vbs_file_path:
-            self.desktop.odesktop.RunScript(properties.vbs_file_path)
-            self._save_project_info()
-            self.desktop.release_desktop(False, False)
-            self.desktop = None
+        if not self.aedt_connected()[0]:
+            self.launch_aedt()
+            response = self.get_thread_status()
+            while response[0] == 0:
+                time.sleep(1)
+                response = self.get_thread_status()
+            self.connect_aedt()
+        elif self.aedt_connected()[0] and len(list(self.desktop.project_list())) == 0:
+            if properties.active_project:
+                if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
+                    self.open_project(os.path.abspath(properties.active_project))
+                elif properties.vbs_file_path:
+                    self.desktop.odesktop.RunScript(properties.vbs_file_path)
+                    self._save_project_info()
+                    self.desktop.release_desktop(False, False)
+                    self.desktop = None
 
         if properties.design_list:
             self.connect_design(app_name="Maxwell3d")
@@ -220,6 +232,67 @@ class AedtFlow(ToolkitGeneric):
         except:
             return False
 
+    def apply_skew(self):
+        """Apply skew to rotor slices.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
+        try:
+            magnets = self.maxwell.modeler.get_objects_by_material(properties.MagnetsMaterial)
+            rotor_objects = self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial)
+            # get dependent and independent boundaries
+            bound_indep_id = [bound for bound in self.maxwell.boundaries if bound.type == "Independent"][0].props[
+                "Objects"
+            ][0]
+            bound_dep_id = [bound for bound in self.maxwell.boundaries if bound.type == "Dependent"][0].props[
+                "Objects"
+            ][0]
+            indep = self.maxwell.modeler.objects[bound_indep_id]
+            dep = self.maxwell.modeler.objects[bound_dep_id]
+            # check whether stator has same rotor material
+            if len(rotor_objects) > int(properties.RotorSlices):
+                stator_obj = max(rotor_objects, key=attrgetter("volume"))
+                rotor_objects = [
+                    x for x in self.maxwell.modeler.get_objects_by_material(properties.RotorMaterial) if x != stator_obj
+                ]
+            objs_in_bb = {}
+            rotor_skew_ang = 0
+            # rotate objects and apply skew
+            for rotor_object in rotor_objects:
+                objs_in_bb[rotor_object.name] = self.maxwell.modeler.objects_in_bounding_box(rotor_object.bounding_box)
+                for obj in objs_in_bb[rotor_object.name]:
+                    if obj in magnets:
+                        magnet_cs = [
+                            cs
+                            for cs in self.maxwell.modeler.coordinate_systems
+                            if cs.name == obj.part_coordinate_system
+                        ][0]
+                        if isinstance(magnet_cs, CoordinateSystem):
+                            magnet_cs.props["Phi"] = "{}+{}deg".format(magnet_cs.props["Phi"], rotor_skew_ang)
+                        elif isinstance(magnet_cs, FaceCoordinateSystem):
+                            magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
+                    self.maxwell.modeler.set_working_coordinate_system("Global")
+                    obj.rotate(cs_axis="Z", angle=rotor_skew_ang)
+                if rotor_skew_ang != 0:
+                    # duplicate around z axis (-360/symmetry_factor)
+                    self.maxwell.modeler.duplicate_around_axis(
+                        rotor_object,
+                        cs_axis=self.maxwell.AXIS.Z,
+                        angle=-360 / self.maxwell.symmetry_multiplier,
+                        nclones=2,
+                        create_new_objects=False,
+                    )
+                    # split
+                    self.maxwell.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
+                    self.maxwell.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
+                rotor_skew_ang += decompose_variable_value(properties.SkewAngle)[0]
+            return True
+        except:
+            return False
+
     def _get_rotor_pockets(self, vacuum_objects):
         """Return the rotor pockets if any.
 
@@ -279,11 +352,9 @@ class AedtFlow(ToolkitGeneric):
         except:
             return False
 
-    # def _apply_skew_to_cs(self, cs):
-    #     """"""
-    #     rad_skew_angle = go.deg2rad(properties.SkewAngle)
-    #     cs.props["OriginX"] = "{}mm*cos({})-{}mm*sin({})".format(str(x), str(rad_skew_angle), str(y),
-    #                                                              str(rad_skew_angle))
-    #     cs.props["OriginY"] = "{}mm*sin({})+{}mm*cos({})".format(str(x), str(rad_skew_angle), str(y),
-    #                                                              str(rad_skew_angle))
-    #     cs.props["Phi"] = "{}deg+SkewAngle".format(str(cs.props["Phi"]))
+        # rad_skew_angle = go.deg2rad(properties.SkewAngle)
+        # cs.props["OriginX"] = "{}mm*cos({})-{}mm*sin({})".format(str(x), str(rad_skew_angle), str(y),
+        #                                                          str(rad_skew_angle))
+        # cs.props["OriginY"] = "{}mm*sin({})+{}mm*cos({})".format(str(x), str(rad_skew_angle), str(y),
+        #                                                          str(rad_skew_angle))
+        # cs.props["Phi"] = "{}deg+SkewAngle".format(str(cs.props["Phi"]))

@@ -36,7 +36,7 @@ config = {
 }
 
 # Check for the local config file, override defaults if found
-local_config_file = os.path.join(local_path, "tests_aedt/local_config.json")
+local_config_file = os.path.join(os.path.dirname(local_path), "tests_aedt\\local_config.json")
 if os.path.exists(local_config_file):
     with open(local_config_file) as f:
         local_config = json.load(f)
