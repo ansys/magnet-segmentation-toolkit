@@ -67,14 +67,14 @@ class AedtFlow(ToolkitGeneric):
             if properties.active_project:
                 if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
                     self.open_project(os.path.abspath(properties.active_project))
-                elif properties.vbs_file_path:
-                    self.desktop.odesktop.RunScript(properties.vbs_file_path)
-                    self._save_project_info()
-                    self.desktop.release_desktop(False, False)
-                    self.desktop = None
+            elif properties.vbs_file_path:
+                self.desktop.odesktop.RunScript(properties.vbs_file_path)
+                self._save_project_info()
+                self.desktop.release_desktop(False, False)
+                self.desktop = None
 
         if properties.design_list:
-            self.connect_design(app_name="Maxwell3d")
+            self.connect_design(app_name=list(properties.active_design.keys())[0])
             self.maxwell = self.aedtapp
         else:
             logger.error("No design in specified project.")
