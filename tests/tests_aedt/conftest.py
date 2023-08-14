@@ -117,7 +117,7 @@ class BasisTest(object):
 
 @pytest.fixture(scope="session", autouse=True)
 def desktop_init():
-    toolkit.set_properties({"aedt_version": config["aedt_version"]})
+    toolkit.set_properties({"aedt_version": config["desktop_version"]})
     toolkit.set_properties({"non_graphical": config["non_graphical"]})
     toolkit.set_properties({"use_grpc": config["use_grpc"]})
     toolkit.launch_aedt()
