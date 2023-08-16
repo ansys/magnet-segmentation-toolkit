@@ -37,7 +37,6 @@ Set oDefinitionManager = oProject.GetDefinitionManager()
 Set oMaterialMgr = oDefinitionManager.GetManager("Material")
 Set oDesign = oProject.SetActiveDesign("Motor-CAD e9_eMobility_IPM_2D")
 
-oProject.SaveAs "C:\Test\pyMotorCAD-pyAEDT_new_arch\e9_eMobility_IPM_2D_ANSYSEM_2D" & projExt, true
 ' Start of writing parameters
 oDesign.ChangeProperty Array("NAME:AllTabs", Array("NAME:LocalVariableTab", _
   Array("NAME:PropServers", "LocalVariables"), Array("NAME:NewProps", _
@@ -2478,5 +2477,4 @@ oEditor.FitAll
 
 
 oProject.Save
-' Validate the model and send results to text file
-oDesign.ValidateDesign("C:\Test\pyMotorCAD-pyAEDT_new_arch\e9_eMobility_IPM_2D.txt")
+
