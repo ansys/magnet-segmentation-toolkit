@@ -21,15 +21,18 @@ class TestClass(BasisTest, object):
 
     def test_1_init_aedt(self):
         aedt_file = os.path.join(self.temp_folder, "e9_eMobility_IPM__ANSYSEM_3D.aedt")
-        vbs_file_path = os.path.join(self.temp_folder, "e9_built.vbs")
-        self.toolkit.set_properties({"active_project": aedt_file})
+        vbs_file_path = os.path.join(self.temp_folder, "e9_eMobility_IPM_2D_UT.vbs")
         self.toolkit.set_properties({"vbs_file_path": vbs_file_path})
+        self.toolkit.set_properties({"active_design": {"Maxwell2d": "Motor-CAD e9_eMobility_IPM_2D"}})
+        assert self.toolkit.init_aedt()
+        self.toolkit.release_aedt(True, False)
+        self.toolkit.set_properties({"active_project": aedt_file})
         assert not self.toolkit.init_aedt()
         self.toolkit.set_properties({"vbs_file_path": ""})
+        self.toolkit.set_properties({"active_design": {}})
         self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
         self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
         assert self.toolkit.init_aedt()
-        # add another test with simpler vbs to test run script
 
     def test_2_set_model(self):
         self.toolkit.set_properties({"MagnetsMaterial": "N30UH_139.999983577095C"})
