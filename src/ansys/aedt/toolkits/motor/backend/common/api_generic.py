@@ -606,6 +606,14 @@ class ToolkitGeneric(object):
                 logger.error("Desktop not released")
                 return False
 
+        if self.aedtapp:
+            try:
+                released = self.desktop.release_desktop(close_projects, close_on_exit)
+                self.aedtapp = None
+            except:
+                logger.error("Desktop not released")
+                return False
+
         if not released and close_projects and close_on_exit:
             if self.connect_aedt():
                 self.desktop.release_desktop(close_projects, close_on_exit)
