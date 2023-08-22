@@ -54,7 +54,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "Support",
-            "url": "https://github.com/pyansys/pyaedt-toolkit-template/discussions",
+            "url": "https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues",
             "icon": "fa fa-comment fa-fw",
         },
     ],
