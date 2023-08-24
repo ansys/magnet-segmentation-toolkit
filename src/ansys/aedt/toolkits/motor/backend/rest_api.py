@@ -193,6 +193,20 @@ def magnets_segmentation_call():
         return jsonify("Failure: Magnet losses unsuccessfully calculated."), 500
 
 
+@app.route("/apply_skew", methods=["POST"])
+def magnets_segmentation_call():
+    logger.info("[POST] /Apply skew.")
+
+    response = service.apply_skew()
+    if response:
+        return (
+            jsonify("Skew angle successfully applied."),
+            200,
+        )
+    else:
+        return jsonify("Failure: Apply skew angle was unsuccessful."), 500
+
+
 if __name__ == "__main__":
     app.debug = True
     server = MultithreadingServer()
