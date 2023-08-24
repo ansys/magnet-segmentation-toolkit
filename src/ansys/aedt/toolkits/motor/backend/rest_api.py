@@ -194,7 +194,7 @@ def magnets_segmentation_call():
 
 
 @app.route("/apply_skew", methods=["POST"])
-def magnets_segmentation_call():
+def apply_skew_call():
     logger.info("[POST] /Apply skew.")
 
     response = service.apply_skew()
