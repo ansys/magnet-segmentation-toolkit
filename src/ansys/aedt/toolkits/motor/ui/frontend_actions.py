@@ -11,7 +11,7 @@ from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
 os.environ["QT_API"] = "pyside6"
 
 # User inputs
-toolkit_title = "PyAEDT Toolkit Template Wizard"
+toolkit_title = "PyMotor-CAD PyAEDT Toolkit For Magnets Segmentation"
 
 # Backend URL and port
 
@@ -78,17 +78,20 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         self.aedt_version_combo.currentTextChanged.connect(self.find_process_ids)
 
         # Change designs
+        # project_aedt_combo DOESN'T EXIST ANYMORE - CHECK
         self.project_aedt_combo.currentTextChanged.connect(self.find_design_names)
 
         # Launch AEDT
         if default_properties["selected_process"]:
             self.launch_aedt()
 
+        # connect_aedtapp DOESN'T EXIST ANYMORE - CHECK
         self.connect_aedtapp.clicked.connect(self.launch_aedt)
 
         # Toolkit Settings
 
         # Create geometry
+        # create_geometry_buttom DOESN'T EXIST ANYMORE - CHECK
         self.create_geometry_buttom.clicked.connect(self.create_geometry_toolkit)
 
         # Save project
