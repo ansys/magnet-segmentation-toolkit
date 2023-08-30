@@ -9,6 +9,7 @@ from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
+from ansys.aedt.toolkits.motor.backend.common.api_generic import thread
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
@@ -52,9 +53,9 @@ class AedtFlow(ToolkitGeneric):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        if properties.vbs_file_path and properties.active_project:
-            logger.error("User can decide whether to run a .vbs script or open a Maxwell3D project at a time.")
-            return False
+        # if properties.vbs_file_path and properties.active_project:
+        #     logger.error("User can decide whether to run a .vbs script or open a Maxwell3D project at a time.")
+        #     return False
 
         if not self.aedt_connected()[0]:
             self.launch_aedt()
@@ -143,6 +144,7 @@ class AedtFlow(ToolkitGeneric):
         except:
             return False
 
+    @thread.launch_thread
     def segmentation(self):
         """Apply objects segmentation.
         It automatically segments rotor, rotor pockets and magnets.
@@ -173,6 +175,7 @@ class AedtFlow(ToolkitGeneric):
 
             self.maxwell["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
 
+            # If model is already skewed only magnets can be segmented
             if not properties.IsSkewed:
                 self.maxwell["RotorSlices"] = properties.RotorSlices
 
@@ -232,6 +235,7 @@ class AedtFlow(ToolkitGeneric):
         except:
             return False
 
+    @thread.launch_thread
     def apply_skew(self):
         """Apply skew to rotor slices.
 

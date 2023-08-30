@@ -78,21 +78,20 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         self.aedt_version_combo.currentTextChanged.connect(self.find_process_ids)
 
         # Change designs
-        # project_aedt_combo DOESN'T EXIST ANYMORE - CHECK
-        self.project_aedt_combo.currentTextChanged.connect(self.find_design_names)
+        self.projects_aedt_combo.currentTextChanged.connect(self.find_design_names)
 
         # Launch AEDT
         if default_properties["selected_process"]:
             self.launch_aedt()
 
-        # connect_aedtapp DOESN'T EXIST ANYMORE - CHECK
         self.connect_aedtapp.clicked.connect(self.launch_aedt)
 
-        # Toolkit Settings
+        # If is_skewed combo box is True only magnets can be segmented
+        # Rotor material, slices and skew angle are greyed out
+        self.is_skewed.currentTextChanged.connect(self.hide_options)
 
-        # Create geometry
-        # create_geometry_buttom DOESN'T EXIST ANYMORE - CHECK
-        self.create_geometry_buttom.clicked.connect(self.create_geometry_toolkit)
+        # Perform Segmentation
+        self.perform_segmentation.clicked.connect(self.apply_segmentation_and_skew)
 
         # Save project
         self.action_save_project.triggered.connect(lambda checked: self.save_project())

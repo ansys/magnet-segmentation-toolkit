@@ -160,23 +160,34 @@ class Ui_MainWindow(object):
 
         self.settings_layout.addLayout(self.project_path_layout)
 
-        self.horizontalLayout_5 = QHBoxLayout()
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.select_aedt_proj_layout = QHBoxLayout()
+        self.select_aedt_proj_layout.setObjectName(u"select_aedt_proj_layout")
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_5.addItem(self.horizontalSpacer_3)
+        self.select_aedt_proj_layout.addItem(self.horizontalSpacer_5)
 
         self.browse_project = QPushButton(self.AEDTsettings)
         self.browse_project.setObjectName(u"browse_project")
 
-        self.horizontalLayout_5.addWidget(self.browse_project)
+        self.select_aedt_proj_layout.addWidget(self.browse_project)
 
+
+        self.settings_layout.addLayout(self.select_aedt_proj_layout)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
 
         self.settings_layout.addLayout(self.horizontalLayout_5)
 
         self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.settings_layout.addItem(self.verticalSpacer_8)
+
+        self.connect_aedtapp = QPushButton(self.AEDTsettings)
+        self.connect_aedtapp.setObjectName(u"connect_aedtapp")
+        self.connect_aedtapp.setMinimumSize(QSize(0, 40))
+
+        self.settings_layout.addWidget(self.connect_aedtapp)
 
 
         self.horizontalLayout_25.addLayout(self.settings_layout)
@@ -204,15 +215,15 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer_7)
 
-        self.MCADFilePath = QLineEdit(self.MotorCADsettings)
-        self.MCADFilePath.setObjectName(u"MCADFilePath")
+        self.MCAD_file_path = QLineEdit(self.MotorCADsettings)
+        self.MCAD_file_path.setObjectName(u"MCAD_file_path")
         sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.MCADFilePath.sizePolicy().hasHeightForWidth())
-        self.MCADFilePath.setSizePolicy(sizePolicy2)
+        sizePolicy2.setHeightForWidth(self.MCAD_file_path.sizePolicy().hasHeightForWidth())
+        self.MCAD_file_path.setSizePolicy(sizePolicy2)
 
-        self.horizontalLayout.addWidget(self.MCADFilePath)
+        self.horizontalLayout.addWidget(self.MCAD_file_path)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout)
@@ -223,10 +234,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_8)
 
-        self.LoadMCADFilePath = QPushButton(self.MotorCADsettings)
-        self.LoadMCADFilePath.setObjectName(u"LoadMCADFilePath")
+        self.load_MCAD_file = QPushButton(self.MotorCADsettings)
+        self.load_MCAD_file.setObjectName(u"load_MCAD_file")
 
-        self.horizontalLayout_2.addWidget(self.LoadMCADFilePath)
+        self.horizontalLayout_2.addWidget(self.load_MCAD_file)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
@@ -465,6 +476,17 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addItem(self.verticalSpacer_2)
 
+        self.export_MCAD = QPushButton(self.MotorCADsettings)
+        self.export_MCAD.setObjectName(u"export_MCAD")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.export_MCAD.sizePolicy().hasHeightForWidth())
+        self.export_MCAD.setSizePolicy(sizePolicy4)
+        self.export_MCAD.setMinimumSize(QSize(0, 40))
+
+        self.verticalLayout_3.addWidget(self.export_MCAD)
+
 
         self.horizontalLayout_26.addLayout(self.verticalLayout_3)
 
@@ -479,6 +501,38 @@ class Ui_MainWindow(object):
         self.horizontalLayout_.setObjectName(u"horizontalLayout_")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.projects_label_2 = QLabel(self.Segmentation)
+        self.projects_label_2.setObjectName(u"projects_label_2")
+
+        self.horizontalLayout_3.addWidget(self.projects_label_2)
+
+        self.projects_aedt_combo = QComboBox(self.Segmentation)
+        self.projects_aedt_combo.addItem("")
+        self.projects_aedt_combo.setObjectName(u"projects_aedt_combo")
+
+        self.horizontalLayout_3.addWidget(self.projects_aedt_combo)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.designs_label = QLabel(self.Segmentation)
+        self.designs_label.setObjectName(u"designs_label")
+
+        self.horizontalLayout_6.addWidget(self.designs_label)
+
+        self.design_aedt_combo = QComboBox(self.Segmentation)
+        self.design_aedt_combo.addItem("")
+        self.design_aedt_combo.setObjectName(u"design_aedt_combo")
+
+        self.horizontalLayout_6.addWidget(self.design_aedt_combo)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_6)
+
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_12 = QLabel(self.Segmentation)
@@ -486,14 +540,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.label_12)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.is_skewed = QComboBox(self.Segmentation)
+        self.is_skewed.addItem("")
+        self.is_skewed.addItem("")
+        self.is_skewed.setObjectName(u"is_skewed")
 
-        self.horizontalLayout_4.addItem(self.horizontalSpacer_5)
-
-        self.IsSkewed = QLineEdit(self.Segmentation)
-        self.IsSkewed.setObjectName(u"IsSkewed")
-
-        self.horizontalLayout_4.addWidget(self.IsSkewed)
+        self.horizontalLayout_4.addWidget(self.is_skewed)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
@@ -509,10 +561,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addItem(self.horizontalSpacer_19)
 
-        self.MagnetsMaterial = QLineEdit(self.Segmentation)
-        self.MagnetsMaterial.setObjectName(u"MagnetsMaterial")
+        self.magnets_material = QLineEdit(self.Segmentation)
+        self.magnets_material.setObjectName(u"magnets_material")
 
-        self.horizontalLayout_7.addWidget(self.MagnetsMaterial)
+        self.horizontalLayout_7.addWidget(self.magnets_material)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_7)
@@ -528,10 +580,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
 
-        self.RotorMaterial = QLineEdit(self.Segmentation)
-        self.RotorMaterial.setObjectName(u"RotorMaterial")
+        self.rotor_material = QLineEdit(self.Segmentation)
+        self.rotor_material.setObjectName(u"rotor_material")
 
-        self.horizontalLayout_20.addWidget(self.RotorMaterial)
+        self.horizontalLayout_20.addWidget(self.rotor_material)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_20)
@@ -547,10 +599,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_21)
 
-        self.RotorSlices = QLineEdit(self.Segmentation)
-        self.RotorSlices.setObjectName(u"RotorSlices")
+        self.rotor_slices = QLineEdit(self.Segmentation)
+        self.rotor_slices.setObjectName(u"rotor_slices")
 
-        self.horizontalLayout_21.addWidget(self.RotorSlices)
+        self.horizontalLayout_21.addWidget(self.rotor_slices)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_21)
@@ -566,10 +618,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_22.addItem(self.horizontalSpacer_22)
 
-        self.MagnetSegmentsPerSlice = QLineEdit(self.Segmentation)
-        self.MagnetSegmentsPerSlice.setObjectName(u"MagnetSegmentsPerSlice")
+        self.magnet_segments_per_slice = QLineEdit(self.Segmentation)
+        self.magnet_segments_per_slice.setObjectName(u"magnet_segments_per_slice")
 
-        self.horizontalLayout_22.addWidget(self.MagnetSegmentsPerSlice)
+        self.horizontalLayout_22.addWidget(self.magnet_segments_per_slice)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_22)
@@ -585,10 +637,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_23.addItem(self.horizontalSpacer_23)
 
-        self.SkewAngle = QLineEdit(self.Segmentation)
-        self.SkewAngle.setObjectName(u"SkewAngle")
+        self.skew_angle = QLineEdit(self.Segmentation)
+        self.skew_angle.setObjectName(u"skew_angle")
 
-        self.horizontalLayout_23.addWidget(self.SkewAngle)
+        self.horizontalLayout_23.addWidget(self.skew_angle)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_23)
@@ -604,19 +656,19 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_24.addItem(self.horizontalSpacer_24)
 
-        self.SetupToAnalyze = QLineEdit(self.Segmentation)
-        self.SetupToAnalyze.setObjectName(u"SetupToAnalyze")
+        self.setup_to_analyze = QLineEdit(self.Segmentation)
+        self.setup_to_analyze.setObjectName(u"setup_to_analyze")
 
-        self.horizontalLayout_24.addWidget(self.SetupToAnalyze)
+        self.horizontalLayout_24.addWidget(self.setup_to_analyze)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_24)
 
-        self.PerformSegmentation = QPushButton(self.Segmentation)
-        self.PerformSegmentation.setObjectName(u"PerformSegmentation")
-        self.PerformSegmentation.setMinimumSize(QSize(0, 40))
+        self.perform_segmentation = QPushButton(self.Segmentation)
+        self.perform_segmentation.setObjectName(u"perform_segmentation")
+        self.perform_segmentation.setMinimumSize(QSize(0, 40))
 
-        self.verticalLayout_2.addWidget(self.PerformSegmentation)
+        self.verticalLayout_2.addWidget(self.perform_segmentation)
 
 
         self.horizontalLayout_.addLayout(self.verticalLayout_2)
@@ -670,7 +722,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(2)
+        self.toolkit_tab.setCurrentIndex(0)
+        self.projects_aedt_combo.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -693,9 +746,10 @@ class Ui_MainWindow(object):
 
         self.project_path_label.setText(QCoreApplication.translate("MainWindow", u"Project Name", None))
         self.browse_project.setText(QCoreApplication.translate("MainWindow", u"Select aedt project", None))
+        self.connect_aedtapp.setText(QCoreApplication.translate("MainWindow", u"Launch AEDT", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.AEDTsettings), QCoreApplication.translate("MainWindow", u" AEDT Settings ", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Motor-CAD file path:", None))
-        self.LoadMCADFilePath.setText(QCoreApplication.translate("MainWindow", u"Load", None))
+        self.load_MCAD_file.setText(QCoreApplication.translate("MainWindow", u"Load", None))
         self.EmagSettings.setText(QCoreApplication.translate("MainWindow", u"E-mag Settings", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Number Of Cuboids", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Torque Points Per Cycle", None))
@@ -708,15 +762,25 @@ class Ui_MainWindow(object):
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Max Temp. Stator Winding (\u00b0C)", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Max Temp. Magnet (\u00b0C)", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"OP Speed (rpm)", None))
+        self.export_MCAD.setText(QCoreApplication.translate("MainWindow", u"Export Motor-CAD file", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.MotorCADsettings), QCoreApplication.translate("MainWindow", u"Motor-CAD Settings", None))
+        self.projects_label_2.setText(QCoreApplication.translate("MainWindow", u"Projects", None))
+        self.projects_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No project", None))
+
+        self.designs_label.setText(QCoreApplication.translate("MainWindow", u"Designs", None))
+        self.design_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No design", None))
+
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Is Skewed", None))
+        self.is_skewed.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
+        self.is_skewed.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
+
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Magnets Material", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Rotor Material", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Rotor Slices", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Magnet Segments Per Slice", None))
-        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Setup To Analyze", None))
-        self.PerformSegmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
+        self.perform_segmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Segmentation), QCoreApplication.translate("MainWindow", u"Segmentation", None))
         self.top_menu.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi

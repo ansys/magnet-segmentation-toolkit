@@ -190,7 +190,7 @@ def magnets_segmentation_call():
             200,
         )
     else:
-        return jsonify("Failure: Magnet losses unsuccessfully calculated."), 500
+        return jsonify("Failure: Magnets segmentation failed."), 500
 
 
 @app.route("/apply_skew", methods=["POST"])

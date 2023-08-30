@@ -81,7 +81,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="AEDTsettings">
           <attribute name="title">
@@ -211,9 +211,9 @@
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <layout class="QHBoxLayout" name="select_aedt_proj_layout">
                <item>
-                <spacer name="horizontalSpacer_3">
+                <spacer name="horizontalSpacer_5">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
@@ -235,6 +235,9 @@
               </layout>
              </item>
              <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_5"/>
+             </item>
+             <item>
               <spacer name="verticalSpacer_8">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -246,6 +249,19 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="connect_aedtapp">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Launch AEDT</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -309,7 +325,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="MCADFilePath">
+                <widget class="QLineEdit" name="MCAD_file_path">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -336,7 +352,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="LoadMCADFilePath">
+                <widget class="QPushButton" name="load_MCAD_file">
                  <property name="text">
                   <string>Load</string>
                  </property>
@@ -712,6 +728,25 @@
                </property>
               </spacer>
              </item>
+             <item>
+              <widget class="QPushButton" name="export_MCAD">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Export Motor-CAD file</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -740,6 +775,49 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="projects_label_2">
+                 <property name="text">
+                  <string>Projects</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="projects_aedt_combo">
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>No project</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="designs_label">
+                 <property name="text">
+                  <string>Designs</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="design_aedt_combo">
+                 <item>
+                  <property name="text">
+                   <string>No design</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
                 <widget class="QLabel" name="label_12">
@@ -749,20 +827,18 @@
                 </widget>
                </item>
                <item>
-                <spacer name="horizontalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="IsSkewed"/>
+                <widget class="QComboBox" name="is_skewed">
+                 <item>
+                  <property name="text">
+                   <string>False</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>True</string>
+                  </property>
+                 </item>
+                </widget>
                </item>
               </layout>
              </item>
@@ -789,7 +865,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="MagnetsMaterial"/>
+                <widget class="QLineEdit" name="magnets_material"/>
                </item>
               </layout>
              </item>
@@ -816,7 +892,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="RotorMaterial"/>
+                <widget class="QLineEdit" name="rotor_material"/>
                </item>
               </layout>
              </item>
@@ -843,7 +919,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="RotorSlices"/>
+                <widget class="QLineEdit" name="rotor_slices"/>
                </item>
               </layout>
              </item>
@@ -870,7 +946,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="MagnetSegmentsPerSlice"/>
+                <widget class="QLineEdit" name="magnet_segments_per_slice"/>
                </item>
               </layout>
              </item>
@@ -879,7 +955,7 @@
                <item>
                 <widget class="QLabel" name="label_17">
                  <property name="text">
-                  <string>Skew Angle</string>
+                  <string>Skew Angle (deg)</string>
                  </property>
                 </widget>
                </item>
@@ -897,7 +973,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="SkewAngle"/>
+                <widget class="QLineEdit" name="skew_angle"/>
                </item>
               </layout>
              </item>
@@ -924,12 +1000,12 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="SetupToAnalyze"/>
+                <widget class="QLineEdit" name="setup_to_analyze"/>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="QPushButton" name="PerformSegmentation">
+              <widget class="QPushButton" name="perform_segmentation">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
