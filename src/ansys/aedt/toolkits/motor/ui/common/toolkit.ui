@@ -81,7 +81,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="AEDTsettings">
           <attribute name="title">
@@ -252,6 +252,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="connect_aedtapp">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -730,6 +733,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="export_MCAD">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1006,6 +1012,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="perform_segmentation">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>0</width>

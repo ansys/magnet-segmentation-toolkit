@@ -185,6 +185,7 @@ class Ui_MainWindow(object):
 
         self.connect_aedtapp = QPushButton(self.AEDTsettings)
         self.connect_aedtapp.setObjectName(u"connect_aedtapp")
+        self.connect_aedtapp.setEnabled(False)
         self.connect_aedtapp.setMinimumSize(QSize(0, 40))
 
         self.settings_layout.addWidget(self.connect_aedtapp)
@@ -478,6 +479,7 @@ class Ui_MainWindow(object):
 
         self.export_MCAD = QPushButton(self.MotorCADsettings)
         self.export_MCAD.setObjectName(u"export_MCAD")
+        self.export_MCAD.setEnabled(False)
         sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
@@ -666,6 +668,7 @@ class Ui_MainWindow(object):
 
         self.perform_segmentation = QPushButton(self.Segmentation)
         self.perform_segmentation.setObjectName(u"perform_segmentation")
+        self.perform_segmentation.setEnabled(False)
         self.perform_segmentation.setMinimumSize(QSize(0, 40))
 
         self.verticalLayout_2.addWidget(self.perform_segmentation)
@@ -722,7 +725,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(0)
+        self.toolkit_tab.setCurrentIndex(1)
         self.projects_aedt_combo.setCurrentIndex(0)
 
 

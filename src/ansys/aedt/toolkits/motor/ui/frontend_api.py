@@ -30,21 +30,43 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         self.set_properties(properties)
 
         self.update_progress(0)
-        init_response = requests.post(self.url + "/init_aedt")
-        if init_response.ok:
-            self.update_progress(25)
+        # init_response = requests.post(self.url + "/init_aedt")
+        # if init_response.ok:
+        # Start the thread
+        self.running = True
+        self.start()
+        msg = "Connect toolkit to AEDT.."
+        logger.debug(msg)
+        segmentation_response = requests.post(self.url + "/apply_segmentation")
+        # needed to update the AEDT file
+        if segmentation_response.ok:
+            save_response = requests.post(self.url + "/save_project", json=properties["active_project"])
+        # response = requests.post(self.url + "/save_project")
+        # requests.post(self.url, "/save_project")
+        if segmentation_response.ok and save_response.ok:
+            self.update_progress(50)
             # Start the thread
             self.running = True
             self.start()
-            msg = "Connect toolkit to AEDT.."
+            msg = "Apply segmentation call launched"
             logger.debug(msg)
-            segmentation_response = requests.post(self.url + "/apply_segmentation")
-            if segmentation_response.ok:
+            self.write_log_line(msg)
+        else:
+            msg = f"Failed backend call: {self.url}"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            self.update_progress(100)
+
+        if not properties["IsSkewed"] and float(properties["SkewAngle"]):
+            self.update_progress(0)
+            response = requests.post(self.url + "/apply_skew")
+
+            if response.ok:
                 self.update_progress(50)
                 # Start the thread
                 self.running = True
                 self.start()
-                msg = "Apply segmentation call launched"
+                msg = "Apply skew call launched"
                 logger.debug(msg)
                 self.write_log_line(msg)
             else:
@@ -52,24 +74,6 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
                 logger.debug(msg)
                 self.write_log_line(msg)
                 self.update_progress(100)
-
-            if not properties["IsSkewed"] and float(properties["SkewAngle"]):
-                self.update_progress(0)
-                response = requests.post(self.url + "/apply_skew")
-
-                if response.ok:
-                    self.update_progress(50)
-                    # Start the thread
-                    self.running = True
-                    self.start()
-                    msg = "Apply skew call launched"
-                    logger.debug(msg)
-                    self.write_log_line(msg)
-                else:
-                    msg = f"Failed backend call: {self.url}"
-                    logger.debug(msg)
-                    self.write_log_line(msg)
-                    self.update_progress(100)
         else:
             msg = f"Failed backend call: {self.url}"
             logger.debug(msg)

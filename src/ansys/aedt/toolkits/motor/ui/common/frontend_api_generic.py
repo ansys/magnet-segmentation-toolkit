@@ -144,6 +144,8 @@ class FrontendGeneric(object):
             properties = self.get_properties()
             properties["active_project"] = fileName
             self.set_properties(properties)
+            self.connect_aedtapp.setEnabled(True)
+            self.perform_segmentation.setEnabled(True)
 
     def find_process_ids(self):
         self.process_id_combo.clear()
@@ -177,7 +179,7 @@ class FrontendGeneric(object):
             try:
                 # Modify selected version
                 properties = self.get_properties()
-                properties["active_project"] = self.projects_aedt_combo.currentText()
+                # properties["active_project"] = self.projects_aedt_combo.currentText()
                 self.set_properties(properties)
 
                 response = requests.get(self.url + "/get_design_names")

@@ -364,6 +364,11 @@ class ToolkitGeneric(object):
             if properties.active_project:
                 if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
                     self.open_project(os.path.abspath(properties.active_project))
+            elif properties.vbs_file_path:
+                self.desktop.odesktop.RunScript(properties.vbs_file_path)
+                self._save_project_info()
+                self.desktop.release_desktop(False, False)
+                self.desktop = None
 
             # Save AEDT session properties
             if use_grpc:
@@ -684,6 +689,8 @@ class ToolkitGeneric(object):
                 new_project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
                 properties.design_list[new_project_name] = properties.design_list[old_project_name]
                 del properties.design_list[old_project_name]
+            else:
+                self.aedtapp.save_project()
             self.aedtapp.release_desktop(False, False)
             logger.debug("Project saved: {}".format(project_path))
             return True
