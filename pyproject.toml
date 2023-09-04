@@ -24,7 +24,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "build==0.10.0",
+    "build==1.0.0",
     "twine==4.0.2",
     "pyaedt @ git+https://github.com/ansys/pyaedt.git",
     "ansys-motorcad-core",
@@ -37,7 +37,7 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "pytest==7.4.0",
+    "pytest==7.4.1",
     "pytest-cov==4.1.0",
 ]
 doc = [
@@ -52,7 +52,7 @@ doc = [
     "sphinx-autodoc-typehints==1.24.0",
     "sphinx-gallery==0.14.0",
     "sphinx-notfound-page==1.0.0",
-    "nbsphinx==0.9.2",
+    "nbsphinx==0.9.3",
 ]
 
 [tool.flit.module]
