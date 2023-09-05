@@ -132,17 +132,6 @@ def close_call():
         return jsonify("Failure: Motor-CAD model unsuccessfully saved."), 500
 
 
-@app.route("/init_aedt", methods=["POST"])
-def init_aedt_call():
-    logger.info("[POST] /Initialize AEDT.")
-
-    response = service.init_aedt()
-    if response:
-        return jsonify("AEDT initialized successfully."), 200
-    else:
-        return jsonify("Failure: AEDT unsuccessfully initialized."), 500
-
-
 @app.route("/set_aedt_model", methods=["POST"])
 def set_aedt_model_call():
     logger.info("[POST] /Set AEDT model.")
@@ -152,6 +141,17 @@ def set_aedt_model_call():
         return jsonify("AEDT model set successfully."), 200
     else:
         return jsonify("Failure: AEDT model unsuccessfully set."), 500
+
+
+@app.route("/get_project_materials", methods=["GET"])
+def get_materials_call():
+    logger.info("[GET] /Get Project Materials.")
+
+    response = service._get_project_materials()
+    if response:
+        return response
+    else:
+        return jsonify("Get project material failed."), 500
 
 
 @app.route("/analyze_model", methods=["POST"])

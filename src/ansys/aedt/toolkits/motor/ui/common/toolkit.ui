@@ -81,7 +81,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="AEDTsettings">
           <attribute name="title">
@@ -858,20 +858,7 @@
                 </widget>
                </item>
                <item>
-                <spacer name="horizontalSpacer_19">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="magnets_material"/>
+                <widget class="QComboBox" name="magnets_material"/>
                </item>
               </layout>
              </item>
@@ -885,20 +872,7 @@
                 </widget>
                </item>
                <item>
-                <spacer name="horizontalSpacer_20">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="rotor_material"/>
+                <widget class="QComboBox" name="rotor_material"/>
                </item>
               </layout>
              </item>

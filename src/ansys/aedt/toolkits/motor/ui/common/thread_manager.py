@@ -47,6 +47,12 @@ class FrontendThread(QtCore.QThread):
                                 self.design_aedt_combo.setCurrentIndex(cont)
                             cont += 1
 
+                if "magnets_material" in self.__dir__() and "rotor_material" in self.__dir__():
+                    mats = self.get_materials()
+                    for mat in mats:
+                        self.magnets_material.addItem(mat)
+                        self.rotor_material.addItem(mat)
+
                 # Emit the status_changed signal if the status changes
                 self.status_changed.emit(self.running)
 

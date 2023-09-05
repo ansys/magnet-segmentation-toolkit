@@ -20,29 +20,29 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
 
         properties = self.get_properties()
         properties["IsSkewed"] = _to_boolean(self.is_skewed.currentText())
-        properties["MagnetsMaterial"] = self.magnets_material.text()
-        properties["RotorMaterial"] = self.rotor_material.text()
+        properties["MagnetsMaterial"] = self.magnets_material.currentText()
+        properties["RotorMaterial"] = self.rotor_material.currentText()
         properties["RotorSlices"] = self.rotor_slices.text()
         properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
         properties["SkewAngle"] = self.skew_angle.text()
         properties["SetupToAnalyze"] = self.setup_to_analyze.text()
 
+        # set mat prop
+        # properties["MagnetsMaterial"] = self.magnets_material.gettext or index
+        # same goes for rotor
+
         self.set_properties(properties)
 
         self.update_progress(0)
-        # init_response = requests.post(self.url + "/init_aedt")
-        # if init_response.ok:
         # Start the thread
         self.running = True
         self.start()
         msg = "Connect toolkit to AEDT.."
         logger.debug(msg)
         segmentation_response = requests.post(self.url + "/apply_segmentation")
-        # needed to update the AEDT file
         if segmentation_response.ok:
+            # needed to update the AEDT file
             save_response = requests.post(self.url + "/save_project", json=properties["active_project"])
-        # response = requests.post(self.url + "/save_project")
-        # requests.post(self.url, "/save_project")
         if segmentation_response.ok and save_response.ok:
             self.update_progress(50)
             # Start the thread
@@ -89,3 +89,17 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             self.rotor_material.setEnabled(True)
             self.rotor_slices.setEnabled(True)
             self.skew_angle.setEnabled(True)
+
+    def get_materials(self):
+        response = requests.get(self.url + "/get_status")
+
+        if response.ok and response.json() == "Backend running":
+            self.write_log_line("Please wait, toolkit running")
+        elif response.ok and response.json() == "Backend free":
+            self.update_progress(0)
+            response = requests.get(self.url + "/health")
+            if response.ok and response.json() == "Toolkit not connected to AEDT":
+                properties = self.get_properties()
+                response = requests.get(self.url + "/get_project_materials")
+                if response.ok:
+                    return response.json()

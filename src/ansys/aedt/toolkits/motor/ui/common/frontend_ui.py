@@ -559,11 +559,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addWidget(self.label_13)
 
-        self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_7.addItem(self.horizontalSpacer_19)
-
-        self.magnets_material = QLineEdit(self.Segmentation)
+        self.magnets_material = QComboBox(self.Segmentation)
         self.magnets_material.setObjectName(u"magnets_material")
 
         self.horizontalLayout_7.addWidget(self.magnets_material)
@@ -578,11 +574,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20.addWidget(self.label_14)
 
-        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
-
-        self.rotor_material = QLineEdit(self.Segmentation)
+        self.rotor_material = QComboBox(self.Segmentation)
         self.rotor_material.setObjectName(u"rotor_material")
 
         self.horizontalLayout_20.addWidget(self.rotor_material)
@@ -725,7 +717,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(1)
+        self.toolkit_tab.setCurrentIndex(2)
         self.projects_aedt_combo.setCurrentIndex(0)
 
 

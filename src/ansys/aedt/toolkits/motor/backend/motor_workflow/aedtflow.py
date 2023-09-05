@@ -39,46 +39,6 @@ class AedtFlow(ToolkitGeneric):
     def __init__(self):
         ToolkitGeneric.__init__(self)
 
-    # def init_aedt(self):
-    #     """Initialize Maxwell.
-    #
-    #     If the .vbs script is provided it automatically runs it.
-    #     If a Maxwell3D instance is provided it attaches to it.
-    #
-    #     Returns
-    #     -------
-    #     bool
-    #         ``True`` when successful, ``False`` when failed.
-    #     """
-    # if properties.vbs_file_path and properties.active_project:
-    #     logger.error("User can decide whether to run a .vbs script or open a Maxwell3D project at a time.")
-    #     return False
-
-    # if not self.aedt_connected()[0]:
-    #     self.launch_aedt()
-    #     response = self.get_thread_status()
-    #     while response[0] == 0:
-    #         time.sleep(1)
-    #         response = self.get_thread_status()
-    #     self.connect_aedt()
-    # elif self.aedt_connected()[0] and len(list(self.desktop.project_list())) == 0:
-    #     if properties.active_project:
-    #         if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
-    #             self.open_project(os.path.abspath(properties.active_project))
-    #     elif properties.vbs_file_path:
-    #         self.desktop.odesktop.RunScript(properties.vbs_file_path)
-    #         self._save_project_info()
-    #         self.desktop.release_desktop(False, False)
-    #         self.desktop = None
-
-    # if properties.design_list:
-    #     self.connect_design(app_name=list(properties.active_design.keys())[0])
-    #     self.aedtapp = self.aedtapp
-    # else:
-    #     logger.error("No design in specified project.")
-    #     return False
-    # return True
-
     def set_model(self):
         """Set geometry model.
 
@@ -372,3 +332,15 @@ class AedtFlow(ToolkitGeneric):
         # cs.props["OriginY"] = "{}mm*sin({})+{}mm*cos({})".format(str(x), str(rad_skew_angle), str(y),
         #                                                          str(rad_skew_angle))
         # cs.props["Phi"] = "{}deg+SkewAngle".format(str(cs.props["Phi"]))
+
+    @thread.launch_thread
+    def _get_project_materials(self):
+        """Get the project materials."""
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        mats = self.aedtapp.materials.conductors + self.aedtapp.materials.dielectrics
+
+        self.aedtapp.release_desktop(False, False)
+        self.aedtapp = None
+
+        return mats
