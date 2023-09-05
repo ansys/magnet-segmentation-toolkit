@@ -7,7 +7,6 @@ from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
-from ansys.aedt.toolkits.motor.backend.common.api_generic import thread
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
@@ -101,7 +100,7 @@ class AedtFlow(ToolkitGeneric):
         except:
             return False
 
-    @thread.launch_thread
+    # @thread.launch_thread
     def segmentation(self):
         """Apply objects segmentation.
         It automatically segments rotor, rotor pockets and magnets.
@@ -194,13 +193,14 @@ class AedtFlow(ToolkitGeneric):
                 if isinstance(cs, CoordinateSystem):
                     self._update_cs(cs)
 
+            self.aedtapp.save_project()
             self.aedtapp.release_desktop(False, False)
             self.aedtapp = None
             return True
         except:
             return False
 
-    @thread.launch_thread
+    # @thread.launch_thread
     def apply_skew(self):
         """Apply skew to rotor slices.
 
@@ -333,7 +333,7 @@ class AedtFlow(ToolkitGeneric):
         #                                                          str(rad_skew_angle))
         # cs.props["Phi"] = "{}deg+SkewAngle".format(str(cs.props["Phi"]))
 
-    @thread.launch_thread
+    # @thread.launch_thread
     def _get_project_materials(self):
         """Get the project materials."""
         self.connect_design(app_name=list(properties.active_design.keys())[0])

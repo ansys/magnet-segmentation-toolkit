@@ -11,7 +11,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         FrontendThread.__init__(self)
         FrontendGeneric.__init__(self)
 
-    def apply_segmentation_and_skew(self):
+    def apply_segmentation(self):
         if self.backend_busy():
             msg = "Toolkit running"
             logger.debug(msg)
@@ -26,59 +26,59 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
         properties["SkewAngle"] = self.skew_angle.text()
         properties["SetupToAnalyze"] = self.setup_to_analyze.text()
-
-        # set mat prop
-        # properties["MagnetsMaterial"] = self.magnets_material.gettext or index
-        # same goes for rotor
-
         self.set_properties(properties)
 
         self.update_progress(0)
-        # Start the thread
-        self.running = True
-        self.start()
-        msg = "Connect toolkit to AEDT.."
-        logger.debug(msg)
         segmentation_response = requests.post(self.url + "/apply_segmentation")
         if segmentation_response.ok:
-            # needed to update the AEDT file
-            save_response = requests.post(self.url + "/save_project", json=properties["active_project"])
-        if segmentation_response.ok and save_response.ok:
-            self.update_progress(50)
+            # self.update_progress(50)
             # Start the thread
-            self.running = True
-            self.start()
-            msg = "Apply segmentation call launched"
+            # self.running = True
+            # self.start()
+            msg = "Apply segmentation call successful"
             logger.debug(msg)
             self.write_log_line(msg)
+            self.skew.setEnabled(True)
+            self.update_progress(100)
         else:
             msg = f"Failed backend call: {self.url}"
             logger.debug(msg)
             self.write_log_line(msg)
             self.update_progress(100)
+            return
 
+    def apply_skew(self):
+        if self.backend_busy():
+            msg = "Toolkit running"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            return
+
+        properties = self.get_properties()
         if not properties["IsSkewed"] and float(properties["SkewAngle"]):
             self.update_progress(0)
             response = requests.post(self.url + "/apply_skew")
-
             if response.ok:
-                self.update_progress(50)
+                # self.update_progress(50)
                 # Start the thread
-                self.running = True
-                self.start()
+                # self.running = True
+                # self.start()
                 msg = "Apply skew call launched"
                 logger.debug(msg)
                 self.write_log_line(msg)
+                self.update_progress(100)
             else:
                 msg = f"Failed backend call: {self.url}"
                 logger.debug(msg)
                 self.write_log_line(msg)
                 self.update_progress(100)
+                return
         else:
             msg = f"Failed backend call: {self.url}"
             logger.debug(msg)
             self.write_log_line(msg)
             self.update_progress(100)
+            return
 
     def hide_options(self):
         if self.is_skewed.currentText() == "True":

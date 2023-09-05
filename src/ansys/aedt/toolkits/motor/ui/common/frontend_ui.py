@@ -665,6 +665,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.perform_segmentation)
 
+        self.skew = QPushButton(self.Segmentation)
+        self.skew.setObjectName(u"skew")
+        self.skew.setEnabled(False)
+        self.skew.setMinimumSize(QSize(0, 40))
+
+        self.verticalLayout_2.addWidget(self.skew)
+
 
         self.horizontalLayout_.addLayout(self.verticalLayout_2)
 
@@ -776,6 +783,7 @@ class Ui_MainWindow(object):
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Setup To Analyze", None))
         self.perform_segmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
+        self.skew.setText(QCoreApplication.translate("MainWindow", u"Apply Skew", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Segmentation), QCoreApplication.translate("MainWindow", u"Segmentation", None))
         self.top_menu.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi

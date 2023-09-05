@@ -91,7 +91,10 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         self.is_skewed.currentTextChanged.connect(self.hide_options)
 
         # Perform Segmentation
-        self.perform_segmentation.clicked.connect(self.apply_segmentation_and_skew)
+        self.perform_segmentation.clicked.connect(self.apply_segmentation)
+
+        # Apply Skew
+        self.skew.clicked.connect(self.apply_skew)
 
         # Save project
         self.action_save_project.triggered.connect(lambda checked: self.save_project())
