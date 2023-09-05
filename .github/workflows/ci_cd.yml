@@ -67,7 +67,7 @@ jobs:
     runs-on: [ self-hosted, motorcad, toolkits, Windows ]
     needs: [doc-style]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Ensure Motor-CAD not open
         run: |
@@ -115,7 +115,7 @@ jobs:
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
     needs: [doc-style]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
