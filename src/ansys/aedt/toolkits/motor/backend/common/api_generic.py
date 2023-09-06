@@ -298,7 +298,7 @@ class ToolkitGeneric(object):
 
         return design_list
 
-    @thread.launch_thread
+    # @thread.launch_thread
     def launch_aedt(self):
         """Launch AEDT.
 
@@ -364,6 +364,8 @@ class ToolkitGeneric(object):
             if properties.active_project:
                 if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
                     self.open_project(os.path.abspath(properties.active_project))
+            elif properties.vbs_file_path:
+                self.desktop.odesktop.RunScript(properties.vbs_file_path)
 
             # Save AEDT session properties
             if use_grpc:
@@ -656,6 +658,12 @@ class ToolkitGeneric(object):
     def save_project(self, project_path=None):
         """Save project. It uses the properties to get the project path. This method is launched in a thread.
 
+        Parameters
+        ----------
+        project_path : str, optional
+            Path of the AEDT project to save.
+            The default value is ``None`` in which case the current project will be overwritten.
+
         Returns
         -------
         bool
@@ -674,7 +682,7 @@ class ToolkitGeneric(object):
         >>> service.save_project()
         """
         if self.connect_design():
-            if properties.active_project != project_path:
+            if project_path and properties.active_project != project_path:
                 old_project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
                 self.aedtapp.save_project(project_file=os.path.abspath(project_path))
                 index = properties.project_list.index(properties.active_project)
@@ -684,6 +692,8 @@ class ToolkitGeneric(object):
                 new_project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
                 properties.design_list[new_project_name] = properties.design_list[old_project_name]
                 del properties.design_list[old_project_name]
+            else:
+                self.aedtapp.save_project()
             self.aedtapp.release_desktop(False, False)
             logger.debug("Project saved: {}".format(project_path))
             return True

@@ -11,7 +11,7 @@ from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
 os.environ["QT_API"] = "pyside6"
 
 # User inputs
-toolkit_title = "PyAEDT Toolkit Template Wizard"
+toolkit_title = "PyMotor-CAD PyAEDT Toolkit For Magnets Segmentation"
 
 # Backend URL and port
 
@@ -78,7 +78,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         self.aedt_version_combo.currentTextChanged.connect(self.find_process_ids)
 
         # Change designs
-        self.project_aedt_combo.currentTextChanged.connect(self.find_design_names)
+        self.projects_aedt_combo.currentTextChanged.connect(self.find_design_names)
 
         # Launch AEDT
         if default_properties["selected_process"]:
@@ -86,10 +86,15 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
 
         self.connect_aedtapp.clicked.connect(self.launch_aedt)
 
-        # Toolkit Settings
+        # If is_skewed combo box is True only magnets can be segmented
+        # Rotor material, slices and skew angle are greyed out
+        self.is_skewed.currentTextChanged.connect(self.hide_options)
 
-        # Create geometry
-        self.create_geometry_buttom.clicked.connect(self.create_geometry_toolkit)
+        # Perform Segmentation
+        self.perform_segmentation.clicked.connect(self.apply_segmentation)
+
+        # Apply Skew
+        self.skew.clicked.connect(self.apply_skew)
 
         # Save project
         self.action_save_project.triggered.connect(lambda checked: self.save_project())
