@@ -38,26 +38,26 @@ class AedtFlow(ToolkitGeneric):
     def __init__(self):
         ToolkitGeneric.__init__(self)
 
-    def set_model(self):
-        """Set geometry model.
-
-        Set axial length, boundary conditions and remove from model unclassified objects.
-
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed.
-        """
-        if not self.aedtapp:
-            logger.error("AEDT not initialized")
-            return False
-
-        self.aedtapp["RotorSlices"] = properties.RotorSlices
-        self.aedtapp["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
-        self.aedtapp["SkewAngle"] = properties.SkewAngle
-        for obj in self.aedtapp.modeler.unclassified_objects:
-            obj.model = False
-        return True
+    # def set_model(self):
+    #     """Set geometry model.
+    #
+    #     Set axial length, boundary conditions and remove from model unclassified objects.
+    #
+    #     Returns
+    #     -------
+    #     bool
+    #         ``True`` when successful, ``False`` when failed.
+    #     """
+    #     if not self.aedtapp:
+    #         logger.error("AEDT not initialized")
+    #         return False
+    #
+    #     self.aedtapp["RotorSlices"] = properties.RotorSlices
+    #     self.aedtapp["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
+    #     self.aedtapp["SkewAngle"] = properties.SkewAngle
+    #     for obj in self.aedtapp.modeler.unclassified_objects:
+    #         obj.model = False
+    #     return True
 
     def analyze_model(self):
         """Analyze model.
@@ -67,12 +67,12 @@ class AedtFlow(ToolkitGeneric):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        if not self.aedtapp:
-            logger.error("AEDT not initialized")
-            return False
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
 
         try:
             self.aedtapp.analyze_setup(properties.SetupToAnalyze)
+            self.aedtapp.release_desktop(False, False)
+            self.aedtapp = None
             return True
         except:
             return False
@@ -85,9 +85,7 @@ class AedtFlow(ToolkitGeneric):
         dict
             Average values + units for reports specified in json file.
         """
-        if not self.aedtapp:
-            logger.error("AEDT not initialized")
-            return False
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
 
         try:
             report_dict = {}
@@ -96,6 +94,8 @@ class AedtFlow(ToolkitGeneric):
             avg = sum(data.data_magnitude()) / len(data.data_magnitude())
             avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
             report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
+            self.aedtapp.release_desktop(False, False)
+            self.aedtapp = None
             return True, report_dict
         except:
             return False
@@ -112,11 +112,11 @@ class AedtFlow(ToolkitGeneric):
         """
         self.connect_design(app_name=list(properties.active_design.keys())[0])
 
+        for obj in self.aedtapp.modeler.unclassified_objects:
+            obj.model = False
+
         if not self.aedtapp:
             logger.error("AEDT not initialized")
-            return False
-        if properties.IsSkewed is None:
-            logger.error("``IsSkewed`` property has to be set to perform segmentation.")
             return False
 
         self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
@@ -215,6 +215,8 @@ class AedtFlow(ToolkitGeneric):
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
             rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)
             # get dependent and independent boundaries
+            # TO CHECK: indep and dep are not always assigned to sheets but to region's faces
+            # implement this check and get either the face or the sheet to split -> check the ID to get object
             bound_indep_id = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"][0].props[
                 "Objects"
             ][0]

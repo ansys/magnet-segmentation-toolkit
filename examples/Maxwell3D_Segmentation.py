@@ -41,9 +41,7 @@ toolkit = Toolkit()
 # Initialize Properties dictionary.
 
 data = {
-    "selected_process": 19676,
     "aedt_version": "2023.1",
-    "use_grpc": False,
     "active_project": active_project,
     "active_design": {"Maxwell3d": active_design},
     "design_list": {project_name: [{"Maxwell3d": active_design}]},
@@ -64,13 +62,7 @@ toolkit.set_properties(data)
 # Initialize AEDT
 # ~~~~~~~~~~~~~~~
 # Initialize AEDT.
-toolkit.init_aedt()
-
-#################################################################################
-# Set AEDT project settings
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set AEDT project settings.
-toolkit.set_model()
+toolkit.launch_aedt()
 
 #################################################################################
 # Apply segmentation

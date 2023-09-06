@@ -298,7 +298,7 @@ class ToolkitGeneric(object):
 
         return design_list
 
-    @thread.launch_thread
+    # @thread.launch_thread
     def launch_aedt(self):
         """Launch AEDT.
 
@@ -366,9 +366,6 @@ class ToolkitGeneric(object):
                     self.open_project(os.path.abspath(properties.active_project))
             elif properties.vbs_file_path:
                 self.desktop.odesktop.RunScript(properties.vbs_file_path)
-                self._save_project_info()
-                self.desktop.release_desktop(False, False)
-                self.desktop = None
 
             # Save AEDT session properties
             if use_grpc:

@@ -50,9 +50,9 @@ class TestClass(object):
         assert self.toolkit.mcad.get_variable("NumberOfCuboids") == 6
 
     def test_5_lab_performance_calculation(self):
-        self.toolkit.set_properties({"LAB_settings": {"MaxSpeed": 12000, "SpeedStep": 1000, "SpeedMin": 0}})
+        self.toolkit.set_properties({"LAB_settings": {"MaxSpeed": 2000, "SpeedStep": 1000, "SpeedMin": 0}})
         self.toolkit.lab_performance_calculation()
-        assert self.toolkit.mcad.get_variable("SpeedMax_MotorLAB") == 12000
+        assert self.toolkit.mcad.get_variable("SpeedMax_MotorLAB") == 2000
         assert self.toolkit.mcad.get_variable("Speedinc_MotorLAB") == 1000
         assert self.toolkit.mcad.get_variable("SpeedMin_MotorLAB") == 0
 

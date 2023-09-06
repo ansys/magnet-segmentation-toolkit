@@ -79,6 +79,7 @@ class BasisTest(object):
         self.toolkit = toolkit
 
     def my_teardown(self):
+        self.toolkit.connect_aedt()
         if self.toolkit.desktop:
             try:
                 oDesktop = self._main.oDesktop
@@ -95,12 +96,6 @@ class BasisTest(object):
 
         logger.remove_all_project_file_logger()
         shutil.rmtree(self.local_scratch.path, ignore_errors=True)
-
-    def add_app(self):
-        if "oDesktop" not in dir(self._main):
-            self.toolkit.connect_aedt()
-            self.toolkit.desktop.disable_autosave()
-        return self.toolkit
 
     def teardown_method(self):
         """
