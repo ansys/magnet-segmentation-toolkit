@@ -1,5 +1,4 @@
-import os
-
+from pyaedt.generic.general_methods import _to_boolean
 import requests
 
 from ansys.aedt.toolkits.motor.ui.common.frontend_api_generic import FrontendGeneric
@@ -12,7 +11,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         FrontendThread.__init__(self)
         FrontendGeneric.__init__(self)
 
-    def create_geometry_toolkit(self):
+    def apply_segmentation(self):
         if self.backend_busy():
             msg = "Toolkit running"
             logger.debug(msg)
@@ -20,36 +19,87 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             return
 
         properties = self.get_properties()
-        properties["multiplier"] = float(self.multiplier.text())
-        properties["geometry"] = self.geometry_combo.currentText()
-        project_selected = self.project_aedt_combo.currentText()
-        for project in properties["project_list"]:
-            if os.path.splitext(os.path.basename(project))[0] == project_selected and project_selected != "No project":
-                properties["active_project"] = project
-                design_selected = self.design_aedt_combo.currentText()
-                if project_selected in list(properties["design_list"].keys()):
-                    designs = properties["design_list"][project_selected]
-                    for design in designs:
-                        if design_selected in list(design.values())[0]:
-                            properties["active_design"] = design
-                            break
-                break
-
+        properties["IsSkewed"] = _to_boolean(self.is_skewed.currentText())
+        properties["MagnetsMaterial"] = self.magnets_material.currentText()
+        properties["RotorMaterial"] = self.rotor_material.currentText()
+        properties["RotorSlices"] = self.rotor_slices.text()
+        properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
+        properties["SkewAngle"] = self.skew_angle.text()
+        properties["SetupToAnalyze"] = self.setup_to_analyze.text()
         self.set_properties(properties)
 
         self.update_progress(0)
-        response = requests.post(self.url + "/create_geometry")
-
-        if response.ok:
-            self.update_progress(50)
+        segmentation_response = requests.post(self.url + "/apply_segmentation")
+        if segmentation_response.ok:
+            # self.update_progress(50)
             # Start the thread
-            self.running = True
-            self.start()
-            msg = "Create geometry call launched"
+            # self.running = True
+            # self.start()
+            msg = "Apply segmentation call successful"
             logger.debug(msg)
             self.write_log_line(msg)
+            self.skew.setEnabled(True)
+            self.update_progress(100)
         else:
             msg = f"Failed backend call: {self.url}"
             logger.debug(msg)
             self.write_log_line(msg)
             self.update_progress(100)
+            return
+
+    def apply_skew(self):
+        if self.backend_busy():
+            msg = "Toolkit running"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            return
+
+        properties = self.get_properties()
+        if not properties["IsSkewed"] and float(properties["SkewAngle"]):
+            self.update_progress(0)
+            response = requests.post(self.url + "/apply_skew")
+            if response.ok:
+                # self.update_progress(50)
+                # Start the thread
+                # self.running = True
+                # self.start()
+                msg = "Apply skew call launched"
+                logger.debug(msg)
+                self.write_log_line(msg)
+                self.update_progress(100)
+            else:
+                msg = f"Failed backend call: {self.url}"
+                logger.debug(msg)
+                self.write_log_line(msg)
+                self.update_progress(100)
+                return
+        else:
+            msg = f"Failed backend call: {self.url}"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            self.update_progress(100)
+            return
+
+    def hide_options(self):
+        if self.is_skewed.currentText() == "True":
+            self.rotor_material.setEnabled(False)
+            self.rotor_slices.setEnabled(False)
+            self.skew_angle.setEnabled(False)
+        else:
+            self.rotor_material.setEnabled(True)
+            self.rotor_slices.setEnabled(True)
+            self.skew_angle.setEnabled(True)
+
+    def get_materials(self):
+        response = requests.get(self.url + "/get_status")
+
+        if response.ok and response.json() == "Backend running":
+            self.write_log_line("Please wait, toolkit running")
+        elif response.ok and response.json() == "Backend free":
+            self.update_progress(0)
+            response = requests.get(self.url + "/health")
+            if response.ok and response.json() == "Toolkit not connected to AEDT":
+                properties = self.get_properties()
+                response = requests.get(self.url + "/get_project_materials")
+                if response.ok:
+                    return response.json()

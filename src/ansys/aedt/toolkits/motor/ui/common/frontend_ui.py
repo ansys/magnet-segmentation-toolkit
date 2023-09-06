@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'toolkit.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,17 +16,17 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QLayout, QLineEdit,
-    QMainWindow, QMenu, QMenuBar, QPlainTextEdit,
-    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
-    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QMainWindow, QMenu,
+    QMenuBar, QPlainTextEdit, QProgressBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1107, 1178)
+        MainWindow.resize(890, 1178)
         self.action_save_project = QAction(MainWindow)
         self.action_save_project.setObjectName(u"action_save_project")
         self.centralwidget = QWidget(MainWindow)
@@ -53,30 +53,30 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.release_button, 3, 2, 1, 1)
 
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer, 3, 1, 1, 1)
+
         self.release_and_exit_button = QPushButton(self.main_menu)
         self.release_and_exit_button.setObjectName(u"release_and_exit_button")
         self.release_and_exit_button.setMinimumSize(QSize(0, 40))
 
         self.gridLayout.addWidget(self.release_and_exit_button, 3, 3, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer, 3, 1, 1, 1)
-
         self.toolkit_tab = QTabWidget(self.main_menu)
         self.toolkit_tab.setObjectName(u"toolkit_tab")
         sizePolicy1.setHeightForWidth(self.toolkit_tab.sizePolicy().hasHeightForWidth())
         self.toolkit_tab.setSizePolicy(sizePolicy1)
         self.toolkit_tab.setTabShape(QTabWidget.Triangular)
-        self.settings = QWidget()
-        self.settings.setObjectName(u"settings")
-        self.horizontalLayout_25 = QHBoxLayout(self.settings)
+        self.AEDTsettings = QWidget()
+        self.AEDTsettings.setObjectName(u"AEDTsettings")
+        self.horizontalLayout_25 = QHBoxLayout(self.AEDTsettings)
         self.horizontalLayout_25.setObjectName(u"horizontalLayout_25")
         self.settings_layout = QVBoxLayout()
         self.settings_layout.setObjectName(u"settings_layout")
         self.cores_layout = QHBoxLayout()
         self.cores_layout.setObjectName(u"cores_layout")
-        self.cores_label = QLabel(self.settings)
+        self.cores_label = QLabel(self.AEDTsettings)
         self.cores_label.setObjectName(u"cores_label")
 
         self.cores_layout.addWidget(self.cores_label)
@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
 
         self.cores_layout.addItem(self.horizontalSpacer_30)
 
-        self.numcores = QLineEdit(self.settings)
+        self.numcores = QLineEdit(self.AEDTsettings)
         self.numcores.setObjectName(u"numcores")
 
         self.cores_layout.addWidget(self.numcores)
@@ -95,12 +95,12 @@ class Ui_MainWindow(object):
 
         self.graphical_layout = QHBoxLayout()
         self.graphical_layout.setObjectName(u"graphical_layout")
-        self.graphical_label = QLabel(self.settings)
+        self.graphical_label = QLabel(self.AEDTsettings)
         self.graphical_label.setObjectName(u"graphical_label")
 
         self.graphical_layout.addWidget(self.graphical_label)
 
-        self.non_graphical_combo = QComboBox(self.settings)
+        self.non_graphical_combo = QComboBox(self.AEDTsettings)
         self.non_graphical_combo.addItem("")
         self.non_graphical_combo.addItem("")
         self.non_graphical_combo.setObjectName(u"non_graphical_combo")
@@ -112,12 +112,12 @@ class Ui_MainWindow(object):
 
         self.aedt_version_layout = QHBoxLayout()
         self.aedt_version_layout.setObjectName(u"aedt_version_layout")
-        self.version_label = QLabel(self.settings)
+        self.version_label = QLabel(self.AEDTsettings)
         self.version_label.setObjectName(u"version_label")
 
         self.aedt_version_layout.addWidget(self.version_label)
 
-        self.aedt_version_combo = QComboBox(self.settings)
+        self.aedt_version_combo = QComboBox(self.AEDTsettings)
         self.aedt_version_combo.setObjectName(u"aedt_version_combo")
 
         self.aedt_version_layout.addWidget(self.aedt_version_combo)
@@ -127,12 +127,12 @@ class Ui_MainWindow(object):
 
         self.aedt_sessions_layout = QHBoxLayout()
         self.aedt_sessions_layout.setObjectName(u"aedt_sessions_layout")
-        self.aedt_sessions_label = QLabel(self.settings)
+        self.aedt_sessions_label = QLabel(self.AEDTsettings)
         self.aedt_sessions_label.setObjectName(u"aedt_sessions_label")
 
         self.aedt_sessions_layout.addWidget(self.aedt_sessions_label)
 
-        self.process_id_combo = QComboBox(self.settings)
+        self.process_id_combo = QComboBox(self.AEDTsettings)
         self.process_id_combo.addItem("")
         self.process_id_combo.setObjectName(u"process_id_combo")
 
@@ -143,7 +143,7 @@ class Ui_MainWindow(object):
 
         self.project_path_layout = QHBoxLayout()
         self.project_path_layout.setObjectName(u"project_path_layout")
-        self.project_path_label = QLabel(self.settings)
+        self.project_path_label = QLabel(self.AEDTsettings)
         self.project_path_label.setObjectName(u"project_path_label")
 
         self.project_path_layout.addWidget(self.project_path_label)
@@ -152,7 +152,7 @@ class Ui_MainWindow(object):
 
         self.project_path_layout.addItem(self.horizontalSpacer_2)
 
-        self.project_name = QLineEdit(self.settings)
+        self.project_name = QLineEdit(self.AEDTsettings)
         self.project_name.setObjectName(u"project_name")
 
         self.project_path_layout.addWidget(self.project_name)
@@ -160,17 +160,22 @@ class Ui_MainWindow(object):
 
         self.settings_layout.addLayout(self.project_path_layout)
 
-        self.horizontalLayout_5 = QHBoxLayout()
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.select_aedt_proj_layout = QHBoxLayout()
+        self.select_aedt_proj_layout.setObjectName(u"select_aedt_proj_layout")
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_5.addItem(self.horizontalSpacer_3)
+        self.select_aedt_proj_layout.addItem(self.horizontalSpacer_5)
 
-        self.browse_project = QPushButton(self.settings)
+        self.browse_project = QPushButton(self.AEDTsettings)
         self.browse_project.setObjectName(u"browse_project")
 
-        self.horizontalLayout_5.addWidget(self.browse_project)
+        self.select_aedt_proj_layout.addWidget(self.browse_project)
 
+
+        self.settings_layout.addLayout(self.select_aedt_proj_layout)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
 
         self.settings_layout.addLayout(self.horizontalLayout_5)
 
@@ -178,8 +183,9 @@ class Ui_MainWindow(object):
 
         self.settings_layout.addItem(self.verticalSpacer_8)
 
-        self.connect_aedtapp = QPushButton(self.settings)
+        self.connect_aedtapp = QPushButton(self.AEDTsettings)
         self.connect_aedtapp.setObjectName(u"connect_aedtapp")
+        self.connect_aedtapp.setEnabled(False)
         self.connect_aedtapp.setMinimumSize(QSize(0, 40))
 
         self.settings_layout.addWidget(self.connect_aedtapp)
@@ -191,187 +197,489 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_25.addItem(self.horizontalSpacer_29)
 
-        self.toolkit_tab.addTab(self.settings, "")
-        self.design = QWidget()
-        self.design.setObjectName(u"design")
-        self.verticalLayout_2 = QVBoxLayout(self.design)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.design_layout = QHBoxLayout()
-        self.design_layout.setObjectName(u"design_layout")
-        self.design_settings = QFrame(self.design)
-        self.design_settings.setObjectName(u"design_settings")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.toolkit_tab.addTab(self.AEDTsettings, "")
+        self.MotorCADsettings = QWidget()
+        self.MotorCADsettings.setObjectName(u"MotorCADsettings")
+        self.horizontalLayout_26 = QHBoxLayout(self.MotorCADsettings)
+        self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(self.MotorCADsettings)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout.addWidget(self.label)
+
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_7)
+
+        self.MCAD_file_path = QLineEdit(self.MotorCADsettings)
+        self.MCAD_file_path.setObjectName(u"MCAD_file_path")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.design_settings.sizePolicy().hasHeightForWidth())
-        self.design_settings.setSizePolicy(sizePolicy2)
-        self.design_settings.setFrameShape(QFrame.StyledPanel)
-        self.design_settings.setFrameShadow(QFrame.Raised)
-        self.design_settings.setLineWidth(12)
-        self.layout_settings = QGridLayout(self.design_settings)
-        self.layout_settings.setObjectName(u"layout_settings")
-        self.geometry_creation = QHBoxLayout()
-        self.geometry_creation.setObjectName(u"geometry_creation")
-        self.geometry_creation.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.geometry_creation_layout = QVBoxLayout()
-        self.geometry_creation_layout.setObjectName(u"geometry_creation_layout")
-        self.aedt_design_layout = QHBoxLayout()
-        self.aedt_design_layout.setObjectName(u"aedt_design_layout")
-        self.aedt_design_layout.setContentsMargins(0, 0, 0, -1)
-        self.project_aedt_layout = QVBoxLayout()
-        self.project_aedt_layout.setObjectName(u"project_aedt_layout")
-        self.project_aedt_layout.setContentsMargins(-1, 0, -1, -1)
-        self.project_adt_label = QLabel(self.design_settings)
-        self.project_adt_label.setObjectName(u"project_adt_label")
-        font = QFont()
-        font.setPointSize(12)
-        self.project_adt_label.setFont(font)
-        self.project_adt_label.setAlignment(Qt.AlignCenter)
+        sizePolicy2.setHeightForWidth(self.MCAD_file_path.sizePolicy().hasHeightForWidth())
+        self.MCAD_file_path.setSizePolicy(sizePolicy2)
 
-        self.project_aedt_layout.addWidget(self.project_adt_label)
-
-        self.project_aedt_combo = QComboBox(self.design_settings)
-        self.project_aedt_combo.addItem("")
-        self.project_aedt_combo.setObjectName(u"project_aedt_combo")
-
-        self.project_aedt_layout.addWidget(self.project_aedt_combo)
+        self.horizontalLayout.addWidget(self.MCAD_file_path)
 
 
-        self.aedt_design_layout.addLayout(self.project_aedt_layout)
+        self.verticalLayout_3.addLayout(self.horizontalLayout)
 
-        self.design_aedt_layout = QVBoxLayout()
-        self.design_aedt_layout.setObjectName(u"design_aedt_layout")
-        self.design_aedt_label = QLabel(self.design_settings)
-        self.design_aedt_label.setObjectName(u"design_aedt_label")
-        self.design_aedt_label.setFont(font)
-        self.design_aedt_label.setAlignment(Qt.AlignCenter)
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.design_aedt_layout.addWidget(self.design_aedt_label)
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_8)
 
-        self.design_aedt_combo = QComboBox(self.design_settings)
-        self.design_aedt_combo.addItem("")
-        self.design_aedt_combo.setObjectName(u"design_aedt_combo")
+        self.load_MCAD_file = QPushButton(self.MotorCADsettings)
+        self.load_MCAD_file.setObjectName(u"load_MCAD_file")
 
-        self.design_aedt_layout.addWidget(self.design_aedt_combo)
+        self.horizontalLayout_2.addWidget(self.load_MCAD_file)
 
 
-        self.aedt_design_layout.addLayout(self.design_aedt_layout)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_2)
+
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.EmagSettings = QLabel(self.MotorCADsettings)
+        self.EmagSettings.setObjectName(u"EmagSettings")
+        self.EmagSettings.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+
+        self.horizontalLayout_8.addWidget(self.EmagSettings)
 
 
-        self.geometry_creation_layout.addLayout(self.aedt_design_layout)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_8)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.label_2 = QLabel(self.MotorCADsettings)
+        self.label_2.setObjectName(u"label_2")
 
-        self.geometry_creation_layout.addItem(self.verticalSpacer)
+        self.horizontalLayout_9.addWidget(self.label_2)
 
-        self.dimension_multiplier_title = QLabel(self.design_settings)
-        self.dimension_multiplier_title.setObjectName(u"dimension_multiplier_title")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_9.addItem(self.horizontalSpacer_9)
+
+        self.nrCuboids = QLineEdit(self.MotorCADsettings)
+        self.nrCuboids.setObjectName(u"nrCuboids")
+        sizePolicy2.setHeightForWidth(self.nrCuboids.sizePolicy().hasHeightForWidth())
+        self.nrCuboids.setSizePolicy(sizePolicy2)
+
+        self.horizontalLayout_9.addWidget(self.nrCuboids)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_9)
+
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.label_3 = QLabel(self.MotorCADsettings)
+        self.label_3.setObjectName(u"label_3")
+
+        self.horizontalLayout_10.addWidget(self.label_3)
+
+        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_10.addItem(self.horizontalSpacer_10)
+
+        self.TorquePointsPerCycle = QLineEdit(self.MotorCADsettings)
+        self.TorquePointsPerCycle.setObjectName(u"TorquePointsPerCycle")
+
+        self.horizontalLayout_10.addWidget(self.TorquePointsPerCycle)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_10)
+
+        self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.label_4 = QLabel(self.MotorCADsettings)
+        self.label_4.setObjectName(u"label_4")
+
+        self.horizontalLayout_11.addWidget(self.label_4)
+
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_11.addItem(self.horizontalSpacer_11)
+
+        self.TorqueNrCycles = QLineEdit(self.MotorCADsettings)
+        self.TorqueNrCycles.setObjectName(u"TorqueNrCycles")
+
+        self.horizontalLayout_11.addWidget(self.TorqueNrCycles)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_11)
+
+        self.horizontalLayout_12 = QHBoxLayout()
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.LABSettings = QLabel(self.MotorCADsettings)
+        self.LABSettings.setObjectName(u"LABSettings")
+        self.LABSettings.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+
+        self.horizontalLayout_12.addWidget(self.LABSettings)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_12)
+
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.label_5 = QLabel(self.MotorCADsettings)
+        self.label_5.setObjectName(u"label_5")
+
+        self.horizontalLayout_13.addWidget(self.label_5)
+
+        self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_12)
+
+        self.MaxStatorCurrent = QLineEdit(self.MotorCADsettings)
+        self.MaxStatorCurrent.setObjectName(u"MaxStatorCurrent")
+        self.MaxStatorCurrent.setEnabled(True)
+        sizePolicy3 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.dimension_multiplier_title.sizePolicy().hasHeightForWidth())
-        self.dimension_multiplier_title.setSizePolicy(sizePolicy3)
-        font1 = QFont()
-        font1.setPointSize(14)
-        self.dimension_multiplier_title.setFont(font1)
-        self.dimension_multiplier_title.setAlignment(Qt.AlignCenter)
+        sizePolicy3.setHeightForWidth(self.MaxStatorCurrent.sizePolicy().hasHeightForWidth())
+        self.MaxStatorCurrent.setSizePolicy(sizePolicy3)
+        self.MaxStatorCurrent.setMaximumSize(QSize(16777215, 16777215))
 
-        self.geometry_creation_layout.addWidget(self.dimension_multiplier_title)
+        self.horizontalLayout_13.addWidget(self.MaxStatorCurrent)
 
-        self.multiplier_layout = QHBoxLayout()
-        self.multiplier_layout.setObjectName(u"multiplier_layout")
-        self.value_title = QLabel(self.design_settings)
-        self.value_title.setObjectName(u"value_title")
-        self.value_title.setFont(font)
 
-        self.multiplier_layout.addWidget(self.value_title)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_13)
 
-        self.multiplier = QLineEdit(self.design_settings)
-        self.multiplier.setObjectName(u"multiplier")
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.label_6 = QLabel(self.MotorCADsettings)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_14.addWidget(self.label_6)
+
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_13)
+
+        self.SpeedMax = QLineEdit(self.MotorCADsettings)
+        self.SpeedMax.setObjectName(u"SpeedMax")
+        sizePolicy2.setHeightForWidth(self.SpeedMax.sizePolicy().hasHeightForWidth())
+        self.SpeedMax.setSizePolicy(sizePolicy2)
+
+        self.horizontalLayout_14.addWidget(self.SpeedMax)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_14)
+
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.label_7 = QLabel(self.MotorCADsettings)
+        self.label_7.setObjectName(u"label_7")
+
+        self.horizontalLayout_15.addWidget(self.label_7)
+
+        self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_14)
+
+        self.SpeedStep = QLineEdit(self.MotorCADsettings)
+        self.SpeedStep.setObjectName(u"SpeedStep")
+        sizePolicy2.setHeightForWidth(self.SpeedStep.sizePolicy().hasHeightForWidth())
+        self.SpeedStep.setSizePolicy(sizePolicy2)
+
+        self.horizontalLayout_15.addWidget(self.SpeedStep)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_15)
+
+        self.horizontalLayout_16 = QHBoxLayout()
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.label_8 = QLabel(self.MotorCADsettings)
+        self.label_8.setObjectName(u"label_8")
+
+        self.horizontalLayout_16.addWidget(self.label_8)
+
+        self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_16.addItem(self.horizontalSpacer_15)
+
+        self.SpeedMin = QLineEdit(self.MotorCADsettings)
+        self.SpeedMin.setObjectName(u"SpeedMin")
+        sizePolicy2.setHeightForWidth(self.SpeedMin.sizePolicy().hasHeightForWidth())
+        self.SpeedMin.setSizePolicy(sizePolicy2)
+
+        self.horizontalLayout_16.addWidget(self.SpeedMin)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_16)
+
+        self.horizontalLayout_17 = QHBoxLayout()
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.label_9 = QLabel(self.MotorCADsettings)
+        self.label_9.setObjectName(u"label_9")
+
+        self.horizontalLayout_17.addWidget(self.label_9)
+
+        self.horizontalSpacer_16 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_17.addItem(self.horizontalSpacer_16)
+
+        self.MaxTempStatorWdg = QLineEdit(self.MotorCADsettings)
+        self.MaxTempStatorWdg.setObjectName(u"MaxTempStatorWdg")
+        sizePolicy2.setHeightForWidth(self.MaxTempStatorWdg.sizePolicy().hasHeightForWidth())
+        self.MaxTempStatorWdg.setSizePolicy(sizePolicy2)
+        self.MaxTempStatorWdg.setMaximumSize(QSize(16777215, 16777215))
+
+        self.horizontalLayout_17.addWidget(self.MaxTempStatorWdg)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_17)
+
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.label_10 = QLabel(self.MotorCADsettings)
+        self.label_10.setObjectName(u"label_10")
+
+        self.horizontalLayout_18.addWidget(self.label_10)
+
+        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_18.addItem(self.horizontalSpacer_17)
+
+        self.MaxTempMagnet = QLineEdit(self.MotorCADsettings)
+        self.MaxTempMagnet.setObjectName(u"MaxTempMagnet")
+
+        self.horizontalLayout_18.addWidget(self.MaxTempMagnet)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_18)
+
+        self.horizontalLayout_19 = QHBoxLayout()
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.label_11 = QLabel(self.MotorCADsettings)
+        self.label_11.setObjectName(u"label_11")
+
+        self.horizontalLayout_19.addWidget(self.label_11)
+
+        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_19.addItem(self.horizontalSpacer_18)
+
+        self.OPSpeed = QLineEdit(self.MotorCADsettings)
+        self.OPSpeed.setObjectName(u"OPSpeed")
+
+        self.horizontalLayout_19.addWidget(self.OPSpeed)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_19)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer_2)
+
+        self.export_MCAD = QPushButton(self.MotorCADsettings)
+        self.export_MCAD.setObjectName(u"export_MCAD")
+        self.export_MCAD.setEnabled(False)
         sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.multiplier.sizePolicy().hasHeightForWidth())
-        self.multiplier.setSizePolicy(sizePolicy4)
+        sizePolicy4.setHeightForWidth(self.export_MCAD.sizePolicy().hasHeightForWidth())
+        self.export_MCAD.setSizePolicy(sizePolicy4)
+        self.export_MCAD.setMinimumSize(QSize(0, 40))
 
-        self.multiplier_layout.addWidget(self.multiplier)
-
-
-        self.geometry_creation_layout.addLayout(self.multiplier_layout)
-
-        self.select_geometry_title = QLabel(self.design_settings)
-        self.select_geometry_title.setObjectName(u"select_geometry_title")
-        sizePolicy3.setHeightForWidth(self.select_geometry_title.sizePolicy().hasHeightForWidth())
-        self.select_geometry_title.setSizePolicy(sizePolicy3)
-        self.select_geometry_title.setFont(font1)
-        self.select_geometry_title.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
-
-        self.geometry_creation_layout.addWidget(self.select_geometry_title)
-
-        self.geometry_select_layout = QHBoxLayout()
-        self.geometry_select_layout.setObjectName(u"geometry_select_layout")
-        self.geometry_select_layout.setContentsMargins(-1, -1, -1, 0)
-        self.geometry_title = QLabel(self.design_settings)
-        self.geometry_title.setObjectName(u"geometry_title")
-        self.geometry_title.setFont(font)
-
-        self.geometry_select_layout.addWidget(self.geometry_title)
-
-        self.geometry_combo = QComboBox(self.design_settings)
-        self.geometry_combo.addItem("")
-        self.geometry_combo.addItem("")
-        self.geometry_combo.setObjectName(u"geometry_combo")
-        self.geometry_combo.setFont(font)
-
-        self.geometry_select_layout.addWidget(self.geometry_combo)
+        self.verticalLayout_3.addWidget(self.export_MCAD)
 
 
-        self.geometry_creation_layout.addLayout(self.geometry_select_layout)
+        self.horizontalLayout_26.addLayout(self.verticalLayout_3)
 
-        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
 
-        self.geometry_creation_layout.addItem(self.verticalSpacer_6)
+        self.horizontalLayout_26.addItem(self.horizontalSpacer_6)
 
-        self.create_geometry_buttom = QPushButton(self.design_settings)
-        self.create_geometry_buttom.setObjectName(u"create_geometry_buttom")
-        self.create_geometry_buttom.setMinimumSize(QSize(0, 50))
-        self.create_geometry_buttom.setFont(font)
+        self.toolkit_tab.addTab(self.MotorCADsettings, "")
+        self.Segmentation = QWidget()
+        self.Segmentation.setObjectName(u"Segmentation")
+        self.horizontalLayout_ = QHBoxLayout(self.Segmentation)
+        self.horizontalLayout_.setObjectName(u"horizontalLayout_")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.projects_label_2 = QLabel(self.Segmentation)
+        self.projects_label_2.setObjectName(u"projects_label_2")
 
-        self.geometry_creation_layout.addWidget(self.create_geometry_buttom)
+        self.horizontalLayout_3.addWidget(self.projects_label_2)
 
+        self.projects_aedt_combo = QComboBox(self.Segmentation)
+        self.projects_aedt_combo.addItem("")
+        self.projects_aedt_combo.setObjectName(u"projects_aedt_combo")
 
-        self.geometry_creation.addLayout(self.geometry_creation_layout)
-
-
-        self.layout_settings.addLayout(self.geometry_creation, 7, 1, 1, 1)
-
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.layout_settings.addItem(self.horizontalSpacer_4, 7, 2, 1, 1)
-
-        self.new_layout = QVBoxLayout()
-        self.new_layout.setObjectName(u"new_layout")
-        self.frame = QFrame(self.design_settings)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-
-        self.new_layout.addWidget(self.frame)
+        self.horizontalLayout_3.addWidget(self.projects_aedt_combo)
 
 
-        self.layout_settings.addLayout(self.new_layout, 7, 3, 1, 1)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.designs_label = QLabel(self.Segmentation)
+        self.designs_label.setObjectName(u"designs_label")
+
+        self.horizontalLayout_6.addWidget(self.designs_label)
+
+        self.design_aedt_combo = QComboBox(self.Segmentation)
+        self.design_aedt_combo.addItem("")
+        self.design_aedt_combo.setObjectName(u"design_aedt_combo")
+
+        self.horizontalLayout_6.addWidget(self.design_aedt_combo)
 
 
-        self.design_layout.addWidget(self.design_settings)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.label_12 = QLabel(self.Segmentation)
+        self.label_12.setObjectName(u"label_12")
 
-        self.design_layout.addItem(self.horizontalSpacer_5)
+        self.horizontalLayout_4.addWidget(self.label_12)
+
+        self.is_skewed = QComboBox(self.Segmentation)
+        self.is_skewed.addItem("")
+        self.is_skewed.addItem("")
+        self.is_skewed.setObjectName(u"is_skewed")
+
+        self.horizontalLayout_4.addWidget(self.is_skewed)
 
 
-        self.verticalLayout_2.addLayout(self.design_layout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
 
-        self.toolkit_tab.addTab(self.design, "")
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.label_13 = QLabel(self.Segmentation)
+        self.label_13.setObjectName(u"label_13")
+
+        self.horizontalLayout_7.addWidget(self.label_13)
+
+        self.magnets_material = QComboBox(self.Segmentation)
+        self.magnets_material.setObjectName(u"magnets_material")
+
+        self.horizontalLayout_7.addWidget(self.magnets_material)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_7)
+
+        self.horizontalLayout_20 = QHBoxLayout()
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.label_14 = QLabel(self.Segmentation)
+        self.label_14.setObjectName(u"label_14")
+
+        self.horizontalLayout_20.addWidget(self.label_14)
+
+        self.rotor_material = QComboBox(self.Segmentation)
+        self.rotor_material.setObjectName(u"rotor_material")
+
+        self.horizontalLayout_20.addWidget(self.rotor_material)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_20)
+
+        self.horizontalLayout_21 = QHBoxLayout()
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.label_15 = QLabel(self.Segmentation)
+        self.label_15.setObjectName(u"label_15")
+
+        self.horizontalLayout_21.addWidget(self.label_15)
+
+        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_21.addItem(self.horizontalSpacer_21)
+
+        self.rotor_slices = QLineEdit(self.Segmentation)
+        self.rotor_slices.setObjectName(u"rotor_slices")
+
+        self.horizontalLayout_21.addWidget(self.rotor_slices)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_21)
+
+        self.horizontalLayout_22 = QHBoxLayout()
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.label_16 = QLabel(self.Segmentation)
+        self.label_16.setObjectName(u"label_16")
+
+        self.horizontalLayout_22.addWidget(self.label_16)
+
+        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_22.addItem(self.horizontalSpacer_22)
+
+        self.magnet_segments_per_slice = QLineEdit(self.Segmentation)
+        self.magnet_segments_per_slice.setObjectName(u"magnet_segments_per_slice")
+
+        self.horizontalLayout_22.addWidget(self.magnet_segments_per_slice)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_22)
+
+        self.horizontalLayout_23 = QHBoxLayout()
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.label_17 = QLabel(self.Segmentation)
+        self.label_17.setObjectName(u"label_17")
+
+        self.horizontalLayout_23.addWidget(self.label_17)
+
+        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_23.addItem(self.horizontalSpacer_23)
+
+        self.skew_angle = QLineEdit(self.Segmentation)
+        self.skew_angle.setObjectName(u"skew_angle")
+
+        self.horizontalLayout_23.addWidget(self.skew_angle)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_23)
+
+        self.horizontalLayout_24 = QHBoxLayout()
+        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
+        self.label_18 = QLabel(self.Segmentation)
+        self.label_18.setObjectName(u"label_18")
+
+        self.horizontalLayout_24.addWidget(self.label_18)
+
+        self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_24.addItem(self.horizontalSpacer_24)
+
+        self.setup_to_analyze = QLineEdit(self.Segmentation)
+        self.setup_to_analyze.setObjectName(u"setup_to_analyze")
+
+        self.horizontalLayout_24.addWidget(self.setup_to_analyze)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_24)
+
+        self.perform_segmentation = QPushButton(self.Segmentation)
+        self.perform_segmentation.setObjectName(u"perform_segmentation")
+        self.perform_segmentation.setEnabled(False)
+        self.perform_segmentation.setMinimumSize(QSize(0, 40))
+
+        self.verticalLayout_2.addWidget(self.perform_segmentation)
+
+        self.skew = QPushButton(self.Segmentation)
+        self.skew.setObjectName(u"skew")
+        self.skew.setEnabled(False)
+        self.skew.setMinimumSize(QSize(0, 40))
+
+        self.verticalLayout_2.addWidget(self.skew)
+
+
+        self.horizontalLayout_.addLayout(self.verticalLayout_2)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+
+        self.horizontalLayout_.addItem(self.horizontalSpacer_4)
+
+        self.toolkit_tab.addTab(self.Segmentation, "")
 
         self.gridLayout.addWidget(self.toolkit_tab, 0, 0, 1, 5)
 
@@ -380,11 +688,8 @@ class Ui_MainWindow(object):
 
         self.log_text = QPlainTextEdit(self.centralwidget)
         self.log_text.setObjectName(u"log_text")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.log_text.sizePolicy().hasHeightForWidth())
-        self.log_text.setSizePolicy(sizePolicy5)
+        sizePolicy2.setHeightForWidth(self.log_text.sizePolicy().hasHeightForWidth())
+        self.log_text.setSizePolicy(sizePolicy2)
 
         self.verticalLayout.addWidget(self.log_text)
 
@@ -402,7 +707,9 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.top_menu_bar = QMenuBar(MainWindow)
         self.top_menu_bar.setObjectName(u"top_menu_bar")
-        self.top_menu_bar.setGeometry(QRect(0, 0, 1107, 28))
+        self.top_menu_bar.setGeometry(QRect(0, 0, 890, 28))
+        font = QFont()
+        font.setPointSize(12)
         self.top_menu_bar.setFont(font)
         self.top_menu = QMenu(self.top_menu_bar)
         self.top_menu.setObjectName(u"top_menu")
@@ -417,7 +724,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(0)
+        self.toolkit_tab.setCurrentIndex(2)
+        self.projects_aedt_combo.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -440,24 +748,43 @@ class Ui_MainWindow(object):
 
         self.project_path_label.setText(QCoreApplication.translate("MainWindow", u"Project Name", None))
         self.browse_project.setText(QCoreApplication.translate("MainWindow", u"Select aedt project", None))
-        self.connect_aedtapp.setText(QCoreApplication.translate("MainWindow", u"  Launch AEDT  ", None))
-        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.settings), QCoreApplication.translate("MainWindow", u" Settings ", None))
-        self.project_adt_label.setText(QCoreApplication.translate("MainWindow", u"Project  selected", None))
-        self.project_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No project", None))
+        self.connect_aedtapp.setText(QCoreApplication.translate("MainWindow", u"Launch AEDT", None))
+        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.AEDTsettings), QCoreApplication.translate("MainWindow", u" AEDT Settings ", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Motor-CAD file path:", None))
+        self.load_MCAD_file.setText(QCoreApplication.translate("MainWindow", u"Load", None))
+        self.EmagSettings.setText(QCoreApplication.translate("MainWindow", u"E-mag Settings", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Number Of Cuboids", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Torque Points Per Cycle", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Torque Number Of Cycles", None))
+        self.LABSettings.setText(QCoreApplication.translate("MainWindow", u"LAB Settings", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Max Stator Current", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Speed Max (rpm)", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Speed Step (rpm)", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Speed Min (rpm)", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Max Temp. Stator Winding (\u00b0C)", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Max Temp. Magnet (\u00b0C)", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"OP Speed (rpm)", None))
+        self.export_MCAD.setText(QCoreApplication.translate("MainWindow", u"Export Motor-CAD file", None))
+        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.MotorCADsettings), QCoreApplication.translate("MainWindow", u"Motor-CAD Settings", None))
+        self.projects_label_2.setText(QCoreApplication.translate("MainWindow", u"Projects", None))
+        self.projects_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No project", None))
 
-        self.design_aedt_label.setText(QCoreApplication.translate("MainWindow", u"Design selected", None))
+        self.designs_label.setText(QCoreApplication.translate("MainWindow", u"Designs", None))
         self.design_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No design", None))
 
-        self.dimension_multiplier_title.setText(QCoreApplication.translate("MainWindow", u"Dimension multiplier", None))
-        self.value_title.setText(QCoreApplication.translate("MainWindow", u"Value", None))
-        self.multiplier.setText(QCoreApplication.translate("MainWindow", u"1", None))
-        self.select_geometry_title.setText(QCoreApplication.translate("MainWindow", u"Select geometry", None))
-        self.geometry_title.setText(QCoreApplication.translate("MainWindow", u"Geometry", None))
-        self.geometry_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"Box", None))
-        self.geometry_combo.setItemText(1, QCoreApplication.translate("MainWindow", u"Sphere", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Is Skewed", None))
+        self.is_skewed.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
+        self.is_skewed.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
 
-        self.create_geometry_buttom.setText(QCoreApplication.translate("MainWindow", u"Create geometry", None))
-        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.design), QCoreApplication.translate("MainWindow", u" Design ", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Magnets Material", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Rotor Material", None))
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Rotor Slices", None))
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u"Magnet Segments Per Slice", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Setup To Analyze", None))
+        self.perform_segmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
+        self.skew.setText(QCoreApplication.translate("MainWindow", u"Apply Skew", None))
+        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Segmentation), QCoreApplication.translate("MainWindow", u"Segmentation", None))
         self.top_menu.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

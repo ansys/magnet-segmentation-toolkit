@@ -63,13 +63,7 @@ toolkit.set_properties(data)
 # Initialize AEDT
 # ~~~~~~~~~~~~~~~
 # Initialize AEDT.
-toolkit.init_aedt()
-
-#################################################################################
-# Set AEDT project settings
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set AEDT project settings.
-toolkit.set_model()
+toolkit.launch_aedt()
 
 #################################################################################
 # Apply segmentation

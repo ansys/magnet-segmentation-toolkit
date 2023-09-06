@@ -20,17 +20,17 @@ class FrontendThread(QtCore.QThread):
             if response.ok and response.json() != "Backend running":
                 self.running = False
                 properties = self.get_properties()
-                if properties["active_project"] and "project_aedt_combo" in self.__dir__():
-                    self.project_aedt_combo.clear()
+                if properties["active_project"] and "projects_aedt_combo" in self.__dir__():
+                    self.projects_aedt_combo.clear()
                     if not properties["project_list"]:
-                        self.project_aedt_combo.addItem("No project")
+                        self.projects_aedt_combo.addItem("No project")
                     else:
                         cont = 0
                         for project in properties["project_list"]:
                             active_project_name = os.path.splitext(os.path.basename(project))[0]
-                            self.project_aedt_combo.addItem(active_project_name)
+                            self.projects_aedt_combo.addItem(active_project_name)
                             if active_project_name == os.path.splitext(os.path.basename(project))[0]:
-                                self.project_aedt_combo.setCurrentIndex(cont)
+                                self.projects_aedt_combo.setCurrentIndex(cont)
                             cont += 1
 
                 if properties["active_design"] and "design_aedt_combo" in self.__dir__():
@@ -46,6 +46,12 @@ class FrontendThread(QtCore.QThread):
                             if list(design_name.values())[0] == design:
                                 self.design_aedt_combo.setCurrentIndex(cont)
                             cont += 1
+
+                if "magnets_material" in self.__dir__() and "rotor_material" in self.__dir__():
+                    mats = self.get_materials()
+                    for mat in mats:
+                        self.magnets_material.addItem(mat)
+                        self.rotor_material.addItem(mat)
 
                 # Emit the status_changed signal if the status changes
                 self.status_changed.emit(self.running)

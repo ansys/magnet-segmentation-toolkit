@@ -26,7 +26,7 @@ classifiers = [
 dependencies = [
     "build==1.0.0",
     "twine==4.0.2",
-    "pyaedt @ git+https://github.com/ansys/pyaedt.git",
+    "pyaedt==0.6.90",
     "ansys-motorcad-core",
     "importlib-metadata >=4.0",
     "pyside6==6.5.2",
