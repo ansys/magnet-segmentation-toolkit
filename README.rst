@@ -1,5 +1,5 @@
-AEDT template toolkit
-=====================
+AEDT Motor Toolkit
+==================
 
 |pyansys| |PythonVersion| |GH-CI| |MIT| |black|
 
@@ -11,7 +11,7 @@ AEDT template toolkit
    :target: https://www.python.org/downloads/
 
 .. |GH-CI| image:: https://github.com/ansys/pyaedt-toolkit-template/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/ansys/pyaedt-toolkit-template/actions/workflows/ci_cd.yml
+   :target: https://github.com/ansys/pymotorcad-pyaedt-toolkit/blob/main/.github/workflows/ci_cd.yml
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
@@ -21,27 +21,23 @@ AEDT template toolkit
   :alt: black
 
 
-The ``pyaedt-toolkit-template`` package provides a template to create your own toolkit using PyAEDT.
+The ``ansys-aedt-toolkits-motor`` package provides a Python wrapper to automate the segmentation
+and skew of IPM motors using Ansys Electronics Desktop (AEDT).
 The toolkit could be used inside AEDT or launched from a python console.
-Toolkit features should be accessible from the user interface or the directly from the API.
-This template shows how to use `Flask <https://flask.palletsprojects.com/en/2.3.x/>`_ for the backend
-and `Pyside6 <https://doc.qt.io/qtforpython-6/quickstart.html>`_ for the frontend.
-
-
-If you want to test the template, go to `Getting Started <https://aedt.toolkit.template.docs.pyansys.com/version/dev/Getting_started.html>`_ section.
+Toolkit features should be accessible from the user interface or directly from the API.
 
 
 Requirements
 ~~~~~~~~~~~~
 In addition to the runtime dependencies listed in the installation information, this toolkit
-requires Ansys Electronics Desktop (AEDT) 2022 R2 or later. The AEDT Student Version is also supported.
+requires Ansys Electronics Desktop (AEDT) 2023 R1 or later. The AEDT Student Version is also supported.
 
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
 In addition to installation and wizard information, the toolkit
-documentation provides `API reference <https://aedt.toolkit.template.docs.pyansys.com/version/dev/Toolkit/index.html>`_ and `Contribute <https://aedt.toolkit.template.docs.pyansys.com/version/dev/Contributing.html>`_ sections.
+documentation provides `API reference <https://aedt.motor.toolkit.docs.pyansys.com/version/dev/Toolkit/index.html#>`_ (in progress) and `Contribute <https://aedt.motor.toolkit.docs.pyansys.com/version/dev/Contributing.html>`_ (in progress) sections.
 
-On the `Toolkit issues <https://github.com/ansys/pyaedt-toolkit-template/issues>`_ page, you can
+On the `Toolkit issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_ page, you can
 create issues to submit questions, report bugs, and request new features.
 
 License
