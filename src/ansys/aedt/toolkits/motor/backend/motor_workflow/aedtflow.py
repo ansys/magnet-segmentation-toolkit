@@ -214,17 +214,24 @@ class AedtFlow(ToolkitGeneric):
 
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
             rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)
-            # get dependent and independent boundaries
-            # TO CHECK: indep and dep are not always assigned to sheets but to region's faces
-            # implement this check and get either the face or the sheet to split -> check the ID to get object
-            bound_indep_id = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"][0].props[
-                "Objects"
-            ][0]
-            bound_dep_id = [bound for bound in self.aedtapp.boundaries if bound.type == "Dependent"][0].props[
-                "Objects"
-            ][0]
-            indep = self.aedtapp.modeler.objects[bound_indep_id]
-            dep = self.aedtapp.modeler.objects[bound_dep_id]
+            # Independent and dependent boundary conditions can be assigned either to an object or an object face
+            bound_indep_props = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"][0].props
+            if "Objects" in bound_indep_props:
+                bound_indep_id = bound_indep_props["Objects"][0]
+                indep = self.aedtapp.modeler.objects[bound_indep_id]
+            elif "Faces" in bound_indep_props:
+                bound_indep_id = bound_indep_props["Faces"][0]
+                obj = [o for o in self.aedtapp.modeler.object_list for f in o.faces if f.id == bound_indep_id][0]
+                indep = [f for f in obj.faces if f.id == bound_indep_id][0]
+            bound_dep_props = [bound for bound in self.aedtapp.boundaries if bound.type == "Dependent"][0].props
+            if "Objects" in bound_indep_props:
+                bound_dep_id = bound_dep_props["Objects"][0]
+                dep = self.aedtapp.modeler.objects[bound_dep_id]
+            elif "Faces" in bound_indep_props:
+                bound_dep_id = bound_dep_props["Faces"][0]
+                obj = [o for o in self.aedtapp.modeler.object_list for f in o.faces if f.id == bound_dep_id][0]
+                dep = [f for f in obj.faces if f.id == bound_dep_id][0]
+
             # check whether stator has same rotor material
             if len(rotor_objects) > int(properties.RotorSlices):
                 stator_obj = max(rotor_objects, key=attrgetter("volume"))
@@ -235,32 +242,34 @@ class AedtFlow(ToolkitGeneric):
             rotor_skew_ang = 0
             # rotate objects and apply skew
             for rotor_object in rotor_objects:
-                objs_in_bb[rotor_object.name] = self.aedtapp.modeler.objects_in_bounding_box(rotor_object.bounding_box)
-                for obj in objs_in_bb[rotor_object.name]:
-                    if obj in magnets:
-                        magnet_cs = [
-                            cs
-                            for cs in self.aedtapp.modeler.coordinate_systems
-                            if cs.name == obj.part_coordinate_system
-                        ][0]
-                        if isinstance(magnet_cs, CoordinateSystem):
-                            magnet_cs.props["Phi"] = "{}+{}deg".format(magnet_cs.props["Phi"], rotor_skew_ang)
-                        elif isinstance(magnet_cs, FaceCoordinateSystem):
-                            magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
-                    self.aedtapp.modeler.set_working_coordinate_system("Global")
-                    obj.rotate(cs_axis="Z", angle=rotor_skew_ang)
                 if rotor_skew_ang != 0:
-                    # duplicate around z axis (-360/symmetry_factor)
-                    self.aedtapp.modeler.duplicate_around_axis(
-                        rotor_object,
-                        cs_axis=self.aedtapp.AXIS.Z,
-                        angle=-360 / self.aedtapp.symmetry_multiplier,
-                        nclones=2,
-                        create_new_objects=False,
+                    objs_in_bb[rotor_object.name] = self.aedtapp.modeler.objects_in_bounding_box(
+                        rotor_object.bounding_box
                     )
-                    # split
-                    self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
-                    self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
+                    for obj in objs_in_bb[rotor_object.name]:
+                        if obj in magnets:
+                            magnet_cs = [
+                                cs
+                                for cs in self.aedtapp.modeler.coordinate_systems
+                                if cs.name == obj.part_coordinate_system
+                            ][0]
+                            if isinstance(magnet_cs, CoordinateSystem):
+                                magnet_cs.props["Phi"] = "{}+{}deg".format(magnet_cs.props["Phi"], rotor_skew_ang)
+                            elif isinstance(magnet_cs, FaceCoordinateSystem):
+                                magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
+                        self.aedtapp.modeler.set_working_coordinate_system("Global")
+                        obj.rotate(cs_axis="Z", angle=rotor_skew_ang)
+                        # duplicate around z axis (-360/symmetry_factor)
+                        self.aedtapp.modeler.duplicate_around_axis(
+                            rotor_object,
+                            cs_axis=self.aedtapp.AXIS.Z,
+                            angle=-360 / self.aedtapp.symmetry_multiplier,
+                            nclones=2,
+                            create_new_objects=False,
+                        )
+                        # split - Initial Position 0deg on x-axis
+                        self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
+                        self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
                 rotor_skew_ang += decompose_variable_value(properties.SkewAngle)[0]
 
             self.aedtapp.release_desktop(False, False)
