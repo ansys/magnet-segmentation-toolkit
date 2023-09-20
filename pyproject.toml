@@ -24,7 +24,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "build==1.0.0",
+    "build==1.0.3",
     "twine==4.0.2",
     "pyaedt==0.6.93",
     "ansys-motorcad-core",
