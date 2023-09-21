@@ -66,7 +66,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         self.status_changed.connect(self.change_thread_status)
 
         # Select AEDT project
-        self.browse_project.clicked.connect(self.browse_for_project)
+        self.browse_project.clicked.connect(self.browse_for_aedt_project)
 
         # Close toolkit button
         self.release_button.clicked.connect(self.release_only)
@@ -85,6 +85,12 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
             self.launch_aedt()
 
         self.connect_aedtapp.clicked.connect(self.launch_aedt)
+
+        # Select Motor-CAD file, open Motor-CAD and load file
+        self.load_MCAD_file.clicked.connect(self.open_load_mot_file)
+
+        # Export .vbs and run it in AEDT
+        self.export_MCAD.clicked.connect(self.export_vbs)
 
         # If is_skewed combo box is True only magnets can be segmented
         # Rotor material, slices and skew angle are greyed out

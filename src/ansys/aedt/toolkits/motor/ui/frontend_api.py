@@ -1,3 +1,5 @@
+import os.path
+
 from pyaedt.generic.general_methods import _to_boolean
 import requests
 
@@ -106,3 +108,33 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
                 response = requests.get(self.url + "/get_project_materials")
                 if response.ok:
                     return response.json()
+
+    def export_vbs(self):
+        if self.backend_busy():
+            msg = "Toolkit running"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            return
+
+        properties = self.get_properties()
+        file_path_wo_extension = os.path.splitext(properties["MotorCAD_filepath"])[0]
+        properties["vbs_file_path"] = "{}.vbs".format(file_path_wo_extension)
+        self.set_properties(properties)
+
+        self.update_progress(0)
+        response = requests.post(self.url + "/export_model")
+        if response.ok:
+            # self.update_progress(50)
+            # Start the thread
+            # self.running = True
+            # self.start()
+            msg = "Export Motor-CAD model in AEDT successful"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            self.update_progress(100)
+        else:
+            msg = f"Failed backend call: {self.url}"
+            logger.debug(msg)
+            self.write_log_line(msg)
+            self.update_progress(100)
+            return

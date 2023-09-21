@@ -146,21 +146,31 @@ class MotorCADFlow(ToolkitGeneric):
         logger.debug("Avg Winding Temp " + str(wdg_avg))
         return wdg_avg
 
+    # @thread.launch_thread
     def export_settings(self):
         """Set export settings."""
-        if not self.mcad:
-            logger.error("MotorCAD not initialized")
+        self.connect_design(app_name="Maxwell 2D")
+
+        try:
+            if not self.mcad:
+                logger.error("MotorCAD not initialized")
+                return False
+            self.mcad.show_magnetic_context()
+            self.mcad.set_variable("AnsysExportFormat", 1)
+            self.mcad.set_variable("AnsysModelType", 1)
+            self.mcad.set_variable("AnsysSolve", 1)
+            self.mcad.set_variable("AnsysArcSegmentMethod", 0)
+            self.mcad.set_variable("Ansys_MergeEntities", 0)
+            self.mcad.set_variable("Ansys_WindingGroups", 0)
+            self.mcad.set_variable("AnsysRotationDirection", 0)
+            self.mcad.export_to_ansys_electronics_desktop(properties.vbs_file_path)
+
+            self.aedtapp.release_desktop(False, False)
+            self.aedtapp = None
+
+            return properties.vbs_file_path
+        except:
             return False
-        self.mcad.show_magnetic_context()
-        self.mcad.set_variable("AnsysExportFormat", 1)
-        self.mcad.set_variable("AnsysModelType", 1)
-        self.mcad.set_variable("AnsysSolve", 1)
-        self.mcad.set_variable("AnsysArcSegmentMethod", 0)
-        self.mcad.set_variable("Ansys_MergeEntities", 0)
-        self.mcad.set_variable("Ansys_WindingGroups", 0)
-        self.mcad.set_variable("AnsysRotationDirection", 0)
-        self.mcad.export_to_ansys_electronics_desktop(properties.vbs_file_path)
-        return properties.vbs_file_path
 
     def save(self):
         """Save the motorcad file."""

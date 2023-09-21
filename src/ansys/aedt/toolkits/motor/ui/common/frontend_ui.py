@@ -185,7 +185,7 @@ class Ui_MainWindow(object):
 
         self.connect_aedtapp = QPushButton(self.AEDTsettings)
         self.connect_aedtapp.setObjectName(u"connect_aedtapp")
-        self.connect_aedtapp.setEnabled(False)
+        self.connect_aedtapp.setEnabled(True)
         self.connect_aedtapp.setMinimumSize(QSize(0, 40))
 
         self.settings_layout.addWidget(self.connect_aedtapp)
