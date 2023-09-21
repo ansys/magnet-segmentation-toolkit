@@ -166,13 +166,14 @@ class AedtFlow(ToolkitGeneric):
                     if len(rotor_pockets) > 0:
                         rotor_pockets_names = [x.name for x in rotor_pockets]
                     for slice in rotor_slices[rotor.name]:
-                        cs = self.aedtapp.modeler.create_coordinate_system(
-                            slice.faces[0].center, name=slice.name + "_cs"
-                        )
-                        rotor_objs = self.aedtapp.modeler.split(rotor_objs, "XY")
-                        magnets_names = self.aedtapp.modeler.split(magnets_names, "XY")
+                        rotor_objs = self.aedtapp.modeler.split(rotor_objs, sides="Both", tool=slice.faces[0])
+                        magnets_names = self.aedtapp.modeler.split(magnets_names, sides="Both", tool=slice.faces[0])
                         if len(rotor_pockets) > 0:
-                            rotor_pockets_names = self.aedtapp.modeler.split(rotor_pockets_names, "XY")
+                            rotor_pockets_names = self.aedtapp.modeler.split(
+                                rotor_pockets_names, sides="Both", tool=slice.faces[0]
+                            )
+                        self.aedtapp.modeler.delete_objects_containing(slice.name)
+                    rotor_slices.clear()
 
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
             for magnet in magnets:
@@ -233,7 +234,7 @@ class AedtFlow(ToolkitGeneric):
                 dep = [f for f in obj.faces if f.id == bound_dep_id][0]
 
             # check whether stator has same rotor material
-            if len(rotor_objects) > int(properties.RotorSlices):
+            if properties.RotorMaterial == properties.StatorMaterial:
                 stator_obj = max(rotor_objects, key=attrgetter("volume"))
                 rotor_objects = [
                     x for x in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial) if x != stator_obj
@@ -259,17 +260,18 @@ class AedtFlow(ToolkitGeneric):
                                 magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
                         obj.rotate(cs_axis="Z", angle=rotor_skew_ang)
-                        # duplicate around z axis (-360/symmetry_factor)
-                        self.aedtapp.modeler.duplicate_around_axis(
-                            rotor_object,
-                            cs_axis=self.aedtapp.AXIS.Z,
-                            angle=-360 / self.aedtapp.symmetry_multiplier,
-                            nclones=2,
-                            create_new_objects=False,
-                        )
-                        # split - Initial Position 0deg on x-axis
-                        self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
-                        self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
+
+                    # duplicate around z axis (-360/symmetry_factor)
+                    self.aedtapp.modeler.duplicate_around_axis(
+                        rotor_object,
+                        cs_axis=self.aedtapp.AXIS.Z,
+                        angle=-360 / self.aedtapp.symmetry_multiplier,
+                        nclones=2,
+                        create_new_objects=False,
+                    )
+                    # split - Initial Position 0deg on x-axis
+                    self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
+                    self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
                 rotor_skew_ang += decompose_variable_value(properties.SkewAngle)[0]
 
             self.aedtapp.release_desktop(False, False)

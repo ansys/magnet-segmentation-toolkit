@@ -582,6 +582,21 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_20)
 
+        self.horizontalLayout_20a = QHBoxLayout()
+        self.horizontalLayout_20a.setObjectName(u"horizontalLayout_20a")
+        self.label_14a = QLabel(self.Segmentation)
+        self.label_14a.setObjectName(u"label_14a")
+
+        self.horizontalLayout_20a.addWidget(self.label_14a)
+
+        self.stator_material = QComboBox(self.Segmentation)
+        self.stator_material.setObjectName(u"stator_material")
+
+        self.horizontalLayout_20a.addWidget(self.stator_material)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_20a)
+
         self.horizontalLayout_21 = QHBoxLayout()
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
         self.label_15 = QLabel(self.Segmentation)
@@ -778,6 +793,7 @@ class Ui_MainWindow(object):
 
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Magnets Material", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Rotor Material", None))
+        self.label_14a.setText(QCoreApplication.translate("MainWindow", u"Stator Material", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Rotor Slices", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Magnet Segments Per Slice", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))
