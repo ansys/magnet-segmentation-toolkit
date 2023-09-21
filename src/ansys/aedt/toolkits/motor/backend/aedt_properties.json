@@ -2,6 +2,7 @@
   "IsSkewed" : false,
   "MagnetsMaterial": "",
   "RotorMaterial": "",
+  "StatorMaterial": "",
   "RotorSlices": "",
   "MagnetsSegmentsPerSlice": "",
   "SkewAngle": "",
