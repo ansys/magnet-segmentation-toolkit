@@ -49,8 +49,9 @@ data = {
     "MagnetsMaterial": "N30UH_65C",
     "MagnetsSegmentsPerSlice": "2",
     "RotorMaterial": "M250-35A_20C",
+    "StatorMaterial": "M250-35A_20C",
     "RotorSlices": "2",
-    "SkewAngle": "0.5deg",
+    "SkewAngle": "2deg",
 }
 #################################################################################
 # Set properties

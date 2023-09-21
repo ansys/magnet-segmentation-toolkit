@@ -876,6 +876,20 @@
                </item>
               </layout>
              </item>
+			 <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_20a">
+               <item>
+                <widget class="QLabel" name="label_14a">
+                 <property name="text">
+                  <string>Stator Material</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="stator_material"/>
+               </item>
+              </layout>
+             </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_21">
                <item>

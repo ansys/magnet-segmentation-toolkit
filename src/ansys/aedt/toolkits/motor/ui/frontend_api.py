@@ -22,6 +22,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         properties["IsSkewed"] = _to_boolean(self.is_skewed.currentText())
         properties["MagnetsMaterial"] = self.magnets_material.currentText()
         properties["RotorMaterial"] = self.rotor_material.currentText()
+        properties["StatorMaterial"] = self.stator_material.currentText()
         properties["RotorSlices"] = self.rotor_slices.text()
         properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
         properties["SkewAngle"] = self.skew_angle.text()
@@ -83,10 +84,12 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
     def hide_options(self):
         if self.is_skewed.currentText() == "True":
             self.rotor_material.setEnabled(False)
+            self.stator_material.setEnabled(False)
             self.rotor_slices.setEnabled(False)
             self.skew_angle.setEnabled(False)
         else:
             self.rotor_material.setEnabled(True)
+            self.stator_material.setEnabled(True)
             self.rotor_slices.setEnabled(True)
             self.skew_angle.setEnabled(True)
 
