@@ -26,7 +26,7 @@ classifiers = [
 dependencies = [
     "build==1.0.3",
     "twine==4.0.2",
-    "pyaedt==0.6.93",
+    "pyaedt==0.6.94",
     "ansys-motorcad-core",
     "importlib-metadata >=4.0",
     "pyside6==6.5.2",
@@ -42,7 +42,7 @@ tests = [
 ]
 doc = [
     "ansys-sphinx-theme==0.11.2",
-    "numpydoc==1.5.0",
+    "numpydoc==1.6.0",
     "recommonmark==0.7.1",
     "sphinx==7.2.6",
     "sphinx-copybutton==0.5.2",
