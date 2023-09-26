@@ -174,6 +174,7 @@ class FrontendGeneric(object):
                     self.write_log_line("Motor-CAD file loading failed.")
             else:
                 self.write_log_line("Failed to initialize Motor-CAD.")
+        self.set_emag.setEnabled(True)
         self.export_MCAD.setEnabled(True)
 
     def find_process_ids(self):

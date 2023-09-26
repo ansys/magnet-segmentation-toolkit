@@ -89,6 +89,9 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         # Select Motor-CAD file, open Motor-CAD and load file
         self.load_MCAD_file.clicked.connect(self.open_load_mot_file)
 
+        # Set E-Mag Model
+        self.set_emag.clicked.connect(self.set_emag_model)
+
         # Export .vbs and run it in AEDT
         self.export_MCAD.clicked.connect(self.export_vbs)
 
