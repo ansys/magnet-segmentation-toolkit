@@ -77,6 +77,7 @@ class MotorCADFlow(ToolkitGeneric):
         return True
 
     def build_lab_model(self):
+        """Build the LAB model."""
         if not self.mcad:
             logger.error("MotorCAD not initialized")
             return False
