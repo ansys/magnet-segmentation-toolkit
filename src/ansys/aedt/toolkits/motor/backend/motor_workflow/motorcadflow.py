@@ -57,6 +57,7 @@ class MotorCADFlow(ToolkitGeneric):
                 motorcad_filepath, "{}.vbs".format(os.path.splitext(motorcad_filepath)[0])
             )
 
+        self.set_properties(properties)
         logger.debug("MotorCAD file loaded")
         self.mcad.load_from_file(properties.MotorCAD_filepath)
         return True
