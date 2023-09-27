@@ -17,23 +17,25 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QHBoxLayout,
-    QLabel, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPlainTextEdit, QProgressBar, QPushButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
-    QVBoxLayout, QWidget)
+    QLabel, QLayout, QLineEdit, QMainWindow,
+    QMenu, QMenuBar, QPlainTextEdit, QProgressBar,
+    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
+    QTabWidget, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(890, 1178)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
         self.action_save_project = QAction(MainWindow)
         self.action_save_project.setObjectName(u"action_save_project")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
         self.centralwidget.setSizePolicy(sizePolicy)
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -185,7 +187,7 @@ class Ui_MainWindow(object):
 
         self.connect_aedtapp = QPushButton(self.AEDTsettings)
         self.connect_aedtapp.setObjectName(u"connect_aedtapp")
-        self.connect_aedtapp.setEnabled(False)
+        self.connect_aedtapp.setEnabled(True)
         self.connect_aedtapp.setMinimumSize(QSize(0, 40))
 
         self.settings_layout.addWidget(self.connect_aedtapp)
@@ -203,7 +205,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_26 = QHBoxLayout(self.MotorCADsettings)
         self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
         self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setSpacing(6)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setSizeConstraint(QLayout.SetNoConstraint)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -247,6 +251,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.EmagSettings = QLabel(self.MotorCADsettings)
         self.EmagSettings.setObjectName(u"EmagSettings")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.EmagSettings.sizePolicy().hasHeightForWidth())
+        self.EmagSettings.setSizePolicy(sizePolicy3)
         self.EmagSettings.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
 
         self.horizontalLayout_8.addWidget(self.EmagSettings)
@@ -313,10 +322,43 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_11)
 
+        self.horizontalLayout_27 = QHBoxLayout()
+        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
+        self.set_emag = QPushButton(self.MotorCADsettings)
+        self.set_emag.setObjectName(u"set_emag")
+        self.set_emag.setEnabled(False)
+        sizePolicy3.setHeightForWidth(self.set_emag.sizePolicy().hasHeightForWidth())
+        self.set_emag.setSizePolicy(sizePolicy3)
+        self.set_emag.setMinimumSize(QSize(0, 35))
+
+        self.horizontalLayout_27.addWidget(self.set_emag)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_27)
+
+        self.horizontalLayout_28 = QHBoxLayout()
+        self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
+        self.run_emag = QPushButton(self.MotorCADsettings)
+        self.run_emag.setObjectName(u"run_emag")
+        self.run_emag.setEnabled(False)
+        sizePolicy3.setHeightForWidth(self.run_emag.sizePolicy().hasHeightForWidth())
+        self.run_emag.setSizePolicy(sizePolicy3)
+        self.run_emag.setMinimumSize(QSize(0, 35))
+
+        self.horizontalLayout_28.addWidget(self.run_emag)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_28)
+
         self.horizontalLayout_12 = QHBoxLayout()
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.LABSettings = QLabel(self.MotorCADsettings)
         self.LABSettings.setObjectName(u"LABSettings")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.LABSettings.sizePolicy().hasHeightForWidth())
+        self.LABSettings.setSizePolicy(sizePolicy4)
         self.LABSettings.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
 
         self.horizontalLayout_12.addWidget(self.LABSettings)
@@ -338,11 +380,11 @@ class Ui_MainWindow(object):
         self.MaxStatorCurrent = QLineEdit(self.MotorCADsettings)
         self.MaxStatorCurrent.setObjectName(u"MaxStatorCurrent")
         self.MaxStatorCurrent.setEnabled(True)
-        sizePolicy3 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.MaxStatorCurrent.sizePolicy().hasHeightForWidth())
-        self.MaxStatorCurrent.setSizePolicy(sizePolicy3)
+        sizePolicy5 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.MaxStatorCurrent.sizePolicy().hasHeightForWidth())
+        self.MaxStatorCurrent.setSizePolicy(sizePolicy5)
         self.MaxStatorCurrent.setMaximumSize(QSize(16777215, 16777215))
 
         self.horizontalLayout_13.addWidget(self.MaxStatorCurrent)
@@ -467,25 +509,66 @@ class Ui_MainWindow(object):
 
         self.OPSpeed = QLineEdit(self.MotorCADsettings)
         self.OPSpeed.setObjectName(u"OPSpeed")
+        sizePolicy2.setHeightForWidth(self.OPSpeed.sizePolicy().hasHeightForWidth())
+        self.OPSpeed.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_19.addWidget(self.OPSpeed)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_19)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.horizontalLayout_29 = QHBoxLayout()
+        self.horizontalLayout_29.setObjectName(u"horizontalLayout_29")
+        self.build_lab_model = QPushButton(self.MotorCADsettings)
+        self.build_lab_model.setObjectName(u"build_lab_model")
+        self.build_lab_model.setEnabled(False)
+        sizePolicy3.setHeightForWidth(self.build_lab_model.sizePolicy().hasHeightForWidth())
+        self.build_lab_model.setSizePolicy(sizePolicy3)
+        self.build_lab_model.setMinimumSize(QSize(0, 35))
+
+        self.horizontalLayout_29.addWidget(self.build_lab_model)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_29)
+
+        self.horizontalLayout_30 = QHBoxLayout()
+        self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
+        self.run_lab_performance_calc = QPushButton(self.MotorCADsettings)
+        self.run_lab_performance_calc.setObjectName(u"run_lab_performance_calc")
+        self.run_lab_performance_calc.setEnabled(False)
+        sizePolicy3.setHeightForWidth(self.run_lab_performance_calc.sizePolicy().hasHeightForWidth())
+        self.run_lab_performance_calc.setSizePolicy(sizePolicy3)
+        self.run_lab_performance_calc.setMinimumSize(QSize(0, 35))
+
+        self.horizontalLayout_30.addWidget(self.run_lab_performance_calc)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_30)
+
+        self.horizontalLayout_31 = QHBoxLayout()
+        self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
+        self.lab_op_point = QPushButton(self.MotorCADsettings)
+        self.lab_op_point.setObjectName(u"lab_op_point")
+        self.lab_op_point.setEnabled(False)
+        sizePolicy3.setHeightForWidth(self.lab_op_point.sizePolicy().hasHeightForWidth())
+        self.lab_op_point.setSizePolicy(sizePolicy3)
+        self.lab_op_point.setMinimumSize(QSize(0, 35))
+
+        self.horizontalLayout_31.addWidget(self.lab_op_point)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_31)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Preferred)
 
         self.verticalLayout_3.addItem(self.verticalSpacer_2)
 
         self.export_MCAD = QPushButton(self.MotorCADsettings)
         self.export_MCAD.setObjectName(u"export_MCAD")
         self.export_MCAD.setEnabled(False)
-        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.export_MCAD.sizePolicy().hasHeightForWidth())
-        self.export_MCAD.setSizePolicy(sizePolicy4)
-        self.export_MCAD.setMinimumSize(QSize(0, 40))
+        sizePolicy3.setHeightForWidth(self.export_MCAD.sizePolicy().hasHeightForWidth())
+        self.export_MCAD.setSizePolicy(sizePolicy3)
+        self.export_MCAD.setMinimumSize(QSize(0, 35))
 
         self.verticalLayout_3.addWidget(self.export_MCAD)
 
@@ -703,8 +786,8 @@ class Ui_MainWindow(object):
 
         self.log_text = QPlainTextEdit(self.centralwidget)
         self.log_text.setObjectName(u"log_text")
-        sizePolicy2.setHeightForWidth(self.log_text.sizePolicy().hasHeightForWidth())
-        self.log_text.setSizePolicy(sizePolicy2)
+        sizePolicy.setHeightForWidth(self.log_text.sizePolicy().hasHeightForWidth())
+        self.log_text.setSizePolicy(sizePolicy)
 
         self.verticalLayout.addWidget(self.log_text)
 
@@ -739,7 +822,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(2)
+        self.toolkit_tab.setCurrentIndex(1)
         self.projects_aedt_combo.setCurrentIndex(0)
 
 
@@ -771,6 +854,8 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Number Of Cuboids", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Torque Points Per Cycle", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Torque Number Of Cycles", None))
+        self.set_emag.setText(QCoreApplication.translate("MainWindow", u"Set E-Mag Model", None))
+        self.run_emag.setText(QCoreApplication.translate("MainWindow", u"Run E-Mag Calculation", None))
         self.LABSettings.setText(QCoreApplication.translate("MainWindow", u"LAB Settings", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Max Stator Current", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Speed Max (rpm)", None))
@@ -779,6 +864,9 @@ class Ui_MainWindow(object):
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Max Temp. Stator Winding (\u00b0C)", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Max Temp. Magnet (\u00b0C)", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"OP Speed (rpm)", None))
+        self.build_lab_model.setText(QCoreApplication.translate("MainWindow", u"Build LAB Model", None))
+        self.run_lab_performance_calc.setText(QCoreApplication.translate("MainWindow", u"Run LAB Performance Calculation", None))
+        self.lab_op_point.setText(QCoreApplication.translate("MainWindow", u"LAB Op. Point", None))
         self.export_MCAD.setText(QCoreApplication.translate("MainWindow", u"Export Motor-CAD file", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.MotorCADsettings), QCoreApplication.translate("MainWindow", u"Motor-CAD Settings", None))
         self.projects_label_2.setText(QCoreApplication.translate("MainWindow", u"Projects", None))
