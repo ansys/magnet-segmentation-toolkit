@@ -4,6 +4,7 @@ import tempfile
 import ansys.motorcad.core as pymotorcad
 
 from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
+from ansys.aedt.toolkits.motor.backend.common.api_generic import thread
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
@@ -38,6 +39,7 @@ class MotorCADFlow(ToolkitGeneric):
             logger.debug("MotorCAD was already active")
             return False
 
+    @thread.launch_thread
     def load_mcad_file(self):
         """Load a .mot file."""
         if not self.mcad:
@@ -55,6 +57,7 @@ class MotorCADFlow(ToolkitGeneric):
                 motorcad_filepath, "{}.vbs".format(os.path.splitext(motorcad_filepath)[0])
             )
 
+        self.set_properties(properties)
         logger.debug("MotorCAD file loaded")
         self.mcad.load_from_file(properties.MotorCAD_filepath)
         return True
@@ -65,12 +68,20 @@ class MotorCADFlow(ToolkitGeneric):
             logger.error("MotorCAD not initialized")
             return False
         self.mcad.show_magnetic_context()
-        self.mcad.display_screen("Scripting")
         self.mcad.set_variable("ProximityLossModel", 1)
         self.mcad.set_variable("NumberOfCuboids", properties.E_mag_settings["NumberOfCuboids"])
-        self.mcad.set_variable("AxialSegments", 1)
+        self.mcad.set_variable("TorquePointsPerCycle", properties.E_mag_settings["TorquePointsPerCycle"])
+        self.mcad.set_variable("TorqueNumberCycles", properties.E_mag_settings["TorqueNumberCycles"])
 
         # self.mcad.save_to_file(properties.MotorCAD_filepath)
+        return True
+
+    def build_lab_model(self):
+        """Build the LAB model."""
+        if not self.mcad:
+            logger.error("MotorCAD not initialized")
+            return False
+        self.mcad.build_model_lab()
         return True
 
     def lab_performance_calculation(self):
@@ -146,21 +157,43 @@ class MotorCADFlow(ToolkitGeneric):
         logger.debug("Avg Winding Temp " + str(wdg_avg))
         return wdg_avg
 
+    @thread.launch_thread
     def export_settings(self):
         """Set export settings."""
-        if not self.mcad:
-            logger.error("MotorCAD not initialized")
+        self.connect_aedt()
+
+        try:
+            if not self.mcad:
+                logger.error("MotorCAD not initialized")
+                return False
+            self.mcad.show_magnetic_context()
+            self.mcad.set_variable("AnsysExportFormat", 1)
+            self.mcad.set_variable("AnsysModelType", 1)
+            self.mcad.set_variable("AnsysSolve", 1)
+            self.mcad.set_variable("AnsysArcSegmentMethod", 0)
+            self.mcad.set_variable("Ansys_MergeEntities", 0)
+            self.mcad.set_variable("Ansys_WindingGroups", 0)
+            self.mcad.set_variable("AnsysRotationDirection", 0)
+            self.mcad.set_variable("AxialSegments", 1)
+            self.mcad.export_to_ansys_electronics_desktop(properties.vbs_file_path)
+
+            self.desktop.odesktop.RunScript(properties.vbs_file_path)
+            file_name = os.path.basename(properties.vbs_file_path)
+            design_name = os.path.splitext(file_name)[0]
+            self._save_project_info()
+
+            self.connect_design(app_name=list(properties.active_design.keys())[0])
+            self.aedtapp.rename_design(design_name)
+            self._save_project_info()
+            self.aedtapp["HalfAxial"] = 0
+
+            self.aedtapp.release_desktop(False, False)
+            self.aedtapp = None
+            self.desktop = None
+
+            return properties.vbs_file_path
+        except:
             return False
-        self.mcad.show_magnetic_context()
-        self.mcad.set_variable("AnsysExportFormat", 1)
-        self.mcad.set_variable("AnsysModelType", 1)
-        self.mcad.set_variable("AnsysSolve", 1)
-        self.mcad.set_variable("AnsysArcSegmentMethod", 0)
-        self.mcad.set_variable("Ansys_MergeEntities", 0)
-        self.mcad.set_variable("Ansys_WindingGroups", 0)
-        self.mcad.set_variable("AnsysRotationDirection", 0)
-        self.mcad.export_to_ansys_electronics_desktop(properties.vbs_file_path)
-        return properties.vbs_file_path
 
     def save(self):
         """Save the motorcad file."""
