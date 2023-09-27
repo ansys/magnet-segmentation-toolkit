@@ -51,6 +51,7 @@ class FrontendThread(QtCore.QThread):
                     "magnets_material" in self.__dir__()
                     and "rotor_material" in self.__dir__()
                     and "stator_material" in self.__dir__()
+                    and properties["active_project"]
                 ):
                     mats = self.get_materials()
                     for mat in mats:

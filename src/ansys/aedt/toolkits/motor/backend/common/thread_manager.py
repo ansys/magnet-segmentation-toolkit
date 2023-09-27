@@ -38,25 +38,19 @@ class ThreadManager(object):
             thread_name = "Toolkit_Thread"
             if not properties.is_toolkit_busy:
                 # Multithreading fails with COM
-                if properties.use_grpc:
-                    logger.debug("Starting thread: {}".format(thread_name))
-                    properties.is_toolkit_busy = True
-                    running_thread = threading.Thread(
-                        target=cls.process_exe,
-                        name=thread_name,
-                        args=(
-                            process,
-                            *args,
-                        ),
-                        daemon=True,
-                    )
-                    running_thread.start()
-                    return True
-                else:
-                    logger.debug("Starting direct process: {}".format(thread_name))
-                    cls.process_exe(process, *args)
-                    return True
-
+                logger.debug("Starting thread: {}".format(thread_name))
+                properties.is_toolkit_busy = True
+                running_thread = threading.Thread(
+                    target=cls.process_exe,
+                    name=thread_name,
+                    args=(
+                        process,
+                        *args,
+                    ),
+                    daemon=True,
+                )
+                running_thread.start()
+                return True
             else:
                 return False
 

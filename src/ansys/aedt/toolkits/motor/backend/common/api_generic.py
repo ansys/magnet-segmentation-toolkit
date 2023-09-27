@@ -298,7 +298,7 @@ class ToolkitGeneric(object):
 
         return design_list
 
-    # @thread.launch_thread
+    @thread.launch_thread
     def launch_aedt(self):
         """Launch AEDT.
 
