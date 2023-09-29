@@ -22,13 +22,13 @@ development mode, run:
 
 Post issues
 -----------
-Use the `PyMotorCAD-PyAEDT Toolkit issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit.git/issues>`_ page
+Use the `PyMotorCAD-PyAEDT Toolkit issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_ page
 to submit questions, report bugs, and request new features.
 
 View toolkit documentation
 -----------------------------------------
 Documentation for the latest development version, which tracks the
-``main`` branch, is hosted at  `PyMotorCAD-PyAEDT Toolkit Documentation <https://aedt.motor.toolkit.docs.pyansys.com//>`_.
+``main`` branch, is hosted at  `PyMotorCAD-PyAEDT Toolkit Documentation <https://aedt.motor.toolkit.docs.pyansys.com/>`_.
 This version is automatically kept up to date via GitHub actions.
 
 Adhere to code style
