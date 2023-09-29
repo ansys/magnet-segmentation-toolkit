@@ -11,7 +11,7 @@ from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
 os.environ["QT_API"] = "pyside6"
 
 # User inputs
-toolkit_title = "PyMotor-CAD PyAEDT Toolkit For Magnets Segmentation"
+toolkit_title = "Motor Toolkit Wizard"
 
 # Backend URL and port
 

@@ -2,25 +2,32 @@
 UI reference
 ============
 
-This section describes user interface available in AEDT's **Toolkit Template Wizard**.
-To run **Toolkit Template Wizard**, you must have a licensed copy of Ansys Electronics
-Desktop (AEDT) installed.
+This section describes user interface available in AEDT's **Motor Toolkit**.
+To run the **Motor Toolkit**, you must have a licensed copy of Ansys Electronics
+Desktop (AEDT) installed and a Motor-CAD one.
 
-Once **Toolkit Template Wizard** is launched, user can choose settings from first page and connect to an existing
-AEDT session or create a new session.
-
-.. image:: ../_static/settings.png
-  :width: 800
-  :alt: Settings Tab
-
-
-After Electronics Desktop is launched, user can assign a multiplier value which is applied to the dimensions of
-the geometry selected in the combo box (box or sphere). The user can push the button **Create geometry** and it
-creates the selected geometry with a random position and color.
+Once **Motor Toolkit** is launched, user can choose to provide as input a 3D motor model in AEDT or a Motor-CAD file.
+In the first case the user can load an .aedt file by clicking on **Select aedt project** and then **Launch AEDT** from
+the first tab **AEDT Settings**.
 
 .. image:: ../_static/design_connected.png
   :width: 800
-  :alt: Antenna Toolkit UI, Design Tab
+  :alt: Settings Tab
+
+In the second case the user can specify the AEDT settings from first page and connect the toolkit to an existing AEDT
+session or create a new one, this will be necessary when exporting the 3D motor model from Motor-CAD.
+Then in the **Motor-CAD Settings** tab load the .mot file by clicking on **Load**.
+
+.. image:: ../_static/Motor-CAD_Settings.png
+  :width: 800
+  :alt: Settings Tab
+
+After one of the two inputs has been provided, the user has to switch to the **Segmentation** tab to set the project and
+the design to work with as well as the segmentation settings.
+
+.. image:: ../_static/segmentation_settings.png
+  :width: 800
+  :alt: Settings Tab
 
 The user can save the project, File>Save project.
 

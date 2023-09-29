@@ -47,7 +47,7 @@ The toolkit can be installed inside AEDT using
 
     .. code:: python
 
-      desktop.add_custom_toolkit("TemplateToolkit")
+      desktop.add_custom_toolkit("MotorWizard")
       exit()
 
 #. Close the console and open the toolkit, if you do not restart AEDT, you need to *Update Menu*:
@@ -93,17 +93,17 @@ If you have installed the toolkit in the virtual environment you can skip step 2
 
     .. code:: bash
 
-      python -m pip install git+https://github.com/pyansys/pyaedt-toolkit-template.git
+      python -m pip install git+https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
 
 #. Launch the toolkit UI:
 
     .. code:: bash
 
-      python .venv\Lib\site-packages\ansys\aedt\toolkits\template\run_toolkit.py
+      python .venv\Lib\site-packages\ansys\aedt\toolkits\motor\run_toolkit.py
 
 #. Settings tab to create a new AEDT session or connect to an existing one:
 
-    .. image:: ./_static/settings.png
+    .. image:: ./_static/design_connected_launch_AEDT.png
       :width: 800
       :alt: UI opened from console, settings tab
 
@@ -122,25 +122,43 @@ This section shows how to install the toolkit in an specific python environment 
 
       python
 
-#. Open AEDT and draw a sphere in a random position by run these commands:
+#. The API can be used at toolkit level. For example, the following commands: Open AEDT, open a 3D motor model, segment and skew it in Maxwell 3D:
 
     .. code:: python
 
       # Import required modules for the example
-      import time
+      import os
 
       # Import backend services
       from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
       # Backend object
-      service = Toolkit()
+      toolkit = Toolkit()
 
       # Get service properties
-      properties = service.get_properties()
+      properties = toolkit.get_properties()
 
-      # Change geometry type
-      new_properties = {"geometry": "Sphere"}
-      service.set_properties(new_properties)
+      # Define properties
+      project_name = "my_3d_model"
+      active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
+      active_design = "my_design"
+      magnets_material = "N30UH_65C"
+      rotor_material = "M250-35A_20C"
+
+      properties = {
+          "aedt_version": "2023.1",
+          "active_project": active_project,
+          "active_design": {"Maxwell3d": active_design},
+          "design_list": {project_name: [{"Maxwell3d": active_design}]},
+          "IsSkewed": False,
+          "MagnetsMaterial": magnets_material,
+          "MagnetsSegmentsPerSlice": "5",
+          "RotorMaterial": rotor_material,
+          "RotorSlices": "3",
+      }
+
+      # Set service properties
+      toolkit.set_properties()
 
       # Launch AEDT in a thread
       service.launch_aedt()
@@ -152,17 +170,17 @@ This section shows how to install the toolkit in an specific python environment 
           time.sleep(1)
           response = service.get_thread_status()
 
-      # Create a sphere in a random position in a thread
-      b = service.create_geometry()
+      # Apply segmentation
+      toolkit.segmentation()
+
+      # Apply skew
+      toolkit.apply_skew()
 
       # Wait until thread is finished
       response = service.get_thread_status()
       while response[0] == 0:
           time.sleep(1)
           response = service.get_thread_status()
-
-      # Get number of solids added
-      len(service.comps)
 
       # Desktop is released here
       service.release_aedt()

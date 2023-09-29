@@ -15,20 +15,20 @@ development mode, run:
 
 .. code::
 
-    git clone https://github.com/ansys/pyaedt-toolkit-template.git
-    cd pyaedt-toolkit-template
+    git clone https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
+    cd pymotorcad-pyaedt-toolkit
     python -m pip install --upgrade pip
     pip install -e .
 
 Post issues
 -----------
-Use the `PyAEDT toolkit template issues <https://github.com/ansys/pyaedt-toolkit-template/issues>`_ page
+Use the `PyMotorCAD-PyAEDT Toolkit issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit.git/issues>`_ page
 to submit questions, report bugs, and request new features.
 
 View toolkit documentation
 -----------------------------------------
 Documentation for the latest development version, which tracks the
-``main`` branch, is hosted at  `PyAEDT Toolkit Template Documentation <https://aedt.toolkit.template.docs.pyansys.com/>`_.
+``main`` branch, is hosted at  `PyMotorCAD-PyAEDT Toolkit Documentation <https://aedt.motor.toolkit.docs.pyansys.com//>`_.
 This version is automatically kept up to date via GitHub actions.
 
 Adhere to code style
