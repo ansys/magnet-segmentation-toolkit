@@ -27,7 +27,7 @@ you can create an object as in the following example to use both classes:
     properties = service.get_properties()
 
     # Set properties
-    new_properties = {"aedt_version": "2022.2"}
+    new_properties = {"aedt_version": "2023.2"}
     service.set_properties(new_properties)
     properties = service.get_properties()
 
@@ -45,5 +45,3 @@ you can create an object as in the following example to use both classes:
 
     # Desktop is released here
     service.release_aedt()
-
-

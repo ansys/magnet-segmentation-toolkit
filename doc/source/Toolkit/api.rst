@@ -1,6 +1,8 @@
 Toolkit API
 ===========
-This section list the available toolkit methods in the backend:
+This section list the available toolkit methods in the backend at the toolkit level.
+
+Toolkit API are the calls used by the frontend. It wraps some of the methods of the **Motor API**.
 
 .. currentmodule:: ansys.aedt.toolkits.motor.backend.api
 
@@ -26,7 +28,7 @@ The API can be used as in the following example:
     properties = service.get_properties()
 
     # Set properties
-    new_properties = {"aedt_version": "2022.2"}
+    new_properties = {"aedt_version": "2023.2"}
     service.set_properties(new_properties)
     properties = service.get_properties()
 
@@ -39,14 +41,9 @@ The API can be used as in the following example:
         time.sleep(1)
         response = service.get_thread_status()
 
-    # Create geometry
-    msg = service.create_geometry()
-
-    # Wait until thread is finished
-    response = service.get_thread_status()
-    while response[0] == 0:
-        time.sleep(1)
-        response = service.get_thread_status()
+    # Segment and skew motor
+    service.segmentation()
+    service.apply_skew()
 
     # Desktop is released here
     service.release_aedt()
