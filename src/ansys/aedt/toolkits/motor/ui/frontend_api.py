@@ -66,7 +66,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
                 # Start the thread
                 # self.running = True
                 # self.start()
-                msg = "Apply skew call launched"
+                msg = "Apply skew call successful"
                 logger.debug(msg)
                 self.write_log_line(msg)
                 self.update_progress(100)
