@@ -11,6 +11,7 @@ CPython
 rst
 GitHub
 UI
+ui
 new_toolkit_name
 toml
 url
