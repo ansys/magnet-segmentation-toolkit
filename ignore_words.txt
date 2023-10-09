@@ -25,4 +25,3 @@ fo
 te
 sie
 mot
-ui
