@@ -1,4 +1,4 @@
-AEDT Motor toolkit documentation  |version|
+AEDT Motor Toolkit documentation  |version|
 ===========================================
 
 ..
