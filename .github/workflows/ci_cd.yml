@@ -18,6 +18,7 @@ env:
   DOCUMENTATION_CNAME: 'aedt.motor.toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-aedt-toolkits-motor'
   LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.motor'
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -100,8 +101,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade build wheel
           pip install .[tests]
-        env:
-          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
       - name: Motor-CAD Test
         timeout-minutes: 30
