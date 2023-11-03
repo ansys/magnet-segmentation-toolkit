@@ -26,10 +26,10 @@ classifiers = [
 dependencies = [
     "build==1.0.3",
     "twine==4.0.2",
-    "pyaedt==0.7.0",
+    "pyaedt",
     "ansys-motorcad-core",
     "importlib-metadata >=4.0",
-    "pyside6==6.5.3",
+    "PySide6-Essentials==6.5.1.1",
     "pyqtgraph",
     "qdarkstyle",
     "flask",
@@ -37,11 +37,11 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "pytest==7.4.2",
+    "pytest==7.4.3",
     "pytest-cov==4.1.0",
 ]
 doc = [
-    "ansys-sphinx-theme==0.12.2",
+    "ansys-sphinx-theme==0.12.4",
     "numpydoc==1.6.0",
     "recommonmark==0.7.1",
     "sphinx==7.2.6",

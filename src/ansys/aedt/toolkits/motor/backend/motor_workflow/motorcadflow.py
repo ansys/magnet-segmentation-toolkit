@@ -171,10 +171,10 @@ class MotorCADFlow(ToolkitGeneric):
             self.mcad.set_variable("AnsysModelType", 1)
             self.mcad.set_variable("AnsysSolve", 1)
             self.mcad.set_variable("AnsysArcSegmentMethod", 0)
-            self.mcad.set_variable("Ansys_MergeEntities", 0)
             self.mcad.set_variable("Ansys_WindingGroups", 0)
             self.mcad.set_variable("AnsysRotationDirection", 0)
             self.mcad.set_variable("AxialSegments", 1)
+            self.mcad.set_variable("Ansys_MagnetThermalData", 1)
             self.mcad.export_to_ansys_electronics_desktop(properties.vbs_file_path)
 
             self.desktop.odesktop.RunScript(properties.vbs_file_path)

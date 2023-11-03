@@ -120,25 +120,37 @@ if count > 10:
     raise "Backend not running"
 
 # User can pass the desktop ID and version to connect to a specific AEDT session
-if len(sys.argv) == 3:
+desktop_pid = None
+desktop_version = None
+grpc = False
+
+if "PYAEDT_SCRIPT_VERSION" in list(os.environ.keys()) and (
+    "PYAEDT_SCRIPT_PROCESS_ID" in list(os.environ.keys()) or "PYAEDT_SCRIPT_PORT" in list(os.environ.keys())
+):
+    desktop_version = os.environ["PYAEDT_SCRIPT_VERSION"]
+    if desktop_version > "2023.2" or is_linux:
+        # GRPC Default
+        desktop_pid = os.environ["PYAEDT_SCRIPT_PORT"]
+        grpc = True
+    else:
+        # COM Default
+        desktop_pid = os.environ["PYAEDT_SCRIPT_PROCESS_ID"]
+elif len(sys.argv) == 3:
     desktop_pid = sys.argv[1]
     desktop_version = sys.argv[2]
+if desktop_pid and desktop_version:
     properties = {
         "selected_process": int(desktop_pid),
         "aedt_version": desktop_version,
-        "use_grpc": False,
+        "use_grpc": grpc,
     }
     requests.put(url_call + "/set_properties", json=properties)
     requests.post(url_call + "/launch_aedt")
 
     response = requests.get(url_call + "/get_status")
-    count = 0
-    while response.json() != "Backend free" and count < 10:
+    while response.json() != "Backend free":
         time.sleep(1)
         response = requests.get(url_call + "/get_status")
-        count += 1
-    if count > 10:
-        raise "AEDT not connected"
 
 # Create a thread to run the PySide6 UI
 ui_thread = threading.Thread(target=run_command, args=frontend_command, name="frontend")
