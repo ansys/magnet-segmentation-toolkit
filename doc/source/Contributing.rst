@@ -26,7 +26,7 @@ Use the `PyMotorCAD-PyAEDT Toolkit issues <https://github.com/ansys/pymotorcad-p
 to submit questions, report bugs, and request new features.
 
 View toolkit documentation
------------------------------------------
+--------------------------
 Documentation for the latest development version, which tracks the
 ``main`` branch, is hosted at  `PyMotorCAD-PyAEDT Toolkit Documentation <https://aedt.motor.toolkit.docs.pyansys.com/>`_.
 This version is automatically kept up to date via GitHub actions.
