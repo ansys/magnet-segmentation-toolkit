@@ -1,5 +1,5 @@
-PyAEDT toolkit template documentation  |version|
-================================================
+AEDT Motor Toolkit documentation  |version|
+===========================================
 
 ..
    Simply reuse the root readme
