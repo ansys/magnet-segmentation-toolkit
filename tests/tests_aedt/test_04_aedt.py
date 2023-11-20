@@ -2,21 +2,24 @@ import os
 from pathlib import Path
 import shutil
 
-from conftest import BasisTest
 from pyaedt import generate_unique_folder_name
+import pytest
+
+# from conftest import BasisTest
+from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
 test_project_name = "e9_eMobility_IPM__ANSYSEM_3D"
 design_name = "Motor-CAD e9"
 
+pytestmark = [pytest.mark.aedt]
 
-class TestClass(BasisTest, object):
-    def setup_class(self):
-        BasisTest.my_setup(self)
+
+class TestClass(object):
+    @pytest.fixture(autouse=True)
+    def init(self):
+        self.toolkit = Toolkit()
         src_folder = os.path.join(Path(__file__).parents[1], "input_data")
         self.temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
-
-    def teardown_class(self):
-        BasisTest.my_teardown(self)
 
     def test_1_launch_aedt(self):
         aedt_file = os.path.join(self.temp_folder, "e9_eMobility_IPM__ANSYSEM_3D.aedt")

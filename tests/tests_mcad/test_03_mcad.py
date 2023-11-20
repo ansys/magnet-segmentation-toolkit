@@ -5,8 +5,11 @@ import shutil
 import time
 
 from pyaedt import generate_unique_folder_name
+import pytest
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
+
+pytestmark = [pytest.mark.mcad]
 
 
 class TestClass(object):

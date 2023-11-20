@@ -106,33 +106,17 @@ jobs:
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=ansys.aedt --cov-report=xml:.cov/mcad_tests.xml --junitxml=junit/motorcad-test-results.xml --cov-report=html:.cov/mcad_tests-html tests\tests_mcad
+          pytest -vv -m mcad --cov
 
-      - name: "Install coverage dependencies"
-        run: |
-          python -m pip install .[tests]
-
-      - name: "Combine coverage files"
-        run: |
-          python -m coverage combine
-          python -m coverage html -d .cov\total-html
-          python -m coverage xml -o .cov\total.xml
-
-      - name: "Upload coverage results"
-        if: ${{ matrix.python == env.MINIMUM_PYTHON_VERSION }}
+      - name: "Upload Motor-CAD coverage file"
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
         uses: actions/upload-artifact@v3
         with:
-          path: .cov/total-html
-          name: html-coverage
+          path: .coverage
+          name: mcad-coverage
 
-      - name: "Upload coverage report to codecov"
-        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
-        uses: codecov/codecov-action@v3
-        with:
-          file: .cov/total.xml
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
+  # Adding needs on tests_windows_mcad to trigger this tests after motorcad's tests
+  # The final code coverage is obtained by combining motorcad's and aedt's
   tests_windows_aedt:
     name: "Windows Tests AEDT"
     strategy:
@@ -140,7 +124,7 @@ jobs:
         python-version: [ '3.10' ]
       fail-fast: false
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
-    needs: [smoke-tests]
+    needs: [tests_windows_mcad]
     steps:
       - uses: actions/checkout@v4
 
@@ -163,34 +147,35 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
+      - name: Download Motor-CAD coverage file
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
+        uses: actions/download-artifact@v3
+        with:
+            name: mcad-coverage
+
       - name: Generic Test
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=ansys.aedt --cov-report=xml:.cov/generic_tests.xml --junitxml=junit/generic-test-results.xml --cov-report=html:.cov/generic_tests-html tests\tests_generic_aedt
+          pytest -v -m generic --cov --cov-append
 
       - name: AEDT Test
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=ansys.aedt --cov-report=xml:.cov/aedt_tests.xml --junitxml=junit/aedt-test-results.xml --cov-report=html:.cov/aedt_tests-html tests\tests_aedt
-
-      - name: "Install coverage dependencies"
-        run: |
-          python -m pip install .[tests]
+          pytest -v -m aedt --cov --cov-append
 
       - name: "Combine coverage files"
         run: |
-          python -m coverage combine
-          python -m coverage html -d .cov\total-html
-          python -m coverage xml -o .cov\total.xml
+          python -m coverage html -d .cov/total-html
+          python -m coverage xml -o .cov/total.xml
 
       - name: "Upload coverage results"
-        if: ${{ matrix.python == env.MINIMUM_PYTHON_VERSION }}
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
         uses: actions/upload-artifact@v3
         with:
           path: .cov/total-html
-          name: html-coverage
+          name: html-total-coverage
 
       - name: "Upload coverage report to codecov"
         if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}

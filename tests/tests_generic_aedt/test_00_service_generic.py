@@ -2,7 +2,10 @@ import os
 import time
 
 from conftest import BasisTest
+import pytest
 import requests
+
+pytestmark = [pytest.mark.generic]
 
 
 class TestClass(BasisTest, object):
