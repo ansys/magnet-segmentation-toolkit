@@ -7,7 +7,7 @@ AEDT Motor Toolkit
    :target: https://docs.pyansys.com/
    :alt: PyAnsys
 
-.. |PythonVersion| image:: https://img.shields.io/badge/python-3.7+-blue.svg
+.. |PythonVersion| image:: https://img.shields.io/badge/python-3.10+-blue.svg
    :target: https://www.python.org/downloads/
 
 .. |GH-CI| image:: https://github.com/ansys/pyaedt-toolkit-template/actions/workflows/ci_cd.yml/badge.svg
