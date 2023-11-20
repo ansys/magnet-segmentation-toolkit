@@ -225,6 +225,23 @@ class FrontendGeneric(object):
                 self.write_log_line(f"Find AEDT designs failed")
                 return False
 
+    # def refresh_design_settings(self):
+    #     response = requests.get(self.url + "/get_status")
+    #
+    #     if response.ok and response.json() == "Backend running":
+    #         self.write_log_line("Please wait, toolkit running")
+    #     elif response.ok and response.json() == "Backend free":
+    #         properties = self.get_properties()
+    #         self.is_skewed.setCurrentText(
+    #             properties["active_design_settings"][self.design_aedt_combo.currentText()]["IsSkewed"])
+    #         self.is_skewed.setCurrentText(
+    #             properties["active_design_settings"][self.design_aedt_combo.currentText()]["SkewAngle"])
+    #         self.is_skewed.setCurrentText(
+    #             properties["active_design_settings"][self.design_aedt_combo.currentText()]["RotorSlices"])
+    #         self.is_skewed.setCurrentText(
+    #             properties["active_design_settings"][self.design_aedt_combo.currentText()]["MagnetsSegmentsPerSlice"])
+    #         return True
+
     def launch_aedt(self):
         response = requests.get(self.url + "/get_status")
 

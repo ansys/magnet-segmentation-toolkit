@@ -822,7 +822,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(1)
+        self.toolkit_tab.setCurrentIndex(0)
         self.projects_aedt_combo.setCurrentIndex(0)
 
 

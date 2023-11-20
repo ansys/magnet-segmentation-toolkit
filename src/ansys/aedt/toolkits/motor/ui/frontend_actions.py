@@ -99,6 +99,9 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow, ToolkitFrontend):
         # Rotor material, slices and skew angle are greyed out
         self.is_skewed.currentTextChanged.connect(self.hide_options)
 
+        # When design is selected enable Perform Segmentation button
+        self.design_aedt_combo.currentTextChanged.connect(self.perform_segmentation.setEnabled(True))
+
         # Perform Segmentation
         self.perform_segmentation.clicked.connect(self.apply_segmentation)
 
