@@ -15,7 +15,7 @@ the first tab **AEDT Settings**.
   :alt: Settings Tab
 
 In the second case the user can specify the AEDT settings from first page and connect the toolkit to an existing AEDT
-session or create a new one, this will be necessary when exporting the 3D motor model from Motor-CAD.
+session or create a new one, this is necessary when exporting the 3D motor model from Motor-CAD.
 Then in the **Motor-CAD Settings** tab load the .mot file by clicking on **Load**.
 
 .. image:: ../_static/Motor-CAD_Settings.png
