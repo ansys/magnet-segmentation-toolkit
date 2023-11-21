@@ -163,7 +163,7 @@ jobs:
         timeout-minutes: 30
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v -m aedt --cov --cov-append
+          pytest -v -n 6 -m aedt --cov --cov-append
 
       - name: "Combine coverage files"
         run: |
