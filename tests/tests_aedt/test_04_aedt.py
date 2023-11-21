@@ -1,38 +1,23 @@
-import os
-from pathlib import Path
-import shutil
-
-from pyaedt import generate_unique_folder_name
 import pytest
 
-# from conftest import BasisTest
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
-
-test_project_name = "e9_eMobility_IPM__ANSYSEM_3D"
-design_name = "Motor-CAD e9"
+from tests.tests_aedt.conftest import DESIGN_NAME
+from tests.tests_aedt.conftest import PROJECT_NAME
+from tests.tests_aedt.conftest import wait_toolkit
 
 pytestmark = [pytest.mark.aedt]
 
 
 class TestClass(object):
-    @pytest.fixture(autouse=True)
-    def init(self):
-        self.toolkit = Toolkit()
-        src_folder = os.path.join(Path(__file__).parents[1], "input_data")
-        self.temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
+    """"""
 
-    def test_1_launch_aedt(self):
-        aedt_file = os.path.join(self.temp_folder, "e9_eMobility_IPM__ANSYSEM_3D.aedt")
-        # vbs_file_path = os.path.join(self.temp_folder, "e9_eMobility_IPM_2D_UT.vbs")
-        # self.toolkit.set_properties({"vbs_file_path": vbs_file_path})
-        # assert self.toolkit.launch_aedt()
-        # self.toolkit.release_aedt(True, False)
-        self.toolkit.set_properties({"active_project": aedt_file})
-        self.toolkit.set_properties({"vbs_file_path": ""})
-        self.toolkit.set_properties({"active_design": {}})
-        self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
-        self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
-        assert self.toolkit.launch_aedt()
+    def test_launch_aedt(self, toolkit):
+        """Launch aedt."""
+        toolkit.set_properties({"vbs_file_path": ""})
+        toolkit.set_properties({"active_design": {"Maxwell3d": f"{DESIGN_NAME}"}})
+        toolkit.set_properties({"design_list": {f"{PROJECT_NAME}": [{"Maxwell3d": f"{DESIGN_NAME}"}]}})
+        assert toolkit.launch_aedt()
+
+        wait_toolkit(toolkit)
 
     # def test_3_analyze_model(self):
     #     self.toolkit.set_properties({"SetupToAnalyze": "Setup1"})
@@ -46,16 +31,35 @@ class TestClass(object):
     #     assert isinstance(magnet_losses[1]["SolidLoss"]["Value"], float)
     #     assert isinstance(magnet_losses[1]["SolidLoss"]["Unit"], str)
 
-    def test_5_segmentation(self):
-        self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
-        self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
-        self.toolkit.set_properties({"IsSkewed": False})
-        self.toolkit.set_properties({"MagnetsMaterial": "N30UH_65C"})
-        self.toolkit.set_properties({"MagnetsSegmentsPerSlice": "2"})
-        self.toolkit.set_properties({"RotorMaterial": "M250-35A_20C"})
-        self.toolkit.set_properties({"RotorSlices": "2"})
-        assert self.toolkit.segmentation()
+    def test_segmentation(self, toolkit):
+        """Apply objects segmentation."""
+        toolkit.set_properties({"active_design": {"Maxwell3d": f"{DESIGN_NAME}"}})
+        toolkit.set_properties({"design_list": {f"{PROJECT_NAME}": [{"Maxwell3d": f"{DESIGN_NAME}"}]}})
+        assert toolkit.launch_aedt()
 
-    def test_6_apply_skew(self):
-        self.toolkit.set_properties({"SkewAngle": "2deg"})
-        assert self.toolkit.apply_skew()
+        wait_toolkit(toolkit)
+
+        toolkit.set_properties({"IsSkewed": False})
+        toolkit.set_properties({"MagnetsMaterial": "N30UH_65C"})
+        toolkit.set_properties({"MagnetsSegmentsPerSlice": "2"})
+        toolkit.set_properties({"RotorMaterial": "M250-35A_20C"})
+        toolkit.set_properties({"RotorSlices": "2"})
+        assert toolkit.segmentation()
+
+    def test_apply_skew(self, toolkit):
+        """Apply skew to rotor slices."""
+        toolkit.set_properties({"active_design": {"Maxwell3d": f"{DESIGN_NAME}"}})
+        toolkit.set_properties({"design_list": {f"{PROJECT_NAME}": [{"Maxwell3d": f"{DESIGN_NAME}"}]}})
+        assert toolkit.launch_aedt()
+
+        wait_toolkit(toolkit)
+
+        toolkit.set_properties({"IsSkewed": False})
+        toolkit.set_properties({"MagnetsMaterial": "N30UH_65C"})
+        toolkit.set_properties({"MagnetsSegmentsPerSlice": "2"})
+        toolkit.set_properties({"RotorMaterial": "M250-35A_20C"})
+        toolkit.set_properties({"RotorSlices": "2"})
+        assert toolkit.segmentation()
+
+        toolkit.set_properties({"SkewAngle": "2deg"})
+        assert toolkit.apply_skew()
