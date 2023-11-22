@@ -45,10 +45,15 @@ class TestClass(object):
         assert toolkit.init_motorcad()
         wait_toolkit(toolkit)
 
+        assert toolkit.load_mcad_file()
+        wait_toolkit(toolkit)
+        value = toolkit.mcad.get_variable("CurrentMotFilePath_MotorLAB")
+        assert os.path.splitext(os.path.basename(value))[0] == f"{PROJECT_NAME}"
+
         props = toolkit.get_properties()
         props["E_mag_settings"]["NumberOfCuboids"] = 4
         toolkit.set_properties(props)
-        toolkit.set_emag_model()
+        assert toolkit.set_emag_model()
         wait_toolkit(toolkit)
 
         props = toolkit.get_properties()
