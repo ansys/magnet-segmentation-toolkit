@@ -13,19 +13,21 @@ class TestClass(object):
         assert basic_toolkit.init_motorcad()
         wait_toolkit(basic_toolkit)
 
-    # def test_2_load_default_mcad_file(self, basic_toolkit):
-    #     assert basic_toolkit.init_motorcad()
-    #     wait_toolkit(basic_toolkit)
+    def test_2_load_default_mcad_file(self, basic_toolkit):
+        assert basic_toolkit.init_motorcad()
+        wait_toolkit(basic_toolkit)
 
-    #     assert basic_toolkit.load_mcad_file()
-    #     value = basic_toolkit.mcad.get_variable("CurrentMotFilePath_MotorLAB")
-    #     assert os.path.splitext(os.path.basename(value))[0] == "default"
+        assert basic_toolkit.load_mcad_file()
+        wait_toolkit(basic_toolkit)
+        value = basic_toolkit.mcad.get_variable("CurrentMotFilePath_MotorLAB")
+        assert os.path.splitext(os.path.basename(value))[0] == "default"
 
     def test_2_load_mcad_file(self, toolkit):
         assert toolkit.init_motorcad()
         wait_toolkit(toolkit)
 
         assert toolkit.load_mcad_file()
+        wait_toolkit(toolkit)
         value = toolkit.mcad.get_variable("CurrentMotFilePath_MotorLAB")
         assert os.path.splitext(os.path.basename(value))[0] == f"{PROJECT_NAME}"
 
