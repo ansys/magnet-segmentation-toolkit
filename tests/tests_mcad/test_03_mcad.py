@@ -1,8 +1,8 @@
-# import os
+import os
 
 import pytest
 
-# from tests.tests_mcad.conftest import PROJECT_NAME
+from tests.tests_mcad.conftest import PROJECT_NAME
 from tests.tests_mcad.conftest import wait_toolkit
 
 pytestmark = [pytest.mark.mcad]
