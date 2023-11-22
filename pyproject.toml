@@ -29,7 +29,7 @@ dependencies = [
     "pyaedt",
     "ansys-motorcad-core",
     "importlib-metadata >=4.0",
-    "PySide6-Essentials==6.5.1.1",
+    "PySide6-Essentials==6.6.0",
     "pyqtgraph",
     "qdarkstyle",
     "flask",
