@@ -47,13 +47,15 @@ class TestClass(object):
 
         props = toolkit.get_properties()
         props["E_mag_settings"]["NumberOfCuboids"] = 4
-        props["LAB_settings"]["MaxSpeed"] = 2000
-        props["LAB_settings"]["SpeedStep"] = 1000
-        props["LAB_settings"]["SpeedMin"] = 0
         toolkit.set_properties(props)
         toolkit.set_emag_model()
         wait_toolkit(toolkit)
 
+        props = toolkit.get_properties()
+        props["LAB_settings"]["MaxSpeed"] = 2000
+        props["LAB_settings"]["SpeedStep"] = 1000
+        props["LAB_settings"]["SpeedMin"] = 0
+        toolkit.set_properties(props)
         toolkit.lab_performance_calculation()
         assert toolkit.mcad.get_variable("SpeedMax_MotorLAB") == 2000
         assert toolkit.mcad.get_variable("Speedinc_MotorLAB") == 1000
