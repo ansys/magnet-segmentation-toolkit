@@ -52,6 +52,8 @@ class TestClass(object):
         props["LAB_settings"]["SpeedMin"] = 0
         toolkit.set_properties(props)
         toolkit.set_emag_model()
+        wait_toolkit(toolkit)
+
         toolkit.lab_performance_calculation()
         assert toolkit.mcad.get_variable("SpeedMax_MotorLAB") == 2000
         assert toolkit.mcad.get_variable("Speedinc_MotorLAB") == 1000
@@ -71,7 +73,10 @@ class TestClass(object):
         props["LAB_settings"]["OPSpeed"] = 4500
         toolkit.set_properties(props)
         toolkit.set_emag_model()
+        wait_toolkit(toolkit)
+
         toolkit.lab_performance_calculation()
+
         toolkit.lab_operating_point()
         assert toolkit.mcad.get_variable("MaxMagnet_MotorLAB") == 150
         assert toolkit.mcad.get_variable("StatorTempDemand_Lab") == 180
