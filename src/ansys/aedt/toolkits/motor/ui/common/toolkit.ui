@@ -960,7 +960,7 @@
                  </property>
                  <item>
                   <property name="text">
-                   <string>No project</string>
+                   <string>--Select Project--</string>
                   </property>
                  </item>
                 </widget>
@@ -978,9 +978,12 @@
                </item>
                <item>
                 <widget class="QComboBox" name="design_aedt_combo">
+                 <property name="currentText">
+                  <string>--Select Design--</string>
+                 </property>
                  <item>
                   <property name="text">
-                   <string>No design</string>
+                   <string>--Select Design--</string>
                   </property>
                  </item>
                 </widget>
@@ -1022,7 +1025,13 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="magnets_material"/>
+                <widget class="QComboBox" name="magnets_material">
+                 <item>
+                  <property name="text">
+                   <string>--Select Material--</string>
+                  </property>
+                 </item>
+                </widget>
                </item>
               </layout>
              </item>
@@ -1036,7 +1045,13 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="rotor_material"/>
+                <widget class="QComboBox" name="rotor_material">
+                 <item>
+                  <property name="text">
+                   <string>--Select Material--</string>
+                  </property>
+                 </item>
+                </widget>
                </item>
               </layout>
              </item>
@@ -1050,7 +1065,13 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="stator_material"/>
+                <widget class="QComboBox" name="stator_material">
+                 <item>
+                  <property name="text">
+                   <string>--Select Material--</string>
+                  </property>
+                 </item>
+                </widget>
                </item>
               </layout>
              </item>

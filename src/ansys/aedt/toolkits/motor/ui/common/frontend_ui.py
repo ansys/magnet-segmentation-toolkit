@@ -643,6 +643,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.addWidget(self.label_13)
 
         self.magnets_material = QComboBox(self.Segmentation)
+        self.magnets_material.addItem("")
         self.magnets_material.setObjectName(u"magnets_material")
 
         self.horizontalLayout_7.addWidget(self.magnets_material)
@@ -658,6 +659,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_20.addWidget(self.label_14)
 
         self.rotor_material = QComboBox(self.Segmentation)
+        self.rotor_material.addItem("")
         self.rotor_material.setObjectName(u"rotor_material")
 
         self.horizontalLayout_20.addWidget(self.rotor_material)
@@ -673,6 +675,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_20a.addWidget(self.label_14a)
 
         self.stator_material = QComboBox(self.Segmentation)
+        self.stator_material.addItem("")
         self.stator_material.setObjectName(u"stator_material")
 
         self.horizontalLayout_20a.addWidget(self.stator_material)
@@ -870,18 +873,25 @@ class Ui_MainWindow(object):
         self.export_MCAD.setText(QCoreApplication.translate("MainWindow", u"Export Motor-CAD file", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.MotorCADsettings), QCoreApplication.translate("MainWindow", u"Motor-CAD Settings", None))
         self.projects_label_2.setText(QCoreApplication.translate("MainWindow", u"Projects", None))
-        self.projects_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No project", None))
+        self.projects_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Project--", None))
 
         self.designs_label.setText(QCoreApplication.translate("MainWindow", u"Designs", None))
-        self.design_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"No design", None))
+        self.design_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Design--", None))
 
+        self.design_aedt_combo.setCurrentText(QCoreApplication.translate("MainWindow", u"--Select Design--", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Is Skewed", None))
         self.is_skewed.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
         self.is_skewed.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
 
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Magnets Material", None))
+        self.magnets_material.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Material--", None))
+
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Rotor Material", None))
+        self.rotor_material.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Material--", None))
+
         self.label_14a.setText(QCoreApplication.translate("MainWindow", u"Stator Material", None))
+        self.stator_material.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Material--", None))
+
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Rotor Slices", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Magnet Segments Per Slice", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))

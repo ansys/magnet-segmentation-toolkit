@@ -29,6 +29,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
         properties["SkewAngle"] = self.skew_angle.text()
         properties["SetupToAnalyze"] = self.setup_to_analyze.text()
+        properties["active_design"] = {"Maxwell3d": self.design_aedt_combo.currentText()}
         self.set_properties(properties)
 
         self.update_progress(0)
@@ -38,10 +39,11 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             # Start the thread
             # self.running = True
             # self.start()
+            self.find_design_names()
+            self.skew.setEnabled(True)
             msg = "Apply segmentation call successful"
             logger.debug(msg)
             self.write_log_line(msg)
-            self.skew.setEnabled(True)
             self.update_progress(100)
         else:
             msg = f"Failed backend call: {self.url}"
@@ -58,7 +60,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             return
 
         properties = self.get_properties()
-        if not properties["IsSkewed"] and float(properties["SkewAngle"]):
+        if not properties["IsSkewed"] and properties["SkewAngle"]:
             self.update_progress(0)
             response = requests.post(self.url + "/apply_skew")
             if response.ok:
@@ -66,6 +68,9 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
                 # Start the thread
                 # self.running = True
                 # self.start()
+                self.is_skewed.setCurrentText("True")
+                properties["IsSkewed"] = True
+                self.set_properties(properties)
                 msg = "Apply skew call successful"
                 logger.debug(msg)
                 self.write_log_line(msg)

@@ -297,6 +297,8 @@ class ToolkitGeneric(object):
             if properties.active_design and properties.active_design in design_list:
                 index = design_list.index(properties.active_design)
                 design_list.insert(0, design_list.pop(index))
+            else:
+                design_list.append(properties.active_design)
 
         return design_list
 

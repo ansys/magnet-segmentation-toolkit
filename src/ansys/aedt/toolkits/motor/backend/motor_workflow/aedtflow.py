@@ -123,6 +123,7 @@ class AedtFlow(ToolkitGeneric):
         self.aedtapp.duplicate_design(properties.active_design["Maxwell3d"])
         properties.active_design = {"Maxwell3d": self.aedtapp.design_name}
         self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
+        properties.design_list[self.aedtapp.project_name].append(properties.active_design)
         self.set_properties(properties)
 
         try:
@@ -351,7 +352,7 @@ class AedtFlow(ToolkitGeneric):
         """Get the project materials."""
         self.connect_design(app_name=list(properties.active_design.keys())[0])
 
-        mats = self.aedtapp.materials.conductors + self.aedtapp.materials.dielectrics
+        mats = self.aedtapp.materials.get_used_project_material_names()
 
         self.aedtapp.release_desktop(False, False)
         self.aedtapp = None

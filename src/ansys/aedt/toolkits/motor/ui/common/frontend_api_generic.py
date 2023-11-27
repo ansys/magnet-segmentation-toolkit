@@ -205,21 +205,19 @@ class FrontendGeneric(object):
         if response.ok and response.json() == "Backend running":
             self.write_log_line("Please wait, toolkit running")
         elif response.ok and response.json() == "Backend free":
-            self.design_aedt_combo.clear()
             try:
                 # Modify selected version
                 properties = self.get_properties()
-                # properties["active_project"] = self.projects_aedt_combo.currentText()
                 self.set_properties(properties)
 
                 response = requests.get(self.url + "/get_design_names")
                 if response.ok:
                     designs = response.json()
                     for design in designs:
-                        self.design_aedt_combo.addItem(list(design.values())[0])
-                    if not designs:
-                        self.design_aedt_combo.addItem("No design")
-
+                        if list(design.values())[0] not in [
+                            self.design_aedt_combo.itemText(i) for i in range(self.design_aedt_combo.count())
+                        ]:
+                            self.design_aedt_combo.addItem(list(design.values())[0])
                 return True
             except requests.exceptions.RequestException:
                 self.write_log_line(f"Find AEDT designs failed")
