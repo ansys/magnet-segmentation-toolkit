@@ -2194,3 +2194,47 @@ The project 'Project221' has been edited and/or solved. Do you want to save the 
           [info] Accurate transparency rendering is disabled to avoid slow rendering performance. (8:22:14 PM  Jun 22, 2023)
 -- Message Window --
 Stopping Batch Run: 8:22:26 PM  Jun 22, 2023
+ 
+Ansys Electronics Desktop Version 2023.2.0, Build: 2023-05-07 22:24:34
+Location: C:\Program Files\AnsysEM\v232\Win64\ansysedt.exe
+Non Graphical Mode: No Project??
+Starting Batch Run: 2:11:38 PM  Nov 27, 2023
+Running as user: ANSYS\gmalinve
+Temp directory: C:\Users\gmalinve\AppData\Local\Temp
+Project directory: C:\Users\gmalinve\OneDrive - ANSYS, Inc\Documents\Ansoft
+-- Message Window --
+      *Global - Messages
+        [info] GRPC server running on port: 54809. 
+        [info] Ansoft.ElectronicsDesktop.2023.2 version started with process ID 27592.
+        [info] pyaedt v0.7.5
+        [info] Python version 3.10.8 (tags/v3.10.8:aaaf517, Oct 11 2022, 16:50:30) [MSC v.1933 64 bit (AMD64)]
+        [info] AEDT 2023.2.0 Build Date 2023-05-07 22:24:34
+        [info] pyaedt v0.7.5
+        [info] Python version 3.10.8 (tags/v3.10.8:aaaf517, Oct 11 2022, 16:50:30) [MSC v.1933 64 bit (AMD64)]
+        [info] AEDT 2023.2.0 Build Date 2023-05-07 22:24:34
+        [info] Project BorgWarner_example_proprietary_non_skewed_no_coils - Copy set to active.
+        [info] Aedt Objects correctly read
+        [info] aedt file load time 0.7388732433319092
+        [info] Material library initialized and project materials loaded successfully! Elapsed time: 0m 0sec
+        [info] pyaedt v0.7.5
+        [info] Python version 3.10.8 (tags/v3.10.8:aaaf517, Oct 11 2022, 16:50:30) [MSC v.1933 64 bit (AMD64)]
+        [info] AEDT 2023.2.0 Build Date 2023-05-07 22:24:34
+-- Message Window --
+-- Message Window --
+      *Global - Messages
+        [info] GRPC server running on port: 54809. 
+        [info] Ansoft.ElectronicsDesktop.2023.2 version started with process ID 27592.
+        [info] pyaedt v0.7.5
+        [info] Python version 3.10.8 (tags/v3.10.8:aaaf517, Oct 11 2022, 16:50:30) [MSC v.1933 64 bit (AMD64)]
+        [info] AEDT 2023.2.0 Build Date 2023-05-07 22:24:34
+        [info] pyaedt v0.7.5
+        [info] Python version 3.10.8 (tags/v3.10.8:aaaf517, Oct 11 2022, 16:50:30) [MSC v.1933 64 bit (AMD64)]
+        [info] AEDT 2023.2.0 Build Date 2023-05-07 22:24:34
+        [info] Project BorgWarner_example_proprietary_non_skewed_no_coils - Copy set to active.
+        [info] Aedt Objects correctly read
+        [info] aedt file load time 0.7388732433319092
+        [info] Material library initialized and project materials loaded successfully! Elapsed time: 0m 0sec
+        [info] pyaedt v0.7.5
+        [info] Python version 3.10.8 (tags/v3.10.8:aaaf517, Oct 11 2022, 16:50:30) [MSC v.1933 64 bit (AMD64)]
+        [info] AEDT 2023.2.0 Build Date 2023-05-07 22:24:34
+-- Message Window --

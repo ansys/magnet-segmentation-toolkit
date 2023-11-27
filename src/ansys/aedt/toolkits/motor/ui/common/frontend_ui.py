@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'toolkit.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -822,7 +822,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolkit_tab.setCurrentIndex(1)
+        self.toolkit_tab.setCurrentIndex(0)
         self.projects_aedt_combo.setCurrentIndex(0)
 
 
