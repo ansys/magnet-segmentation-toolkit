@@ -34,19 +34,14 @@ class FrontendThread(QtCore.QThread):
                             cont += 1
 
                 if properties["active_design"] and "design_aedt_combo" in self.__dir__():
-                    self.design_aedt_combo.clear()
-                    if not properties["design_list"]:
-                        self.design_aedt_combo.addItem("No design")
-                    else:
-                        cont = 0
-                        design_name = properties["active_design"]
-                        active_design_list = properties["design_list"][active_project_name]
-                        for design in active_design_list:
-                            self.design_aedt_combo.addItem(list(design.values())[0])
-                            if list(design_name.values())[0] == design:
-                                self.design_aedt_combo.setCurrentIndex(cont)
-                            cont += 1
-
+                    cont = self.design_aedt_combo.currentIndex()
+                    design_name = properties["active_design"]
+                    active_design_list = properties["design_list"][active_project_name]
+                    for design in active_design_list:
+                        self.design_aedt_combo.addItem(list(design.values())[0])
+                        if list(design_name.values())[0] == design:
+                            self.design_aedt_combo.setCurrentIndex(cont)
+                        cont += 1
                 if (
                     "magnets_material" in self.__dir__()
                     and "rotor_material" in self.__dir__()
