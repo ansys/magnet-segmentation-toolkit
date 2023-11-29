@@ -41,7 +41,7 @@ test_project_name = "test_antenna"
 sys.path.append(local_path)
 
 # Initialize default desktop configuration
-default_version = "2023.1"
+default_version = "2023.2"
 
 config = {
     "desktop_version": default_version,
