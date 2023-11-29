@@ -38,27 +38,6 @@ class AedtFlow(ToolkitGeneric):
     def __init__(self):
         ToolkitGeneric.__init__(self)
 
-    # def set_model(self):
-    #     """Set geometry model.
-    #
-    #     Set axial length, boundary conditions and remove from model unclassified objects.
-    #
-    #     Returns
-    #     -------
-    #     bool
-    #         ``True`` when successful, ``False`` when failed.
-    #     """
-    #     if not self.aedtapp:
-    #         logger.error("AEDT not initialized")
-    #         return False
-    #
-    #     self.aedtapp["RotorSlices"] = properties.RotorSlices
-    #     self.aedtapp["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
-    #     self.aedtapp["SkewAngle"] = properties.SkewAngle
-    #     for obj in self.aedtapp.modeler.unclassified_objects:
-    #         obj.model = False
-    #     return True
-
     def analyze_model(self):
         """Analyze model.
 
@@ -112,6 +91,10 @@ class AedtFlow(ToolkitGeneric):
         """
         self.connect_design(app_name=list(properties.active_design.keys())[0])
 
+        # Requirements: Design needs  a design variable "HalfAxial"
+        if self.aedtapp["HalfAxial"] == "1":
+            self.aedtapp["HalfAxial"] = "0"
+
         for obj in self.aedtapp.modeler.unclassified_objects:
             obj.model = False
 
@@ -142,12 +125,23 @@ class AedtFlow(ToolkitGeneric):
                 self.aedtapp["RotorSlices"] = properties.RotorSlices
 
                 magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
-                if len(self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)) > 1:
-                    for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
-                        if len(
-                            [i for i in magnets if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)]
-                        ) == len(magnets):
-                            rotor = obj
+                if properties.RotorMaterial == properties.StatorMaterial:
+                    if properties.MotorType == "IPM":
+                        for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
+                            if [
+                                i
+                                for i in magnets
+                                if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
+                            ]:
+                                rotor = obj
+                    elif properties.MotorType == "SPM":
+                        for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
+                            if not [
+                                i
+                                for i in magnets
+                                if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
+                            ]:
+                                rotor = obj
                 else:
                     rotor = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)[0]
 

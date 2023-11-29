@@ -990,6 +990,29 @@
                </item>
               </layout>
              </item>
+			 <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_66">
+               <item>
+                <widget class="QLabel" name="motor_type">
+                 <property name="text">
+                  <string>Motor Type</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="motor_type_combo">
+                 <property name="currentText">
+                  <string>--Select Motor Type--</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>--Select Motor Type--</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>

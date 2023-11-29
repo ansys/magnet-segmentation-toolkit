@@ -618,6 +618,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
+        self.horizontalLayout_66 = QHBoxLayout()
+        self.horizontalLayout_66.setObjectName(u"horizontalLayout_66")
+        self.motor_type = QLabel(self.Segmentation)
+        self.motor_type.setObjectName(u"motor_type")
+
+        self.horizontalLayout_66.addWidget(self.motor_type)
+
+        self.motor_type_combo = QComboBox(self.Segmentation)
+        self.motor_type_combo.addItem("")
+        self.motor_type_combo.setObjectName(u"motor_type_combo")
+
+        self.horizontalLayout_66.addWidget(self.motor_type_combo)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_66)
+
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_12 = QLabel(self.Segmentation)
@@ -879,6 +895,10 @@ class Ui_MainWindow(object):
         self.design_aedt_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Design--", None))
 
         self.design_aedt_combo.setCurrentText(QCoreApplication.translate("MainWindow", u"--Select Design--", None))
+        self.motor_type.setText(QCoreApplication.translate("MainWindow", u"Motor Type", None))
+        self.motor_type_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Motor Type--", None))
+
+        self.motor_type_combo.setCurrentText(QCoreApplication.translate("MainWindow", u"--Select Motor Type--", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Is Skewed", None))
         self.is_skewed.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
         self.is_skewed.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
