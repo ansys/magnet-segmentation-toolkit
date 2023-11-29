@@ -21,6 +21,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             return
 
         properties = self.get_properties()
+        properties["MotorType"] = self.motor_type_combo.currentText()
         properties["IsSkewed"] = _to_boolean(self.is_skewed.currentText())
         properties["MagnetsMaterial"] = self.magnets_material.currentText()
         properties["RotorMaterial"] = self.rotor_material.currentText()

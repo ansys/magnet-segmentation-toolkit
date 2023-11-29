@@ -1,4 +1,5 @@
 {
+  "MotorType": "IPM",
   "IsSkewed" : false,
   "MagnetsMaterial": "",
   "RotorMaterial": "",

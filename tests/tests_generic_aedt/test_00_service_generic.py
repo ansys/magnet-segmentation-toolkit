@@ -20,7 +20,7 @@ class TestClass(BasisTest, object):
     def test_02_get_properties(self):
         response = requests.get(self.url + "/get_properties")
         assert response.ok
-        assert len(response.json()) == 26
+        assert len(response.json()) == 27
 
     def test_03_set_properties(self):
         new_properties = {

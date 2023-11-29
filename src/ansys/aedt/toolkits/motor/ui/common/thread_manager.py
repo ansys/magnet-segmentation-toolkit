@@ -54,6 +54,8 @@ class FrontendThread(QtCore.QThread):
                         self.rotor_material.addItem(mat)
                         self.stator_material.addItem(mat)
 
+                self.motor_type_combo.addItems(["IPM", "SPM"])
+
                 # Emit the status_changed signal if the status changes
                 self.status_changed.emit(self.running)
 
