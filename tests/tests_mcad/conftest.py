@@ -48,6 +48,18 @@ def basic_toolkit():
     toolkit.close_motorcad()
 
 
+@pytest.fixture(scope="class")
+def toolkit_mcad():
+    src_folder = os.path.join(Path(__file__).parents[1], "input_data")
+    temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
+    mot_file = os.path.join(temp_folder, "e9_built.mot")
+
+    toolkit = Toolkit()
+    toolkit.set_properties({"MotorCAD_filepath": mot_file})
+
+    return toolkit
+
+
 @pytest.fixture
 def toolkit():
     """Initialize the toolkit with a temporary MOT file.
@@ -58,23 +70,10 @@ def toolkit():
     mot_file = os.path.join(temp_folder, "e9_built.mot")
     toolkit = Toolkit()
     toolkit.set_properties({"MotorCAD_filepath": mot_file})
-    # toolkit.set_properties({"aedt_version": "2023.1"})
-    # toolkit.set_properties({"active_project": aedt_file})
-    # toolkit.set_properties({"non_graphical": config["non_graphical"]})
-    # toolkit.set_properties({"use_grpc": config["use_grpc"]})
-    # src_folder = os.path.join(Path(__file__).parents[1], "input_data")
-    # temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
-    # self.toolkit.set_properties({"MotorCAD_filepath": mot_file})
-    # mot_file = os.path.join(temp_folder, "e9_built.mot")
+
     yield toolkit
 
     toolkit.close_motorcad()
-
-
-# src_folder = os.path.join(Path(__file__).parents[1], "input_data")
-#         temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_data"))
-# self.toolkit.set_properties({"MotorCAD_filepath": mot_file})
-#         mot_file = os.path.join(temp_folder, "e9_built.mot")
 
 
 def wait_toolkit(toolkit):

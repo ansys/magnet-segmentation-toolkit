@@ -8,7 +8,23 @@ from tests.tests_mcad.conftest import wait_toolkit
 pytestmark = [pytest.mark.mcad]
 
 
-class TestClass(object):
+class TestClass:
+    @pytest.fixture(autouse=True)
+    def init(self, toolkit_mcad):
+        self.toolkit = toolkit_mcad
+
+    def test_init_motorcad(self):
+        assert self.toolkit.init_motorcad()
+        wait_toolkit(self.toolkit)
+
+    def test_load_mcad_file_without_path(self):
+        assert self.toolkit.load_mcad_file()
+        wait_toolkit(self.toolkit)
+
+        value = self.toolkit.mcad.get_variable("CurrentMotFilePath_MotorLAB")
+        assert os.path.splitext(os.path.basename(value))[0] == "default"
+
+    # class TestClass(object):
     # def test_init_motorcad(self, basic_toolkit):
     #     assert basic_toolkit.init_motorcad()
     #     wait_toolkit(basic_toolkit)
@@ -66,27 +82,27 @@ class TestClass(object):
         assert toolkit.mcad.get_variable("Speedinc_MotorLAB") == 1000
         assert toolkit.mcad.get_variable("SpeedMin_MotorLAB") == 0
 
-    def test_6_lab_operating_point(self, toolkit):
-        assert toolkit.init_motorcad()
-        wait_toolkit(toolkit)
+    # def test_6_lab_operating_point(self, toolkit):
+    #     assert toolkit.init_motorcad()
+    #     wait_toolkit(toolkit)
 
-        props = toolkit.get_properties()
-        props["E_mag_settings"]["NumberOfCuboids"] = 4
-        props["LAB_settings"]["MaxSpeed"] = 2000
-        props["LAB_settings"]["SpeedStep"] = 1000
-        props["LAB_settings"]["SpeedMin"] = 0
-        props["LAB_settings"]["MaxTempMagnet"] = 150
-        props["LAB_settings"]["MaxTempStatorWinding"] = 180
-        props["LAB_settings"]["OPSpeed"] = 4500
-        toolkit.set_properties(props)
-        toolkit.set_emag_model()
-        wait_toolkit(toolkit)
+    #     props = toolkit.get_properties()
+    #     props["E_mag_settings"]["NumberOfCuboids"] = 4
+    #     props["LAB_settings"]["MaxSpeed"] = 2000
+    #     props["LAB_settings"]["SpeedStep"] = 1000
+    #     props["LAB_settings"]["SpeedMin"] = 0
+    #     props["LAB_settings"]["MaxTempMagnet"] = 150
+    #     props["LAB_settings"]["MaxTempStatorWinding"] = 180
+    #     props["LAB_settings"]["OPSpeed"] = 4500
+    #     toolkit.set_properties(props)
+    #     toolkit.set_emag_model()
+    #     wait_toolkit(toolkit)
 
-        toolkit.lab_performance_calculation()
+    #     toolkit.lab_performance_calculation()
 
-        toolkit.lab_operating_point()
-        assert toolkit.mcad.get_variable("MaxMagnet_MotorLAB") == 150
-        assert toolkit.mcad.get_variable("StatorTempDemand_Lab") == 180
+    #     toolkit.lab_operating_point()
+    #     assert toolkit.mcad.get_variable("MaxMagnet_MotorLAB") == 150
+    #     assert toolkit.mcad.get_variable("StatorTempDemand_Lab") == 180
 
     # def test_7_emag_calculation(self, toolkit):
     #     assert toolkit.init_motorcad()

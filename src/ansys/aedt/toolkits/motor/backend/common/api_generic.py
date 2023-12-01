@@ -580,10 +580,10 @@ class ToolkitGeneric(object):
         ----------
         close_projects : bool, optional
             Whether to close the AEDT projects that are open in the session.
-            The default is ``True``.
+            The default is ``False``.
         close_on_exit : bool, optional
             Whether to close the active AEDT session on exiting AEDT.
-            The default is ``True``.
+            The default is ``False``.
 
         Returns
         -------
