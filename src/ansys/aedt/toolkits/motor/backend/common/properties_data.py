@@ -3,14 +3,14 @@ import json
 
 
 class FrozenClass(object):
-    """Frozen properties."""
+    """Provides frozen properties."""
 
     __isfrozen = False
 
     def __setattr__(self, key, value):
         if self.__isfrozen:
             if key not in dir(self):
-                raise AttributeError("{} is a frozen class. Not existing key: {}".format(type(self).__name__, key))
+                raise AttributeError("{} is a frozen class. Key does not exist: {}".format(type(self).__name__, key))
             if type(value) == int and type(self.__dict__[key]) == float:
                 value = float(value)
             if not isinstance(value, type(self.__dict__[key])):
@@ -25,7 +25,7 @@ class FrozenClass(object):
 
 
 class PropertiesData(FrozenClass):
-    """Properties data model."""
+    """Provides the properties data model."""
 
     def __init__(self, default_properties):
         self.__default_properties = copy.deepcopy(default_properties)

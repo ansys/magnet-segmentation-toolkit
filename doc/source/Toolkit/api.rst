@@ -1,8 +1,9 @@
 Toolkit API
 ===========
-This section list the available toolkit methods in the backend at the toolkit level.
-
-Toolkit API are the calls used by the frontend. It wraps some of the methods of the **Motor API**.
+The Toolkit API contains the ``Toolkit`` class, which provides methods for
+controlling the toolkit workflow. In addition to methods for creating a new
+or connecting to an existing AEDT session, this API provides methods for automating
+the segmentation and skew of a 3D motor.
 
 .. currentmodule:: ansys.aedt.toolkits.motor.backend.api
 
@@ -11,11 +12,11 @@ Toolkit API are the calls used by the frontend. It wraps some of the methods of 
 
    Toolkit
 
-The API can be used as in the following example:
+This code shows how to use the ``Toolkit`` class:
 
 .. code:: python
 
-    # Import required modules for the example
+    # Import required modules
     import time
 
     # Import backend
@@ -24,7 +25,7 @@ The API can be used as in the following example:
     # Initialize generic service
     service = Toolkit()
 
-    # Get the default properties loaded from json file
+    # Get the default properties loaded from JSON file
     properties = service.get_properties()
 
     # Set properties
@@ -45,5 +46,5 @@ The API can be used as in the following example:
     service.segmentation()
     service.apply_skew()
 
-    # Desktop is released here
+    # Release AEDT
     service.release_aedt()

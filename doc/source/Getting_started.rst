@@ -2,13 +2,16 @@
 Getting started
 ===============
 
-To run this toolkit, you must have a licensed copy of Ansys Electronics Desktop (AEDT) installed.
+To run the Motor Segmentation Toolkit, you must have a licensed copy of AEDT installed.
+You have multiple options for installing and launching this toolkit:
 
-The toolkit could be launched from:
+- You can install it in AEDT via an installation script and then launch it as a wizard.
+  For more information, see :ref:`install-toolkit-AEDT`.
+- You can install it in the AEDT console and then launch it as a wizard. For more
+  information, see :ref:`install_toolkit_console_ui`.
+- You can install and launch it directly from a Python console using its API. For
+  more information, see :ref:`install_toolkit_console_api`.
 
-- AEDT, see :ref:`install-toolkit-AEDT`.
-
-- From a python console, see :ref:`install_toolkit_console_ui` or :ref:`install_toolkit_console_api`
 
 The toolkit features can be accessed from:
 
@@ -18,60 +21,52 @@ The toolkit features can be accessed from:
 
 .. _install-toolkit-AEDT:
 
-How to install inside AEDT and run the UI
------------------------------------------
+How to install directly in AEDT and launch as a wizard
+------------------------------------------------------
 
-This section shows how to install the toolkit inside the Ansys Electronics Desktop (AEDT) using the base
-interpreter from AEDT installation.
+You install the Motor Segmentation Toolkit directly in AEDT using the base
+interpreter from the AEDT installation.
 
-The toolkit can be installed inside AEDT using
-`PyAEDT <https://aedt.docs.pyansys.com/version/stable//>`_.
+#. From `Install from a Python file <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html#install-from-a-python-file> <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html>`_
+   in the PyAEDT documentation, download the PyAEDT Installer Python file and run this script.
 
-#. Download and run the install script from the `PyAEDT documentation <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html>`_.
-   Note that **AEDT must be restarted**
-   to update the **Tools** menu if this is the first time a Toolkit has been installed in AEDT.
+#. If this is the first toolkit being installed in AEDT, restart AEDT to update its **Tools** menu.
 
-
-#. Open the console:
-
-    .. image:: ./_static/toolkits.png
-      :width: 800
-      :alt: PyAEDT toolkits in AEDT
+#. In AEDT, select **Tools > Toolkit > PyAEDT > Console** to load the PyAEDT console:
 
     .. image:: ./_static/console.png
       :width: 800
       :alt: PyAEDT console in AEDT
 
-
-#. Run the PyAEDT command: `add custom toolkit method <https://aedt.docs.pyansys.com/version/stable/API/_autosummary/pyaedt.desktop.Desktop.add_custom_toolkit.html#pyaedt.desktop.Desktop.add_custom_toolkit>`_:
+#. Run these commands to add the Motor Segmentation Toolkit as a wizard in AEDT:
 
     .. code:: python
 
       desktop.add_custom_toolkit("MotorWizard")
       exit()
 
-#. Close the console and open the toolkit, if you do not restart AEDT, you need to *Update Menu*:
+#. Close the PyAEDT console.
 
-    .. image:: ./_static/toolkit_in_AEDT.png
-      :width: 800
-      :alt: Template toolkit in AEDT
+#. In AEDT, select **Tools > Toolkit > Update Menu** to update the **Toolkit** menu.
 
-#. The toolkit UI is connected directly to the AEDT session:
+#. Select **Tools > Toolkit > PersonalLib > TemplateToolkit> Run PyAEDT Toolkit Script** to open the
+   Motor Toolkit Wizard in AEDT:
 
     .. image:: ./_static/design_connected.png
       :width: 800
       :alt: UI opened from AEDT, design tab
 
+For wizard usage information, see :doc:`Toolkit/ui`.
+
 .. _install_toolkit_console_ui:
 
-How to install in the console and run the UI
---------------------------------------------
+How to install in the AEDT console and launch as a wizard
+---------------------------------------------------------
 
-This section shows how to install the toolkit in an specific python environment.
+You can install the Motor Segmentation Toolkit in an specific Python environment.
 
-If you have an existing virtual environment you can skip step 1.
-
-If you have installed the toolkit in the virtual environment you can skip step 2.
+- If you have an existing virtual environment, skip step 1.
+- If you have already installed the toolkit in your existing virtual environment, skip step 2.
 
 #. Create a fresh-clean Python environment and activate it:
 
@@ -89,44 +84,47 @@ If you have installed the toolkit in the virtual environment you can skip step 2
       # Activate it in Windows PowerShell
       .venv\Scripts\Activate.ps1
 
-#. Install the toolkit from git:
+#. Install the toolkit from GitHub:
 
     .. code:: bash
 
       python -m pip install git+https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
 
-#. Launch the toolkit UI:
+#. Launch the Motor Toolkit Wizard:
 
     .. code:: bash
 
       python .venv\Lib\site-packages\ansys\aedt\toolkits\motor\run_toolkit.py
 
-#. Settings tab to create a new AEDT session or connect to an existing one:
-
     .. image:: ./_static/design_connected_launch_AEDT.png
       :width: 800
       :alt: UI opened from console, settings tab
 
+For wizard usage information, see :doc:`Toolkit/ui`.
+
 .. _install_toolkit_console_api:
 
-How to install in the console and use the API
----------------------------------------------
+How to install in the AEDT console and use the API
+--------------------------------------------------
 
-This section shows how to install the toolkit in an specific python environment and use the API.
+You can install the Motor Segmentation Toolkit in a specific Python environment and use its API.
 
-#. Follow the step 1 and 2 described in :ref:`install_toolkit_console_ui`.
+#. Ensure that you have already performed steps 1 and 2 in :ref:`install_toolkit_console_ui`.
 
-#. Open a python console in the corresponding virtual environment:
+#. Open a Python console in your virtual environment:
 
     .. code:: bash
 
       python
 
-#. The API can be used at toolkit level. For example, the following commands: Open AEDT, open a 3D motor model, segment and skew it in Maxwell 3D:
+#. Use the API at the toolkit level.
+
+   For example, this code shows how to import the toolkit, launch AEDT, open a 3D motor model, and then
+   segment and skew this model in Maxwell 3D:
 
     .. code:: python
 
-      # Import required modules for the example
+      # Import required modules
       import os
 
       # Import backend services
@@ -182,5 +180,5 @@ This section shows how to install the toolkit in an specific python environment 
           time.sleep(1)
           response = service.get_thread_status()
 
-      # Desktop is released here
+      # Release AEDT
       service.release_aedt()

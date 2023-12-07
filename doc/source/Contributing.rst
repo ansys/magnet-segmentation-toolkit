@@ -10,8 +10,8 @@ The following contribution information is specific to PyAEDT toolkits.
 
 Clone the repository
 --------------------
-To clone and install the latest version of this toolkit in
-development mode, run:
+To clone and install the latest version of the Motor Segmentation Toolkit in
+development mode, run these commands:
 
 .. code::
 
@@ -22,35 +22,37 @@ development mode, run:
 
 Post issues
 -----------
-Use the `PyMotorCAD-PyAEDT Toolkit issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_ page
-to submit questions, report bugs, and request new features.
+Use the `Motor Segmentation Toolkit Issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_ page
+to create issues to report bugs and request new features.
 
-View toolkit documentation
---------------------------
-Documentation for the latest development version, which tracks the
-``main`` branch, is hosted at  `PyMotorCAD-PyAEDT Toolkit Documentation <https://aedt.motor.toolkit.docs.pyansys.com/>`_.
-This version is automatically kept up to date via GitHub actions.
+View documentation
+-------------------
+Documentation for the latest stable release is hosted at `Motor Segmentation Toolkit documentation <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/>`_.
+
+In the upper right corner of the documentation’s title bar, there is an option for switching from viewing
+the documentation for the latest stable release to viewing the documentation for the development version
+or previously released versions.
 
 Adhere to code style
 --------------------
-PyAEDT toolkit is compliant with `PyAnsys code style
+The Motor Segmentation Toolkit is compliant with `PyAnsys code style
 <https://dev.docs.pyansys.com/coding-style/index.html>`_. It uses the tool
-`pre-commit <https://pre-commit.com/>`_ to select the code style. You can install
-and activate this tool with:
+`pre-commit <https://pre-commit.com/>`_ to check the code style.
+
+You can install and activate this tool with these commands:
 
 .. code:: bash
 
   pip install pre-commit
   pre-commit run --all-files
 
-You can also install this as a pre-commit hook with:
+You can also install this as a pre-commit hook with this command:
 
 .. code:: bash
 
   pre-commit install
 
-This way, it's not possible for you to push code that fails the style checks.
-For example::
+This way, it's not possible for you to push code that fails the style checks::
 
   $ pre-commit install
   $ git commit -am "Add my cool feature."

@@ -3,10 +3,10 @@ from ansys.aedt.toolkits.motor.backend.motor_workflow.motorcadflow import MotorC
 
 
 class Toolkit(MotorCADFlow, AedtFlow):
-    """API to control the toolkit workflow.
+    """Provides methods for controlling the toolkit workflow.
 
-    This class provides methods to connect to a selected AEDT session or a new one and automates the segmentation and
-    skew of a 3D motor model.
+    This class provides methods for creating a new or connecting to an existing AEDT
+    session and automating the segmentation and skew of a 3D motor model.
 
     Examples
     --------

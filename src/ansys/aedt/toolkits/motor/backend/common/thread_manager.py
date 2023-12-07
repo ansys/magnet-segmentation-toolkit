@@ -7,7 +7,7 @@ from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
 
 class ThreadManager(object):
-    """Class to control toolkit threads."""
+    """Controls toolkit threads."""
 
     def __init__(self):
         pass
@@ -38,7 +38,7 @@ class ThreadManager(object):
             thread_name = "Toolkit_Thread"
             if not properties.is_toolkit_busy:
                 # Multithreading fails with COM
-                logger.debug("Starting thread: {}".format(thread_name))
+                logger.debug("Starting thread: {}.".format(thread_name))
                 properties.is_toolkit_busy = True
                 running_thread = threading.Thread(
                     target=cls.process_exe,
@@ -63,7 +63,7 @@ class ThreadManager(object):
 
     def is_thread_running(self):
         """
-        Check if the thread is running
+        Check if the thread is running.
         """
 
         thread_name = "Toolkit_Thread"
