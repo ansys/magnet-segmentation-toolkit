@@ -65,6 +65,6 @@ This way, it's not possible for you to push code that fails the style checks::
 
 Maximum line length
 ~~~~~~~~~~~~~~~~~~~
-Best practice is to keep the length at or below 120 characters for code
+Best practice is to keep the line length at or below 120 characters for code
 and comments. Lines longer than this might not display properly on some terminals
 and tools or might be difficult to follow.

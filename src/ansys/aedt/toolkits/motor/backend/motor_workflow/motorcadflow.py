@@ -85,7 +85,7 @@ class MotorCADFlow(ToolkitGeneric):
         return True
 
     def lab_performance_calculation(self):
-        """Calculate lab performance curves (maximum torque speed and efficiency map)."""
+        """Calculate LAB performance curves (maximum torque speed and efficiency map)."""
         if not self.mcad:
             logger.error("MotorCAD is not initialized.")
             return False
@@ -99,7 +99,7 @@ class MotorCADFlow(ToolkitGeneric):
         return True
 
     def lab_operating_point(self):
-        """Set lab operating point based on given input conditions."""
+        """Set LAB operating point based on given input conditions."""
         if not self.mcad:
             logger.error("MotorCAD is not initialized.")
             return False
@@ -148,7 +148,7 @@ class MotorCADFlow(ToolkitGeneric):
         self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss["SolidLoss"]["Value"])
 
     def thermal_calculation(self):
-        """Perform steady-state thermal calculation."""
+        """Run steady-state thermal calculation."""
         if not self.mcad:
             logger.error("MotorCAD is not initialized.")
             return False

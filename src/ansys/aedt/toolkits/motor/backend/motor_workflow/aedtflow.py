@@ -57,7 +57,7 @@ class AedtFlow(ToolkitGeneric):
             return False
 
     def get_losses_from_reports(self):
-        """Create report magnet losses.
+        """Get magnet losses from reports.
 
         Returns
         -------
@@ -81,9 +81,9 @@ class AedtFlow(ToolkitGeneric):
 
     # @thread.launch_thread
     def segmentation(self):
-        """Apply objects segmentation.
+        """Apply object segmentation.
 
-        This method automatically segments rotor, rotor pockets, and magnets.
+        This method automatically segments the rotor, rotor pockets, and magnets.
 
         Returns
         -------

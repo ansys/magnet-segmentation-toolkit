@@ -11,7 +11,7 @@ These functions are the same for all AEDT toolkits.
 
    ToolkitGeneric
 
-You can access the ``ToolkitGeneric*`` class directly from the ``toolkit`` class
+You can access the ``ToolkitGeneric`` class directly from the ``Toolkit`` class
 because it is inherited.
 
 This code shows how to use both the ``Toolkit`` and ``ToolkitGeneric`` classes

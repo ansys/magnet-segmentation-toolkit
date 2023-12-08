@@ -20,6 +20,7 @@ Motor Segmentation Toolkit
   :target: https://github.com/psf/black
   :alt: black
 
+.. reuse_start
 
 The Motor Segmentation Toolkit is a Python wrapper for automating the segmentation
 and skew of IPM motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit
@@ -28,7 +29,7 @@ from the AEDT UI or launch it directly from a Python console.
 Requirements
 ~~~~~~~~~~~~
 In addition to the runtime dependencies listed in
-`Getting Started <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/Getting_started.html>`,
+`Getting started <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/Getting_started.html>`_,
 the Motor Segmentation Toolkit requires AEDT 2023 R1 or later. This toolkit also supports the AEDT
 Student Version for 2023 R1 or later.
 
@@ -50,6 +51,5 @@ License
 The Motor Segmentation Toolkit is licensed under the MIT license.
 
 This toolkit makes no commercial claim over Ansys whatsoever. The use of the interactive
-control of this toolkit requires a legally licensed local copy of AEDT. For more information
-on AEDT, see the `Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on
-the Ansys website.
+control of this toolkit requires a legally licensed local copy of AEDT. For more information,
+see the `Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on the Ansys website.

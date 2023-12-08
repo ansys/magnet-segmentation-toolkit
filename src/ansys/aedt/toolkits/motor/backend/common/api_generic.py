@@ -95,7 +95,7 @@ class ToolkitGeneric(object):
         Returns
         -------
         dict
-            Tictionary containing the toolkit properties.
+            Dictionary containing the toolkit properties.
 
         Examples
         --------
@@ -209,7 +209,7 @@ class ToolkitGeneric(object):
         Returns
         -------
         list
-            List of AEDT PIDs (process IDs).
+            List of AEDT process IDs (PIDs).
 
         Examples
         --------
@@ -457,18 +457,18 @@ class ToolkitGeneric(object):
         app_name : str
             AEDT application name. Options are:
 
-            * ``Circuit``
-            * ``Edb``
-            * ``Emit``
-            * ``Hfss``
-            * ``Hfss2dlayout``
-            * ``Icepak``
-            * ``Maxwell2d``
-            * ``Maxwelld``
-            * ``Q2d``
-            * ``Q3d``
-            * ``Rmxprt``
-            * ``Simplorer``
+            * ``"Circuit"``
+            * ``"Edb"``
+            * ``"Emit"``
+            * ``"Hfss"``
+            * ``"Hfss2dlayout"``
+            * ``"Icepak"``
+            * ``"Maxwell2d"``
+            * ``"Maxwell3d"``
+            * ``"Q2d"``
+            * ``"Q3d"``
+            * ``"Rmxprt"``
+            * ``"Simplorer"``
 
         Returns
         -------
@@ -583,7 +583,7 @@ class ToolkitGeneric(object):
         ----------
         close_projects : bool, optional
             Whether to close the AEDT projects that are open in the session.
-            The default is ``True``.
+            The default is ``False``.
         close_on_exit : bool, optional
             Whether to close the active AEDT session on exiting AEDT.
             The default is ``False``.

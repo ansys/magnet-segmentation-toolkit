@@ -2,10 +2,10 @@
 API reference
 =============
 
-This section provides descriptions for the two APIs available for the Motor
+This section provides descriptions of the two APIs available for the Motor
 Segmentation Toolkit:
 
-- **Toolkit API**: Contains the ``toolkit`` class, which provides methods for
+- **Toolkit API**: Contains the ``Toolkit`` class, which provides methods for
   controlling the toolkit workflow. In addition to methods for creating a new
   or connecting to an existing AEDT session, this API provides methods for automating
   the segmentation and skew of a 3D motor.
