@@ -292,7 +292,7 @@ class ToolkitGeneric(object):
 
         design_list = []
         active_project = os.path.splitext(os.path.basename(properties.active_project))[0]
-        if active_project and active_project != "No project is active.":
+        if active_project and active_project != "No project":
             for design in properties.design_list[active_project]:
                 design_list.append(design)
 

@@ -17,7 +17,7 @@ class FrontendThread(QtCore.QThread):
     def run(self):
         while self.running:
             response = requests.get(self.url + "/get_status")
-            if response.ok and response.json() != "Backend running":
+            if response.ok and response.json() != "Backend is running.":
                 self.running = False
                 properties = self.get_properties()
                 if properties["active_project"] and "projects_aedt_combo" in self.__dir__():

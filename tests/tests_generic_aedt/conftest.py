@@ -164,7 +164,7 @@ def desktop_init():
     # Wait for the Flask application to start
     response = requests.get(url_call + "/get_status")
 
-    while response.json() != "Backend free":
+    while response.json() != "Backend is free.":
         time.sleep(1)
         response = requests.get(url_call + "/get_status")
 
@@ -176,7 +176,7 @@ def desktop_init():
     requests.put(url_call + "/set_properties", json=properties)
     requests.post(url_call + "/launch_aedt", json=properties)
     response = requests.get(url_call + "/get_status")
-    while response.json() != "Backend free":
+    while response.json() != "Backend is free.":
         time.sleep(1)
         response = requests.get(url_call + "/get_status")
     yield

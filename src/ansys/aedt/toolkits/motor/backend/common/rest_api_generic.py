@@ -88,7 +88,7 @@ def close_aedt_call():
     body = request.json
     aedt_keys = ["close_projects", "close_on_exit"]
     if not body:
-        msg = "body is empty!"
+        msg = "Body is empty."
         logger.error(msg)
         return jsonify(msg), 500
     elif not isinstance(body, dict) or not all(item in body for item in set(aedt_keys)):

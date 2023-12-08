@@ -104,9 +104,9 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
     def get_materials(self):
         response = requests.get(self.url + "/get_status")
 
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend free":
+        elif response.ok and response.json() == "Backend is free.":
             self.update_progress(0)
             response = requests.get(self.url + "/health")
             if response.ok and response.json() == "Toolkit not connected to AEDT":
@@ -148,9 +148,9 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
     def set_emag_model(self):
         response = requests.get(self.url + "/get_status")
 
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend free":
+        elif response.ok and response.json() == "Backend is free.":
             response = requests.post(self.url + "/set_Emag_model")
             if response.ok:
                 self.write_log_line("E-Mag model correctly set.")
