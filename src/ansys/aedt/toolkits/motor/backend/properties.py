@@ -6,40 +6,40 @@ from dataclasses import field
 from typing import Dict
 from typing import List
 
+# @dataclass(frozen=True)
+# class ElectroMagneticSettings:
+#     """Store electro magnetic settings."""
 
-@dataclass(frozen=True)
-class ElectroMagneticSettings:
-    """Store electro magnetic settings."""
-
-    nb_cuboids: int
-    torque_cycles: int
-    toque_points_per_cycle: int
-
-
-@dataclass(frozen=True)
-class LabSettings:
-    """Store lab settings."""
-
-    min_speed: int
-    max_speed: int
-    max_stator_current: int
-    speed_step: int
-    max_temp_stator_winding: int
-    max_temp_magnet: int
-    op_speed: int
+#     nb_cuboids: int
+#     torque_cycles: int
+#     toque_points_per_cycle: int
 
 
-@dataclass(frozen=True)
-class MotorCADProperties:
-    """Store Motor-CAD properties."""
+# @dataclass(frozen=True)
+# class LabSettings:
+#     """Store lab settings."""
 
-    motorcad_file_path: str = ""
-    vbs_file_path: str = ""
-    emag_settings: ElectroMagneticSettings = ElectroMagneticSettings(6, 1, 30)
-    lab_settings: LabSettings = LabSettings(0, 10000, 480, 500, 160, 140, 4500)
+#     min_speed: int
+#     max_speed: int
+#     max_stator_current: int
+#     speed_step: int
+#     max_temp_stator_winding: int
+#     max_temp_magnet: int
+#     op_speed: int
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
+# class MotorCADProperties:
+#     """Store Motor-CAD properties."""
+
+#     motorcad_file_path: str = ""
+#     vbs_file_path: str = ""
+#     emag_settings: ElectroMagneticSettings = ElectroMagneticSettings(6, 1, 30)
+#     lab_settings: LabSettings = LabSettings(0, 10000, 480, 500, 160, 140, 4500)
+
+
+# @dataclass(frozen=True)
+@dataclass()
 class GeneralProperties:
     """Store general properties."""
 
@@ -59,7 +59,8 @@ class GeneralProperties:
     log_file: str = "backend.log"
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
+@dataclass()
 class AEDTProperties:
     """Store AEDT properties."""
 
@@ -73,11 +74,12 @@ class AEDTProperties:
     setup_to_analyze: str = "Setup1"
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
+@dataclass()
 class Properties:
     """Store all properties."""
 
-    mcad_properties: MotorCADProperties = MotorCADProperties()
+    # mcad_properties: MotorCADProperties = MotorCADProperties()
     general_properties: GeneralProperties = GeneralProperties()
     aedt_properties: AEDTProperties = AEDTProperties()
 

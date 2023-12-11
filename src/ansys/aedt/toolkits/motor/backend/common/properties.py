@@ -1,42 +1,13 @@
-try:
-    from properties_data import PropertiesData
-except ModuleNotFoundError:
-    from .properties_data import PropertiesData
-
 import json
 import os
 
+from ansys.aedt.toolkits.motor.backend.properties import AEDTProperties
+from ansys.aedt.toolkits.motor.backend.properties import GeneralProperties
+from ansys.aedt.toolkits.motor.backend.properties import Properties
+
 with open(os.path.join(os.path.dirname(__file__), "general_properties.json")) as fh:
-    _general_properties = json.load(fh)
-
-with open(os.path.join(os.path.dirname(__file__), "..", "motorcad_properties.json")) as fh:
-    _motorcad_properties = json.load(fh)
-
+    general_properties = GeneralProperties(json.load(fh))
 with open(os.path.join(os.path.dirname(__file__), "..", "aedt_properties.json")) as fh:
-    _aedt_properties = json.load(fh)
+    aedt_properties = AEDTProperties(json.load(fh))
 
-_default_properties = {**_general_properties, **_motorcad_properties, **_aedt_properties}
-properties = PropertiesData(_default_properties)
-
-
-def check_property_file_against_defaults(prop_filename):
-    """
-    Check if property exists in defaults.
-
-    Parameters
-    ----------
-    prop_filename : str
-        Qualified path of the property file to be checked
-
-    Returns
-    -------
-    bool
-        `True` if the files check passes, `False` otherwise
-    """
-    tmp_properties = PropertiesData(_default_properties)
-    try:
-        tmp_properties.read_from_file(prop_filename)
-        return True
-    except Exception as e:
-        print(e)
-        return False
+properties = Properties(general_properties=general_properties, aedt_properties=aedt_properties)

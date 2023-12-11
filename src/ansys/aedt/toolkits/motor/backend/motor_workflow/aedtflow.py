@@ -89,7 +89,11 @@ class AedtFlow(ToolkitGeneric):
         bool
             ``True`` when successful, ``False`` when failed.
         """
+
         self.connect_design(app_name=list(properties.active_design.keys())[0])
+        if not self.aedtapp:
+            logger.error("AEDT not initialized")
+            return False
 
         # Requirements: Design needs  a design variable "HalfAxial"
         if self.aedtapp["HalfAxial"] == "1":
@@ -97,10 +101,6 @@ class AedtFlow(ToolkitGeneric):
 
         for obj in self.aedtapp.modeler.unclassified_objects:
             obj.model = False
-
-        if not self.aedtapp:
-            logger.error("AEDT not initialized")
-            return False
 
         self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
         self.aedtapp.duplicate_design(properties.active_design["Maxwell3d"])
@@ -110,13 +110,12 @@ class AedtFlow(ToolkitGeneric):
         self.set_properties(properties)
 
         try:
-            if [bound for bound in self.aedtapp.boundaries if bound.type == "Insulating"]:
-                for bound in self.aedtapp.boundaries[:]:
-                    if (
-                        bound.type == "Insulating"
-                        and bound.name in self.aedtapp.odesign.GetChildObject("Boundaries").GetChildNames()
-                    ):
-                        bound.delete()
+            for bound in self.aedtapp.boundaries[:]:
+                if (
+                    bound.type == "Insulating"
+                    and bound.name in self.aedtapp.odesign.GetChildObject("Boundaries").GetChildNames()
+                ):
+                    bound.delete()
 
             self.aedtapp["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
 
@@ -128,20 +127,31 @@ class AedtFlow(ToolkitGeneric):
                 if properties.RotorMaterial == properties.StatorMaterial:
                     if properties.MotorType == "IPM":
                         for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
-                            if [
-                                i
-                                for i in magnets
-                                if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
-                            ]:
+                            if any(
+                                lambda magnet: magnet in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box),
+                                magnets,
+                            ):
                                 rotor = obj
+                            # if [
+                            #     i
+                            #     for i in magnets
+                            #     if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
+                            # ]:
+                            #     rotor = obj
                     elif properties.MotorType == "SPM":
                         for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
-                            if not [
-                                i
-                                for i in magnets
-                                if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
-                            ]:
+                            if all(
+                                lambda magnet: magnet
+                                not in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box),
+                                magnets,
+                            ):
                                 rotor = obj
+                            # if not [
+                            #     i
+                            #     for i in magnets
+                            #     if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
+                            # ]:
+                            # rotor = obj
                 else:
                     rotor = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)[0]
 
@@ -323,7 +333,7 @@ class AedtFlow(ToolkitGeneric):
                 decompose_variable_value(cs.props["YAxisZvec"])[0],
             ]
             x, y, z = go.pointing_to_axis(x_pointing, y_pointing)
-            phi, theta, psi = go.axis_to_euler_zyz(x, y, z)
+            phi, _, _ = go.axis_to_euler_zyz(x, y, z)
             magnet_angle = go.rad2deg(phi)
             cs.change_cs_mode(2)
             cs.props["Phi"] = "{}deg".format(str(magnet_angle))
@@ -333,13 +343,6 @@ class AedtFlow(ToolkitGeneric):
             return True
         except:
             return False
-
-        # rad_skew_angle = go.deg2rad(properties.SkewAngle)
-        # cs.props["OriginX"] = "{}mm*cos({})-{}mm*sin({})".format(str(x), str(rad_skew_angle), str(y),
-        #                                                          str(rad_skew_angle))
-        # cs.props["OriginY"] = "{}mm*sin({})+{}mm*cos({})".format(str(x), str(rad_skew_angle), str(y),
-        #                                                          str(rad_skew_angle))
-        # cs.props["Phi"] = "{}deg+SkewAngle".format(str(cs.props["Phi"]))
 
     # @thread.launch_thread
     def _get_project_materials(self):

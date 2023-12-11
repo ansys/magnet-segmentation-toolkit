@@ -3,6 +3,7 @@ from flask import jsonify
 from flask import request
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
+from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitThreadStatus
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 
 service = Toolkit()
@@ -17,21 +18,19 @@ app = Flask(__name__)
 @app.route("/health", methods=["GET"])
 def get_health():
     logger.info("[GET] /health (check if the server is healthy)")
-    desktop_connected, msg = service.aedt_connected()
-    if desktop_connected:
-        return jsonify(msg), 200
-    else:
-        return jsonify(msg), 200
+    _, msg = service.aedt_connected()
+    return jsonify(msg), 200
 
 
 @app.route("/get_status", methods=["GET"])
 def get_status_call():
     logger.info("[GET] /get_status (check if the thread is running)")
-    exit_code, msg = service.get_thread_status()
-    if exit_code <= 0:
-        return jsonify(msg), 200
+    status = service.get_thread_status()
+
+    if status != ToolkitThreadStatus.CRASHED:
+        return jsonify(str(status)), 200
     else:
-        return jsonify(msg), 500
+        return jsonify(str(status)), 500
 
 
 @app.route("/get_properties", methods=["GET"])
@@ -88,11 +87,11 @@ def close_aedt_call():
     body = request.json
     aedt_keys = ["close_projects", "close_on_exit"]
     if not body:
-        msg = "body is empty!"
+        msg = "Body is empty."
         logger.error(msg)
         return jsonify(msg), 500
     elif not isinstance(body, dict) or not all(item in body for item in set(aedt_keys)):
-        msg = "body not correct"
+        msg = "Body is not correct."
         logger.error(msg)
         return jsonify(msg), 500
 
@@ -113,9 +112,9 @@ def connect_design_call():
     body = request.json
 
     if not body:
-        msg = "body is empty!"
+        msg = "Body is empty."
         logger.error(msg)
-        return jsonify("body is empty!"), 500
+        return jsonify("Body is empty."), 500
 
     response = service.connect_design(body["aedtapp"])
 
@@ -132,9 +131,9 @@ def save_project_call():
     body = request.json
 
     if not body:
-        msg = "body is empty!"
+        msg = "Body is empty."
         logger.error(msg)
-        return jsonify("body is empty!"), 500
+        return jsonify("Body is empty."), 500
 
     response = service.save_project(body)
 

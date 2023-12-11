@@ -17,6 +17,8 @@ from pyaedt.generic.filesystem import Scratch
 import pytest
 import requests
 
+from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitThreadStatus
+
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
 local_path = os.path.dirname(os.path.realpath(__file__))
@@ -147,9 +149,11 @@ def desktop_init():
             count += 1
     else:
         current_process = len(psutil.Process().children(recursive=True))
+        print(current_process)
         count = 0
         while current_process < len(initial_pids) and count < 10:
             time.sleep(1)
+            print("sleept 1 sec", len(psutil.Process().children(recursive=True)))
             current_process = len(psutil.Process().children(recursive=True))
             count += 1
 
@@ -163,8 +167,7 @@ def desktop_init():
 
     # Wait for the Flask application to start
     response = requests.get(url_call + "/get_status")
-
-    while response.json() != "Backend free":
+    while response.json() != str(ToolkitThreadStatus.IDLE):
         time.sleep(1)
         response = requests.get(url_call + "/get_status")
 
@@ -176,10 +179,11 @@ def desktop_init():
     requests.put(url_call + "/set_properties", json=properties)
     requests.post(url_call + "/launch_aedt", json=properties)
     response = requests.get(url_call + "/get_status")
-    while response.json() != "Backend free":
+    while response.json() != str(ToolkitThreadStatus.IDLE):
         time.sleep(1)
         response = requests.get(url_call + "/get_status")
     yield
+
     properties = {"close_projects": True, "close_on_exit": True}
     requests.post(url_call + "/close_aedt", json=properties)
 

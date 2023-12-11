@@ -1,4 +1,4 @@
-from flask import request
+# from flask import request
 
 from ansys.aedt.toolkits.motor.backend.common.multithreading_server import MultithreadingServer
 from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import app
@@ -10,126 +10,126 @@ from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import settings
 # Toolkit entrypoints
 
 
-@app.route("/init_motorcad", methods=["POST"])
-def init_motorcad_call():
-    logger.info("[POST] /initialize Motor-CAD.")
+# @app.route("/init_motorcad", methods=["POST"])
+# def init_motorcad_call():
+#     logger.info("[POST] /initialize Motor-CAD.")
 
-    response = service.init_motorcad()
-    if response:
-        return jsonify("Motor-CAD initialized."), 200
-    else:
-        return jsonify("Failure: Motor-CAD not initialized."), 500
-
-
-@app.route("/load_mot_file", methods=["POST"])
-def load_mot_file_call():
-    logger.info("[POST] /load Motor-CAD file.")
-
-    response = service.load_mcad_file()
-    if response:
-        return jsonify("Motor-CAD file loaded."), 200
-    else:
-        return jsonify("Failure: Motor-CAD file not loaded."), 500
+#     response = service.init_motorcad()
+#     if response:
+#         return jsonify("Motor-CAD initialized."), 200
+#     else:
+#         return jsonify("Failure: Motor-CAD not initialized."), 500
 
 
-@app.route("/set_Emag_model", methods=["POST"])
-def set_emag_model_call():
-    logger.info("[POST] /Set Motor-CAD Emag model.")
+# @app.route("/load_mot_file", methods=["POST"])
+# def load_mot_file_call():
+#     logger.info("[POST] /load Motor-CAD file.")
 
-    response = service.set_emag_model()
-    if response:
-        return jsonify("Motor-CAD Emag model set."), 200
-    else:
-        return jsonify("Failure: Motor-CAD Emag model not set."), 500
-
-
-@app.route("/lab_calculation", methods=["POST"])
-def set_lab_calculation_call():
-    logger.info("[POST] /Perform LAB calculation.")
-
-    response = service.lab_performance_calculation()
-    if response:
-        return jsonify("Perform LAB calculation successful."), 200
-    else:
-        return jsonify("Failure: Perform LAB calculation unsuccessful."), 500
+#     response = service.load_mcad_file()
+#     if response:
+#         return jsonify("Motor-CAD file loaded."), 200
+#     else:
+#         return jsonify("Failure: Motor-CAD file not loaded."), 500
 
 
-@app.route("/lab_op_point", methods=["POST"])
-def set_lab_op_point_call():
-    logger.info("[POST] /Set LAB op-point.")
+# @app.route("/set_Emag_model", methods=["POST"])
+# def set_emag_model_call():
+#     logger.info("[POST] /Set Motor-CAD Emag model.")
 
-    response = service.lab_operating_point()
-    if response:
-        return jsonify("LAB op-point successfully set."), 200
-    else:
-        return jsonify("Failure: LAB op-point."), 500
-
-
-@app.route("/run_emag_calculation", methods=["POST"])
-def run_emag_calculation_call():
-    logger.info("[POST] /Run Emag calculation.")
-
-    response = service.emag_calculation()
-    if response:
-        return jsonify("Emag calculation run successfully."), 200
-    else:
-        return jsonify("Failure: Emag calculation unsuccessful."), 500
+#     response = service.set_emag_model()
+#     if response:
+#         return jsonify("Motor-CAD Emag model set."), 200
+#     else:
+#         return jsonify("Failure: Motor-CAD Emag model not set."), 500
 
 
-@app.route("/set_thermal_calculation", methods=["POST"])
-def set_thermal_calculation_call():
-    magnet_losses = request.args.get("magnet_losses")
-    logger.info("[POST] /Set Thermal calculation.")
+# @app.route("/lab_calculation", methods=["POST"])
+# def set_lab_calculation_call():
+#     logger.info("[POST] /Perform LAB calculation.")
 
-    response = service.set_thermal(magnet_losses)
-    if response:
-        return jsonify("Thermal calculation set successfully."), 200
-    else:
-        return jsonify("Failure: Set thermal calculation unsuccessful."), 500
-
-
-@app.route("/run_thermal_calculation", methods=["POST"])
-def run_thermal_calculation_call():
-    logger.info("[POST] /Run Thermal calculation.")
-
-    response = service.thermal_calculation()
-    if response:
-        return jsonify("Thermal calculation run successfully."), 200
-    else:
-        return jsonify("Failure: Run thermal calculation unsuccessful."), 500
+#     response = service.lab_performance_calculation()
+#     if response:
+#         return jsonify("Perform LAB calculation successful."), 200
+#     else:
+#         return jsonify("Failure: Perform LAB calculation unsuccessful."), 500
 
 
-@app.route("/export_model", methods=["POST"])
-def export_model_call():
-    logger.info("[POST] /Export Motor-CAD model.")
+# @app.route("/lab_op_point", methods=["POST"])
+# def set_lab_op_point_call():
+#     logger.info("[POST] /Set LAB op-point.")
 
-    response = service.export_settings()
-    if response:
-        return jsonify("Motor-CAD model exported successfully."), 200
-    else:
-        return jsonify("Failure: Motor-CAD model export unsuccessful."), 500
-
-
-@app.route("/save", methods=["POST"])
-def save_call():
-    logger.info("[POST] /Save Motor-CAD model.")
-
-    response = service.save()
-    if response:
-        return jsonify("Motor-CAD model saved successfully."), 200
-    else:
-        return jsonify("Failure: Motor-CAD model unsuccessfully saved."), 500
+#     response = service.lab_operating_point()
+#     if response:
+#         return jsonify("LAB op-point successfully set."), 200
+#     else:
+#         return jsonify("Failure: LAB op-point."), 500
 
 
-@app.route("/close", methods=["POST"])
-def close_call():
-    logger.info("[POST] /Close Motor-CAD model.")
+# @app.route("/run_emag_calculation", methods=["POST"])
+# def run_emag_calculation_call():
+#     logger.info("[POST] /Run Emag calculation.")
 
-    response = service.save()
-    if response:
-        return jsonify("Motor-CAD model closed successfully."), 200
-    else:
-        return jsonify("Failure: Motor-CAD model unsuccessfully saved."), 500
+#     response = service.emag_calculation()
+#     if response:
+#         return jsonify("Emag calculation run successfully."), 200
+#     else:
+#         return jsonify("Failure: Emag calculation unsuccessful."), 500
+
+
+# @app.route("/set_thermal_calculation", methods=["POST"])
+# def set_thermal_calculation_call():
+#     magnet_losses = request.args.get("magnet_losses")
+#     logger.info("[POST] /Set Thermal calculation.")
+
+#     response = service.set_thermal(magnet_losses)
+#     if response:
+#         return jsonify("Thermal calculation set successfully."), 200
+#     else:
+#         return jsonify("Failure: Set thermal calculation unsuccessful."), 500
+
+
+# @app.route("/run_thermal_calculation", methods=["POST"])
+# def run_thermal_calculation_call():
+#     logger.info("[POST] /Run Thermal calculation.")
+
+#     response = service.thermal_calculation()
+#     if response:
+#         return jsonify("Thermal calculation run successfully."), 200
+#     else:
+#         return jsonify("Failure: Run thermal calculation unsuccessful."), 500
+
+
+# @app.route("/export_model", methods=["POST"])
+# def export_model_call():
+#     logger.info("[POST] /Export Motor-CAD model.")
+
+#     response = service.export_settings()
+#     if response:
+#         return jsonify("Motor-CAD model exported successfully."), 200
+#     else:
+#         return jsonify("Failure: Motor-CAD model export unsuccessful."), 500
+
+
+# @app.route("/save", methods=["POST"])
+# def save_call():
+#     logger.info("[POST] /Save Motor-CAD model.")
+
+#     response = service.save()
+#     if response:
+#         return jsonify("Motor-CAD model saved successfully."), 200
+#     else:
+#         return jsonify("Failure: Motor-CAD model unsuccessfully saved."), 500
+
+
+# @app.route("/close", methods=["POST"])
+# def close_call():
+#     logger.info("[POST] /Close Motor-CAD model.")
+
+#     response = service.save()
+#     if response:
+#         return jsonify("Motor-CAD model closed successfully."), 200
+#     else:
+#         return jsonify("Failure: Motor-CAD model unsuccessfully saved."), 500
 
 
 @app.route("/set_aedt_model", methods=["POST"])

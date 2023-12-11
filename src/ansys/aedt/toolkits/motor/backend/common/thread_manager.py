@@ -9,24 +9,24 @@ from ansys.aedt.toolkits.motor.backend.common.properties import properties
 class ThreadManager(object):
     """Class to control toolkit threads."""
 
+    toolkit_thread_name = "Toolkit_Thread"
+
     def __init__(self):
         pass
 
     @classmethod
     def process_exe(cls, process, *args):
         """Execute process."""
-        # process_name = process.__name__
-
-        # set the variable at process start
+        # Set the variable at process start
         properties.is_toolkit_busy = True
 
-        # start
+        # Start
         process(*args)
 
-        # waits for the thread closure
+        # Waits for the thread closure
         time.sleep(0.5)
 
-        # set the variable at process end
+        # Set the variable at process end
         properties.is_toolkit_busy = False
 
     @classmethod
@@ -35,14 +35,13 @@ class ThreadManager(object):
 
         @wraps(process)
         def inner_function(*args):
-            thread_name = "Toolkit_Thread"
             if not properties.is_toolkit_busy:
                 # Multithreading fails with COM
-                logger.debug("Starting thread: {}".format(thread_name))
+                logger.debug("Starting thread: {}".format(cls.toolkit_thread_name))
                 properties.is_toolkit_busy = True
                 running_thread = threading.Thread(
                     target=cls.process_exe,
-                    name=thread_name,
+                    name=cls.toolkit_thread_name,
                     args=(
                         process,
                         *args,
@@ -56,19 +55,15 @@ class ThreadManager(object):
 
         return inner_function
 
-    @property
-    def running_threads(self):
+    @staticmethod
+    def running_threads():
         threads_list = [t for t in threading.enumerate() if type(t) == threading.Thread]
         return threads_list
 
-    def is_thread_running(self):
+    @classmethod
+    def is_toolkit_thread_running(cls):
         """
-        Check if the thread is running
+        Check if the thread associated to the toolkit is running
         """
-
-        thread_name = "Toolkit_Thread"
-        running_threads_names = [t.name for t in self.running_threads]
-        if thread_name in running_threads_names:
-            return True
-        else:
-            return False
+        running_threads_names = [t.name for t in cls.running_threads]
+        return cls.toolkit_thread_name in running_threads_names

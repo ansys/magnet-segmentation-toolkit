@@ -1,4 +1,9 @@
+from dataclasses import FrozenInstanceError
+from dataclasses import asdict
+from dataclasses import dataclass
+from enum import Enum
 import os
+from typing import Optional
 
 import psutil
 import pyaedt
@@ -8,6 +13,42 @@ from ansys.aedt.toolkits.motor.backend.common.properties import properties
 from ansys.aedt.toolkits.motor.backend.common.thread_manager import ThreadManager
 
 thread = ThreadManager()
+
+
+class ToolkitThreadStatus(str, Enum):
+    """Status of the toolkit thread."""
+
+    IDLE = "Toolkit is idle and ready to accept a new task."
+    BUSY = "Toolkit is busy and processing a task."
+    CRASHED = "Toolkit has crashed and is not functional."
+    UNKNOWN = "Toolkit unknown status."
+
+
+class PropertiesUpdate(str, Enum):
+    """Status of the toolkit thread."""
+
+    EMPTY = "Body is empty."
+    SUCCESS = "Properties updated successfully."
+    FROZEN = "Properties are frozen, updated failed."
+
+
+@dataclass
+class ToolkitConnectionStatus:
+    """Status of the toolkit connection."""
+
+    desktop: Optional[pyaedt.Desktop]
+
+    def __str__(self):
+        if self.desktop:
+            res = f"Toolkit is connected to process {self.desktop.aedt_process_id}"
+            if self.desktop.port != 0:
+                res += f" on Grpc {self.desktop.port}."
+        else:
+            res = "Toolkit is not connected to AEDT."
+        return res
+
+    def is_connected(self):
+        return self.desktop is not None
 
 
 class ToolkitGeneric(object):
@@ -52,7 +93,7 @@ class ToolkitGeneric(object):
         }
 
     @staticmethod
-    def set_properties(data):
+    def set_properties(data: dict):
         """Assign the passed data to the internal data model.
 
         Parameters
@@ -72,21 +113,23 @@ class ToolkitGeneric(object):
         >>> service.set_properties({"property1": value1, "property2": value2})
 
         """
-
         logger.debug("Updating the internal properties.")
         if data:
             try:
-                for key in data:
-                    setattr(properties, key, data[key])
-                msg = "properties updated successfully"
+                for key, value in data.items():
+                    setattr(properties, key, value)
+                msg = PropertiesUpdate.SUCCESS
+                updated = True
                 logger.debug(msg)
-                return True, msg
-            except:
-                return False, "Frozen property access"
+            except FrozenInstanceError:
+                msg = PropertiesUpdate.FROZEN
+                updated = False
+                logger.error(msg)
         else:
-            msg = "body is empty!"
+            msg = PropertiesUpdate.EMPTY
+            updated = False
             logger.debug(msg)
-            return False, msg
+        return updated, msg
 
     @staticmethod
     def get_properties():
@@ -104,16 +147,17 @@ class ToolkitGeneric(object):
         >>> service.get_properties()
         {"property1": value1, "property2": value2}
         """
-        return properties.export_to_dict()
+        return asdict(properties)
 
     @staticmethod
-    def get_thread_status():
+    def get_thread_status() -> ToolkitThreadStatus:
         """Get toolkit thread status.
 
         Returns
         -------
-        bool
-            ``True`` when active, ``False`` when not active.
+        ToolkitThreadStatus
+            ``ToolkitThreadStatus.BUSY`` when active, ``ToolkitThreadStatus.IDLE`` when inactive and \
+            ``ToolkitThreadStatus.CRASHED`` when crashed.
 
         Examples
         --------
@@ -121,20 +165,28 @@ class ToolkitGeneric(object):
         >>> service = Toolkit()
         >>> service.get_thread_status()
         """
-        thread_running = thread.is_thread_running()
+        thread_running = thread.is_toolkit_thread_running()
         is_toolkit_busy = properties.is_toolkit_busy
         if thread_running and is_toolkit_busy:  # pragma: no cover
-            msg = "Backend running"
-            logger.debug(msg)
-            return 0, msg
+            res = ToolkitThreadStatus.BUSY
+            logger.debug(res)
+            # msg = "Backend running"
+            # logger.debug(msg)
+            # return 0, msg
         elif (not thread_running and is_toolkit_busy) or (thread_running and not is_toolkit_busy):  # pragma: no cover
-            msg = "Backend crashed"
-            logger.error(msg)
-            return 1, msg
+            res = ToolkitThreadStatus.CRASHED
+            logger.error(res)
+            # msg = "Backend crashed"
+            # logger.error(msg)
+            # return 1, msg
         else:
-            msg = "Backend free"
-            logger.debug(msg)
-            return -1, msg
+            res = ToolkitThreadStatus.IDLE
+            logger.debug(res)
+            # msg = "Backend free"
+            # logger.debug(msg)
+            # return -1, msg
+        logger.debug(res)
+        return res
 
     def aedt_connected(self):
         """Check if AEDT is connected.
@@ -158,22 +210,27 @@ class ToolkitGeneric(object):
         (True, "Toolkit connected to process <process_id> on Grpc <grpc_port>")
         >>> service.release_aedt()
         """
-        if self.desktop:
-            if self.desktop.port != 0:
-                msg = "Toolkit connected to process {} on Grpc {}".format(
-                    str(self.desktop.aedt_process_id),
-                    str(self.desktop.port),
-                )
-                logger.debug(msg)
-            else:
-                msg = "Toolkit connected to process {}".format(str(self.desktop.aedt_process_id))
-                logger.debug(msg)
-            connected = True
-        else:
-            msg = "Toolkit not connected to AEDT"
-            logger.debug(msg)
-            connected = False
+        tcs = ToolkitConnectionStatus(desktop=self.desktop)
+        connected = tcs.is_connected()
+        msg = str(tcs)
+        logger.debug(msg)
         return connected, msg
+        # if self.desktop:
+        #     if self.desktop.port != 0:
+        #         msg = "Toolkit connected to process {} on Grpc {}".format(
+        #             str(self.desktop.aedt_process_id),
+        #             str(self.desktop.port),
+        #         )
+        #         logger.debug(msg)
+        #     else:
+        #         msg = "Toolkit connected to process {}".format(str(self.desktop.aedt_process_id))
+        #         logger.debug(msg)
+        #     connected = True
+        # else:
+        #     msg = "Toolkit not connected to AEDT"
+        #     logger.debug(msg)
+        #     connected = False
+        # return connected, msg
 
     @staticmethod
     def installed_aedt_version():
@@ -218,51 +275,29 @@ class ToolkitGeneric(object):
         >>> service.aedt_sessions()
         [[pid1, grpc_port1], [pid2, grpc_port2]]
         """
-        if not properties.is_toolkit_busy:
-            version = properties.aedt_version
+        res = []
+        if not properties.is_toolkit_busy and properties.aedt_version:
             keys = ["ansysedt.exe"]
-            if not version:
-                return []
+            version = properties.aedt_version
             if version and "." in version:
                 version = version[-4:].replace(".", "")
             if version < "222":  # pragma: no cover
                 version = version[:2] + "." + version[2]
-            sessions = []
-            for p in psutil.process_iter():
+            for p in filter(lambda p: p.name() in keys, psutil.process_iter()):
                 try:
-                    if p.name() in keys:
-                        cmd = p.cmdline()
-                        if not version or (version and version in cmd[0]):
-                            if "-grpcsrv" in cmd:
-                                if not version or (version and version in cmd[0]):
-                                    try:
-                                        sessions.append(
-                                            [
-                                                p.pid,
-                                                int(cmd[cmd.index("-grpcsrv") + 1]),
-                                            ]
-                                        )
-                                    except IndexError:
-                                        sessions.append(
-                                            [
-                                                p.pid,
-                                                -1,
-                                            ]
-                                        )
-                            else:
-                                sessions.append(
-                                    [
-                                        p.pid,
-                                        -1,
-                                    ]
-                                )
+                    cmd = p.cmdline()
+                    if version in cmd[0]:
+                        try:
+                            port = int(cmd[cmd.index("-grpcsrv") + 1])
+                        except IndexError:
+                            port = -1
+                        res.append([p.pid, port])
                 except:
                     pass
-            logger.debug(str(sessions))
-            return sessions
+            logger.debug(str(res))
         else:
-            logger.debug("No active sessions")
-            return []
+            logger.debug("No active sessions.")
+        return res
 
     @staticmethod
     def get_design_names():
@@ -333,28 +368,22 @@ class ToolkitGeneric(object):
             use_grpc = properties.use_grpc
 
             pyaedt.settings.use_grpc_api = use_grpc
+            desktop_args = {
+                "specified_version": version,
+                "non_graphical": non_graphical,
+            }
+
+            # AEDT with COM
             if selected_process == 0:  # pragma: no cover
-                # Launch AEDT with COM
-                self.desktop = pyaedt.Desktop(
-                    specified_version=version,
-                    non_graphical=non_graphical,
-                    new_desktop_session=True,
-                )
+                desktop_args["new_desktop_session"] = True
+            # AEDT with gRPC
             elif use_grpc:
-                # Launch AEDT with GRPC
-                self.desktop = pyaedt.Desktop(
-                    specified_version=version,
-                    non_graphical=non_graphical,
-                    port=selected_process,
-                    new_desktop_session=False,
-                )
+                desktop_args["new_desktop_session"] = False
+                desktop_args["port"] = selected_process
             else:  # pragma: no cover
-                self.desktop = pyaedt.Desktop(
-                    specified_version=version,
-                    non_graphical=non_graphical,
-                    aedt_process_id=selected_process,
-                    new_desktop_session=False,
-                )
+                desktop_args["new_desktop_session"] = False
+                desktop_args["aedt_process_id"] = selected_process
+            self.desktop = pyaedt.Desktop(**desktop_args)
 
             if not self.desktop:
                 msg = "AEDT not launched"
@@ -420,22 +449,16 @@ class ToolkitGeneric(object):
         # Connect to AEDT
         pyaedt.settings.use_grpc_api = use_grpc
         logger.debug("Connecting AEDT")
+        desktop_args = {
+            "specified_version": version,
+            "non_graphical": non_graphical,
+            "new_desktop_session": False,
+        }
         if use_grpc:
-            # Launch AEDT with GRPC
-            self.desktop = pyaedt.Desktop(
-                specified_version=version,
-                non_graphical=non_graphical,
-                port=selected_process,
-                new_desktop_session=False,
-            )
-
+            desktop_args["port"] = selected_process
         else:  # pragma: no cover
-            self.desktop = pyaedt.Desktop(
-                specified_version=version,
-                non_graphical=non_graphical,
-                aedt_process_id=selected_process,
-                new_desktop_session=False,
-            )
+            desktop_args["aedt_process_id"] = selected_process
+        self.desktop = pyaedt.Desktop(**desktop_args)
 
         if not self.desktop:  # pragma: no cover
             logger.debug("AEDT not connected")
@@ -493,72 +516,32 @@ class ToolkitGeneric(object):
                 app_name = list(properties.active_design.keys())[0]
 
         pyaedt.settings.use_grpc_api = properties.use_grpc
-        if design_name != "No design":
-            aedt_app_attr = getattr(pyaedt, app_name)
-            if properties.use_grpc:
-                self.aedtapp = aedt_app_attr(
-                    specified_version=properties.aedt_version,
-                    port=properties.selected_process,
-                    non_graphical=properties.non_graphical,
-                    new_desktop_session=False,
-                    projectname=project_name,
-                    designname=design_name,
-                )
-            else:
-                self.aedtapp = aedt_app_attr(
-                    specified_version=properties.aedt_version,
-                    aedt_process_id=properties.selected_process,
-                    non_graphical=properties.non_graphical,
-                    new_desktop_session=False,
-                    projectname=project_name,
-                    designname=design_name,
-                )
-            active_design = {app_name: design_name}
 
+        # Select app
+        if design_name != "No design":
+            aedt_app = getattr(pyaedt, app_name)
+            active_design = {app_name: design_name}
         elif app_name in list(self.aedt_apps.keys()):
             design_name = pyaedt.generate_unique_name(app_name)
-            aedt_app_attr = getattr(pyaedt, self.aedt_apps[app_name])
-            if properties.use_grpc:
-                self.aedtapp = aedt_app_attr(
-                    specified_version=properties.aedt_version,
-                    port=properties.selected_process,
-                    non_graphical=properties.non_graphical,
-                    new_desktop_session=False,
-                    projectname=project_name,
-                    designname=design_name,
-                )
-            else:
-                self.aedtapp = aedt_app_attr(
-                    specified_version=properties.aedt_version,
-                    aedt_process_id=properties.selected_process,
-                    non_graphical=properties.non_graphical,
-                    new_desktop_session=False,
-                    projectname=project_name,
-                    designname=design_name,
-                )
+            aedt_app = getattr(pyaedt, self.aedt_apps[app_name])
             active_design = {app_name: design_name}
         else:
             design_name = pyaedt.generate_unique_name("Hfss")
-            if properties.use_grpc:
-                self.aedtapp = pyaedt.Hfss(
-                    specified_version=properties.aedt_version,
-                    port=properties.selected_process,
-                    non_graphical=properties.non_graphical,
-                    new_desktop_session=False,
-                    projectname=project_name,
-                    designname=design_name,
-                )
-            else:
-                self.aedtapp = pyaedt.Hfss(
-                    specified_version=properties.aedt_version,
-                    aedt_process_id=properties.selected_process,
-                    non_graphical=properties.non_graphical,
-                    new_desktop_session=False,
-                    projectname=project_name,
-                    designname=design_name,
-                )
-            self.aedtapp.save_project()
+            aedt_app = pyaedt.Hfss
             active_design = {"Hfss": design_name}
+        aedt_app_args = {
+            "specified_version": properties.aedt_version,
+            "port": properties.selected_process,
+            "non_graphical": properties.non_graphical,
+            "new_desktop_session": False,
+            "projectname": project_name,
+            "designname": design_name,
+        }
+        if properties.use_grpc:
+            aedt_app_args["port"] = properties.selected_process
+        else:
+            aedt_app_args["aedt_process_id"] = properties.selected_process
+        self.aedtapp = aedt_app(**aedt_app_args)
 
         if self.aedtapp:
             project_name = self.aedtapp.project_file
@@ -570,8 +553,9 @@ class ToolkitGeneric(object):
                 properties.design_list[self.aedtapp.project_name].append(active_design)
             properties.active_project = project_name
             properties.active_design = active_design
-
             return True
+        else:
+            return False
 
     def release_aedt(self, close_projects=False, close_on_exit=False):
         """Release AEDT.
