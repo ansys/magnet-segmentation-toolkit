@@ -65,5 +65,5 @@ class ThreadManager(object):
         """
         Check if the thread associated to the toolkit is running
         """
-        running_threads_names = [t.name for t in cls.running_threads]
+        running_threads_names = [t.name for t in cls.running_threads()]
         return cls.toolkit_thread_name in running_threads_names
