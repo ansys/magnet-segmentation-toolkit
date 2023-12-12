@@ -69,64 +69,21 @@ jobs:
   #         operating-system: ${{ matrix.os }}
   #         python-version: ${{ matrix.python-version }}
 
-  tests_windows_mcad:
-    name: "Windows Tests Motor-CAD"
-    strategy:
-      matrix:
-        python-version: [ '3.10' ]
-      fail-fast: false
-    runs-on: [ self-hosted, motorcad, toolkits, Windows ]
-    # needs: [smoke-tests]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Ensure Motor-CAD not open
-        run: |
-          taskkill /IM Motor-CAD_2023_1_2.exe /F /FI "STATUS eq RUNNING"
-          taskkill /IM MotorLABruntime.exe /F /FI "STATUS eq RUNNING"
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Create Python venv
-        run: |
-          python -m venv .venv
-          .\.venv\Scripts\Activate.ps1
-
-      - name: Install packages for testing
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          python -m pip install --upgrade pip
-          pip install --upgrade build wheel
-          pip install .[tests]
-
-      # - name: Motor-CAD Test
-      #   timeout-minutes: 30
-      #   run: |
-      #     .\.venv\Scripts\Activate.ps1
-      #     pytest -vv -m mcad --cov
-
-      - name: "Upload Motor-CAD coverage file"
-        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
-        uses: actions/upload-artifact@v3
-        with:
-          path: .coverage
-          name: mcad-coverage
-
-  # # Adding needs on tests_windows_mcad to trigger this tests after motorcad's tests
-  # # The final code coverage is obtained by combining motorcad's and aedt's
-  # tests_windows_aedt:
-  #   name: "Windows Tests AEDT"
+  # tests_windows_mcad:
+  #   name: "Windows Tests Motor-CAD"
   #   strategy:
   #     matrix:
   #       python-version: [ '3.10' ]
   #     fail-fast: false
-  #   runs-on: [self-hosted, pyaedt, toolkits, Windows]
-  #   needs: [tests_windows_mcad]
+  #   runs-on: [ self-hosted, motorcad, toolkits, Windows ]
+  #   # needs: [smoke-tests]
   #   steps:
   #     - uses: actions/checkout@v4
+
+  #     - name: Ensure Motor-CAD not open
+  #       run: |
+  #         taskkill /IM Motor-CAD_2023_1_2.exe /F /FI "STATUS eq RUNNING"
+  #         taskkill /IM MotorLABruntime.exe /F /FI "STATUS eq RUNNING"
 
   #     - name: Set up Python
   #       uses: actions/setup-python@v4
@@ -144,46 +101,90 @@ jobs:
   #         python -m pip install --upgrade pip
   #         pip install --upgrade build wheel
   #         pip install .[tests]
-  #       env:
-  #         ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
-  #     - name: Download Motor-CAD coverage file
-  #       if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #           name: mcad-coverage
+  #     # - name: Motor-CAD Test
+  #     #   timeout-minutes: 30
+  #     #   run: |
+  #     #     .\.venv\Scripts\Activate.ps1
+  #     #     pytest -vv -m mcad --cov
 
-  #     - name: Generic Test
-  #       timeout-minutes: 30
-  #       run: |
-  #         .\.venv\Scripts\Activate.ps1
-  #         pytest -v -m generic --cov --cov-append
-
-  #     - name: AEDT Test
-  #       timeout-minutes: 30
-  #       run: |
-  #         .\.venv\Scripts\Activate.ps1
-  #         pytest -v -m aedt --cov --cov-append
-
-  #     - name: "Combine coverage files"
-  #       run: |
-  #         python -m coverage html -d .cov/total-html
-  #         python -m coverage xml -o .cov/total.xml
-
-  #     - name: "Upload coverage results"
+  #     - name: "Upload Motor-CAD coverage file"
   #       if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
   #       uses: actions/upload-artifact@v3
   #       with:
-  #         path: .cov/total-html
-  #         name: html-total-coverage
+  #         path: .coverage
+  #         name: mcad-coverage
 
-  #     - name: "Upload coverage report to codecov"
-  #       if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
-  #       uses: codecov/codecov-action@v3
-  #       with:
-  #         file: .cov/total.xml
-  #       env:
-  #         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  # Adding needs on tests_windows_mcad to trigger this tests after motorcad's tests
+  # The final code coverage is obtained by combining motorcad's and aedt's
+  tests_windows_aedt:
+    name: "Windows Tests AEDT"
+    strategy:
+      matrix:
+        python-version: [ '3.10' ]
+      fail-fast: false
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
+    # needs: [tests_windows_mcad]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+        env:
+          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+
+      # - name: Download Motor-CAD coverage file
+      #   if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #       name: mcad-coverage
+
+      - name: Generic Test
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          # pytest -v -m generic --cov --cov-append
+          pytest -v -m generic --cov
+
+      - name: AEDT Test
+        timeout-minutes: 30
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v -m aedt --cov --cov-append
+
+      - name: "Combine coverage files"
+        run: |
+          python -m coverage html -d .cov/total-html
+          python -m coverage xml -o .cov/total.xml
+
+      - name: "Upload coverage results"
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: .cov/total-html
+          name: html-total-coverage
+
+      - name: "Upload coverage report to codecov"
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
+        uses: codecov/codecov-action@v3
+        with:
+          file: .cov/total.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   # build-library:
   #   name: "Build library artifacts"
