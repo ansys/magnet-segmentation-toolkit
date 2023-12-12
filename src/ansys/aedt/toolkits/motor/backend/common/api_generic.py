@@ -166,7 +166,7 @@ class ToolkitGeneric(object):
         >>> service.get_thread_status()
         """
         thread_running = thread.is_toolkit_thread_running()
-        is_toolkit_busy = properties.is_toolkit_busy
+        is_toolkit_busy = properties.general_properties.is_toolkit_busy
         if thread_running and is_toolkit_busy:  # pragma: no cover
             res = ToolkitThreadStatus.BUSY
             logger.debug(res)
@@ -276,9 +276,9 @@ class ToolkitGeneric(object):
         [[pid1, grpc_port1], [pid2, grpc_port2]]
         """
         res = []
-        if not properties.is_toolkit_busy and properties.aedt_version:
+        if not properties.general_properties.is_toolkit_busy and properties.general_properties.aedt_version:
             keys = ["ansysedt.exe"]
-            version = properties.aedt_version
+            version = properties.general_properties.aedt_version
             if version and "." in version:
                 version = version[-4:].replace(".", "")
             if version < "222":  # pragma: no cover
@@ -319,21 +319,24 @@ class ToolkitGeneric(object):
         >>>     response = service.get_thread_status()
         >>> service.get_design_names()
         """
-        if properties.selected_process == 0:
+        if properties.general_properties.selected_process == 0:
             logger.error("Process ID not defined")
             return False
 
         design_list = []
-        active_project = os.path.splitext(os.path.basename(properties.active_project))[0]
+        active_project = os.path.splitext(os.path.basename(properties.general_properties.active_project))[0]
         if active_project and active_project != "No project":
             for design in properties.design_list[active_project]:
                 design_list.append(design)
 
-            if properties.active_design and properties.active_design in design_list:
-                index = design_list.index(properties.active_design)
+            if (
+                properties.general_properties.active_design
+                and properties.general_properties.active_design in design_list
+            ):
+                index = design_list.index(properties.general_properties.active_design)
                 design_list.insert(0, design_list.pop(index))
             else:
-                design_list.append(properties.active_design)
+                design_list.append(properties.general_properties.active_design)
 
         return design_list
 
@@ -362,10 +365,10 @@ class ToolkitGeneric(object):
         # Check if the backend is already connected to an AEDT session
         connected, msg = self.aedt_connected()
         if not connected:
-            version = properties.aedt_version
-            non_graphical = properties.non_graphical
-            selected_process = properties.selected_process
-            use_grpc = properties.use_grpc
+            version = properties.general_properties.aedt_version
+            non_graphical = properties.general_properties.non_graphical
+            selected_process = properties.general_properties.selected_process
+            use_grpc = properties.general_properties.use_grpc
 
             pyaedt.settings.use_grpc_api = use_grpc
             desktop_args = {
@@ -394,9 +397,9 @@ class ToolkitGeneric(object):
             logger.debug(msg)
 
             # Open project
-            if properties.active_project:
-                if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
-                    self.open_project(os.path.abspath(properties.active_project))
+            if properties.general_properties.active_project:
+                if not os.path.exists(properties.general_properties.active_project + ".lock"):  # pragma: no cover
+                    self.open_project(os.path.abspath(properties.general_properties.active_project))
             elif properties.vbs_file_path:
                 self.desktop.odesktop.RunScript(properties.vbs_file_path)
 
@@ -437,14 +440,14 @@ class ToolkitGeneric(object):
         >>> service.connect_aedt()
         >>> service.release_aedt()
         """
-        if properties.selected_process == 0:
+        if properties.general_properties.selected_process == 0:
             logger.error("Process ID not defined")
             return False
 
-        version = properties.aedt_version
-        non_graphical = properties.non_graphical
-        selected_process = properties.selected_process
-        use_grpc = properties.use_grpc
+        version = properties.general_properties.aedt_version
+        non_graphical = properties.general_properties.non_graphical
+        selected_process = properties.general_properties.selected_process
+        use_grpc = properties.general_properties.use_grpc
 
         # Connect to AEDT
         pyaedt.settings.use_grpc_api = use_grpc
@@ -508,14 +511,14 @@ class ToolkitGeneric(object):
 
         """
 
-        project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
+        project_name = os.path.splitext(os.path.basename(properties.general_properties.active_project))[0]
         design_name = "No design"
-        if properties.active_design:
-            design_name = list(properties.active_design.values())[0]
+        if properties.general_properties.active_design:
+            design_name = list(properties.general_properties.active_design.values())[0]
             if not app_name:
-                app_name = list(properties.active_design.keys())[0]
+                app_name = list(properties.general_properties.active_design.keys())[0]
 
-        pyaedt.settings.use_grpc_api = properties.use_grpc
+        pyaedt.settings.use_grpc_api = properties.general_properties.use_grpc
 
         # Select app
         if design_name != "No design":
@@ -530,17 +533,17 @@ class ToolkitGeneric(object):
             aedt_app = pyaedt.Hfss
             active_design = {"Hfss": design_name}
         aedt_app_args = {
-            "specified_version": properties.aedt_version,
-            "port": properties.selected_process,
-            "non_graphical": properties.non_graphical,
+            "specified_version": properties.general_properties.aedt_version,
+            "port": properties.general_properties.selected_process,
+            "non_graphical": properties.general_properties.non_graphical,
             "new_desktop_session": False,
             "projectname": project_name,
             "designname": design_name,
         }
-        if properties.use_grpc:
-            aedt_app_args["port"] = properties.selected_process
+        if properties.general_properties.use_grpc:
+            aedt_app_args["port"] = properties.general_properties.selected_process
         else:
-            aedt_app_args["aedt_process_id"] = properties.selected_process
+            aedt_app_args["aedt_process_id"] = properties.general_properties.selected_process
         self.aedtapp = aedt_app(**aedt_app_args)
 
         if self.aedtapp:
@@ -551,8 +554,8 @@ class ToolkitGeneric(object):
 
             if self.aedtapp.design_list and active_design not in properties.design_list[self.aedtapp.project_name]:
                 properties.design_list[self.aedtapp.project_name].append(active_design)
-            properties.active_project = project_name
-            properties.active_design = active_design
+            properties.general_properties.active_project = project_name
+            properties.general_properties.active_design = active_design
             return True
         else:
             return False
@@ -670,14 +673,14 @@ class ToolkitGeneric(object):
         >>> service.save_project()
         """
         if self.connect_design():
-            if project_path and properties.active_project != project_path:
-                old_project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
+            if project_path and properties.general_properties.active_project != project_path:
+                old_project_name = os.path.splitext(os.path.basename(properties.general_properties.active_project))[0]
                 self.aedtapp.save_project(project_file=os.path.abspath(project_path))
-                index = properties.project_list.index(properties.active_project)
+                index = properties.project_list.index(properties.general_properties.active_project)
                 properties.project_list.pop(index)
-                properties.active_project = project_path
+                properties.general_properties.active_project = project_path
                 properties.project_list.append(project_path)
-                new_project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
+                new_project_name = os.path.splitext(os.path.basename(properties.general_properties.active_project))[0]
                 properties.design_list[new_project_name] = properties.design_list[old_project_name]
                 del properties.design_list[old_project_name]
             else:

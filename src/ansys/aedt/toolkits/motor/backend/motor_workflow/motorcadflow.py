@@ -182,7 +182,7 @@ class MotorCADFlow(ToolkitGeneric):
             design_name = os.path.splitext(file_name)[0]
             self._save_project_info()
 
-            self.connect_design(app_name=list(properties.active_design.keys())[0])
+            self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
             self.aedtapp.rename_design(design_name)
             self._save_project_info()
             self.aedtapp["HalfAxial"] = 0

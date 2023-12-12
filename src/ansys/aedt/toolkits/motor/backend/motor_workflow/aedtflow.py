@@ -46,7 +46,7 @@ class AedtFlow(ToolkitGeneric):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
 
         try:
             self.aedtapp.analyze_setup(properties.SetupToAnalyze)
@@ -64,7 +64,7 @@ class AedtFlow(ToolkitGeneric):
         dict
             Average values + units for reports specified in json file.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
 
         try:
             report_dict = {}
@@ -90,7 +90,7 @@ class AedtFlow(ToolkitGeneric):
             ``True`` when successful, ``False`` when failed.
         """
 
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
         if not self.aedtapp:
             logger.error("AEDT not initialized")
             return False
@@ -102,11 +102,11 @@ class AedtFlow(ToolkitGeneric):
         for obj in self.aedtapp.modeler.unclassified_objects:
             obj.model = False
 
-        self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
-        self.aedtapp.duplicate_design(properties.active_design["Maxwell3d"])
-        properties.active_design = {"Maxwell3d": self.aedtapp.design_name}
-        self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
-        properties.design_list[self.aedtapp.project_name].append(properties.active_design)
+        self.aedtapp.set_active_design(properties.general_properties.active_design["Maxwell3d"])
+        self.aedtapp.duplicate_design(properties.general_properties.active_design["Maxwell3d"])
+        properties.general_properties.active_design = {"Maxwell3d": self.aedtapp.design_name}
+        self.aedtapp.set_active_design(properties.general_properties.active_design["Maxwell3d"])
+        properties.design_list[self.aedtapp.project_name].append(properties.general_properties.active_design)
         self.set_properties(properties)
 
         try:
@@ -216,7 +216,7 @@ class AedtFlow(ToolkitGeneric):
             ``True`` when successful, ``False`` when failed.
         """
         try:
-            self.connect_design(app_name=list(properties.active_design.keys())[0])
+            self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
 
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
             rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)
@@ -347,7 +347,7 @@ class AedtFlow(ToolkitGeneric):
     # @thread.launch_thread
     def _get_project_materials(self):
         """Get the project materials."""
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
 
         mats = self.aedtapp.materials.get_used_project_material_names()
 
