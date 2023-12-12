@@ -6,18 +6,18 @@ from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
 # Create a logger
 logger = logging.getLogger(__name__)
-if properties.debug:
+if properties.general_properties.debug:
     # Set log level (e.g., DEBUG, INFO, WARNING, ERROR)
     logger.setLevel(logging.DEBUG)
 
     # Create a file handler for the logger
-    if properties.log_file:
-        temp_dir = os.path.join(tempfile.gettempdir(), properties.log_file)
+    if properties.general_properties.log_file:
+        temp_dir = os.path.join(tempfile.gettempdir(), properties.general_properties.log_file)
         if not os.path.exists(temp_dir):
             file = open(temp_dir, "w")
             file.close()
 
-        log_file = properties.log_file = temp_dir
+        log_file = properties.general_properties.log_file = temp_dir
         file_handler = logging.FileHandler(log_file)
 
         # Set the log format
