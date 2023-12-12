@@ -89,7 +89,7 @@ class AedtFlow(ToolkitGeneric):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-
+        print(properties.general_properties.active_design.keys())
         self.connect_design(app_name=list(properties.general_properties.active_design.keys())[0])
         if not self.aedtapp:
             logger.error("AEDT not initialized")
@@ -106,7 +106,9 @@ class AedtFlow(ToolkitGeneric):
         self.aedtapp.duplicate_design(properties.general_properties.active_design["Maxwell3d"])
         properties.general_properties.active_design = {"Maxwell3d": self.aedtapp.design_name}
         self.aedtapp.set_active_design(properties.general_properties.active_design["Maxwell3d"])
-        properties.design_list[self.aedtapp.project_name].append(properties.general_properties.active_design)
+        properties.general_properties.designs_by_project_name[self.aedtapp.project_name].append(
+            properties.general_properties.active_design
+        )
         self.set_properties(properties)
 
         try:

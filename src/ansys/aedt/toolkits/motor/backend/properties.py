@@ -43,7 +43,7 @@ from typing import List
 class GeneralProperties:
     """Store general properties."""
 
-    aedt_version: str = "2023.1"
+    aedt_version: str = "2023.2"
     non_graphical: bool = False
     nb_core: int = 4
     active_project: str = ""
@@ -56,7 +56,7 @@ class GeneralProperties:
     url: str = "127.0.0.1"
     port: int = 5001
     debug: bool = True
-    log_file: str = "backend.log"
+    log_file: str = "motor_backend.log"
 
 
 # @dataclass(frozen=True)
@@ -82,6 +82,14 @@ class Properties:
     # mcad_properties: MotorCADProperties = MotorCADProperties()
     general_properties: GeneralProperties = GeneralProperties()
     aedt_properties: AEDTProperties = AEDTProperties()
+
+    def update(self, key, value):
+        for properties in [self.general_properties, self.aedt_properties]:
+            try:
+                setattr(properties, key, value)
+                break
+            except AttributeError:
+                continue
 
 
 properties = Properties()

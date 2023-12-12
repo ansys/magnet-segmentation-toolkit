@@ -117,7 +117,7 @@ class ToolkitGeneric(object):
         if data:
             try:
                 for key, value in data.items():
-                    setattr(properties, key, value)
+                    properties.update(key, value)
                 msg = PropertiesUpdate.SUCCESS
                 updated = True
                 logger.debug(msg)
@@ -326,7 +326,7 @@ class ToolkitGeneric(object):
         design_list = []
         active_project = os.path.splitext(os.path.basename(properties.general_properties.active_project))[0]
         if active_project and active_project != "No project":
-            for design in properties.design_list[active_project]:
+            for design in properties.general_properties.designs_by_project_name[active_project]:
                 design_list.append(design)
 
             if (
@@ -548,12 +548,16 @@ class ToolkitGeneric(object):
 
         if self.aedtapp:
             project_name = self.aedtapp.project_file
-            if self.aedtapp.project_file not in properties.project_list:
-                properties.project_list.append(project_name)
-                properties.design_list[self.aedtapp.project_name] = [active_design]
+            if self.aedtapp.project_file not in properties.general_properties.projects:
+                properties.general_properties.projects.append(project_name)
+                properties.general_properties.designs_by_project_name[self.aedtapp.project_name] = [active_design]
 
-            if self.aedtapp.design_list and active_design not in properties.design_list[self.aedtapp.project_name]:
-                properties.design_list[self.aedtapp.project_name].append(active_design)
+            if (
+                self.aedtapp.design_list
+                and active_design
+                not in properties.general_properties.designs_by_project_name[self.aedtapp.project_name]
+            ):
+                properties.general_properties.designs_by_project_name[self.aedtapp.project_name].append(active_design)
             properties.general_properties.active_project = project_name
             properties.general_properties.active_design = active_design
             return True
@@ -681,8 +685,10 @@ class ToolkitGeneric(object):
                 properties.general_properties.active_project = project_path
                 properties.project_list.append(project_path)
                 new_project_name = os.path.splitext(os.path.basename(properties.general_properties.active_project))[0]
-                properties.design_list[new_project_name] = properties.design_list[old_project_name]
-                del properties.design_list[old_project_name]
+                properties.general_properties.designs_by_project_name[
+                    new_project_name
+                ] = properties.general_properties.designs_by_project_name[old_project_name]
+                del properties.general_properties.designs_by_project_name[old_project_name]
             else:
                 self.aedtapp.save_project()
             self.aedtapp.release_desktop(False, False)
@@ -696,9 +702,9 @@ class ToolkitGeneric(object):
         # Save project and design info
         new_properties = {}
         project_list = self.desktop.odesktop.GetProjectList()
-
+        print("HEYYYYYYYYYYYYYYYYYYYY")
         if project_list:
-            new_properties["project_list"] = []
+            new_properties["projects"] = []
             active_project = self.desktop.odesktop.GetActiveProject()
             if not active_project:
                 active_project = self.desktop.odesktop.SetActiveProject(project_list[0])
@@ -722,15 +728,15 @@ class ToolkitGeneric(object):
             active_project_path = active_project.GetPath()
             new_properties["active_project"] = os.path.join(active_project_path, active_project_name + ".aedt")
             # Save projects info
-            new_properties["design_list"] = {}
+            new_properties["designs_by_project_name"] = {}
             for project in project_list:
                 oproject = self.desktop.odesktop.SetActiveProject(project)
                 project_name = oproject.GetName()
                 project_path = oproject.GetPath()
                 logger.debug("Project name: {}".format(project_name))
-                new_properties["project_list"].append(os.path.join(project_path, project_name + ".aedt"))
+                new_properties["projects"].append(os.path.join(project_path, project_name + ".aedt"))
 
-                new_properties["design_list"][project_name] = []
+                new_properties["designs_by_project_name"][project_name] = []
 
                 design_list = oproject.GetChildNames()
 
@@ -739,11 +745,13 @@ class ToolkitGeneric(object):
                         odesign = oproject.SetActiveDesign(design_name)
                         app_name = odesign.GetDesignType()
                         if app_name in list(self.aedt_apps.keys()):
-                            new_properties["design_list"][project_name].append({self.aedt_apps[app_name]: design_name})
+                            new_properties["designs_by_project_name"][project_name].append(
+                                {self.aedt_apps[app_name]: design_name}
+                            )
                         else:
                             logger.error("Application {} not available".format(app_name))
                             self.desktop.release_desktop(True, True)
                             return False
-
+        print(new_properties)
         if new_properties:
             self.set_properties(new_properties)
