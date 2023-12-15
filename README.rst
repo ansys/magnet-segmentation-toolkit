@@ -23,7 +23,8 @@ Motor Segmentation Toolkit
 .. reuse_start
 
 The Motor Segmentation Toolkit is a Python wrapper for automating the segmentation
-and skew of IPM motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit
+and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM)
+motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit
 from the AEDT UI or launch it directly from a Python console.
 
 Requirements
@@ -35,7 +36,7 @@ Student Version for 2023 R1 or later.
 
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Documentation for the latest stable release of PyMotorCAD is hosted at
+Documentation for the latest stable release of the Motor Segmentation Toolkit is hosted at
 `Motor Segmentation Toolkit documentation <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/index.html>`_.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from
