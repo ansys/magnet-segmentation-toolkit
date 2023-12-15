@@ -30,6 +30,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
         properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
         properties["SkewAngle"] = self.skew_angle.text()
         properties["SetupToAnalyze"] = self.setup_to_analyze.text()
+        # FIXME: activate design should be str not dict
         properties["active_design"] = {"Maxwell3d": self.design_aedt_combo.currentText()}
         self.set_properties(properties)
 

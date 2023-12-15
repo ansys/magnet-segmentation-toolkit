@@ -1,30 +1,10 @@
 """Data classes used to store data related to Motor-CAD, AEDT and general settings.
 """
-
 from dataclasses import dataclass
-from dataclasses import field
-from typing import Dict
-from typing import List
+import json
+import os
 
-
-@dataclass()
-class GeneralProperties:
-    """Store general properties."""
-
-    aedt_version: str = "2023.2"
-    non_graphical: bool = False
-    nb_core: int = 4
-    active_project: str = ""
-    active_design: Dict[str, str] = field(default_factory=dict)
-    projects: List[str] = field(default_factory=list)
-    designs_by_project_name: Dict[str, Dict[str, str]] = field(default_factory=dict)
-    selected_process: int = 0
-    use_grpc: bool = True
-    is_toolkit_busy: bool = False
-    url: str = "127.0.0.1"
-    port: int = 5001
-    debug: bool = True
-    log_file: str = "motor_backend.log"
+from ansys.aedt.toolkits.motor.backend.common.properties import CommonProperties
 
 
 @dataclass()
@@ -45,10 +25,10 @@ class AEDTProperties:
 class Properties:
     """Store all properties."""
 
-    general_properties: GeneralProperties = GeneralProperties()
-    aedt_properties: AEDTProperties = AEDTProperties()
+    common_properties: CommonProperties
+    aedt_properties: AEDTProperties
 
-    def update(self, key, value):
+    def update(self, key, value) -> None:
         for properties in [self.general_properties, self.aedt_properties]:
             try:
                 setattr(properties, key, value)
@@ -57,4 +37,14 @@ class Properties:
                 continue
 
 
-properties = Properties()
+common_properties = CommonProperties()
+if os.path.expanduser(os.path.join(os.path.dirname(__file__), "common_properties.json")):
+    with open(os.path.join(os.path.dirname(__file__), "common_properties.json")) as file_handler:
+        common_properties = json.load(file_handler)
+
+aedt_properties = AEDTProperties()
+if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.json")):
+    with open(os.path.join(os.path.dirname(__file__), "aedt_properties.json")) as file_handler:
+        aedt_properties = json.load(file_handler)
+
+properties = Properties(common_properties, aedt_properties)
