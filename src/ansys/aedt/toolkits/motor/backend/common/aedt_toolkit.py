@@ -6,6 +6,7 @@ import os
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import Tuple
 from typing import Union
 
 import psutil
@@ -168,7 +169,7 @@ class AEDTToolkit(object):
             logger.debug(res)
         return res
 
-    def aedt_connected(self):
+    def aedt_connected(self) -> Tuple[bool, str]:
         """Check if AEDT is connected.
 
         Returns

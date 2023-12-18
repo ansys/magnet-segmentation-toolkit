@@ -21,6 +21,7 @@ class AEDTProperties:
     setup_to_analyze: str = "Setup1"
 
 
+# FIXME: singleton
 @dataclass()
 class Properties:
     """Store all properties."""
@@ -29,7 +30,7 @@ class Properties:
     aedt_properties: AEDTProperties
 
     def update(self, key, value) -> None:
-        for properties in [self.general_properties, self.aedt_properties]:
+        for properties in [self.common_properties, self.aedt_properties]:
             try:
                 setattr(properties, key, value)
                 break
@@ -37,14 +38,17 @@ class Properties:
                 continue
 
 
-common_properties = CommonProperties()
-if os.path.expanduser(os.path.join(os.path.dirname(__file__), "common_properties.json")):
-    with open(os.path.join(os.path.dirname(__file__), "common_properties.json")) as file_handler:
-        common_properties = json.load(file_handler)
-
-aedt_properties = AEDTProperties()
+aedt_kwargs = {}
 if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.json")):
     with open(os.path.join(os.path.dirname(__file__), "aedt_properties.json")) as file_handler:
         aedt_properties = json.load(file_handler)
+aedt_properties = AEDTProperties(**aedt_kwargs)
+
+common_kwargs = {}
+if os.path.expanduser(os.path.join(os.path.dirname(__file__), "common_properties.json")):
+    with open(os.path.join(os.path.dirname(__file__), "common", "common_properties.json")) as file_handler:
+        common_kwargs = json.load(file_handler)
+
+common_properties = CommonProperties(**common_kwargs)
 
 properties = Properties(common_properties, aedt_properties)

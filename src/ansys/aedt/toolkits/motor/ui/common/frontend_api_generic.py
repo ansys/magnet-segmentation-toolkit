@@ -89,7 +89,7 @@ class FrontendGeneric(object):
             return False
 
     def backend_busy(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
         if response.ok and response.json() == "Backend is running.":
             return True
         else:
@@ -107,7 +107,7 @@ class FrontendGeneric(object):
 
     def get_properties(self):
         try:
-            response = requests.get(self.url + "/get_properties")
+            response = requests.get(self.url + "/properties")
             if response.ok:
                 properties = response.json()
                 return properties
@@ -116,7 +116,7 @@ class FrontendGeneric(object):
 
     def set_properties(self, data):
         try:
-            response = requests.put(self.url + "/set_properties", json=data)
+            response = requests.put(self.url + "/properties", json=data)
             if response.ok:
                 response.json()
         except requests.exceptions.RequestException:
@@ -200,7 +200,7 @@ class FrontendGeneric(object):
             return False
 
     def find_design_names(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
@@ -224,7 +224,7 @@ class FrontendGeneric(object):
                 return False
 
     def launch_aedt(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
@@ -284,7 +284,7 @@ class FrontendGeneric(object):
         )
 
         if file_name:
-            response = requests.get(self.url + "/get_status")
+            response = requests.get(self.url + "/status")
 
             if response.ok and response.json() == "Backend is running.":
                 self.write_log_line("Please wait, toolkit running")
@@ -310,7 +310,7 @@ class FrontendGeneric(object):
 
     def release_only(self):
         """Release desktop."""
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
@@ -321,7 +321,7 @@ class FrontendGeneric(object):
 
     def release_and_close(self):
         """Release and close desktop."""
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")

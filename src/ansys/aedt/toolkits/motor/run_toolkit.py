@@ -125,7 +125,7 @@ def process_desktop_properties():
             "aedt_version": desktop_version,
             "use_grpc": grpc,
         }
-        requests.put(URL_CALL + "/set_properties", json=properties)
+        requests.put(URL_CALL + "/properties", json=properties)
         # requests.post(URL_CALL + "/launch_aedt")
 
 

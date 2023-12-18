@@ -13,12 +13,12 @@ class TestClass(BasisTest, object):
         BasisTest.my_teardown(self)
 
     def test_01_get_status(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
         assert response.ok
         assert response.json() == "Backend is free."
 
     def test_02_get_properties(self):
-        response = requests.get(self.url + "/get_properties")
+        response = requests.get(self.url + "/properties")
         assert response.ok
         assert len(response.json()) == 27
 
@@ -28,12 +28,12 @@ class TestClass(BasisTest, object):
             "non_graphical": self.test_config["non_graphical"],
             "use_grpc": True,
         }
-        response = requests.put(self.url + "/set_properties", json=new_properties)
+        response = requests.put(self.url + "/properties", json=new_properties)
         assert response.ok
         new_properties = {"use_grpc": 1}
-        response = requests.put(self.url + "/set_properties", json=new_properties)
+        response = requests.put(self.url + "/properties", json=new_properties)
         assert not response.ok
-        response = requests.put(self.url + "/set_properties")
+        response = requests.put(self.url + "/properties")
         assert not response.ok
 
     def test_04_installed_versions(self):
@@ -49,23 +49,23 @@ class TestClass(BasisTest, object):
         response = requests.post(self.url + "/connect_design", json={"aedtapp": "Icepak"})
         assert response.ok
         new_properties = {"use_grpc": False}
-        response = requests.put(self.url + "/set_properties", json=new_properties)
+        response = requests.put(self.url + "/properties", json=new_properties)
         assert response.ok
         response = requests.post(self.url + "/connect_design", json={"aedtapp": "Icepak"})
         assert response.ok
         new_properties = {"use_grpc": True}
-        response = requests.put(self.url + "/set_properties", json=new_properties)
+        response = requests.put(self.url + "/properties", json=new_properties)
 
     def test_07_save_project(self):
         file_name = os.path.join(self.local_path.path, "Test.aedt")
         response = requests.post(self.url + "/save_project", json=file_name)
         assert response.ok
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
         while response.json() != "Backend is free.":
             time.sleep(1)
-            response = requests.get(self.url + "/get_status")
+            response = requests.get(self.url + "/status")
 
     def test_08_get_design_names(self):
-        response = requests.get(self.url + "/get_design_names")
+        response = requests.get(self.url + "/design_names")
         assert response.ok
         assert len(response.json()) == 1

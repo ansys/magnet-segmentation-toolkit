@@ -103,7 +103,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             self.skew_angle.setEnabled(True)
 
     def get_materials(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
@@ -112,7 +112,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             response = requests.get(self.url + "/health")
             if response.ok and response.json() == "Toolkit not connected to AEDT":
                 properties = self.get_properties()
-                response = requests.get(self.url + "/get_project_materials")
+                response = requests.get(self.url + "/project_materials")
                 if response.ok:
                     return response.json()
 
@@ -147,7 +147,7 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             return
 
     def set_emag_model(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")

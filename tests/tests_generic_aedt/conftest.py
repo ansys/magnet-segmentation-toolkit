@@ -162,23 +162,23 @@ def desktop_init():
         flask_pids = [element for element in psutil.Process().children(recursive=True) if element not in initial_pids]
 
     # Wait for the Flask application to start
-    response = requests.get(url_call + "/get_status")
+    response = requests.get(url_call + "/status")
 
     while response.json() != "Backend is free.":
         time.sleep(1)
-        response = requests.get(url_call + "/get_status")
+        response = requests.get(url_call + "/status")
 
     properties = {
         "aedt_version": desktop_version,
         "non_graphical": non_graphical,
         "use_grpc": True,
     }
-    requests.put(url_call + "/set_properties", json=properties)
+    requests.put(url_call + "/properties", json=properties)
     requests.post(url_call + "/launch_aedt", json=properties)
-    response = requests.get(url_call + "/get_status")
+    response = requests.get(url_call + "/status")
     while response.json() != "Backend is free.":
         time.sleep(1)
-        response = requests.get(url_call + "/get_status")
+        response = requests.get(url_call + "/status")
     yield
     properties = {"close_projects": True, "close_on_exit": True}
     requests.post(url_call + "/close_aedt", json=properties)

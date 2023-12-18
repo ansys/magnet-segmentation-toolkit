@@ -1,6 +1,6 @@
 Generic API
 ===========
-The Generic API contains the ``ToolkitGeneric`` class, which provides basic
+The Generic API contains the ``AEDTToolkit`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 
@@ -9,12 +9,12 @@ These functions are the same for all AEDT toolkits.
 .. autosummary::
    :toctree: _autosummary
 
-   ToolkitGeneric
+   AEDTToolkit
 
-You can access the ``ToolkitGeneric`` class directly from the ``Toolkit`` class
+You can access the ``AEDTToolkit*`` class directly from the ``toolkit`` class
 because it is inherited.
 
-This code shows how to use both the ``Toolkit`` and ``ToolkitGeneric`` classes
+This code shows how to use both the ``Toolkit`` and ``AEDTToolkit`` classes
 to create an object:
 
 .. code:: python

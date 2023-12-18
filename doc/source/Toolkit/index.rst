@@ -9,7 +9,7 @@ Segmentation Toolkit:
   controlling the toolkit workflow. In addition to methods for creating a new
   or connecting to an existing AEDT session, this API provides methods for automating
   the segmentation and skew of a 3D motor.
-- **Generic API**: Contains the ``ToolkitGeneric`` class, which provides basic
+- **Generic API**: Contains the ``AEDTToolkit`` class, which provides basic
   functions for controlling AEDT that are shared between the backend and frontend.
   These functions are the same for all AEDT toolkits.
 
@@ -17,4 +17,4 @@ Segmentation Toolkit:
    :maxdepth: 2
 
    api
-   api_generic
+   common_api

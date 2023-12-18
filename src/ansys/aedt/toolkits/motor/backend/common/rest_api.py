@@ -11,22 +11,16 @@ settings = service.get_properties()
 app = Flask(__name__)
 
 
-# Generic services
-
-
 @app.route("/health", methods=["GET"])
 def get_health():
     logger.info("[GET] /health (check if the server is healthy).")
-    desktop_connected, msg = service.aedt_connected()
-    if desktop_connected:
-        return jsonify(msg), 200
-    else:
-        return jsonify(msg), 200
+    _, msg = service.aedt_connected()
+    return jsonify(msg), 200
 
 
-@app.route("/get_status", methods=["GET"])
-def get_status_call():
-    logger.info("[GET] /get_status (check if the thread is running).")
+@app.route("/status", methods=["GET"])
+def get_status():
+    logger.info("[GET] /status (check if the thread is running).")
     exit_code, msg = service.get_thread_status()
     if exit_code <= 0:
         return jsonify(msg), 200
@@ -34,16 +28,15 @@ def get_status_call():
         return jsonify(msg), 500
 
 
-@app.route("/get_properties", methods=["GET"])
-def get_properties_call():
-    app.logger.info("[GET] /get_properties (get toolkit properties).")
+@app.route("/properties", methods=["GET"])
+def get_properties():
+    app.logger.info("[GET] /properties (get toolkit properties).")
     return jsonify(service.get_properties()), 200
 
 
-@app.route("/set_properties", methods=["PUT"])
-def set_properties_call():
-    app.logger.info("[PUT] /set_properties (set toolkit properties).")
-
+@app.route("/properties", methods=["PUT"])
+def set_properties():
+    app.logger.info("[PUT] /properties (set toolkit properties).")
     body = request.json
     success, msg = service.set_properties(body)
     if success:
@@ -53,17 +46,15 @@ def set_properties_call():
 
 
 @app.route("/installed_versions", methods=["GET"])
-def installed_aedt_version_call():
-    logger.info("[GET] /version (get the version).")
+def installed_aedt_version():
+    logger.info("[GET] /installed_versions (get the installed versions).")
     return jsonify(service.installed_aedt_version()), 200
 
 
 @app.route("/aedt_sessions", methods=["GET"])
-def aedt_sessions_call():
+def aedt_sessions():
     logger.info("[GET] /aedt_sessions (AEDT sessions for a specific version).")
-
     response = service.aedt_sessions()
-
     if isinstance(response, list):
         return jsonify(response), 200
     else:
@@ -71,9 +62,8 @@ def aedt_sessions_call():
 
 
 @app.route("/launch_aedt", methods=["POST"])
-def launch_aedt_call():
+def launch_aedt():
     logger.info("[POST] /launch_aedt (launch or connect AEDT).")
-
     response = service.launch_aedt()
     if response:
         return jsonify("AEDT session launched."), 200
@@ -82,7 +72,7 @@ def launch_aedt_call():
 
 
 @app.route("/close_aedt", methods=["POST"])
-def close_aedt_call():
+def close_aedt():
     logger.info("[POST] /close_aedt (close AEDT).")
 
     body = request.json
@@ -92,7 +82,7 @@ def close_aedt_call():
         logger.error(msg)
         return jsonify(msg), 500
     elif not isinstance(body, dict) or not all(item in body for item in set(aedt_keys)):
-        msg = "body not correct"
+        msg = "Body is not correct."
         logger.error(msg)
         return jsonify(msg), 500
 
@@ -107,18 +97,15 @@ def close_aedt_call():
 
 
 @app.route("/connect_design", methods=["POST"])
-def connect_design_call():
+def connect_design():
     logger.info("[POST] /connect_design (connect or create a design).")
-
     body = request.json
-
     if not body:
         msg = "Body is empty."
         logger.error(msg)
         return jsonify("Body is empty."), 500
 
     response = service.connect_design(body["aedtapp"])
-
     if response:
         return jsonify("Design is connected"), 200
     else:
@@ -126,27 +113,24 @@ def connect_design_call():
 
 
 @app.route("/save_project", methods=["POST"])
-def save_project_call():
+def save_project():
     logger.info("[POST] /save_project (save AEDT project).")
-
     body = request.json
-
     if not body:
         msg = "Body is empty."
         logger.error(msg)
         return jsonify("body is empty."), 500
 
     response = service.save_project(body)
-
     if response:
         return jsonify("Project saved: {}".format(body)), 200
     else:
         return jsonify(response), 500
 
 
-@app.route("/get_design_names", methods=["GET"])
-def get_design_names_call():
-    logger.info("[GET] /get_design_names (AEDT designs for a specific project).")
+@app.route("/design_names", methods=["GET"])
+def get_design_names():
+    logger.info("[GET] /design_names (AEDT designs for a specific project).")
 
     response = service.get_design_names()
 
