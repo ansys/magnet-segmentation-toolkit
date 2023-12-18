@@ -2,76 +2,66 @@
 Getting started
 ===============
 
-To run this toolkit, you must have a licensed copy of Ansys Electronics Desktop (AEDT) installed.
+To run the Motor Segmentation Toolkit, you must have a licensed copy of AEDT installed.
+You have multiple options for installing and launching this toolkit:
 
-The toolkit could be launched from:
-
-- AEDT, see :ref:`install-toolkit-AEDT`.
-
-- From a python console, see :ref:`install_toolkit_console_ui` or :ref:`install_toolkit_console_api`
-
-The toolkit features can be accessed from:
-
-- The user interface (UI), see :doc:`Toolkit/ui`.
-
-- The API, see :doc:`Toolkit/index`.
+- You can install the toolkit in AEDT via an installation script and then launch it as a wizard.
+  For more information, see :ref:`install-toolkit-AEDT`.
+- You can install the toolkit from the AEDT console and then launch it as a wizard. For more
+  information, see :ref:`install_toolkit_console_ui`.
+- You can install and launch the toolkit directly from a Python console and then use the toolkit APIs.
+  For more information, see :ref:`install_toolkit_console_api`.
 
 .. _install-toolkit-AEDT:
 
-How to install inside AEDT and run the UI
------------------------------------------
+How to install directly in AEDT and launch as a wizard
+------------------------------------------------------
 
-This section shows how to install the toolkit inside the Ansys Electronics Desktop (AEDT) using the base
-interpreter from AEDT installation.
+You install the Motor Segmentation Toolkit directly in AEDT using the base
+interpreter from the AEDT installation.
 
-The toolkit can be installed inside AEDT using
-`PyAEDT <https://aedt.docs.pyansys.com/version/stable//>`_.
+#. From `Install from a Python file <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html#install-from-a-python-file>`_
+   in the PyAEDT installation documentation, download the ``PyAEDTInstallerFromDesktop.py`` file and then run this Python script.
 
-#. Download and run the install script from the `PyAEDT documentation <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html>`_.
-   Note that **AEDT must be restarted**
-   to update the **Tools** menu if this is the first time a Toolkit has been installed in AEDT.
+#. If this is the first toolkit being installed in AEDT, restart AEDT to update its **Tools** menu.
 
+#. In AEDT, select **Tools > Toolkit > PyAEDT > Console** to load the PyAEDT console:
 
-#. Open the console:
+   .. image:: ./_static/console.png
+     :width: 800
+     :alt: PyAEDT console in AEDT
 
-    .. image:: ./_static/toolkits.png
-      :width: 800
-      :alt: PyAEDT toolkits in AEDT
+#. In the PyAEDT console, run these commands to add the Motor Segmentation Toolkit as a wizard (toolkit UI)
+   in AEDT:
 
-    .. image:: ./_static/console.png
-      :width: 800
-      :alt: PyAEDT console in AEDT
+   .. code:: python
 
+     desktop.add_custom_toolkit("MotorWizard")
+     exit()
 
-#. Run the PyAEDT command: `add custom toolkit method <https://aedt.docs.pyansys.com/version/stable/API/_autosummary/pyaedt.desktop.Desktop.add_custom_toolkit.html#pyaedt.desktop.Desktop.add_custom_toolkit>`_:
+#. Close the PyAEDT console.
 
-    .. code:: python
+#. In AEDT, select **Tools > Toolkit > Update Menu** to update the **Toolkit** menu.
 
-      desktop.add_custom_toolkit("MotorWizard")
-      exit()
+#. Select **Tools > Toolkit > PersonalLib > TemplateToolkit > Run PyAEDT Toolkit Script** to open the
+   Motor Toolkit Wizard in AEDT:
 
-#. Close the console and open the toolkit, if you do not restart AEDT, you need to *Update Menu*:
+   .. image:: ./_static/design_connected.png
+     :width: 800
+     :alt: UI opened from AEDT, design tab
 
-    .. image:: ./_static/toolkit_in_AEDT.png
-      :width: 800
-      :alt: Template toolkit in AEDT
-
-#. The toolkit UI is connected directly to the AEDT session:
-
-    .. image:: ./_static/design_connected.png
-      :width: 800
-      :alt: UI opened from AEDT, design tab
+The wizard is connected directly to the AEDT session. For wizard usage information, see :doc:`Toolkit/ui`.
 
 .. _install_toolkit_console_ui:
 
-How to install in the console and run the UI
---------------------------------------------
+How to install from the AEDT console and launch as a wizard
+-----------------------------------------------------------
 
-This section shows how to install the toolkit in an specific python environment.
+You can install the Motor Segmentation Toolkit in a specific Python environment from the
+AEDT console.
 
-If you have an existing virtual environment you can skip step 1.
-
-If you have installed the toolkit in the virtual environment you can skip step 2.
+- If you have an existing virtual environment, skip step 1.
+- If you have already installed the toolkit in your virtual environment, skip step 2.
 
 #. Create a fresh-clean Python environment and activate it:
 
@@ -89,98 +79,103 @@ If you have installed the toolkit in the virtual environment you can skip step 2
       # Activate it in Windows PowerShell
       .venv\Scripts\Activate.ps1
 
-#. Install the toolkit from git:
+#. Install the toolkit from the GitHub repository:
 
-    .. code:: bash
+   .. code:: bash
 
-      python -m pip install git+https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
+     python -m pip install git+https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
 
-#. Launch the toolkit UI:
+#. Launch the Motor Toolkit Wizard:
 
-    .. code:: bash
+   .. code:: bash
 
-      python .venv\Lib\site-packages\ansys\aedt\toolkits\motor\run_toolkit.py
+     python .venv\Lib\site-packages\ansys\aedt\toolkits\motor\run_toolkit.py
 
-#. Settings tab to create a new AEDT session or connect to an existing one:
-
-    .. image:: ./_static/design_connected_launch_AEDT.png
-      :width: 800
-      :alt: UI opened from console, settings tab
+For wizard usage information, see :doc:`Toolkit/ui`.
 
 .. _install_toolkit_console_api:
 
-How to install in the console and use the API
----------------------------------------------
+How to install from a Python console and use the toolkit APIs
+-------------------------------------------------------------
 
-This section shows how to install the toolkit in an specific python environment and use the API.
+You can install the Motor Segmentation Toolkit in a specific Python environment from a Python
+console and then use this toolkit APIs.
 
-#. Follow the step 1 and 2 described in :ref:`install_toolkit_console_ui`.
+.. note::
+  The following procedure assumes that you have already performed steps 1 and 2 in
+  :ref:`install_toolkit_console_ui` for creating and activating a virtual environment
+  and installing the toolkit from the GitHub repository.
 
-#. Open a python console in the corresponding virtual environment:
+#. Open a Python console in your virtual environment:
 
-    .. code:: bash
+   .. code:: bash
 
-      python
+     python
 
-#. The API can be used at toolkit level. For example, the following commands: Open AEDT, open a 3D motor model, segment and skew it in Maxwell 3D:
+#. Use the toolkit APIs at the toolkit level.
 
-    .. code:: python
+   For example, this code shows how to use the toolkit APIs to import the toolkit, launch AEDT,
+   open a 3D motor model, and then segment and skew this model in Maxwell 3D:
 
-      # Import required modules for the example
-      import os
+   .. code:: python
 
-      # Import backend services
-      from ansys.aedt.toolkits.motor.backend.api import Toolkit
+     # Import required modules
+     import os
 
-      # Backend object
-      toolkit = Toolkit()
+     # Import backend services
+     from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
-      # Get service properties
-      properties = toolkit.get_properties()
+     # Backend object
+     toolkit = Toolkit()
 
-      # Define properties
-      project_name = "my_3d_model"
-      active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
-      active_design = "my_design"
-      magnets_material = "N30UH_65C"
-      rotor_material = "M250-35A_20C"
+     # Get service properties
+     properties = toolkit.get_properties()
 
-      properties = {
-          "aedt_version": "2023.1",
-          "active_project": active_project,
-          "active_design": {"Maxwell3d": active_design},
-          "design_list": {project_name: [{"Maxwell3d": active_design}]},
-          "IsSkewed": False,
-          "MagnetsMaterial": magnets_material,
-          "MagnetsSegmentsPerSlice": "5",
-          "RotorMaterial": rotor_material,
-          "RotorSlices": "3",
-      }
+     # Define properties
+     project_name = "my_3d_model"
+     active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
+     active_design = "my_design"
+     magnets_material = "N30UH_65C"
+     rotor_material = "M250-35A_20C"
 
-      # Set service properties
-      toolkit.set_properties()
+     properties = {
+         "aedt_version": "2023.1",
+         "active_project": active_project,
+         "active_design": {"Maxwell3d": active_design},
+         "design_list": {project_name: [{"Maxwell3d": active_design}]},
+         "IsSkewed": False,
+         "MagnetsMaterial": magnets_material,
+         "MagnetsSegmentsPerSlice": "5",
+         "RotorMaterial": rotor_material,
+         "RotorSlices": "3",
+     }
 
-      # Launch AEDT in a thread
-      service.launch_aedt()
+     # Set service properties
+     toolkit.set_properties()
 
-      # Wait until thread is finished
-      response = service.get_thread_status()
+     # Launch AEDT in a thread
+     service.launch_aedt()
 
-      while response[0] == 0:
-          time.sleep(1)
-          response = service.get_thread_status()
+     # Wait until thread is finished
+     response = service.get_thread_status()
 
-      # Apply segmentation
-      toolkit.segmentation()
+     while response[0] == 0:
+         time.sleep(1)
+         response = service.get_thread_status()
 
-      # Apply skew
-      toolkit.apply_skew()
+     # Apply segmentation
+     toolkit.segmentation()
 
-      # Wait until thread is finished
-      response = service.get_thread_status()
-      while response[0] == 0:
-          time.sleep(1)
-          response = service.get_thread_status()
+     # Apply skew
+     toolkit.apply_skew()
 
-      # Desktop is released here
-      service.release_aedt()
+     # Wait until thread is finished
+     response = service.get_thread_status()
+     while response[0] == 0:
+         time.sleep(1)
+         response = service.get_thread_status()
+
+     # Release AEDT
+     service.release_aedt()
+
+For descriptions of the APIs available for the Motor Segmentation Toolkit, see :doc:`Toolkit/index`.

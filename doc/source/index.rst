@@ -1,10 +1,11 @@
-AEDT Motor Toolkit documentation  |version|
-===========================================
+Motor Segmentation Toolkit documentation |version|
+==================================================
 
 ..
    Simply reuse the root readme
 
 .. include:: ../../README.rst
+   :start-after: .. reuse_start
 
 .. toctree::
    :hidden:

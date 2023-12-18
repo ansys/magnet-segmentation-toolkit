@@ -1,5 +1,5 @@
-AEDT Motor Toolkit
-==================
+Motor Segmentation Toolkit
+==========================
 
 |pyansys| |PythonVersion| |GH-CI| |MIT| |black|
 
@@ -20,32 +20,37 @@ AEDT Motor Toolkit
   :target: https://github.com/psf/black
   :alt: black
 
+.. reuse_start
 
-The ``ansys-aedt-toolkits-motor`` package provides a Python wrapper to automate the segmentation
-and skew of IPM motors using Ansys Electronics Desktop (AEDT).
-The toolkit could be used inside AEDT or launched from a python console.
-Toolkit features should be accessible from the user interface or directly from the API.
-
+The Motor Segmentation Toolkit is a Python wrapper for automating the segmentation
+and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM)
+motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit
+from the AEDT UI or launch it directly from a Python console.
 
 Requirements
 ~~~~~~~~~~~~
-In addition to the runtime dependencies listed in the installation information, this toolkit
-requires Ansys Electronics Desktop (AEDT) 2023 R1 or later. The AEDT Student Version is also supported.
+In addition to the runtime dependencies listed in
+`Getting started <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/Getting_started.html>`_,
+the Motor Segmentation Toolkit requires AEDT 2023 R1 or later. This toolkit also supports the AEDT
+Student Version for 2023 R1 or later.
 
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
-In addition to installation and wizard information, the toolkit
-documentation provides `API reference <https://aedt.motor.toolkit.docs.pyansys.com/version/dev/Toolkit/index.html#>`_ (in progress) and `Contribute <https://aedt.motor.toolkit.docs.pyansys.com/version/dev/Contributing.html>`_ (in progress) sections.
+Documentation for the latest stable release of the Motor Segmentation Toolkit is hosted at
+`Motor Segmentation Toolkit documentation <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/index.html>`_.
 
-On the `Toolkit issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_ page, you can
-create issues to submit questions, report bugs, and request new features.
+In the upper right corner of the documentation's title bar, there is an option for switching from
+viewing the documentation for the latest stable release to viewing the documentation for the
+development version or previously released versions.
+
+On the `Motor Segmentation Toolkit Issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_
+page, you can create issues to report bugs and request new features. On the `Discussions <https://discuss.ansys.com/>`_
+page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback.
 
 License
 ~~~~~~~
-This toolkit is licensed under the MIT license.
+The Motor Segmentation Toolkit is licensed under the MIT license.
 
-This module makes no commercial claim over Ansys whatsoever.
-The use of the interactive control of this toolkit requires a legally licensed
-local copy of AEDT. For more information about AEDT,
-visit the `AEDT page <https://www.ansys.com/products/electronics>`_
-on the Ansys website.
+This toolkit makes no commercial claim over Ansys whatsoever. The use of the interactive
+control of this toolkit requires a legally licensed local copy of AEDT. For more information,
+see the `Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on the Ansys website.

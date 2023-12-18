@@ -10,9 +10,9 @@ from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
 
 class MotorCADFlow(ToolkitGeneric):
-    """API to control MotorCAD toolkit workflow.
+    """Controls the MotorCAD toolkit workflow.
 
-    This class provides methods to initialize and control a MotorCAD design.
+    This class provides methods for initializing and controlling a MotorCAD design.
 
     Examples
     --------
@@ -33,24 +33,24 @@ class MotorCADFlow(ToolkitGeneric):
         if not self.mcad:
             self.mcad = pymotorcad.MotorCAD()
             self.mcad.set_variable("MessageDisplayState", 2)
-            logger.debug("MotorCAD initialized")
+            logger.debug("MotorCAD is initialized.")
             return True
         else:
-            logger.debug("MotorCAD was already active")
+            logger.debug("MotorCAD was already active.")
             return False
 
     @thread.launch_thread
     def load_mcad_file(self):
-        """Load a .mot file."""
+        """Load a MOT file."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         motorcad_filepath = properties.MotorCAD_filepath
         if not motorcad_filepath:
             motorcad_filepath = os.path.join(tempfile.gettempdir(), "default.mot")
             self.mcad.save_to_file(motorcad_filepath)
             properties.MotorCAD_filepath = motorcad_filepath
-            logger.debug("MotorCAD file not specified, default one has been loaded.")
+            logger.debug("A MotorCAD file is not specified. The default file has been loaded.")
 
         if not properties.vbs_file_path:
             properties.vbs_file_path = os.path.join(
@@ -58,14 +58,14 @@ class MotorCADFlow(ToolkitGeneric):
             )
 
         self.set_properties(properties)
-        logger.debug("MotorCAD file loaded")
+        logger.debug("MotorCAD file loaded.")
         self.mcad.load_from_file(properties.MotorCAD_filepath)
         return True
 
     def set_emag_model(self):
         """Set geometry model."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.show_magnetic_context()
         self.mcad.set_variable("ProximityLossModel", 1)
@@ -79,15 +79,15 @@ class MotorCADFlow(ToolkitGeneric):
     def build_lab_model(self):
         """Build the LAB model."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.build_model_lab()
         return True
 
     def lab_performance_calculation(self):
-        """Calculate lab performance curves-Maximum Torque-speed and Efficiency Map."""
+        """Calculate LAB performance curves (maximum torque speed and efficiency map)."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
 
         self.mcad.set_variable("EmagneticCalcType_Lab", 0)
@@ -99,9 +99,9 @@ class MotorCADFlow(ToolkitGeneric):
         return True
 
     def lab_operating_point(self):
-        """Set lab operating point based on given input conditions."""
+        """Set LAB operating point based on given input conditions."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.set_variable("OpPointSpec_MotorLAB", 2)
         self.mcad.set_variable("LabMagneticCoupling", 1)
@@ -122,7 +122,7 @@ class MotorCADFlow(ToolkitGeneric):
     def emag_calculation(self):
         """Set Emag calculation."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.show_magnetic_context()
 
@@ -139,18 +139,18 @@ class MotorCADFlow(ToolkitGeneric):
         self.mcad.do_magnetic_calculation()
 
     def set_thermal(self, magnet_loss):
-        """Set the motorcad thermal calculations, cooling and losses ."""
+        """Set MotorCAD thermal calculations, cooling, and losses."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.show_thermal_context()
         self.mcad.set_variable("ThermalCalcType", 0)
         self.mcad.set_variable("Magnet_Iron_Loss_@Ref_Speed", magnet_loss["SolidLoss"]["Value"])
 
     def thermal_calculation(self):
-        """Perform  steady state thermal calculation."""
+        """Run steady-state thermal calculation."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.do_steady_state_analysis()
         wdg_avg = self.mcad.get_variable("Temp_Winding_Average")
@@ -164,7 +164,7 @@ class MotorCADFlow(ToolkitGeneric):
 
         try:
             if not self.mcad:
-                logger.error("MotorCAD not initialized")
+                logger.error("MotorCAD is not initialized.")
                 return False
             self.mcad.show_magnetic_context()
             self.mcad.set_variable("AnsysExportFormat", 1)
@@ -196,21 +196,21 @@ class MotorCADFlow(ToolkitGeneric):
             return False
 
     def save(self):
-        """Save the motorcad file."""
+        """Save the MotorCAD file."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         path = properties.MotorCAD_filepath
         if path:
             self.mcad.save_to_file(path)
             return True
         else:
-            logger.error("Path not specified")
+            logger.error("Path is not specified.")
 
     def close_motorcad(self):
-        """Close the motorcad instance."""
+        """Close the MotorCAD instance."""
         if not self.mcad:
-            logger.error("MotorCAD not initialized")
+            logger.error("MotorCAD is not initialized.")
             return False
         self.mcad.quit()
         return True

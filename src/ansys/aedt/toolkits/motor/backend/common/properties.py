@@ -21,17 +21,17 @@ properties = PropertiesData(_default_properties)
 
 def check_property_file_against_defaults(prop_filename):
     """
-    Check if property exists in defaults.
+    Check if property exists in the defaults.
 
     Parameters
     ----------
     prop_filename : str
-        Qualified path of the property file to be checked
+        Qualified path of the property file to check.
 
     Returns
     -------
     bool
-        `True` if the files check passes, `False` otherwise
+        ``True`` if the file check passes, `False` otherwise.
     """
     tmp_properties = PropertiesData(_default_properties)
     try:

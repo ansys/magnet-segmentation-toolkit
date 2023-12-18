@@ -11,9 +11,9 @@ thread = ThreadManager()
 
 
 class ToolkitGeneric(object):
-    """Generic API to control the toolkits.
+    """Provides basic functions for controlling AEDT that are shared between the backend and frontend.
 
-    It provides basic functions to control AEDT and properties to share between backend and frontend.
+    The basic functions in this class are shared by all AEDT toolkits.
 
     Examples
     --------
@@ -58,12 +58,12 @@ class ToolkitGeneric(object):
         Parameters
         ----------
         data : dict
-            The dictionary containing the properties to be updated.
+            Dictionary containing the properties to update.
 
         Returns
         -------
         tuple[bool, str]
-            A tuple indicating the success status and a message.
+            Tuple indicating the success status and a message.
 
         Examples
         --------
@@ -78,13 +78,13 @@ class ToolkitGeneric(object):
             try:
                 for key in data:
                     setattr(properties, key, data[key])
-                msg = "properties updated successfully"
+                msg = "Properties updated successfully."
                 logger.debug(msg)
                 return True, msg
             except:
-                return False, "Frozen property access"
+                return False, "Property access is frozen."
         else:
-            msg = "body is empty!"
+            msg = "Body is empty."
             logger.debug(msg)
             return False, msg
 
@@ -95,7 +95,7 @@ class ToolkitGeneric(object):
         Returns
         -------
         dict
-            The dictionary containing the toolkit properties.
+            Dictionary containing the toolkit properties.
 
         Examples
         --------
@@ -108,12 +108,12 @@ class ToolkitGeneric(object):
 
     @staticmethod
     def get_thread_status():
-        """Get toolkit thread status.
+        """Get the toolkit thread status.
 
         Returns
         -------
         bool
-            ``True`` when active, ``False`` when not active.
+            ``True`` when active, ``False`` when inactive.
 
         Examples
         --------
@@ -124,15 +124,15 @@ class ToolkitGeneric(object):
         thread_running = thread.is_thread_running()
         is_toolkit_busy = properties.is_toolkit_busy
         if thread_running and is_toolkit_busy:  # pragma: no cover
-            msg = "Backend running"
+            msg = "Backend is running."
             logger.debug(msg)
             return 0, msg
         elif (not thread_running and is_toolkit_busy) or (thread_running and not is_toolkit_busy):  # pragma: no cover
-            msg = "Backend crashed"
+            msg = "Backend has crashed."
             logger.error(msg)
             return 1, msg
         else:
-            msg = "Backend free"
+            msg = "Backend is free."
             logger.debug(msg)
             return -1, msg
 
@@ -142,7 +142,7 @@ class ToolkitGeneric(object):
         Returns
         -------
         tuple[bool, str]
-            A tuple indicating the connection status and a message.
+            Tuple indicating the connection status and a message.
 
         Examples
         --------
@@ -160,17 +160,17 @@ class ToolkitGeneric(object):
         """
         if self.desktop:
             if self.desktop.port != 0:
-                msg = "Toolkit connected to process {} on Grpc {}".format(
+                msg = "Toolkit is connected to process {} on Grpc {}.".format(
                     str(self.desktop.aedt_process_id),
                     str(self.desktop.port),
                 )
                 logger.debug(msg)
             else:
-                msg = "Toolkit connected to process {}".format(str(self.desktop.aedt_process_id))
+                msg = "Toolkit is connected to process {}.".format(str(self.desktop.aedt_process_id))
                 logger.debug(msg)
             connected = True
         else:
-            msg = "Toolkit not connected to AEDT"
+            msg = "Toolkit is not connected to AEDT."
             logger.debug(msg)
             connected = False
         return connected, msg
@@ -178,7 +178,7 @@ class ToolkitGeneric(object):
     @staticmethod
     def installed_aedt_version():
         """
-        Return the installed AEDT versions.
+        Get the installed AEDT versions.
 
         Returns
         -------
@@ -209,7 +209,7 @@ class ToolkitGeneric(object):
         Returns
         -------
         list
-            List of AEDT PIDs.
+            List of AEDT process IDs (PIDs).
 
         Examples
         --------
@@ -261,12 +261,14 @@ class ToolkitGeneric(object):
             logger.debug(str(sessions))
             return sessions
         else:
-            logger.debug("No active sessions")
+            logger.debug("No sessions are active.")
             return []
 
     @staticmethod
     def get_design_names():
-        """Get design names for a specific project, the first one is the active.
+        """Get design names for a specific project.
+
+        The first design name returned is the active design.
 
         Returns
         -------
@@ -285,7 +287,7 @@ class ToolkitGeneric(object):
         >>> service.get_design_names()
         """
         if properties.selected_process == 0:
-            logger.error("Process ID not defined")
+            logger.error("Process ID is not defined.")
             return False
 
         design_list = []
@@ -306,7 +308,7 @@ class ToolkitGeneric(object):
     def launch_aedt(self):
         """Launch AEDT.
 
-        This method is launched in a thread if grpc is enabled. AEDT is released once it is opened.
+        This method is launched in a thread if gRPC is enabled. AEDT is released once it is opened.
 
         Returns
         -------
@@ -341,7 +343,7 @@ class ToolkitGeneric(object):
                     new_desktop_session=True,
                 )
             elif use_grpc:
-                # Launch AEDT with GRPC
+                # Launch AEDT with gRPC
                 self.desktop = pyaedt.Desktop(
                     specified_version=version,
                     non_graphical=non_graphical,
@@ -357,11 +359,11 @@ class ToolkitGeneric(object):
                 )
 
             if not self.desktop:
-                msg = "AEDT not launched"
+                msg = "AEDT has not launched."
                 logger.error(msg)
                 return False
 
-            msg = "AEDT launched"
+            msg = "AEDT has launched."
             logger.debug(msg)
 
             # Open project
@@ -374,7 +376,7 @@ class ToolkitGeneric(object):
             # Save AEDT session properties
             if use_grpc:
                 new_properties = {"selected_process": self.desktop.port}
-                logger.debug("Grpc port {}".format(str(self.desktop.port)))
+                logger.debug("gRPC port {}".format(str(self.desktop.port)))
             else:
                 new_properties = {"selected_process": self.desktop.aedt_process_id}
                 logger.debug("Process ID {}".format(str(self.desktop.aedt_process_id)))
@@ -384,7 +386,7 @@ class ToolkitGeneric(object):
 
             self.desktop.release_desktop(False, False)
             self.desktop = None
-            logger.debug("Desktop released and project properties loaded")
+            logger.debug("Desktop is released and project properties are loaded.")
 
         return True
 
@@ -409,7 +411,7 @@ class ToolkitGeneric(object):
         >>> service.release_aedt()
         """
         if properties.selected_process == 0:
-            logger.error("Process ID not defined")
+            logger.error("Process ID is not defined.")
             return False
 
         version = properties.aedt_version
@@ -419,7 +421,7 @@ class ToolkitGeneric(object):
 
         # Connect to AEDT
         pyaedt.settings.use_grpc_api = use_grpc
-        logger.debug("Connecting AEDT")
+        logger.debug("Connecting AEDT.")
         if use_grpc:
             # Launch AEDT with GRPC
             self.desktop = pyaedt.Desktop(
@@ -438,39 +440,40 @@ class ToolkitGeneric(object):
             )
 
         if not self.desktop:  # pragma: no cover
-            logger.debug("AEDT not connected")
+            logger.debug("AEDT is not connected.")
             return False
 
-        logger.debug("AEDT connected")
+        logger.debug("AEDT is connected.")
         return True
 
     def connect_design(self, app_name=None):
         """Connect to an application design.
-        If a design exists, it takes the active project and design, if not,
-        it creates a new design of the specified type. If no application specified, the default is ``"Hfss"``.
+
+        If a design exists, this method uses the active project and design. If a design does not exist,
+        this method creates a design of the specified type. If no application is specified, the default is ``"Hfss"``.
 
         Parameters
         ----------
         app_name : str
-            Aedt application name. The default is connecting to active design. Application available are:
+            AEDT application name. Options are:
 
-            * Circuit
-            * Hfss
-            * Edb
-            * Emit
-            * Hfss3dLayout
-            * Icepak
-            * Maxwell2d
-            * Maxwell3d
-            * Q2d
-            * Q3d
-            * Rmxprt
-            * Simplorer
+            * ``"Circuit"``
+            * ``"Edb"``
+            * ``"Emit"``
+            * ``"Hfss"``
+            * ``"Hfss2dlayout"``
+            * ``"Icepak"``
+            * ``"Maxwell2d"``
+            * ``"Maxwell3d"``
+            * ``"Q2d"``
+            * ``"Q3d"``
+            * ``"Rmxprt"``
+            * ``"Simplorer"``
 
         Returns
         -------
         bool
-            Returns ``True`` if the connection is successful, ``False`` otherwise.
+            Returns ``True`` if the connection to a design is successful, ``False`` otherwise.
 
         Examples
         --------
@@ -580,10 +583,10 @@ class ToolkitGeneric(object):
         ----------
         close_projects : bool, optional
             Whether to close the AEDT projects that are open in the session.
-            The default is ``True``.
+            The default is ``False``.
         close_on_exit : bool, optional
             Whether to close the active AEDT session on exiting AEDT.
-            The default is ``True``.
+            The default is ``False``.
 
         Returns
         -------
@@ -609,7 +612,7 @@ class ToolkitGeneric(object):
                 self.desktop = None
                 self.aedtapp = None
             except:
-                logger.error("Desktop not released")
+                logger.error("Desktop is not released.")
                 return False
 
         if self.aedtapp:
@@ -617,7 +620,7 @@ class ToolkitGeneric(object):
                 released = self.aedtapp.release_desktop(close_projects, close_on_exit)
                 self.aedtapp = None
             except:
-                logger.error("Desktop not released")
+                logger.error("Desktop is not released.")
                 return False
 
         if not released and close_projects and close_on_exit:
@@ -626,12 +629,12 @@ class ToolkitGeneric(object):
         return True
 
     def open_project(self, project_name=None):
-        """Open AEDT project.
+        """Open an AEDT project.
 
         Parameters
         ----------
         project_name : str, optional
-            Project path to open.
+            Full path for the project to open. The default is ``None``.
 
         Returns
         -------
@@ -653,25 +656,27 @@ class ToolkitGeneric(object):
         """
         if self.desktop and project_name:
             self.desktop.odesktop.OpenProject(project_name)
-            logger.debug("Project {} opened".format(project_name))
+            logger.debug("Project {} is opened.".format(project_name))
             return True
         else:
             return False
 
     @thread.launch_thread
     def save_project(self, project_path=None):
-        """Save project. It uses the properties to get the project path. This method is launched in a thread.
+        """Save the project.
+
+        The method uses the properties to get the project path. The method is launched in a thread.
 
         Parameters
         ----------
         project_path : str, optional
-            Path of the AEDT project to save.
-            The default value is ``None`` in which case the current project will be overwritten.
+            Full path to save the AEDT project to.
+            The default value is ``None``, in which case the current project is overwritten.
 
         Returns
         -------
         bool
-            Returns ``True`` if the connection is successful, ``False`` otherwise.
+            ``True`` if the save is successful, ``False`` otherwise.
 
         Examples
         --------
@@ -702,7 +707,7 @@ class ToolkitGeneric(object):
             logger.debug("Project saved: {}".format(project_path))
             return True
         else:  # pragma: no cover
-            logger.error("Project not saved")
+            logger.error("Project was not saved.")
             return False
 
     def _save_project_info(self):
@@ -727,7 +732,7 @@ class ToolkitGeneric(object):
                 if app_name in list(self.aedt_apps.keys()):
                     new_properties["active_design"] = {self.aedt_apps[app_name]: active_design_name}
                 else:
-                    logger.error("Application {} not available".format(app_name))
+                    logger.error("Application {} is not available.".format(app_name))
                     self.desktop.release_desktop(True, True)
                     return False
 
@@ -754,7 +759,7 @@ class ToolkitGeneric(object):
                         if app_name in list(self.aedt_apps.keys()):
                             new_properties["design_list"][project_name].append({self.aedt_apps[app_name]: design_name})
                         else:
-                            logger.error("Application {} not available".format(app_name))
+                            logger.error("Application {} is not available.".format(app_name))
                             self.desktop.release_desktop(True, True)
                             return False
 

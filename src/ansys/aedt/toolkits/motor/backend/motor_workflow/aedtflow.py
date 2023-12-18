@@ -12,9 +12,9 @@ from ansys.aedt.toolkits.motor.backend.common.properties import properties
 
 
 class AedtFlow(ToolkitGeneric):
-    """API to control AEDT toolkit workflow.
+    """Controls the AEDT toolkit workflow.
 
-    This class provides methods to connect to a selected design...
+    This class provides methods for connecting to a selected design.
 
     Examples
     --------
@@ -57,12 +57,12 @@ class AedtFlow(ToolkitGeneric):
             return False
 
     def get_losses_from_reports(self):
-        """Create report magnet losses.
+        """Get magnet losses from reports.
 
         Returns
         -------
         dict
-            Average values + units for reports specified in json file.
+            Average values plus units for the reports specified in the JSON file.
         """
         self.connect_design(app_name=list(properties.active_design.keys())[0])
 
@@ -81,8 +81,9 @@ class AedtFlow(ToolkitGeneric):
 
     # @thread.launch_thread
     def segmentation(self):
-        """Apply objects segmentation.
-        It automatically segments rotor, rotor pockets and magnets.
+        """Apply object segmentation.
+
+        This method automatically segments the rotor, rotor pockets, and magnets.
 
         Returns
         -------
@@ -99,7 +100,7 @@ class AedtFlow(ToolkitGeneric):
             obj.model = False
 
         if not self.aedtapp:
-            logger.error("AEDT not initialized")
+            logger.error("AEDT is not initialized.")
             return False
 
         self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
@@ -276,7 +277,7 @@ class AedtFlow(ToolkitGeneric):
             return False
 
     def _get_rotor_pockets(self, vacuum_objects):
-        """Return the rotor pockets if any.
+        """Get the rotor pockets if any.
 
         Parameters
         ----------
@@ -286,7 +287,7 @@ class AedtFlow(ToolkitGeneric):
         Returns
         -------
         list
-            list of class:`pyaedt.modeler.cad.object3d.Object3d`
+            List of the class:`pyaedt.modeler.cad.object3d.Object3d` classes.
         """
         rotor_pockets = []
         for obj in vacuum_objects:
@@ -299,7 +300,7 @@ class AedtFlow(ToolkitGeneric):
         return rotor_pockets
 
     def _update_cs(self, cs):
-        """Update the cs to Euler ZYZ mode.
+        """Update the coordinate system to Euler ZYZ mode.
 
         Parameters
         ----------

@@ -90,7 +90,7 @@ class FrontendGeneric(object):
 
     def backend_busy(self):
         response = requests.get(self.url + "/get_status")
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             return True
         else:
             return False
@@ -202,9 +202,9 @@ class FrontendGeneric(object):
     def find_design_names(self):
         response = requests.get(self.url + "/get_status")
 
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend free":
+        elif response.ok and response.json() == "Backend is free.":
             try:
                 # Modify selected version
                 properties = self.get_properties()
@@ -226,9 +226,9 @@ class FrontendGeneric(object):
     def launch_aedt(self):
         response = requests.get(self.url + "/get_status")
 
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend free":
+        elif response.ok and response.json() == "Backend is free.":
             self.update_progress(0)
             response = requests.get(self.url + "/health")
             if response.ok and response.json() == "Toolkit not connected to AEDT":
@@ -286,9 +286,9 @@ class FrontendGeneric(object):
         if file_name:
             response = requests.get(self.url + "/get_status")
 
-            if response.ok and response.json() == "Backend running":
+            if response.ok and response.json() == "Backend is running.":
                 self.write_log_line("Please wait, toolkit running")
-            elif response.ok and response.json() == "Backend free":
+            elif response.ok and response.json() == "Backend is free.":
                 self.project_name.setText(file_name)
                 properties = self.get_properties()
                 # properties["active_project"] = file_name
@@ -312,7 +312,7 @@ class FrontendGeneric(object):
         """Release desktop."""
         response = requests.get(self.url + "/get_status")
 
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
         else:
             properties = {"close_projects": False, "close_on_exit": False}
@@ -323,9 +323,9 @@ class FrontendGeneric(object):
         """Release and close desktop."""
         response = requests.get(self.url + "/get_status")
 
-        if response.ok and response.json() == "Backend running":
+        if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend free":
+        elif response.ok and response.json() == "Backend is free.":
             properties = {"close_projects": True, "close_on_exit": True}
             if self.close():
                 requests.post(self.url + "/close_aedt", json=properties)

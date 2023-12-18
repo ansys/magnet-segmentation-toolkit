@@ -15,7 +15,7 @@ class TestClass(BasisTest, object):
     def test_01_get_status(self):
         response = requests.get(self.url + "/get_status")
         assert response.ok
-        assert response.json() == "Backend free"
+        assert response.json() == "Backend is free."
 
     def test_02_get_properties(self):
         response = requests.get(self.url + "/get_properties")
@@ -61,7 +61,7 @@ class TestClass(BasisTest, object):
         response = requests.post(self.url + "/save_project", json=file_name)
         assert response.ok
         response = requests.get(self.url + "/get_status")
-        while response.json() != "Backend free":
+        while response.json() != "Backend is free.":
             time.sleep(1)
             response = requests.get(self.url + "/get_status")
 

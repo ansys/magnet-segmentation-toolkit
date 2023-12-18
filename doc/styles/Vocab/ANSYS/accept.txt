@@ -5,15 +5,17 @@ aedt
 AEDT
 AEDT's
 PyAEDT
-toolkits
 pyaedt
+APIs
 CPython
-rst
+docstring
 GitHub
+HFSS
+new_toolkit_name
+Motor Segmentation Toolkit
+toml
+toolkits
+rst
 UI
 ui
-new_toolkit_name
-toml
 url
-HFSS
-docstring
