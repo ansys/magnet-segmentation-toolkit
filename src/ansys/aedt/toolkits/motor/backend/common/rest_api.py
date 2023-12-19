@@ -4,6 +4,7 @@ from flask import request
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 
 service = Toolkit()
 settings = service.get_properties()
@@ -20,13 +21,11 @@ def get_health():
 
 @app.route("/status", methods=["GET"])
 def get_status():
-    raise Exception("get status")
     logger.info("[GET] /status (check if the thread is running).")
-    exit_code, msg = service.get_thread_status()
-    if exit_code <= 0:
-        return jsonify(msg), 200
-    else:
-        return jsonify(msg), 500
+    status = service.get_thread_status()
+    if status in [ToolkitThreadStatus.BUSY, ToolkitThreadStatus.IDLE]:
+        return jsonify(str(status)), 200
+    return jsonify(str(status)), 500
 
 
 @app.route("/properties", methods=["GET"])

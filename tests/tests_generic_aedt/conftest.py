@@ -168,8 +168,6 @@ def desktop_init():
     # Wait for the Flask application to start
     response = requests.get(url_call + "/status")
 
-    raise Exception("desktop_init")
-
     count = 0
     while response.json() != str(ToolkitThreadStatus.IDLE):
         time.sleep(1)

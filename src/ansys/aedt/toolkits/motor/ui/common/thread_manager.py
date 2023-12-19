@@ -4,6 +4,8 @@ import os
 from PySide6 import QtCore
 import requests
 
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+
 logger = logging.getLogger("Global")
 
 

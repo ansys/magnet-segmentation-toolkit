@@ -30,6 +30,7 @@ from pyaedt.generic.filesystem import Scratch
 import pytest
 
 from ansys.aedt.toolkits.motor.backend.api import Toolkit
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
@@ -116,8 +117,8 @@ def desktop_init():
     toolkit.set_properties({"non_graphical": config["non_graphical"]})
     toolkit.set_properties({"use_grpc": config["use_grpc"]})
     toolkit.launch_aedt()
-    response = toolkit.get_thread_status()
-    while response[0] == 0:
+    status = toolkit.get_thread_status()
+    while status == ToolkitThreadStatus.BUSY:
         time.sleep(1)
-        response = toolkit.get_thread_status()
+        status = toolkit.get_thread_status()
     yield

@@ -142,7 +142,7 @@ class AEDTCommonToolkit(object):
         return res
 
     @staticmethod
-    def get_thread_status() -> str:
+    def get_thread_status() -> ToolkitThreadStatus:
         """Get the toolkit thread status.
 
         Returns
@@ -156,18 +156,17 @@ class AEDTCommonToolkit(object):
         >>> service = Toolkit()
         >>> service.get_thread_status()
         """
-        raise Exception("get_thread_status")
         thread_running = thread.is_toolkit_thread_running()
         is_toolkit_busy = properties.common_properties.is_toolkit_busy
         if thread_running and is_toolkit_busy:  # pragma: no cover
-            res = str(ToolkitThreadStatus.BUSY)
-            logger.debug(res)
+            res = ToolkitThreadStatus.BUSY
+            logger.debug(str(res))
         elif (not thread_running and is_toolkit_busy) or (thread_running and not is_toolkit_busy):  # pragma: no cover
-            res = str(ToolkitThreadStatus.CRASHED)
-            logger.error(res)
+            res = ToolkitThreadStatus.CRASHED
+            logger.error(str(res))
         else:
-            res = str(ToolkitThreadStatus.IDLE)
-            logger.debug(res)
+            res = ToolkitThreadStatus.IDLE
+            logger.debug(str(res))
         return res
 
     def aedt_connected(self) -> Tuple[bool, str]:

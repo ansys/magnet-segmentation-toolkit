@@ -14,6 +14,7 @@ from ansys.aedt.toolkits.motor.backend.common.properties import CommonProperties
 class AEDTProperties:
     """Store AEDT properties."""
 
+    motor_type: str = ""
     is_skewed: bool = False
     magnets_material: str = ""
     rotor_material: str = ""
