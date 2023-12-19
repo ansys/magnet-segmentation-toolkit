@@ -2,22 +2,23 @@ import logging
 import os.path
 import tempfile
 
-from ansys.aedt.toolkits.motor.backend.properties import properties
+from ansys.aedt.toolkits.motor.backend.models import properties
 
 # Create a logger
 logger = logging.getLogger(__name__)
-if properties.common_properties.debug:
+
+if properties.debug:
     # Set log level (e.g., DEBUG, INFO, WARNING, ERROR)
     logger.setLevel(logging.DEBUG)
 
     # Create a file handler for the logger
-    if properties.common_properties.log_file:
-        temp_dir = os.path.join(tempfile.gettempdir(), properties.common_properties.log_file)
+    if properties.log_file:
+        temp_dir = os.path.join(tempfile.gettempdir(), properties.log_file)
         if not os.path.exists(temp_dir):
             file = open(temp_dir, "w")
             file.close()
 
-        log_file = properties.common_properties.log_file = temp_dir
+        log_file = properties.log_file = temp_dir
         file_handler = logging.FileHandler(log_file)
 
         # Set the log format
@@ -29,6 +30,10 @@ if properties.common_properties.debug:
 
     # Create a stream handler for logging to the console
     console_handler = logging.StreamHandler()
+
+    # Set the log format
+    formatter = logging.Formatter("%(levelname)s - %(message)s")
+    console_handler.setFormatter(formatter)
 
     # Add the console handler to the logger
     logger.addHandler(console_handler)

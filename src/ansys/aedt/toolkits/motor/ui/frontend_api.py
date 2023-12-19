@@ -107,9 +107,9 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
     def get_materials(self):
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             self.update_progress(0)
             response = requests.get(self.url + "/health")
             if response.ok and response.json() == str(ToolkitConnectionStatus):

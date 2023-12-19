@@ -92,7 +92,7 @@ class FrontendGeneric(object):
 
     def backend_busy(self):
         response = requests.get(self.url + "/status")
-        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             return True
         else:
             return False
@@ -174,9 +174,9 @@ class FrontendGeneric(object):
     def find_design_names(self):
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             try:
                 # Modify selected version
                 properties = self.get_properties()
@@ -198,9 +198,9 @@ class FrontendGeneric(object):
     def launch_aedt(self):
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             self.update_progress(0)
             response = requests.get(self.url + "/health")
             if response.ok and response.json() == str(ToolkitConnectionStatus):
@@ -258,9 +258,9 @@ class FrontendGeneric(object):
         if file_name:
             response = requests.get(self.url + "/status")
 
-            if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
                 self.write_log_line("Please wait, toolkit running")
-            elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
                 self.project_name.setText(file_name)
                 properties = self.get_properties()
                 # properties["active_project"] = file_name
@@ -284,7 +284,7 @@ class FrontendGeneric(object):
         """Release desktop."""
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
         else:
             properties = {"close_projects": False, "close_on_exit": False}
@@ -295,9 +295,9 @@ class FrontendGeneric(object):
         """Release and close desktop."""
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             properties = {"close_projects": True, "close_on_exit": True}
             if self.close():
                 requests.post(self.url + "/close_aedt", json=properties)

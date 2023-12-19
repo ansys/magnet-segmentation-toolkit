@@ -1,4 +1,4 @@
-from dataclasses import asdict
+# from dataclasses import asdict
 import os
 import time
 
@@ -6,9 +6,11 @@ from conftest import BasisTest
 import pytest
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.properties import CommonProperties
+# from ansys.aedt.toolkits.motor.backend.common.models import CommonProperties
 from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
-from ansys.aedt.toolkits.motor.backend.properties import AEDTProperties
+
+# from ansys.aedt.toolkits.motor.backend.models import AEDTProperties
+from ansys.aedt.toolkits.motor.backend.models import Properties
 
 pytestmark = [pytest.mark.aedt_common]
 
@@ -20,18 +22,24 @@ class TestClass(BasisTest, object):
     def teardown_class(self):
         BasisTest.my_teardown(self)
 
+    # @pytest.mark.current
     def test_01_get_status(self):
         response = requests.get(self.url + "/status")
         assert response.ok
-        assert response.json() == str(ToolkitThreadStatus.IDLE)
+        assert response.json() == ToolkitThreadStatus.IDLE.value
 
-    @pytest.mark.current
     def test_02_get_properties(self):
+        expected_properties = Properties()
+        # NOTE: conftest.py sets non_graphical to True
+        expected_properties.non_graphical = True
         response = requests.get(self.url + "/properties")
+        data = response.json()
+
         assert response.ok
-        expected = asdict(CommonProperties())
-        expected.update(asdict(AEDTProperties()))
-        assert response.json() == expected
+        # NOTE: log file is overridden when temp directory is created
+        assert expected_properties.log_file in data["log_file"]
+        data.pop("log_file")
+        assert data == expected_properties.model_dump(exclude="log_file")
 
     @pytest.mark.current
     def test_03_set_properties(self):
@@ -40,11 +48,14 @@ class TestClass(BasisTest, object):
             "non_graphical": self.test_config["non_graphical"],
             "use_grpc": True,
         }
+
         response = requests.put(self.url + "/properties", json=new_properties)
         assert response.ok
+
         new_properties = {"use_grpc": 1}
         response = requests.put(self.url + "/properties", json=new_properties)
         assert not response.ok
+
         response = requests.put(self.url + "/properties")
         assert not response.ok
 
@@ -73,7 +84,7 @@ class TestClass(BasisTest, object):
         response = requests.post(self.url + "/save_project", json=file_name)
         assert response.ok
         response = requests.get(self.url + "/status")
-        while response.json() != str(ToolkitThreadStatus.IDLE):
+        while response.json() != ToolkitThreadStatus.IDLE.value:
             time.sleep(1)
             response = requests.get(self.url + "/status")
 

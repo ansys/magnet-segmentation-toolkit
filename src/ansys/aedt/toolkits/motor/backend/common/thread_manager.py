@@ -4,7 +4,7 @@ import time
 from typing import List
 
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.properties import properties
+from ansys.aedt.toolkits.motor.backend.models import properties
 
 
 class ThreadManager(object):
@@ -19,7 +19,7 @@ class ThreadManager(object):
     def process_exe(cls, process, *args):
         """Execute process."""
         # Set the variable at process start
-        properties.common_properties.is_toolkit_busy = True
+        properties.is_toolkit_busy = True
 
         # Start
         process(*args)
@@ -28,7 +28,7 @@ class ThreadManager(object):
         time.sleep(0.5)
 
         # Set the variable at process end
-        properties.common_properties.is_toolkit_busy = False
+        properties.is_toolkit_busy = False
 
     @classmethod
     def launch_thread(cls, process):
@@ -36,10 +36,10 @@ class ThreadManager(object):
 
         @wraps(process)
         def inner_function(*args):
-            if not properties.common_properties.is_toolkit_busy:
+            if not properties.is_toolkit_busy:
                 # Multithreading fails with COM
                 logger.debug("Starting thread: {}".format(cls.toolkit_thread_name))
-                properties.common_properties.is_toolkit_busy = True
+                properties.is_toolkit_busy = True
                 running_thread = threading.Thread(
                     target=cls.process_exe,
                     name=cls.toolkit_thread_name,

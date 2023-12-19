@@ -24,19 +24,19 @@ def get_status():
     logger.info("[GET] /status (check if the thread is running).")
     status = service.get_thread_status()
     if status in [ToolkitThreadStatus.BUSY, ToolkitThreadStatus.IDLE]:
-        return jsonify(str(status)), 200
-    return jsonify(str(status)), 500
+        return jsonify(status.value), 200
+    return jsonify(status.value), 500
 
 
 @app.route("/properties", methods=["GET"])
 def get_properties():
-    app.logger.info("[GET] /properties (get toolkit properties).")
+    logger.info("[GET] /properties (get toolkit properties).")
     return jsonify(service.get_properties()), 200
 
 
 @app.route("/properties", methods=["PUT"])
 def set_properties():
-    app.logger.info("[PUT] /properties (set toolkit properties).")
+    logger.info("[PUT] /properties (set toolkit properties).")
     body = request.json
     success, msg = service.set_properties(body)
     if success:

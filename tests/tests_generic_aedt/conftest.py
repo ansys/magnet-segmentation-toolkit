@@ -30,7 +30,7 @@ is_linux = os.name == "posix"
 
 # Initialize default configuration
 config = {
-    "aedt_version": "2023.1",
+    "aedt_version": "2023.2",
     "non_graphical": True,
     "use_grpc": True,
     "url": "127.0.0.1",
@@ -129,7 +129,6 @@ def desktop_init():
         initial_pids = psutil.pids()
     else:
         initial_pids = psutil.Process().children(recursive=True)
-    print(initial_pids)
 
     # Define the command to start the Flask application
     backend_file = os.path.join(backend.__path__[0], "rest_api.py")
@@ -150,7 +149,6 @@ def desktop_init():
             count += 1
     else:
         current_process = len(psutil.Process().children(recursive=True))
-        print(current_process)
         count = 0
         while current_process < len(initial_pids) and count < 10:
             time.sleep(1)
@@ -168,14 +166,17 @@ def desktop_init():
     # Wait for the Flask application to start
     response = requests.get(url_call + "/status")
 
-    count = 0
-    while response.json() != str(ToolkitThreadStatus.IDLE):
+    print(type(response.json()), type(ToolkitThreadStatus.IDLE.value))
+    print(response.json(), ToolkitThreadStatus.IDLE.value)
+
+    iter = 0
+    while response.json() != ToolkitThreadStatus.IDLE.value:
         time.sleep(1)
         response = requests.get(url_call + "/status")
-        count += 1
-        print(response)
-        if count == 5:
-            raise Exception(response)
+        iter += 1
+        if iter == 10:
+            exit()
+        print(response.json())
 
     properties = {
         "aedt_version": desktop_version,
@@ -185,7 +186,7 @@ def desktop_init():
     requests.put(url_call + "/properties", json=properties)
     requests.post(url_call + "/launch_aedt", json=properties)
     response = requests.get(url_call + "/status")
-    while response.json() != str(ToolkitThreadStatus.IDLE):
+    while response.json() != ToolkitThreadStatus.IDLE.value:
         time.sleep(1)
         response = requests.get(url_call + "/status")
     yield

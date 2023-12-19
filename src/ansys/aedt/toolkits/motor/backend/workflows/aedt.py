@@ -8,7 +8,7 @@ from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.backend.common.toolkit import AEDTCommonToolkit
-from ansys.aedt.toolkits.motor.backend.properties import properties
+from ansys.aedt.toolkits.motor.backend.models import properties
 
 
 class AEDTWorkflow(AEDTCommonToolkit):
