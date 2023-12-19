@@ -6,12 +6,12 @@ from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-from ansys.aedt.toolkits.motor.backend.common.aedt_toolkit import AEDTToolkit
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.motor.backend.common.toolkit import AEDTCommonToolkit
 from ansys.aedt.toolkits.motor.backend.properties import properties
 
 
-class AedtFlow(AEDTToolkit):
+class AEDTWorkflow(AEDTCommonToolkit):
     """Controls the AEDT toolkit workflow.
 
     This class provides methods for connecting to a selected design.
@@ -35,9 +35,8 @@ class AedtFlow(AEDTToolkit):
         >>>     response = toolkit.get_thread_status()
     """
 
-    # FIXME: use super
     def __init__(self):
-        AEDTToolkit.__init__(self)
+        super().__init__()
 
     def analyze_model(self):
         """Analyze model.

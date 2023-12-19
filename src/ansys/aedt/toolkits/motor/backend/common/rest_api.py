@@ -20,6 +20,7 @@ def get_health():
 
 @app.route("/status", methods=["GET"])
 def get_status():
+    raise Exception("get status")
     logger.info("[GET] /status (check if the thread is running).")
     exit_code, msg = service.get_thread_status()
     if exit_code <= 0:

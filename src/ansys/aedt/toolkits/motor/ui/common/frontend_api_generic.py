@@ -8,6 +8,8 @@ from PySide6 import QtWidgets
 import qdarkstyle
 import requests
 
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitConnectionStatus
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
 
 
@@ -90,7 +92,7 @@ class FrontendGeneric(object):
 
     def backend_busy(self):
         response = requests.get(self.url + "/status")
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
             return True
         else:
             return False
@@ -147,36 +149,6 @@ class FrontendGeneric(object):
             # self.connect_aedtapp.setEnabled(True)
             self.perform_segmentation.setEnabled(True)
 
-    def open_load_mot_file(self):
-        dialog = QtWidgets.QFileDialog()
-        dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
-        dialog.setFileMode(QtWidgets.QFileDialog.FileMode.AnyFile)
-        dialog.setOption(QtWidgets.QFileDialog.Option.DontConfirmOverwrite, True)
-        dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
-        fileName, _ = dialog.getOpenFileName(
-            self,
-            "Open or create new Motor-CAD file",
-            "",
-            "Motor-CAD Files (*.mot)",
-        )
-        if fileName:
-            self.MCAD_file_path.setText(fileName)
-            properties = self.get_properties()
-            properties["MotorCAD_filepath"] = fileName
-            self.set_properties(properties)
-            response_init_mcad = requests.post(self.url + "/init_motorcad")
-            if response_init_mcad.ok:
-                self.write_log_line("Motor-CAD initialized.")
-                response_load_mcad = requests.post(self.url + "/load_mot_file")
-                if response_load_mcad.ok:
-                    self.write_log_line("Motor-CAD file loaded.")
-                else:
-                    self.write_log_line("Motor-CAD file loading failed.")
-            else:
-                self.write_log_line("Failed to initialize Motor-CAD.")
-        self.set_emag.setEnabled(True)
-        self.export_MCAD.setEnabled(True)
-
     def find_process_ids(self):
         self.process_id_combo.clear()
         self.process_id_combo.addItem("Create New Session")
@@ -202,15 +174,15 @@ class FrontendGeneric(object):
     def find_design_names(self):
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
             try:
                 # Modify selected version
                 properties = self.get_properties()
                 self.set_properties(properties)
 
-                response = requests.get(self.url + "/get_design_names")
+                response = requests.get(self.url + "/design_names")
                 if response.ok:
                     designs = response.json()
                     for design in designs:
@@ -226,12 +198,12 @@ class FrontendGeneric(object):
     def launch_aedt(self):
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
             self.update_progress(0)
             response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit not connected to AEDT":
+            if response.ok and response.json() == str(ToolkitConnectionStatus):
                 properties = self.get_properties()
                 if properties["selected_process"] == 0:
                     properties["aedt_version"] = self.aedt_version_combo.currentText()
@@ -286,9 +258,9 @@ class FrontendGeneric(object):
         if file_name:
             response = requests.get(self.url + "/status")
 
-            if response.ok and response.json() == "Backend is running.":
+            if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
                 self.write_log_line("Please wait, toolkit running")
-            elif response.ok and response.json() == "Backend is free.":
+            elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
                 self.project_name.setText(file_name)
                 properties = self.get_properties()
                 # properties["active_project"] = file_name
@@ -312,7 +284,7 @@ class FrontendGeneric(object):
         """Release desktop."""
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
             self.write_log_line("Please wait, toolkit running")
         else:
             properties = {"close_projects": False, "close_on_exit": False}
@@ -323,9 +295,9 @@ class FrontendGeneric(object):
         """Release and close desktop."""
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
             properties = {"close_projects": True, "close_on_exit": True}
             if self.close():
                 requests.post(self.url + "/close_aedt", json=properties)

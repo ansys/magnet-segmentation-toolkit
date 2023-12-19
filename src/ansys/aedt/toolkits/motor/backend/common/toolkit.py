@@ -42,7 +42,7 @@ class PropertiesUpdate(str, Enum):
 class ToolkitConnectionStatus:
     """Status of the toolkit connection."""
 
-    desktop: Optional[pyaedt.Desktop]
+    desktop: Optional[pyaedt.Desktop] = None
 
     def __str__(self):
         if self.desktop:
@@ -57,7 +57,7 @@ class ToolkitConnectionStatus:
         return self.desktop is not None
 
 
-class AEDTToolkit(object):
+class AEDTCommonToolkit(object):
     """Provides common functions to control AEDT.
 
     These functions are shared between the backend and frontend and are common to all AEDT toolkits.
@@ -137,7 +137,7 @@ class AEDTToolkit(object):
         >>> service.get_properties()
         {"property1": value1, "property2": value2}
         """
-        res = asdict(properties.general_properties)
+        res = asdict(properties.common_properties)
         res.update(asdict(properties.aedt_properties))
         return res
 
@@ -156,6 +156,7 @@ class AEDTToolkit(object):
         >>> service = Toolkit()
         >>> service.get_thread_status()
         """
+        raise Exception("get_thread_status")
         thread_running = thread.is_toolkit_thread_running()
         is_toolkit_busy = properties.common_properties.is_toolkit_busy
         if thread_running and is_toolkit_busy:  # pragma: no cover
@@ -357,9 +358,6 @@ class AEDTToolkit(object):
             else:
                 logger.error("Could not open project.")
                 return False
-            # FIXME: this is related to motor cad and should be removed
-            # elif properties.vbs_file_path:
-            #     self.desktop.odesktop.RunScript(properties.vbs_file_path)
 
             # Save AEDT session properties
             if properties.common_properties.use_grpc:

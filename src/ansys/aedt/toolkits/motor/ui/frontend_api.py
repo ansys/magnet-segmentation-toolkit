@@ -1,8 +1,10 @@
-import os.path
+# import os.path
 
 from pyaedt.generic.general_methods import _to_boolean
 import requests
 
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitConnectionStatus
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 from ansys.aedt.toolkits.motor.ui.common.frontend_api_generic import FrontendGeneric
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
@@ -105,58 +107,12 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
     def get_materials(self):
         response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == str(ToolkitThreadStatus.BUSY):
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == str(ToolkitThreadStatus.IDLE):
             self.update_progress(0)
             response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit not connected to AEDT":
-                properties = self.get_properties()
+            if response.ok and response.json() == str(ToolkitConnectionStatus):
                 response = requests.get(self.url + "/project_materials")
                 if response.ok:
                     return response.json()
-
-    def export_vbs(self):
-        if self.backend_busy():
-            msg = "Toolkit running"
-            logger.debug(msg)
-            self.write_log_line(msg)
-            return
-
-        properties = self.get_properties()
-        file_path_wo_extension = os.path.splitext(properties["MotorCAD_filepath"])[0]
-        properties["vbs_file_path"] = "{}.vbs".format(file_path_wo_extension)
-        self.set_properties(properties)
-
-        self.update_progress(0)
-        response = requests.post(self.url + "/export_model")
-        if response.ok:
-            self.update_progress(50)
-            # Start the thread
-            self.running = True
-            self.start()
-            msg = "Export Motor-CAD model in AEDT successful"
-            logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
-        else:
-            msg = f"Failed backend call: {self.url}"
-            logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
-            return
-
-    def set_emag_model(self):
-        response = requests.get(self.url + "/status")
-
-        if response.ok and response.json() == "Backend is running.":
-            self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
-            response = requests.post(self.url + "/set_Emag_model")
-            if response.ok:
-                self.write_log_line("E-Mag model correctly set.")
-            else:
-                self.write_log_line("E-Mag model failed.")
-        else:
-            self.write_log_line(response.json())
-            self.update_progress(100)

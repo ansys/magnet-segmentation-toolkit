@@ -17,6 +17,8 @@ from pyaedt.generic.filesystem import Scratch
 import pytest
 import requests
 
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
 local_path = os.path.dirname(os.path.realpath(__file__))
@@ -127,6 +129,7 @@ def desktop_init():
         initial_pids = psutil.pids()
     else:
         initial_pids = psutil.Process().children(recursive=True)
+    print(initial_pids)
 
     # Define the command to start the Flask application
     backend_file = os.path.join(backend.__path__[0], "rest_api.py")
@@ -147,6 +150,7 @@ def desktop_init():
             count += 1
     else:
         current_process = len(psutil.Process().children(recursive=True))
+        print(current_process)
         count = 0
         while current_process < len(initial_pids) and count < 10:
             time.sleep(1)
@@ -154,7 +158,7 @@ def desktop_init():
             count += 1
 
     if current_process <= len(initial_pids):
-        raise "Backend not running"
+        raise RuntimeError("Backend not running")
 
     if is_linux:
         flask_pids = [element for element in psutil.pids() if element not in initial_pids]
@@ -164,9 +168,16 @@ def desktop_init():
     # Wait for the Flask application to start
     response = requests.get(url_call + "/status")
 
-    while response.json() != "Backend is free.":
+    raise Exception("desktop_init")
+
+    count = 0
+    while response.json() != str(ToolkitThreadStatus.IDLE):
         time.sleep(1)
         response = requests.get(url_call + "/status")
+        count += 1
+        print(response)
+        if count == 5:
+            raise Exception(response)
 
     properties = {
         "aedt_version": desktop_version,
@@ -176,7 +187,7 @@ def desktop_init():
     requests.put(url_call + "/properties", json=properties)
     requests.post(url_call + "/launch_aedt", json=properties)
     response = requests.get(url_call + "/status")
-    while response.json() != "Backend is free.":
+    while response.json() != str(ToolkitThreadStatus.IDLE):
         time.sleep(1)
         response = requests.get(url_call + "/status")
     yield

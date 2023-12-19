@@ -1,4 +1,7 @@
-"""Data classes used to store data related to Motor-CAD, AEDT and general settings.
+"""Data classes used to store data related to various settings.
+
+The settings include common AEDT toolkit settings and settings associated
+to motor workflows in AEDT.
 """
 from dataclasses import dataclass
 import json
@@ -46,7 +49,7 @@ aedt_properties = AEDTProperties(**aedt_kwargs)
 
 common_kwargs = {}
 if os.path.expanduser(os.path.join(os.path.dirname(__file__), "common_properties.json")):
-    with open(os.path.join(os.path.dirname(__file__), "common", "common_properties.json")) as file_handler:
+    with open(os.path.join(os.path.dirname(__file__), "common_properties.json")) as file_handler:
         common_kwargs = json.load(file_handler)
 
 common_properties = CommonProperties(**common_kwargs)
