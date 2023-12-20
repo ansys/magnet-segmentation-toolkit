@@ -165,9 +165,18 @@ def desktop_init():
 
     # Wait for the Flask application to start
     response = requests.get(url_call + "/status")
+
+    print(type(response.json()), type(ToolkitThreadStatus.IDLE.value))
+    print(response.json(), ToolkitThreadStatus.IDLE.value)
+
+    iter = 0
     while response.json() != ToolkitThreadStatus.IDLE.value:
         time.sleep(1)
         response = requests.get(url_call + "/status")
+        iter += 1
+        if iter == 10:
+            exit()
+        print(response.json())
 
     properties = {
         "aedt_version": desktop_version,

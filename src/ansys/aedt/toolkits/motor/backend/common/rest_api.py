@@ -6,14 +6,10 @@ from ansys.aedt.toolkits.motor.backend.api import Toolkit
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 
-# from flask_marshmallow import Marshmallow
-
-
 service = Toolkit()
 settings = service.get_properties()
 
 app = Flask(__name__)
-# ma = Marshmallow(app)
 
 
 @app.route("/health", methods=["GET"])

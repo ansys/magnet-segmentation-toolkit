@@ -1,69 +1,45 @@
-# """Data classes used to store data related to various settings.
+"""Data classes used to store data related to various settings.
 
-# The settings include common AEDT toolkit settings and settings associated
-# to motor workflows in AEDT.
-# """
-# import json
-# import os
-
-# # from dataclasses import dataclass
-# from typing import Literal
-
-# # from pydantic.dataclasses import dataclass
-# from pydantic import BaseModel, ValidationError
-
-# # from abc import ABC
-# from ansys.aedt.toolkits.motor.backend.common.models import CommonProperties
-
-# # from pydantic import Field
-
-
-# # @dataclass()
-# class AEDTProperties(BaseModel):
-#     """Store AEDT properties."""
-
-#     # motor_type: str = ""
-#     motor_type: Literal["", "IPM", "SPM"] = ""
-#     is_skewed: bool = False
-#     magnets_material: str = ""
-#     rotor_material: str = ""
-#     stator_material: str = ""
-#     # FIXME: use int instead of str for rotor_slices
-#     rotor_slices: str = ""
-#     # FIXME: use int instead of str for magnets_segments_per_slide
-#     magnets_segments_per_slide: str = ""
-#     skew_angle: str = ""
-#     setup_to_analyze: str = "Setup1"
+The settings include common AEDT toolkit settings and settings associated
+to motor workflows in AEDT.
+"""
+import json
 import os
 
-from marshmallow import Schema
-from marshmallow import fields
-from marshmallow import validate
+# from dataclasses import dataclass
+from typing import Literal
 
+# from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
+
+# from abc import ABC
 from ansys.aedt.toolkits.motor.backend.common.models import CommonProperties
 
+# from pydantic import Field
 
-class AEDTProperties(Schema):
-    """Store common AEDT properties."""
 
-    motor_type = fields.Str(validate=validate.OneOf(["", "IPM", "SPM"]), missing="")
-    is_skewed = fields.Bool(missing=False)
-    magnets_material = fields.Str(missing="")
-    rotor_material = fields.Str(missing="")
-    stator_material = fields.Str(missing="")
+# @dataclass()
+class AEDTProperties(BaseModel):
+    """Store AEDT properties."""
+
+    # motor_type: str = ""
+    motor_type: Literal["", "IPM", "SPM"] = ""
+    is_skewed: bool = False
+    magnets_material: str = ""
+    rotor_material: str = ""
+    stator_material: str = ""
     # FIXME: use int instead of str for rotor_slices
-    rotor_slices = fields.Str(missing="")
+    rotor_slices: str = ""
     # FIXME: use int instead of str for magnets_segments_per_slide
-    magnets_segments_per_slide = fields.Str(missing="")
-    skew_angle = fields.Str(missing="")
-    setup_to_analyze = fields.Str(missing="Setup1")
+    magnets_segments_per_slide: str = ""
+    skew_angle: str = ""
+    setup_to_analyze: str = "Setup1"
 
 
-class Properties(Schema):
+class Properties(CommonProperties, AEDTProperties):
     """Store all properties."""
 
-    common = fields.Nested(CommonProperties, required=True)
-    aedt = fields.Nested(AEDTProperties, required=True)
+    pass
     # common_properties: CommonProperties
     # aedt_properties: AEDTProperties
 

@@ -12,7 +12,6 @@ from typing import Union
 import psutil
 import pyaedt
 from pyaedt.misc import list_installed_ansysem
-from pydantic import ValidationError
 
 # from dataclasses import asdict
 from pydantic.dataclasses import dataclass
@@ -41,7 +40,6 @@ class PropertiesUpdate(str, Enum):
     SUCCESS = "Properties updated successfully."
     FROZEN = "Properties are frozen, updated failed."
     INCORRECT_FIELD = "Incorrect properties field."
-    INCORRECT_FIELD_TYPE = "Incorrect properties field type."
 
 
 @dataclass
@@ -120,10 +118,6 @@ class AEDTCommonToolkit(object):
                 logger.debug(msg)
             except FrozenInstanceError:
                 msg = PropertiesUpdate.FROZEN.value
-                updated = False
-                logger.error(msg)
-            except ValidationError:
-                msg = PropertiesUpdate.INCORRECT_FIELD_TYPE.value
                 updated = False
                 logger.error(msg)
             except ValueError:
