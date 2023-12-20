@@ -36,7 +36,7 @@ class AEDTProperties(BaseModel):
     setup_to_analyze: str = "Setup1"
 
 
-class Properties(CommonProperties, AEDTProperties):
+class Properties(CommonProperties, AEDTProperties, validate_assignment=True):
     """Store all properties."""
 
     pass

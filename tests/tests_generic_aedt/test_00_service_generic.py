@@ -41,7 +41,6 @@ class TestClass(BasisTest, object):
         data.pop("log_file")
         assert data == expected_properties.model_dump(exclude="log_file")
 
-    @pytest.mark.current
     def test_03_set_properties(self):
         new_properties = {
             "aedt_version": self.test_config["aedt_version"],
@@ -52,7 +51,13 @@ class TestClass(BasisTest, object):
         response = requests.put(self.url + "/properties", json=new_properties)
         assert response.ok
 
+        # Should work as pydantic checking "allows" to convert 1 into True
         new_properties = {"use_grpc": 1}
+        response = requests.put(self.url + "/properties", json=new_properties)
+        assert response.ok
+
+        # Should not work as pydantic checking "does not allow" to convert 2 into boolean
+        new_properties = {"use_grpc": 2}
         response = requests.put(self.url + "/properties", json=new_properties)
         assert not response.ok
 
@@ -67,6 +72,7 @@ class TestClass(BasisTest, object):
         response = requests.get(self.url + "/aedt_sessions")
         assert response.ok
         assert isinstance(response.json(), list)
+        assert response.json()
 
     def test_06_connect_design(self):
         response = requests.post(self.url + "/connect_design", json={"aedtapp": "Icepak"})
@@ -88,6 +94,7 @@ class TestClass(BasisTest, object):
             time.sleep(1)
             response = requests.get(self.url + "/status")
 
+    @pytest.mark.current
     def test_08_get_design_names(self):
         response = requests.get(self.url + "/design_names")
         assert response.ok
