@@ -5,12 +5,11 @@ import requests
 
 from ansys.aedt.toolkits.motor.ui.common.frontend_api_generic import FrontendGeneric
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
+from ansys.aedt.toolkits.motor.ui.common.properties import be_properties
 
 
-class ToolkitFrontend(FrontendThread, FrontendGeneric):
+class ToolkitFrontend(FrontendGeneric):
     def __init__(self):
-        FrontendThread.__init__(self)
         FrontendGeneric.__init__(self)
 
     def apply_segmentation(self):
@@ -20,18 +19,18 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             self.write_log_line(msg)
             return
 
-        properties = self.get_properties()
-        properties["MotorType"] = self.motor_type_combo.currentText()
-        properties["IsSkewed"] = _to_boolean(self.is_skewed.currentText())
-        properties["MagnetsMaterial"] = self.magnets_material.currentText()
-        properties["RotorMaterial"] = self.rotor_material.currentText()
-        properties["StatorMaterial"] = self.stator_material.currentText()
-        properties["RotorSlices"] = self.rotor_slices.text()
-        properties["MagnetsSegmentsPerSlice"] = self.magnet_segments_per_slice.text()
-        properties["SkewAngle"] = self.skew_angle.text()
-        properties["SetupToAnalyze"] = self.setup_to_analyze.text()
-        properties["active_design"] = {"Maxwell3d": self.design_aedt_combo.currentText()}
-        self.set_properties(properties)
+        self.get_properties()
+        be_properties.motor_type = self.motor_type_combo.currentText()
+        be_properties.is_skewed = _to_boolean(self.is_skewed.currentText())
+        be_properties.magnets_material = self.magnets_material.currentText()
+        be_properties.rotor_material = self.rotor_material.currentText()
+        be_properties.stator_material = self.stator_material.currentText()
+        be_properties.rotor_slices = self.rotor_slices.text()
+        be_properties.magnet_segments_per_slice = self.magnet_segments_per_slice.text()
+        be_properties.skew_angle = self.skew_angle.text()
+        be_properties.setup_to_analyze = self.setup_to_analyze.text()
+        be_properties.active_design = {"Maxwell3d": self.design_aedt_combo.currentText()}
+        # self.set_properties()
 
         self.update_progress(0)
         segmentation_response = requests.post(self.url + "/apply_segmentation")
@@ -60,8 +59,8 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
             self.write_log_line(msg)
             return
 
-        properties = self.get_properties()
-        if not properties["IsSkewed"] and properties["SkewAngle"]:
+        self.get_properties()
+        if not be_properties.is_skewed and properties["SkewAngle"]:
             self.update_progress(0)
             response = requests.post(self.url + "/apply_skew")
             if response.ok:
@@ -70,8 +69,8 @@ class ToolkitFrontend(FrontendThread, FrontendGeneric):
                 # self.running = True
                 # self.start()
                 self.is_skewed.setCurrentText("True")
-                properties["IsSkewed"] = True
-                self.set_properties(properties)
+                be_properties.is_skewed = True
+                self.set_properties()
                 msg = "Apply skew call successful"
                 logger.debug(msg)
                 self.write_log_line(msg)

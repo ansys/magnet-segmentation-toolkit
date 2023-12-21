@@ -8,11 +8,18 @@ from PySide6 import QtWidgets
 import qdarkstyle
 import requests
 
+from ansys.aedt.toolkits.motor.ui.common.frontend_ui import Ui_MainWindow
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.motor.ui.common.properties import be_properties
+from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
 
 
-class FrontendGeneric(object):
+class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
     def __init__(self):
+        logger.info("Frontend initialization...")
+        super(FrontendGeneric, self).__init__()
+        FrontendThread.__init__(self)
+
         self.setupUi(self)
 
         # Load toolkit icon
@@ -21,7 +28,7 @@ class FrontendGeneric(object):
         self.setWindowIcon(icon)
 
         # Set font style
-        self.set_font(self)
+        self.set_style(self)
 
         # UI Logger
         XStream.stdout().messageWritten.connect(lambda value: self.write_log_line(value))
@@ -109,14 +116,22 @@ class FrontendGeneric(object):
         try:
             response = requests.get(self.url + "/get_properties")
             if response.ok:
-                properties = response.json()
-                return properties
+                data = response.json()
+                logger.debug("Updating the properties from backend.")
+                if data:
+                    for key in data:
+                        setattr(be_properties, key, data[key])
+                    logger.debug("Properties from backend updated successfully.")
+                    return True
+                else:
+                    logger.debug("body is empty!")
+                    return False
         except requests.exceptions.RequestException:
             self.write_log_line("Get properties failed")
 
-    def set_properties(self, data):
+    def set_properties(self):
         try:
-            response = requests.put(self.url + "/set_properties", json=data)
+            response = requests.put(self.url + "/set_properties", json=be_properties.export_to_dict())
             if response.ok:
                 response.json()
         except requests.exceptions.RequestException:
@@ -141,10 +156,9 @@ class FrontendGeneric(object):
         )
         if fileName:
             self.project_name.setText(fileName)
-            properties = self.get_properties()
-            properties["active_project"] = fileName
-            self.set_properties(properties)
-            # self.connect_aedtapp.setEnabled(True)
+            self.get_properties()
+            be_properties.active_project = fileName
+            self.set_properties()
             self.perform_segmentation.setEnabled(True)
 
     def open_load_mot_file(self):
@@ -182,9 +196,10 @@ class FrontendGeneric(object):
         self.process_id_combo.addItem("Create New Session")
         try:
             # Modify selected version
-            properties = self.get_properties()
-            properties["aedt_version"] = self.aedt_version_combo.currentText()
-            self.set_properties(properties)
+            self.get_properties()
+            if self.aedt_version_combo.currentText():
+                be_properties.aedt_version = self.aedt_version_combo.currentText()
+            self.set_properties()
 
             response = requests.get(self.url + "/aedt_sessions")
             if response.ok:
@@ -207,8 +222,9 @@ class FrontendGeneric(object):
         elif response.ok and response.json() == "Backend is free.":
             try:
                 # Modify selected version
-                properties = self.get_properties()
-                self.set_properties(properties)
+                self.get_properties()
+                be_properties.active_project = self.project_aedt_combo.currentText()
+                self.set_properties()
 
                 response = requests.get(self.url + "/get_design_names")
                 if response.ok:
@@ -233,22 +249,22 @@ class FrontendGeneric(object):
             response = requests.get(self.url + "/health")
             if response.ok and response.json() == "Toolkit not connected to AEDT":
                 properties = self.get_properties()
-                if properties["selected_process"] == 0:
-                    properties["aedt_version"] = self.aedt_version_combo.currentText()
-                    properties["non_graphical"] = True
+                if be_properties.selected_process == 0:
+                    be_properties.aedt_version = self.aedt_version_combo.currentText()
+                    be_properties.non_graphical = True
                     if self.non_graphical_combo.currentText() == "False":
-                        properties["non_graphical"] = False
+                        be_properties.non_graphical = False
                     if self.process_id_combo.currentText() == "Create New Session":
-                        if not properties["active_project"]:
-                            properties["selected_process"] = 0
+                        if not be_properties.active_project:
+                            be_properties.selected_process = 0
                     else:
                         text_splitted = self.process_id_combo.currentText().split(" ")
                         if len(text_splitted) == 5:
-                            properties["use_grpc"] = True
-                            properties["selected_process"] = int(text_splitted[4])
+                            be_properties.use_grpc = True
+                            be_properties.selected_process = int(text_splitted[4])
                         else:
-                            properties["use_grpc"] = False
-                            properties["selected_process"] = int(text_splitted[1])
+                            be_properties.use_grpc = False
+                            be_properties.selected_process = int(text_splitted[1])
                     self.set_properties(properties)
 
                 response = requests.post(self.url + "/launch_aedt")
@@ -332,6 +348,10 @@ class FrontendGeneric(object):
 
     def on_cancel_clicked(self):
         self.close()
+
+    @staticmethod
+    def set_style(ui_obj):
+        ui_obj.setStyleSheet(qdarkstyle.load_stylesheet(qt_api="pyside6"))
 
     @staticmethod
     def set_font(ui_obj):

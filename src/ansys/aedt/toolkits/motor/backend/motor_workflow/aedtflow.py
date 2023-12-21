@@ -127,7 +127,7 @@ class AedtFlow(ToolkitGeneric):
 
                 magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
                 if properties.RotorMaterial == properties.StatorMaterial:
-                    if properties.MotorType == "IPM":
+                    if properties.motor_type == "IPM":
                         for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
                             if [
                                 i
@@ -135,7 +135,7 @@ class AedtFlow(ToolkitGeneric):
                                 if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
                             ]:
                                 rotor = obj
-                    elif properties.MotorType == "SPM":
+                    elif properties.motor_type == "SPM":
                         for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
                             if not [
                                 i
