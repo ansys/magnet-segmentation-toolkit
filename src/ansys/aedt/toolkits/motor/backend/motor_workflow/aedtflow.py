@@ -49,7 +49,7 @@ class AedtFlow(ToolkitGeneric):
         self.connect_design(app_name=list(properties.active_design.keys())[0])
 
         try:
-            self.aedtapp.analyze_setup(properties.SetupToAnalyze)
+            self.aedtapp.analyze_setup(properties.setup_to_analyze)
             self.aedtapp.release_desktop(False, False)
             self.aedtapp = None
             return True
@@ -119,16 +119,16 @@ class AedtFlow(ToolkitGeneric):
                     ):
                         bound.delete()
 
-            self.aedtapp["MagnetsSegmentsPerSlice"] = properties.MagnetsSegmentsPerSlice
+            self.aedtapp["MagnetsSegmentsPerSlice"] = properties.magnet_segments_per_slice
 
             # If model is already skewed only magnets can be segmented
-            if not properties.IsSkewed:
-                self.aedtapp["RotorSlices"] = properties.RotorSlices
+            if not properties.is_skewed:
+                self.aedtapp["RotorSlices"] = properties.rotor_slices
 
-                magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
-                if properties.RotorMaterial == properties.StatorMaterial:
+                magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
+                if properties.rotor_material == properties.stator_material:
                     if properties.motor_type == "IPM":
-                        for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
+                        for obj in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material):
                             if [
                                 i
                                 for i in magnets
@@ -136,7 +136,7 @@ class AedtFlow(ToolkitGeneric):
                             ]:
                                 rotor = obj
                     elif properties.motor_type == "SPM":
-                        for obj in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial):
+                        for obj in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material):
                             if not [
                                 i
                                 for i in magnets
@@ -144,14 +144,14 @@ class AedtFlow(ToolkitGeneric):
                             ]:
                                 rotor = obj
                 else:
-                    rotor = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)[0]
+                    rotor = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)[0]
 
                 vacuum_objects = [
                     x for x in self.aedtapp.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"
                 ]
                 rotor_pockets = self._get_rotor_pockets(vacuum_objects)
 
-                if int(properties.RotorSlices) > 1:
+                if int(properties.rotor_slices) > 1:
                     # rotor segmentation
                     rotor_slices = self.aedtapp.modeler.objects_segmentation(
                         rotor.id, segments_number=int(self.aedtapp["RotorSlices"]), apply_mesh_sheets=False
@@ -171,7 +171,7 @@ class AedtFlow(ToolkitGeneric):
                         self.aedtapp.modeler.delete_objects_containing(slice.name)
                     rotor_slices.clear()
 
-            magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
+            magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
             for magnet in magnets:
                 cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
                 magnet.part_coordinate_system = cs.name
@@ -209,8 +209,8 @@ class AedtFlow(ToolkitGeneric):
         try:
             self.connect_design(app_name=list(properties.active_design.keys())[0])
 
-            magnets = self.aedtapp.modeler.get_objects_by_material(properties.MagnetsMaterial)
-            rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial)
+            magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
+            rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
             # Independent and dependent boundary conditions can be assigned either to an object or an object face
             bound_indep_props = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"][0].props
             if "Objects" in bound_indep_props:
@@ -230,10 +230,12 @@ class AedtFlow(ToolkitGeneric):
                 dep = [f for f in obj.faces if f.id == bound_dep_id][0]
 
             # check whether stator has same rotor material
-            if properties.RotorMaterial == properties.StatorMaterial:
+            if properties.rotor_material == properties.stator_material:
                 stator_obj = max(rotor_objects, key=attrgetter("volume"))
                 rotor_objects = [
-                    x for x in self.aedtapp.modeler.get_objects_by_material(properties.RotorMaterial) if x != stator_obj
+                    x
+                    for x in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
+                    if x != stator_obj
                 ]
             objs_in_bb = {}
             rotor_skew_ang = 0
@@ -268,7 +270,7 @@ class AedtFlow(ToolkitGeneric):
                     # split - Initial Position 0deg on x-axis
                     self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
                     self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
-                rotor_skew_ang += decompose_variable_value(properties.SkewAngle)[0]
+                rotor_skew_ang += decompose_variable_value(properties.skew_angle)[0]
 
             self.aedtapp.release_desktop(False, False)
             self.aedtapp = None
