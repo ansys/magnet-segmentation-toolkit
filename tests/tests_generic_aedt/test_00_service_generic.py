@@ -22,7 +22,6 @@ class TestClass(BasisTest, object):
     def teardown_class(self):
         BasisTest.my_teardown(self)
 
-    # @pytest.mark.current
     def test_01_get_status(self):
         response = requests.get(self.url + "/status")
         assert response.ok
@@ -35,11 +34,14 @@ class TestClass(BasisTest, object):
         response = requests.get(self.url + "/properties")
         data = response.json()
 
+        # NOTE: removing specific data that cannot be reproduced at each test:
+        # - log_file is overridden when temp directory is created
+        # - selected_process is randomly generated since grpc is used by default
         assert response.ok
-        # NOTE: log file is overridden when temp directory is created
         assert expected_properties.log_file in data["log_file"]
         data.pop("log_file")
-        assert data == expected_properties.model_dump(exclude="log_file")
+        data.pop("selected_process")
+        assert data == expected_properties.model_dump(exclude=["log_file", "selected_process"])
 
     def test_03_set_properties(self):
         new_properties = {
@@ -94,7 +96,6 @@ class TestClass(BasisTest, object):
             time.sleep(1)
             response = requests.get(self.url + "/status")
 
-    @pytest.mark.current
     def test_08_get_design_names(self):
         response = requests.get(self.url + "/design_names")
         assert response.ok
