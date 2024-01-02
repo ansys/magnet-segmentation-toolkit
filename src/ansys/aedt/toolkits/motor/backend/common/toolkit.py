@@ -297,7 +297,7 @@ class AEDTCommonToolkit(object):
             return False
 
         design_list: List[Dict[str, str]] = []
-        active_project = os.path.splitext(os.path.basename(active_project))[0]
+        active_project = os.path.splitext(os.path.basename(properties.active_project))[0]
         if active_project and active_project != "No project":
             for design in properties.designs_by_project_name[active_project]:
                 design_list.append(design)
