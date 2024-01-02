@@ -363,8 +363,7 @@ class AEDTCommonToolkit(object):
                 if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
                     self.open_project(os.path.abspath(properties.active_project))
             else:
-                logger.error("Could not open project.")
-                return False
+                logger.warning("Could not open project.")
 
             # Save AEDT session properties
             if properties.use_grpc:
