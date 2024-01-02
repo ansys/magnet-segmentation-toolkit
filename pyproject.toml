@@ -33,6 +33,7 @@ dependencies = [
     "pyqtgraph",
     "qdarkstyle",
     "flask",
+    "pydantic",
 ]
 
 [project.optional-dependencies]
