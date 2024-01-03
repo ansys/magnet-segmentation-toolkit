@@ -52,8 +52,13 @@ class PropertiesData(FrozenClass):
 
     def export_to_dict(self):
         temp_dict = {}
-        for key in self.__default_properties:
-            temp_dict[key] = self.__dict__[key]
+        if self.__default_properties:
+            for key in self.__default_properties:
+                temp_dict[key] = self.__dict__[key]
+        else:
+            for key in self.__dict__:
+                if not key.startswith("_"):
+                    temp_dict[key] = self.__dict__[key]
         return temp_dict
 
     def __eq__(self, other):

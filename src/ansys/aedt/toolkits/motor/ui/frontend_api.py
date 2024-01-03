@@ -60,7 +60,7 @@ class ToolkitFrontend(FrontendGeneric):
             return
 
         self.get_properties()
-        if not be_properties.is_skewed and properties["SkewAngle"]:
+        if not be_properties.is_skewed and be_properties.skew_angle:
             self.update_progress(0)
             response = requests.post(self.url + "/apply_skew")
             if response.ok:
@@ -108,8 +108,7 @@ class ToolkitFrontend(FrontendGeneric):
         elif response.ok and response.json() == "Backend is free.":
             self.update_progress(0)
             response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit not connected to AEDT":
-                properties = self.get_properties()
+            if response.ok and response.json() == "Toolkit is not connected to AEDT.":
                 response = requests.get(self.url + "/get_project_materials")
                 if response.ok:
                     return response.json()

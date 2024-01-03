@@ -22,7 +22,7 @@ class FrontendThread(QThread):
             response = requests.get(self.url + "/get_status")
             if response.ok and response.json() != "Backend is running.":
                 self.running = False
-                properties = self.get_properties()
+                self.get_properties()
                 if be_properties.active_project and "projects_aedt_combo" in self.__dir__():
                     self.projects_aedt_combo.clear()
                     if not be_properties.project_list:
@@ -53,7 +53,7 @@ class FrontendThread(QThread):
                     "magnets_material" in self.__dir__()
                     and "rotor_material" in self.__dir__()
                     and "stator_material" in self.__dir__()
-                    and properties["active_project"]
+                    and be_properties.active_project
                 ):
                     mats = self.get_materials()
                     for mat in mats:

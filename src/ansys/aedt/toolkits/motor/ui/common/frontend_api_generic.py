@@ -220,6 +220,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
         if response.ok and response.json() == "Backend is running.":
             self.write_log_line("Please wait, toolkit running")
         elif response.ok and response.json() == "Backend is free.":
+            self.design_aedt_combo.clear()
             try:
                 # Modify selected version
                 self.get_properties()
@@ -247,8 +248,8 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
         elif response.ok and response.json() == "Backend is free.":
             self.update_progress(0)
             response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit not connected to AEDT":
-                properties = self.get_properties()
+            if response.ok and response.json() == "Toolkit is not connected to AEDT.":
+                self.get_properties()
                 if be_properties.selected_process == 0:
                     be_properties.aedt_version = self.aedt_version_combo.currentText()
                     be_properties.non_graphical = True
@@ -265,7 +266,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
                         else:
                             be_properties.use_grpc = False
                             be_properties.selected_process = int(text_splitted[1])
-                    self.set_properties(properties)
+                    self.set_properties()
 
                 response = requests.post(self.url + "/launch_aedt")
 
@@ -275,7 +276,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
                     self.running = True
                     logger.debug("Launching AEDT")
                     self.start()
-                    if properties["active_project"]:
+                    if be_properties.active_project:
                         self.toolkit_tab.removeTab(1)
                 else:
                     self.write_log_line(f"Failed backend call: {self.url}")
@@ -306,9 +307,6 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
                 self.write_log_line("Please wait, toolkit running")
             elif response.ok and response.json() == "Backend is free.":
                 self.project_name.setText(file_name)
-                properties = self.get_properties()
-                # properties["active_project"] = file_name
-                # self.set_properties(properties)
                 self.update_progress(0)
                 response = requests.post(self.url + "/save_project", json=file_name)
                 if response.ok:
