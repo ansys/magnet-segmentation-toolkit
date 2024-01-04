@@ -990,7 +990,7 @@
                </item>
               </layout>
              </item>
-			 <item>
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_66">
                <item>
                 <widget class="QLabel" name="motor_type">
@@ -1007,6 +1007,31 @@
                  <item>
                   <property name="text">
                    <string>--Select Motor Type--</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_32">
+               <item>
+                <widget class="QLabel" name="label_19">
+                 <property name="text">
+                  <string>Apply Mesh Sheets</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="apply_mesh_sheets">
+                 <item>
+                  <property name="text">
+                   <string>False</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>True</string>
                   </property>
                  </item>
                 </widget>
@@ -1149,6 +1174,33 @@
                </item>
                <item>
                 <widget class="QLineEdit" name="magnet_segments_per_slice"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_33">
+               <item>
+                <widget class="QLabel" name="label_20">
+                 <property name="text">
+                  <string>Mesh Sheets Number</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="mesh_sheets_number"/>
                </item>
               </layout>
              </item>

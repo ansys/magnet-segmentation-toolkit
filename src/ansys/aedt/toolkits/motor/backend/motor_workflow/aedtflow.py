@@ -154,7 +154,7 @@ class AedtFlow(ToolkitGeneric):
                 if int(properties.rotor_slices) > 1:
                     # rotor segmentation
                     rotor_slices = self.aedtapp.modeler.objects_segmentation(
-                        rotor.id, segments_number=int(self.aedtapp["RotorSlices"]), apply_mesh_sheets=False
+                        rotor.id, segments_number=properties.rotor_slices
                     )
                     # rotor and rotor pockets split
                     rotor_objs = [rotor.name]
@@ -176,12 +176,17 @@ class AedtFlow(ToolkitGeneric):
                 cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
                 magnet.part_coordinate_system = cs.name
                 self.aedtapp.modeler.set_working_coordinate_system("Global")
-                magnet_segments = self.aedtapp.modeler.objects_segmentation(
+                objects_segmentation = self.aedtapp.modeler.objects_segmentation(
                     magnet.id,
-                    segments_number=self.aedtapp.variable_manager["MagnetsSegmentsPerSlice"].numeric_value,
-                    apply_mesh_sheets=False,
+                    segments_number=properties.magnet_segments_per_slice,
+                    apply_mesh_sheets=properties.apply_mesh_sheets,
+                    mesh_sheets_number=properties.mesh_sheets_number,
                 )
                 faces = []
+                if properties.apply_mesh_sheets:
+                    magnet_segments = objects_segmentation[0]
+                else:
+                    magnet_segments = objects_segmentation
                 for face in magnet_segments[magnet.name]:
                     obj = self.aedtapp.modeler.create_object_from_face(face.top_face_z)
                     faces.append(obj.top_face_z)

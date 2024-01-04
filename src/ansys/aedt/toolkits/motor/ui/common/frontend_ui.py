@@ -634,6 +634,23 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_66)
 
+        self.horizontalLayout_32 = QHBoxLayout()
+        self.horizontalLayout_32.setObjectName(u"horizontalLayout_32")
+        self.label_19 = QLabel(self.Segmentation)
+        self.label_19.setObjectName(u"label_19")
+
+        self.horizontalLayout_32.addWidget(self.label_19)
+
+        self.apply_mesh_sheets = QComboBox(self.Segmentation)
+        self.apply_mesh_sheets.addItem("")
+        self.apply_mesh_sheets.addItem("")
+        self.apply_mesh_sheets.setObjectName(u"apply_mesh_sheets")
+
+        self.horizontalLayout_32.addWidget(self.apply_mesh_sheets)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_32)
+
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_12 = QLabel(self.Segmentation)
@@ -736,6 +753,25 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_22)
+
+        self.horizontalLayout_33 = QHBoxLayout()
+        self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
+        self.label_20 = QLabel(self.Segmentation)
+        self.label_20.setObjectName(u"label_20")
+
+        self.horizontalLayout_33.addWidget(self.label_20)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_33.addItem(self.horizontalSpacer_3)
+
+        self.mesh_sheets_number = QLineEdit(self.Segmentation)
+        self.mesh_sheets_number.setObjectName(u"mesh_sheets_number")
+
+        self.horizontalLayout_33.addWidget(self.mesh_sheets_number)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_33)
 
         self.horizontalLayout_23 = QHBoxLayout()
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
@@ -899,6 +935,10 @@ class Ui_MainWindow(object):
         self.motor_type_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Motor Type--", None))
 
         self.motor_type_combo.setCurrentText(QCoreApplication.translate("MainWindow", u"--Select Motor Type--", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Apply Mesh Sheets", None))
+        self.apply_mesh_sheets.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
+        self.apply_mesh_sheets.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
+
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Is Skewed", None))
         self.is_skewed.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
         self.is_skewed.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
@@ -914,6 +954,7 @@ class Ui_MainWindow(object):
 
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Rotor Slices", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Magnet Segments Per Slice", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Mesh Sheets Number", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Setup To Analyze", None))
         self.perform_segmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
