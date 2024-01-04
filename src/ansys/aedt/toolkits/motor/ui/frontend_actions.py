@@ -92,9 +92,6 @@ class ApplicationWindow(ToolkitFrontend):
         # When design is selected enable Perform Segmentation button
         self.design_aedt_combo.currentTextChanged.connect(self.perform_segmentation.setEnabled(True))
 
-        # When design name in combo box changes, re-set all other properties
-        self.design_aedt_combo.currentTextChanged.connect(self._refresh_ui_on_design_change)
-
         # Perform Segmentation
         self.perform_segmentation.clicked.connect(self.apply_segmentation)
 
@@ -113,15 +110,6 @@ class ApplicationWindow(ToolkitFrontend):
             event.accept()
         else:
             event.ignore()
-
-    def _refresh_ui_on_design_change(self):
-        self.is_skewed.setCurrentText("False"),
-        self.magnets_material.setCurrentIndex(0),
-        self.rotor_material.setCurrentIndex(0),
-        self.stator_material.setCurrentIndex(0),
-        self.rotor_slices.clear(),
-        self.magnet_segments_per_slice.clear(),
-        self.skew_angle.clear()
 
 
 if __name__ == "__main__":

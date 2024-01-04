@@ -223,9 +223,9 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
             self.design_aedt_combo.clear()
             try:
                 # Modify selected version
-                self.get_properties()
-                be_properties.active_project = self.project_aedt_combo.currentText()
-                self.set_properties()
+                # self.get_properties()
+                # be_properties.active_project = self.project_aedt_combo.currentText()
+                # self.set_properties()
 
                 response = requests.get(self.url + "/get_design_names")
                 if response.ok:

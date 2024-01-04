@@ -25,12 +25,12 @@ class ToolkitFrontend(FrontendGeneric):
         be_properties.magnets_material = self.magnets_material.currentText()
         be_properties.rotor_material = self.rotor_material.currentText()
         be_properties.stator_material = self.stator_material.currentText()
-        be_properties.rotor_slices = self.rotor_slices.text()
-        be_properties.magnet_segments_per_slice = self.magnet_segments_per_slice.text()
+        be_properties.rotor_slices = int(self.rotor_slices.text())
+        be_properties.magnet_segments_per_slice = int(self.magnet_segments_per_slice.text())
         be_properties.skew_angle = self.skew_angle.text()
         be_properties.setup_to_analyze = self.setup_to_analyze.text()
         be_properties.active_design = {"Maxwell3d": self.design_aedt_combo.currentText()}
-        # self.set_properties()
+        self.set_properties()
 
         self.update_progress(0)
         segmentation_response = requests.post(self.url + "/apply_segmentation")
@@ -60,7 +60,13 @@ class ToolkitFrontend(FrontendGeneric):
             return
 
         self.get_properties()
-        if not be_properties.is_skewed and be_properties.skew_angle:
+        if be_properties.is_skewed:
+            msg = "Model is already skewed."
+            logger.debug(msg)
+            self.write_log_line(msg)
+            self.update_progress(100)
+            return
+        else:
             self.update_progress(0)
             response = requests.post(self.url + "/apply_skew")
             if response.ok:
@@ -69,8 +75,6 @@ class ToolkitFrontend(FrontendGeneric):
                 # self.running = True
                 # self.start()
                 self.is_skewed.setCurrentText("True")
-                be_properties.is_skewed = True
-                self.set_properties()
                 msg = "Apply skew call successful"
                 logger.debug(msg)
                 self.write_log_line(msg)
@@ -81,12 +85,6 @@ class ToolkitFrontend(FrontendGeneric):
                 self.write_log_line(msg)
                 self.update_progress(100)
                 return
-        else:
-            msg = f"Failed backend call: {self.url}"
-            logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
-            return
 
     def hide_options(self):
         if self.is_skewed.currentText() == "True":

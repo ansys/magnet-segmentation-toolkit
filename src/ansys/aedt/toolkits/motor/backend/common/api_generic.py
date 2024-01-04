@@ -370,8 +370,6 @@ class ToolkitGeneric(object):
             if properties.active_project:
                 if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
                     self.open_project(os.path.abspath(properties.active_project))
-            elif properties.vbs_file_path:
-                self.desktop.odesktop.RunScript(properties.vbs_file_path)
 
             # Save AEDT session properties
             if use_grpc:
