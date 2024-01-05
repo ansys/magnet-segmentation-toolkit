@@ -22,15 +22,16 @@ class ToolkitFrontend(FrontendGeneric):
         self.get_properties()
         be_properties.motor_type = self.motor_type_combo.currentText()
         be_properties.is_skewed = _to_boolean(self.is_skewed.currentText())
+        if not be_properties.is_skewed:
+            be_properties.rotor_material = self.rotor_material.currentText()
+            be_properties.stator_material = self.stator_material.currentText()
+            be_properties.rotor_slices = int(self.rotor_slices.text())
+            be_properties.skew_angle = self.skew_angle.text()
         be_properties.apply_mesh_sheets = _to_boolean(self.apply_mesh_sheets.currentText())
         be_properties.magnets_material = self.magnets_material.currentText()
-        be_properties.rotor_material = self.rotor_material.currentText()
-        be_properties.stator_material = self.stator_material.currentText()
-        be_properties.rotor_slices = int(self.rotor_slices.text())
         be_properties.magnet_segments_per_slice = int(self.magnet_segments_per_slice.text())
         be_properties.mesh_sheets_number = int(self.mesh_sheets_number.text())
-        be_properties.skew_angle = self.skew_angle.text()
-        be_properties.setup_to_analyze = self.setup_to_analyze.text()
+        # be_properties.setup_to_analyze = self.setup_to_analyze.text()
         be_properties.active_design = {"Maxwell3d": self.design_aedt_combo.currentText()}
         self.set_properties()
 
