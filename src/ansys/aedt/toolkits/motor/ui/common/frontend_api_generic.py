@@ -159,37 +159,6 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
             self.get_properties()
             be_properties.active_project = fileName
             self.set_properties()
-            self.perform_segmentation.setEnabled(True)
-
-    def open_load_mot_file(self):
-        dialog = QtWidgets.QFileDialog()
-        dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
-        dialog.setFileMode(QtWidgets.QFileDialog.FileMode.AnyFile)
-        dialog.setOption(QtWidgets.QFileDialog.Option.DontConfirmOverwrite, True)
-        dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
-        fileName, _ = dialog.getOpenFileName(
-            self,
-            "Open or create new Motor-CAD file",
-            "",
-            "Motor-CAD Files (*.mot)",
-        )
-        if fileName:
-            self.MCAD_file_path.setText(fileName)
-            properties = self.get_properties()
-            properties["MotorCAD_filepath"] = fileName
-            self.set_properties(properties)
-            response_init_mcad = requests.post(self.url + "/init_motorcad")
-            if response_init_mcad.ok:
-                self.write_log_line("Motor-CAD initialized.")
-                response_load_mcad = requests.post(self.url + "/load_mot_file")
-                if response_load_mcad.ok:
-                    self.write_log_line("Motor-CAD file loaded.")
-                else:
-                    self.write_log_line("Motor-CAD file loading failed.")
-            else:
-                self.write_log_line("Failed to initialize Motor-CAD.")
-        self.set_emag.setEnabled(True)
-        self.export_MCAD.setEnabled(True)
 
     def find_process_ids(self):
         self.process_id_combo.clear()
@@ -276,8 +245,6 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
                     self.running = True
                     logger.debug("Launching AEDT")
                     self.start()
-                    if be_properties.active_project:
-                        self.toolkit_tab.removeTab(1)
                 else:
                     self.write_log_line(f"Failed backend call: {self.url}")
                     self.update_progress(100)
