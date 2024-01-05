@@ -1,8 +1,7 @@
 from ansys.aedt.toolkits.motor.backend.motor_workflow.aedtflow import AedtFlow
-from ansys.aedt.toolkits.motor.backend.motor_workflow.motorcadflow import MotorCADFlow
 
 
-class Toolkit(MotorCADFlow, AedtFlow):
+class Toolkit(AedtFlow):
     """Provides methods for controlling the toolkit workflow.
 
     This class provides methods for creating a new or connecting to an existing AEDT
@@ -17,5 +16,4 @@ class Toolkit(MotorCADFlow, AedtFlow):
     """
 
     def __init__(self):
-        MotorCADFlow.__init__(self)
-        AedtFlow.__init__(self)
+        super().__init__(self)
