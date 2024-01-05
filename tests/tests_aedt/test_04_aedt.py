@@ -25,7 +25,6 @@ class TestClass(BasisTest, object):
         # assert self.toolkit.launch_aedt()
         # self.toolkit.release_aedt(True, False)
         self.toolkit.set_properties({"active_project": aedt_file})
-        self.toolkit.set_properties({"vbs_file_path": ""})
         self.toolkit.set_properties({"active_design": {}})
         self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
         self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
@@ -46,13 +45,13 @@ class TestClass(BasisTest, object):
     def test_5_segmentation(self):
         self.toolkit.set_properties({"design_list": {"e9_eMobility_IPM__ANSYSEM_3D": [{"Maxwell3d": "Motor-CAD e9"}]}})
         self.toolkit.set_properties({"active_design": {"Maxwell3d": "Motor-CAD e9"}})
-        self.toolkit.set_properties({"IsSkewed": False})
-        self.toolkit.set_properties({"MagnetsMaterial": "N30UH_65C"})
-        self.toolkit.set_properties({"MagnetsSegmentsPerSlice": "2"})
-        self.toolkit.set_properties({"RotorMaterial": "M250-35A_20C"})
-        self.toolkit.set_properties({"RotorSlices": "2"})
+        self.toolkit.set_properties({"is_skewed": False})
+        self.toolkit.set_properties({"magnets_material": "N30UH_65C"})
+        self.toolkit.set_properties({"magnet_segments_per_slice": 2})
+        self.toolkit.set_properties({"rotor_material": "M250-35A_20C"})
+        self.toolkit.set_properties({"rotor_slices": 2})
         assert self.toolkit.segmentation()
 
     def test_6_apply_skew(self):
-        self.toolkit.set_properties({"SkewAngle": "2deg"})
+        self.toolkit.set_properties({"skew_angle": "2deg"})
         assert self.toolkit.apply_skew()
