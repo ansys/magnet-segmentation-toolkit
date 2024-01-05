@@ -1,19 +1,23 @@
-import datetime
+# import datetime
 import gc
 import json
 import os
-import shutil
+
+# import shutil
 import signal
 import subprocess
 import sys
-import tempfile
+
+# import tempfile
 import threading
 import time
 
 import psutil
+
+# from pyaedt.generic.filesystem import Scratch
+# from pyaedt import generate_unique_folder_name
 from pyaedt import settings
 from pyaedt.aedt_logger import pyaedt_logger
-from pyaedt.generic.filesystem import Scratch
 import pytest
 import requests
 
@@ -54,52 +58,20 @@ url_call = "http://" + url + ":" + str(port)
 # Path to Python interpreter with Flask and Pyside6 installed
 python_path = sys.executable
 
-test_folder = "unit_test" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-scratch_path = os.path.join(tempfile.gettempdir(), test_folder)
-if not os.path.exists(scratch_path):
-    try:
-        os.makedirs(scratch_path)
-    except:
-        pass
+# test_folder = "unit_test" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+# scratch_path = os.path.join(tempfile.gettempdir(), test_folder)
+# if not os.path.exists(scratch_path):
+#     try:
+#         os.makedirs(scratch_path)
+#     except:
+#         pass
 
 logger = pyaedt_logger
-
-
-class BasisTest(object):
-    def my_setup(self):
-        self.test_config = config
-        self.local_path = local_scratch
-        self._main = sys.modules["__main__"]
-        self.url = "http://" + url + ":" + str(port)
-
-    def my_teardown(self):
-        try:
-            oDesktop = self._main.oDesktop
-            proj_list = oDesktop.GetProjectList()
-        except Exception as e:
-            oDesktop = None
-            proj_list = []
-
-        for proj in proj_list:
-            oDesktop.CloseProject(proj)
-
-    def teardown_method(self):
-        """
-        Could be redefined
-        """
-        pass
-
-    def setup_method(self):
-        """
-        Could be redefined
-        """
-        pass
-
 
 # Define desktopVersion explicitly since this is imported by other modules
 desktop_version = config["aedt_version"]
 non_graphical = config["non_graphical"]
-local_scratch = Scratch(scratch_path)
+# local_scratch = Scratch(scratch_path)
 
 
 # Define a function to run the subprocess command
@@ -185,7 +157,7 @@ def desktop_init():
     requests.post(url_call + "/close_aedt", json=properties)
 
     logger.remove_all_project_file_logger()
-    shutil.rmtree(scratch_path, ignore_errors=True)
+    # shutil.rmtree(scratch_path, ignore_errors=True)
 
     # Register the cleanup function to be called on script exit
     gc.collect()
@@ -197,3 +169,10 @@ def desktop_init():
         for process in flask_pids:
             if process.name() == "python.exe" or process.name() == "python":
                 process.terminate()
+
+
+# @pytest.fixture(scope="session")
+# def common_temp_dir(tmp_path_factory):
+#     tmp_dir = tmp_path_factory.mktemp("test_motor_workflows", numbered=True)
+#     yield tmp_dir
+#     shutil.rmtree(str(tmp_dir))
