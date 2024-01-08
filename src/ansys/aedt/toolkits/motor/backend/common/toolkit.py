@@ -1,4 +1,6 @@
+# from pydantic.dataclasses import dataclass
 from dataclasses import FrozenInstanceError
+from dataclasses import dataclass
 
 # from dataclasses import dataclass
 from enum import Enum
@@ -11,11 +13,9 @@ from typing import Union
 
 import psutil
 import pyaedt
+from pyaedt import Desktop
 from pyaedt.misc import list_installed_ansysem
 from pydantic import ValidationError
-
-# from dataclasses import asdict
-from pydantic.dataclasses import dataclass
 
 from ansys.aedt.toolkits.motor.backend.common.constants import NAME_TO_AEDT_APP
 from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
@@ -47,7 +47,7 @@ class PropertiesUpdate(str, Enum):
 class ToolkitConnectionStatus:
     """Status of the toolkit connection."""
 
-    desktop: Optional[pyaedt.Desktop] = None
+    desktop: Optional[Desktop] = None
 
     def __str__(self):
         if self.desktop:
@@ -125,6 +125,7 @@ class AEDTCommonToolkit(object):
                 msg = PropertiesUpdate.VALIDATION_ERROR.value
                 updated = False
                 logger.error(msg)
+                logger.error(f"key {key} with value {value}")
         else:
             msg = PropertiesUpdate.EMPTY.value
             updated = False
@@ -335,6 +336,7 @@ class AEDTCommonToolkit(object):
         # Check if the backend is already connected to an AEDT session
         connected, _ = self.aedt_connected()
         if not connected:
+            logger.debug("Launching AEDT.")
             pyaedt.settings.use_grpc_api = properties.use_grpc
             desktop_args = {
                 "specified_version": properties.aedt_version,
@@ -422,10 +424,10 @@ class AEDTCommonToolkit(object):
         self.desktop = pyaedt.Desktop(**desktop_args)
 
         if not self.desktop:  # pragma: no cover
-            logger.error("AEDT not connected")
+            logger.error("Toolkit is not connected to AEDT.")
             return False
 
-        logger.debug("AEDT connected")
+        logger.debug("Toolkit is connected to AEDT.")
         return True
 
     def connect_design(self, app_name: Optional[str] = None):
@@ -677,8 +679,8 @@ class AEDTCommonToolkit(object):
                 )
                 app_name = active_design.GetDesignType()
                 # FIXME: activate design should be str not dict
-                if app_name in list(self.aedt_apps.keys()):
-                    new_properties["active_design"] = {self.aedt_apps[app_name]: active_design_name}
+                if app_name in NAME_TO_AEDT_APP.keys():
+                    new_properties["active_design"] = {NAME_TO_AEDT_APP[app_name]: active_design_name}
                 else:
                     logger.error("Application {} is not available.".format(app_name))
                     self.desktop.release_desktop(True, True)
@@ -701,9 +703,9 @@ class AEDTCommonToolkit(object):
                     for design_name in design_list:
                         odesign = oproject.SetActiveDesign(design_name)
                         app_name = odesign.GetDesignType()
-                        if app_name in list(self.aedt_apps.keys()):
+                        if app_name in NAME_TO_AEDT_APP.keys():
                             new_properties["designs_by_project_name"][project_name].append(
-                                {self.aedt_apps[app_name]: design_name}
+                                {NAME_TO_AEDT_APP[app_name]: design_name}
                             )
                         else:
                             logger.error("Application {} is not available.".format(app_name))

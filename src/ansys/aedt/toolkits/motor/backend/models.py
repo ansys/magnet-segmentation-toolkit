@@ -5,33 +5,25 @@ to motor workflows in AEDT.
 """
 import json
 import os
-
-# from dataclasses import dataclass
 from typing import Literal
 
-# from pydantic.dataclasses import dataclass
 from pydantic import BaseModel
 
-# from abc import ABC
 from ansys.aedt.toolkits.motor.backend.common.models import CommonProperties
 
-# from pydantic import Field
 
-
-# @dataclass()
 class AEDTProperties(BaseModel):
     """Store AEDT properties."""
 
-    # motor_type: str = ""
     motor_type: Literal["", "IPM", "SPM"] = ""
     is_skewed: bool = False
+    apply_mesh_sheets: bool = False
     magnets_material: str = ""
     rotor_material: str = ""
     stator_material: str = ""
-    # FIXME: use int instead of str for rotor_slices
-    rotor_slices: str = ""
-    # FIXME: use int instead of str for magnets_segments_per_slide
-    magnets_segments_per_slide: str = ""
+    rotor_slices: int = 0
+    magnets_segments_per_slide: int = 0
+    mesh_sheets_number: int = 0
     skew_angle: str = ""
     setup_to_analyze: str = "Setup1"
 
@@ -40,28 +32,16 @@ class Properties(CommonProperties, AEDTProperties, validate_assignment=True):
     """Store all properties."""
 
     pass
-    # common_properties: CommonProperties
-    # aedt_properties: AEDTProperties
-
-    # def update(self, key, value) -> None:
-    #     for properties in [self.common_properties, self.aedt_properties]:
-    #         try:
-    #             setattr(properties, key, value)
-    #             break
-    #         except AttributeError:
-    #             continue
 
 
 aedt_kwargs = {}
 if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.json")):
     with open(os.path.join(os.path.dirname(__file__), "aedt_properties.json")) as file_handler:
         aedt_properties = json.load(file_handler)
-# aedt_properties = AEDTProperties(**aedt_kwargs)
 
 common_kwargs = {}
 if os.path.expanduser(os.path.join(os.path.dirname(__file__), "common_properties.json")):
     with open(os.path.join(os.path.dirname(__file__), "common_properties.json")) as file_handler:
         common_kwargs = json.load(file_handler)
-# common_properties = CommonProperties(**common_kwargs)
 
 properties = Properties(**common_kwargs, **aedt_kwargs)
