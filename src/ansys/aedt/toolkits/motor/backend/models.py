@@ -22,7 +22,7 @@ class AEDTProperties(BaseModel):
     rotor_material: str = ""
     stator_material: str = ""
     rotor_slices: int = 0
-    magnets_segments_per_slide: int = 0
+    magnet_segments_per_slice: int = 0
     mesh_sheets_number: int = 0
     skew_angle: str = ""
     setup_to_analyze: str = "Setup1"

@@ -115,7 +115,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
                 ):
                     bound.delete()
 
-        self.aedtapp["MagnetsSegmentsPerSlice"] = properties.magnets_segments_per_slide
+        self.aedtapp["MagnetsSegmentsPerSlice"] = properties.magnet_segments_per_slice
 
         # If model is already skewed only magnets can be segmented
         if not properties.is_skewed:
@@ -170,7 +170,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
             self.aedtapp.modeler.set_working_coordinate_system("Global")
             objects_segmentation = self.aedtapp.modeler.objects_segmentation(
                 magnet.id,
-                segments_number=properties.magnets_segments_per_slide,
+                segments_number=properties.magnet_segments_per_slice,
                 apply_mesh_sheets=properties.apply_mesh_sheets,
                 mesh_sheets_number=properties.mesh_sheets_number,
             )

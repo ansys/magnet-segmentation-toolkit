@@ -17,10 +17,10 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QHBoxLayout,
-    QLabel, QLayout, QLineEdit, QMainWindow,
-    QMenu, QMenuBar, QPlainTextEdit, QProgressBar,
-    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
-    QTabWidget, QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QMainWindow, QMenu,
+    QMenuBar, QPlainTextEdit, QProgressBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -200,7 +200,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_25.addItem(self.horizontalSpacer_29)
 
         self.toolkit_tab.addTab(self.AEDTsettings, "")
-
         self.Segmentation = QWidget()
         self.Segmentation.setObjectName(u"Segmentation")
         self.horizontalLayout_ = QHBoxLayout(self.Segmentation)
@@ -254,6 +253,22 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_66)
+
+        self.horizontalLayout_32 = QHBoxLayout()
+        self.horizontalLayout_32.setObjectName(u"horizontalLayout_32")
+        self.label_19 = QLabel(self.Segmentation)
+        self.label_19.setObjectName(u"label_19")
+
+        self.horizontalLayout_32.addWidget(self.label_19)
+
+        self.apply_mesh_sheets = QComboBox(self.Segmentation)
+        self.apply_mesh_sheets.addItem("")
+        self.apply_mesh_sheets.addItem("")
+        self.apply_mesh_sheets.setObjectName(u"apply_mesh_sheets")
+
+        self.horizontalLayout_32.addWidget(self.apply_mesh_sheets)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_32)
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -358,6 +373,24 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_22)
 
+        self.horizontalLayout_33 = QHBoxLayout()
+        self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
+        self.label_20 = QLabel(self.Segmentation)
+        self.label_20.setObjectName(u"label_20")
+
+        self.horizontalLayout_33.addWidget(self.label_20)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_33.addItem(self.horizontalSpacer_3)
+
+        self.mesh_sheets_number = QLineEdit(self.Segmentation)
+        self.mesh_sheets_number.setObjectName(u"mesh_sheets_number")
+
+        self.horizontalLayout_33.addWidget(self.mesh_sheets_number)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_33)
+
         self.horizontalLayout_23 = QHBoxLayout()
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
         self.label_17 = QLabel(self.Segmentation)
@@ -377,35 +410,16 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_23)
 
-        self.horizontalLayout_24 = QHBoxLayout()
-        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
-        self.label_18 = QLabel(self.Segmentation)
-        self.label_18.setObjectName(u"label_18")
-
-        self.horizontalLayout_24.addWidget(self.label_18)
-
-        self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_24.addItem(self.horizontalSpacer_24)
-
-        self.setup_to_analyze = QLineEdit(self.Segmentation)
-        self.setup_to_analyze.setObjectName(u"setup_to_analyze")
-
-        self.horizontalLayout_24.addWidget(self.setup_to_analyze)
-
-
-        self.verticalLayout_2.addLayout(self.horizontalLayout_24)
-
         self.perform_segmentation = QPushButton(self.Segmentation)
         self.perform_segmentation.setObjectName(u"perform_segmentation")
-        self.perform_segmentation.setEnabled(False)
+        self.perform_segmentation.setEnabled(True)
         self.perform_segmentation.setMinimumSize(QSize(0, 40))
 
         self.verticalLayout_2.addWidget(self.perform_segmentation)
 
         self.skew = QPushButton(self.Segmentation)
         self.skew.setObjectName(u"skew")
-        self.skew.setEnabled(False)
+        self.skew.setEnabled(True)
         self.skew.setMinimumSize(QSize(0, 40))
 
         self.verticalLayout_2.addWidget(self.skew)
@@ -499,6 +513,10 @@ class Ui_MainWindow(object):
         self.motor_type_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Motor Type--", None))
 
         self.motor_type_combo.setCurrentText(QCoreApplication.translate("MainWindow", u"--Select Motor Type--", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Apply Mesh Sheets", None))
+        self.apply_mesh_sheets.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
+        self.apply_mesh_sheets.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
+
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Is Skewed", None))
         self.is_skewed.setItemText(0, QCoreApplication.translate("MainWindow", u"False", None))
         self.is_skewed.setItemText(1, QCoreApplication.translate("MainWindow", u"True", None))
@@ -514,8 +532,8 @@ class Ui_MainWindow(object):
 
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Rotor Slices", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Magnet Segments Per Slice", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Mesh Sheets Number", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Skew Angle (deg)", None))
-        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Setup To Analyze", None))
         self.perform_segmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
         self.skew.setText(QCoreApplication.translate("MainWindow", u"Apply Skew", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Segmentation), QCoreApplication.translate("MainWindow", u"Segmentation", None))

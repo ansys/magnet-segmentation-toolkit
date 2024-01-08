@@ -25,7 +25,7 @@ class TestAEDTMotorWorkflow:
         new_properties = {
             "is_skewed": False,
             "magnets_material": "N30UH_65C",
-            "magnets_segments_per_slide": 2,
+            "magnet_segments_per_slice": 2,
             "rotor_material": "M250-35A_20C",
             "rotor_slices": 2,
         }
