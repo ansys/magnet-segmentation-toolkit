@@ -113,16 +113,15 @@ jobs:
 
       - name: "Combine coverage files"
         run: |
-          python -m coverage combine
           python -m coverage html -d .cov\total-html
           python -m coverage xml -o .cov\total.xml
 
       - name: "Upload coverage results"
-        if: ${{ matrix.python == env.MINIMUM_PYTHON_VERSION }}
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION  }}
         uses: actions/upload-artifact@v3
         with:
           path: .cov/total-html
-          name: html-coverage
+          name: html-total-coverage
 
       - name: "Upload coverage report to codecov"
         if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
