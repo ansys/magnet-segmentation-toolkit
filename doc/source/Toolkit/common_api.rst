@@ -1,17 +1,17 @@
-Generic API
-===========
-The Generic API contains the ``AEDTCommonToolkit`` class, which provides basic
+Common AEDT API
+===============
+The Common API contains the ``AEDTCommonToolkit`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 
-.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.api_generic
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.toolkit
 
 .. autosummary::
    :toctree: _autosummary
 
    AEDTCommonToolkit
 
-You can access the ``AEDTCommonToolkit*`` class directly from the ``toolkit`` class
+You can access the ``AEDTCommonToolkit`` class directly from the ``Toolkit`` class
 because it is inherited.
 
 This code shows how to use both the ``Toolkit`` and ``AEDTCommonToolkit`` classes
