@@ -99,21 +99,17 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
-      - name: Generic Test
-        timeout-minutes: 30
+      - name: Test AEDT common
+        timeout-minutes: 5
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=ansys.aedt --cov-report=xml:.cov/generic_tests.xml --junitxml=junit/generic-test-results.xml --cov-report=html:.cov/generic_tests-html tests\tests_generic_aedt
+          pytest -v -m aedt_common --cov
 
       - name: AEDT Test
-        timeout-minutes: 30
+        timeout-minutes: 5
         run: |
           .\.venv\Scripts\Activate.ps1
-          pytest -v --cov=ansys.aedt --cov-report=xml:.cov/aedt_tests.xml --junitxml=junit/aedt-test-results.xml --cov-report=html:.cov/aedt_tests-html tests\tests_aedt
-
-      - name: "Install coverage dependencies"
-        run: |
-          python -m pip install .[tests]
+          pytest -v -m aedt --cov --cov-append
 
       - name: "Combine coverage files"
         run: |
