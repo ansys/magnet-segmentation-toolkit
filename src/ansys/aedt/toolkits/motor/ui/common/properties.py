@@ -3,10 +3,12 @@
 import json
 import os
 
+from pydantic import BaseModel
+
 from ansys.aedt.toolkits.motor.backend.models import Properties
 
 
-class UIProperties(validate_assignment=True):
+class UIProperties(BaseModel, validate_assignment=True):
     """Store properties useful for UI."""
 
     backend_url: str = "127.0.0.1"
