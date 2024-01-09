@@ -113,6 +113,7 @@ jobs:
 
       - name: "Combine coverage files"
         run: |
+          .\.venv\Scripts\Activate.ps1
           python -m coverage html -d .cov\total-html
           python -m coverage xml -o .cov\total.xml
 
