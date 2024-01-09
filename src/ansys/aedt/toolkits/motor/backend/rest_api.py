@@ -1,12 +1,13 @@
 # from flask import request
 
+from ansys.aedt.toolkits.motor.backend.api import Toolkit
 from ansys.aedt.toolkits.motor.backend.common.multithreading_server import MultithreadingServer
 from ansys.aedt.toolkits.motor.backend.common.rest_api import app
 from ansys.aedt.toolkits.motor.backend.common.rest_api import jsonify
 from ansys.aedt.toolkits.motor.backend.common.rest_api import logger
-from ansys.aedt.toolkits.motor.backend.common.rest_api import service
 from ansys.aedt.toolkits.motor.backend.common.rest_api import settings
 
+service = Toolkit()
 # Toolkit entrypoints
 
 

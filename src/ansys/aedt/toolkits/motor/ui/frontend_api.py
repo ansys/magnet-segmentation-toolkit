@@ -112,8 +112,7 @@ class ToolkitFrontend(FrontendGeneric):
         elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             self.update_progress(0)
             response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit not connected to AEDT":
-                properties = self.get_properties()
+            if response.ok and response.json() == "Toolkit is not connected to AEDT.":
                 response = requests.get(self.url + "/project_materials")
                 if response.ok:
                     return response.json()

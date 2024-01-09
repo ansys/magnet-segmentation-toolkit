@@ -18,21 +18,21 @@ class FrontendThread(QThread):
     running = True
 
     def __init__(self):
-        super().__init__()
+        QThread.__init__(self)
 
     def run(self):
         while self.running:
             response = requests.get(self.url + "/status")
             if response.ok and response.json() != ToolkitThreadStatus.BUSY.value:
                 self.running = False
-                properties = self.get_properties()
+                self.get_properties()
                 if be_properties.active_project and "projects_aedt_combo" in self.__dir__():
                     self.projects_aedt_combo.clear()
-                    if not be_properties.project_list:
+                    if not be_properties.projects:
                         self.projects_aedt_combo.addItem("No project")
                     else:
                         cont = 0
-                        for project in be_properties.project_list:
+                        for project in be_properties.projects:
                             active_project_name = os.path.splitext(os.path.basename(project))[0]
                             self.projects_aedt_combo.addItem(active_project_name)
                             if active_project_name == os.path.splitext(os.path.basename(project))[0]:
@@ -41,12 +41,12 @@ class FrontendThread(QThread):
 
                 if be_properties.active_design and "design_aedt_combo" in self.__dir__():
                     self.design_aedt_combo.clear()
-                    if not be_properties.design_list:
+                    if not be_properties.designs_by_project_name:
                         self.design_aedt_combo.addItem("No design")
                     else:
                         cont = 0
                         design_name = be_properties.active_design
-                        active_design_list = be_properties.design_list[active_project_name]
+                        active_design_list = be_properties.designs_by_project_name[active_project_name]
                         for design in active_design_list:
                             self.design_aedt_combo.addItem(list(design.values())[0])
                             if list(design_name.values())[0] == design:
@@ -56,7 +56,7 @@ class FrontendThread(QThread):
                     "magnets_material" in self.__dir__()
                     and "rotor_material" in self.__dir__()
                     and "stator_material" in self.__dir__()
-                    and properties["active_project"]
+                    and be_properties.active_project
                 ):
                     mats = self.get_materials()
                     for mat in mats:
