@@ -101,7 +101,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
             return False
 
     def backend_busy(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
         res = response.ok and response.json() == ToolkitThreadStatus.BUSY.value
         return res
 
@@ -120,7 +120,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
         """Retrieve backend's properties."""
         logger.debug("Retrieving backend properties.")
         try:
-            response = requests.get(self.url + "/get_properties")
+            response = requests.get(self.url + "/properties")
             if response.ok:
                 data = response.json()
                 logger.debug("Updating the properties from backend.")
@@ -151,7 +151,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
     def set_properties(self):
         """Assign stored backend properties to the backend internal data model."""
         try:
-            requests.put(self.url + "/set_properties", json=be_properties.model_dump())
+            requests.put(self.url + "/properties", json=be_properties.model_dump())
         except requests.exceptions.RequestException:
             self.write_log_line(f"Set properties failed")
 
@@ -203,14 +203,14 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
 
     # FXIME: add a loop to wait for the toolkit to be idle ?
     def find_design_names(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
         elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             self.design_aedt_combo.clear()
             try:
-                response = requests.get(self.url + "/get_design_names")
+                response = requests.get(self.url + "/design_names")
                 if response.ok:
                     designs = response.json()
                     for design in designs:
@@ -229,7 +229,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
             )
 
     def launch_aedt(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
@@ -287,7 +287,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
         )
 
         if file_name:
-            response = requests.get(self.url + "/get_status")
+            response = requests.get(self.url + "/status")
             if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
                 self.write_log_line("Please wait, toolkit running")
             elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
@@ -312,7 +312,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
 
     def release_only(self):
         """Release desktop."""
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
@@ -326,7 +326,7 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
 
     def release_and_close(self):
         """Release and close desktop."""
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
         if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")

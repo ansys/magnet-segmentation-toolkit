@@ -22,7 +22,7 @@ class FrontendThread(QThread):
 
     def run(self):
         while self.running:
-            response = requests.get(self.url + "/get_status")
+            response = requests.get(self.url + "/status")
             if response.ok and response.json() != ToolkitThreadStatus.BUSY.value:
                 self.running = False
                 properties = self.get_properties()
