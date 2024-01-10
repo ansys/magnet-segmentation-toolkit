@@ -3,9 +3,9 @@ import os.path
 from pyaedt.generic.general_methods import _to_boolean
 import requests
 
-from ansys.aedt.toolkits.motor.ui.common.frontend_api_generic import FrontendGeneric
-from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.frontend_api_generic import FrontendGeneric
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.thread_manager import FrontendThread
 
 
 class ToolkitFrontend(FrontendThread, FrontendGeneric):

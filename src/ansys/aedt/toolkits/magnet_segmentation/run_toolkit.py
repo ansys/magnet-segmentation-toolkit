@@ -9,9 +9,9 @@ import time
 import psutil
 import requests
 
-from ansys.aedt.toolkits.motor import backend
-from ansys.aedt.toolkits.motor import ui
-from ansys.aedt.toolkits.motor.ui.common.properties import general_settings
+from ansys.aedt.toolkits.magnet_segmentation import backend
+from ansys.aedt.toolkits.magnet_segmentation import ui
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.properties import general_settings
 
 # Define global variables or constants
 BACKEND_FILE = os.path.join(backend.__path__[0], "rest_api.py")

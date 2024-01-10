@@ -1,7 +1,7 @@
 import json
 import os
 
-from ansys.aedt.toolkits.motor.backend.common.properties_data import PropertiesData
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.properties_data import PropertiesData
 
 with open(os.path.join(os.path.dirname(__file__), "general_properties.json")) as fh:
     _general_properties = json.load(fh)

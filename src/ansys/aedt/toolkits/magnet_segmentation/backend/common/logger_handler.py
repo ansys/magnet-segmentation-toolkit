@@ -2,7 +2,7 @@ import logging
 import os.path
 import tempfile
 
-from ansys.aedt.toolkits.motor.backend.common.properties import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.properties import properties
 
 # Create a logger
 logger = logging.getLogger(__name__)

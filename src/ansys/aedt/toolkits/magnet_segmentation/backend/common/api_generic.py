@@ -3,9 +3,9 @@ import os
 import psutil
 import pyaedt
 
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.properties import properties
-from ansys.aedt.toolkits.motor.backend.common.thread_manager import ThreadManager
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.properties import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.thread_manager import ThreadManager
 
 thread = ThreadManager()
 
@@ -18,7 +18,7 @@ class ToolkitGeneric(object):
     Examples
     --------
     >>> import time
-    >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
     >>> service = Toolkit()
     >>> properties = service.get_properties()
     >>> new_properties = {"aedt_version": "2022.2"}
@@ -67,7 +67,7 @@ class ToolkitGeneric(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.set_properties({"property1": value1, "property2": value2})
 
@@ -99,7 +99,7 @@ class ToolkitGeneric(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.get_properties()
         {"property1": value1, "property2": value2}
@@ -117,7 +117,7 @@ class ToolkitGeneric(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.get_thread_status()
         """
@@ -146,7 +146,7 @@ class ToolkitGeneric(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> msg = service.launch_aedt()
         >>> response = service.get_thread_status()
@@ -187,7 +187,7 @@ class ToolkitGeneric(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.installed_aedt_version()
         ["2021.1", "2021.2", "2022.1"]
@@ -213,7 +213,7 @@ class ToolkitGeneric(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.aedt_sessions()
         [[pid1, grpc_port1], [pid2, grpc_port2]]
@@ -278,7 +278,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:
@@ -318,7 +318,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:
@@ -401,7 +401,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:
@@ -478,7 +478,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:
@@ -596,7 +596,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:
@@ -644,7 +644,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:
@@ -681,7 +681,7 @@ class ToolkitGeneric(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> service = Toolkit()
         >>> service.launch_aedt()
         >>> while response[0] == 0:

@@ -6,9 +6,9 @@ from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.properties import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.api_generic import ToolkitGeneric
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.properties import properties
 
 
 class AedtFlow(ToolkitGeneric):
@@ -18,7 +18,7 @@ class AedtFlow(ToolkitGeneric):
 
     Examples
     --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> import time
         >>> toolkit = Toolkit()
         >>> msg1 = toolkit.launch_aedt()

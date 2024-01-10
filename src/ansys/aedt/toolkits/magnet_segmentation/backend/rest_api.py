@@ -1,11 +1,11 @@
 from flask import request
 
-from ansys.aedt.toolkits.motor.backend.common.multithreading_server import MultithreadingServer
-from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import app
-from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import jsonify
-from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import logger
-from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import service
-from ansys.aedt.toolkits.motor.backend.common.rest_api_generic import settings
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.multithreading_server import MultithreadingServer
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api_generic import app
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api_generic import jsonify
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api_generic import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api_generic import service
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api_generic import settings
 
 # Toolkit entrypoints
 

@@ -2,8 +2,8 @@ from functools import wraps
 import threading
 import time
 
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.properties import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.properties import properties
 
 
 class ThreadManager(object):

@@ -1,5 +1,5 @@
-from ansys.aedt.toolkits.motor.backend.motor_workflow.aedtflow import AedtFlow
-from ansys.aedt.toolkits.motor.backend.motor_workflow.motorcadflow import MotorCADFlow
+from ansys.aedt.toolkits.magnet_segmentation.backend.motor_workflow.aedtflow import AedtFlow
+from ansys.aedt.toolkits.magnet_segmentation.backend.motor_workflow.motorcadflow import MotorCADFlow
 
 
 class Toolkit(MotorCADFlow, AedtFlow):
@@ -10,7 +10,7 @@ class Toolkit(MotorCADFlow, AedtFlow):
 
     Examples
     --------
-    >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
     >>> import time
     >>> toolkit = Toolkit()
     >>> toolkit.launch_aedt()

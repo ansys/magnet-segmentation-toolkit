@@ -3,10 +3,10 @@ import tempfile
 
 import ansys.motorcad.core as pymotorcad
 
-from ansys.aedt.toolkits.motor.backend.common.api_generic import ToolkitGeneric
-from ansys.aedt.toolkits.motor.backend.common.api_generic import thread
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.properties import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.api_generic import ToolkitGeneric
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.api_generic import thread
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.properties import properties
 
 
 class MotorCADFlow(ToolkitGeneric):
@@ -16,7 +16,7 @@ class MotorCADFlow(ToolkitGeneric):
 
     Examples
     --------
-    >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
     >>> import time
     >>> toolkit = Toolkit()
     >>> toolkit.init_motorcad()

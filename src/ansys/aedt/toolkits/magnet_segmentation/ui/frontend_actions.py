@@ -4,9 +4,9 @@ import sys
 
 from PySide6 import QtWidgets
 
-from ansys.aedt.toolkits.motor.ui.common.frontend_ui import Ui_MainWindow
-from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.frontend_ui import Ui_MainWindow
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.ui.frontend_api import ToolkitFrontend
 
 os.environ["QT_API"] = "pyside6"
 
