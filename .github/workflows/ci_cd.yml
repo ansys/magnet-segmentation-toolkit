@@ -15,9 +15,9 @@ on:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
-  DOCUMENTATION_CNAME: 'aedt.motor.toolkit.docs.pyansys.com'
-  LIBRARY_NAME: 'ansys-aedt-toolkits-motor'
-  LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.motor'
+  DOCUMENTATION_CNAME: 'aedt.magnet-segmentation.toolkit.docs.pyansys.com'
+  LIBRARY_NAME: 'ansys-aedt-toolkits-magnet-segmentation'
+  LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.magnet-segmentation'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
 
 concurrency:

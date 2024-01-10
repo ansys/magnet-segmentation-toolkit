@@ -6,7 +6,7 @@ import time
 
 from pyaedt import generate_unique_folder_name
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
 
 class TestClass(object):

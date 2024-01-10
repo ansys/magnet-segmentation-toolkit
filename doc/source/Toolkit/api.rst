@@ -5,7 +5,7 @@ controlling the toolkit workflow. In addition to methods for creating a new
 or connecting to an existing AEDT session, this API provides methods for automating
 the segmentation and skew of a 3D motor.
 
-.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
 
 .. autosummary::
    :toctree: _autosummary
@@ -20,7 +20,7 @@ This code shows how to use the ``Toolkit`` class:
     import time
 
     # Import backend
-    from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
     # Initialize generic service
     service = Toolkit()

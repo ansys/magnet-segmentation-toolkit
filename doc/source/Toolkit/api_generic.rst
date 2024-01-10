@@ -4,7 +4,7 @@ The Generic API contains the ``ToolkitGeneric`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 
-.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.api_generic
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.api_generic
 
 .. autosummary::
    :toctree: _autosummary
@@ -23,7 +23,7 @@ to create an object:
     import time
 
     # Import backend services
-    from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
     # Backend object
     service = Toolkit()

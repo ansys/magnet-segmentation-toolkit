@@ -29,7 +29,7 @@ from pyaedt.aedt_logger import pyaedt_logger
 from pyaedt.generic.filesystem import Scratch
 import pytest
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
