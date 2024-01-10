@@ -45,13 +45,13 @@ data = {
     "active_project": active_project,
     "active_design": {"Maxwell3d": active_design},
     "design_list": {project_name: [{"Maxwell3d": active_design}]},
-    "IsSkewed": False,
-    "MagnetsMaterial": "N30UH_65C",
-    "MagnetsSegmentsPerSlice": "2",
-    "RotorMaterial": "M250-35A_20C",
-    "StatorMaterial": "M250-35A_20C",
-    "RotorSlices": "2",
-    "SkewAngle": "2deg",
+    "is_skewed": False,
+    "magnets_material": "N30UH_65C",
+    "magnet_segments_per_slice": "2",
+    "rotor_material": "M250-35A_20C",
+    "stator_material": "M250-35A_20C",
+    "rotor_slices": "2",
+    "skew_angle": "2deg",
 }
 #################################################################################
 # Set properties

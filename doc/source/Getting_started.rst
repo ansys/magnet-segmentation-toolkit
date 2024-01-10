@@ -143,11 +143,11 @@ console and then use this toolkit APIs.
          "active_project": active_project,
          "active_design": {"Maxwell3d": active_design},
          "design_list": {project_name: [{"Maxwell3d": active_design}]},
-         "IsSkewed": False,
-         "MagnetsMaterial": magnets_material,
-         "MagnetsSegmentsPerSlice": "5",
-         "RotorMaterial": rotor_material,
-         "RotorSlices": "3",
+         "is_skewed": False,
+         "magnets_material": magnets_material,
+         "magnet_segments_per_slice": "5",
+         "rotor_material": rotor_material,
+         "rotor_slices": "3",
      }
 
      # Set service properties
