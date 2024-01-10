@@ -11,7 +11,7 @@ import requests
 
 from ansys.aedt.toolkits.motor import backend
 from ansys.aedt.toolkits.motor import ui
-from ansys.aedt.toolkits.motor.ui.common.properties import general_settings
+from ansys.aedt.toolkits.motor.ui.common.models import general_settings
 
 # Define global variables or constants
 BACKEND_FILE = os.path.join(backend.__path__[0], "rest_api.py")

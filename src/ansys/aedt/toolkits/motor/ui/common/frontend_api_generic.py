@@ -15,7 +15,7 @@ from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitConnectionSt
 from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 from ansys.aedt.toolkits.motor.ui.common.frontend_ui import Ui_MainWindow
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.properties import be_properties
+from ansys.aedt.toolkits.motor.ui.common.models import be_properties
 from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
 
 

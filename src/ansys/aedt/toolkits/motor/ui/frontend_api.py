@@ -6,7 +6,7 @@ import requests
 from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
 from ansys.aedt.toolkits.motor.ui.common.frontend_api_generic import FrontendGeneric
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.properties import be_properties
+from ansys.aedt.toolkits.motor.ui.common.models import be_properties
 
 
 class ToolkitFrontend(FrontendGeneric):
@@ -121,48 +121,3 @@ class ToolkitFrontend(FrontendGeneric):
                 f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
                 f"or {ToolkitThreadStatus.UNKNOWN.value}"
             )
-
-    # def export_vbs(self):
-    #     if self.backend_busy():
-    #         msg = "Toolkit running"
-    #         logger.debug(msg)
-    #         self.write_log_line(msg)
-    #         return
-
-    #     properties = self.get_properties()
-    #     file_path_wo_extension = os.path.splitext(properties["MotorCAD_filepath"])[0]
-    #     properties["vbs_file_path"] = "{}.vbs".format(file_path_wo_extension)
-    #     self.set_properties(properties)
-
-    #     self.update_progress(0)
-    #     response = requests.post(self.url + "/export_model")
-    #     if response.ok:
-    #         self.update_progress(50)
-    #         # Start the thread
-    #         self.running = True
-    #         self.start()
-    #         msg = "Export Motor-CAD model in AEDT successful"
-    #         logger.debug(msg)
-    #         self.write_log_line(msg)
-    #         self.update_progress(100)
-    #     else:
-    #         msg = f"Failed backend call: {self.url}"
-    #         logger.debug(msg)
-    #         self.write_log_line(msg)
-    #         self.update_progress(100)
-    #         return
-
-    # def set_emag_model(self):
-    #     response = requests.get(self.url + "/get_status")
-
-    #     if response.ok and response.json() == "Backend is running.":
-    #         self.write_log_line("Please wait, toolkit running")
-    #     elif response.ok and response.json() == "Backend is free.":
-    #         response = requests.post(self.url + "/set_Emag_model")
-    #         if response.ok:
-    #             self.write_log_line("E-Mag model correctly set.")
-    #         else:
-    #             self.write_log_line("E-Mag model failed.")
-    #     else:
-    #         self.write_log_line(response.json())
-    #         self.update_progress(100)

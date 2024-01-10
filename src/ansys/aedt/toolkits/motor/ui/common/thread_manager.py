@@ -6,7 +6,7 @@ from PySide6.QtCore import Signal
 import requests
 
 from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
-from ansys.aedt.toolkits.motor.ui.common.properties import be_properties
+from ansys.aedt.toolkits.motor.ui.common.models import be_properties
 
 # from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
 
