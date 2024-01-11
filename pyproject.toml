@@ -33,6 +33,7 @@ dependencies = [
     "pyqtgraph",
     "qdarkstyle",
     "flask",
+    "pydantic",
 ]
 
 [project.optional-dependencies]
@@ -75,7 +76,8 @@ default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["ansys.pyaedt_toolkits"]
+source = ["ansys.aedt"]
+relative_files = true
 
 [tool.coverage.report]
 show_missing = true

@@ -1,0 +1,16 @@
+{
+  "aedt_version" : "2023.2",
+  "non_graphical" : false,
+  "nb_core" : 4,
+  "active_project" : "",
+  "active_design": {},
+  "projects" : [],
+  "designs_by_project_name": {},
+  "selected_process" : 0,
+  "use_grpc" : true,
+  "is_toolkit_busy" : false,
+  "url" : "127.0.0.1",
+  "port" : 5001,
+  "debug" : true,
+  "log_file" : "motor_backend.log"
+}

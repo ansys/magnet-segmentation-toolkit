@@ -1,3 +1,4 @@
+from dataclasses import FrozenInstanceError
 import os
 import sys
 import time
@@ -5,14 +6,25 @@ import time
 from PySide6 import QtCore
 from PySide6 import QtGui
 from PySide6 import QtWidgets
+from pydantic import ValidationError
 import qdarkstyle
 import requests
 
+from ansys.aedt.toolkits.motor.backend.common.toolkit import PropertiesUpdate
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitConnectionStatus
+from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.motor.ui.common.frontend_ui import Ui_MainWindow
 from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.motor.ui.common.models import be_properties
+from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
 
 
-class FrontendGeneric(object):
+class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
     def __init__(self):
+        logger.info("Frontend initialization...")
+        super(FrontendGeneric, self).__init__()
+        FrontendThread.__init__(self)
+
         self.setupUi(self)
 
         # Load toolkit icon
@@ -21,7 +33,7 @@ class FrontendGeneric(object):
         self.setWindowIcon(icon)
 
         # Set font style
-        self.set_font(self)
+        self.set_style(self)
 
         # UI Logger
         XStream.stdout().messageWritten.connect(lambda value: self.write_log_line(value))
@@ -85,17 +97,16 @@ class FrontendGeneric(object):
             return False
 
         except requests.exceptions.RequestException as e:
-            logger.error("Backend not running")
+            logger.error("Backend is not running.")
             return False
 
     def backend_busy(self):
-        response = requests.get(self.url + "/get_status")
-        if response.ok and response.json() == "Backend is running.":
-            return True
-        else:
-            return False
+        response = requests.get(self.url + "/status")
+        res = response.ok and response.json() == ToolkitThreadStatus.BUSY.value
+        return res
 
     def installed_versions(self):
+        """Retrieve AEDT installed versions."""
         try:
             response = requests.get(self.url + "/installed_versions")
             if response.ok:
@@ -106,19 +117,41 @@ class FrontendGeneric(object):
             return False
 
     def get_properties(self):
+        """Retrieve backend's properties."""
+        logger.debug("Retrieving backend properties.")
         try:
-            response = requests.get(self.url + "/get_properties")
+            response = requests.get(self.url + "/properties")
             if response.ok:
-                properties = response.json()
-                return properties
+                data = response.json()
+                logger.debug("Updating the properties from backend.")
+                try:
+                    for key, value in data.items():
+                        logger.info(f"Updating '{key}' with value {value}")
+                        setattr(be_properties, key, value)
+                    msg = PropertiesUpdate.SUCCESS.value
+                    updated = True
+                    logger.debug(msg)
+                except FrozenInstanceError:
+                    msg = PropertiesUpdate.FROZEN.value
+                    updated = False
+                    logger.error(msg)
+                except ValidationError:
+                    msg = PropertiesUpdate.VALIDATION_ERROR.value
+                    updated = False
+                    logger.error(msg)
+                    logger.error(f"key {key} with value {value}")
+            else:
+                msg = PropertiesUpdate.EMPTY.value
+                updated = False
+                logger.debug(msg)
+            return updated
         except requests.exceptions.RequestException:
             self.write_log_line("Get properties failed")
 
-    def set_properties(self, data):
+    def set_properties(self):
+        """Assign stored backend properties to the backend internal data model."""
         try:
-            response = requests.put(self.url + "/set_properties", json=data)
-            if response.ok:
-                response.json()
+            requests.put(self.url + "/properties", json=be_properties.model_dump())
         except requests.exceptions.RequestException:
             self.write_log_line(f"Set properties failed")
 
@@ -133,84 +166,51 @@ class FrontendGeneric(object):
         dialog.setFileMode(QtWidgets.QFileDialog.FileMode.AnyFile)
         dialog.setOption(QtWidgets.QFileDialog.Option.DontConfirmOverwrite, True)
         dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
-        fileName, _ = dialog.getOpenFileName(
+        file_name, _ = dialog.getOpenFileName(
             self,
             "Open or create new aedt file",
             "",
             "Aedt Files (*.aedt)",
         )
-        if fileName:
-            self.project_name.setText(fileName)
-            properties = self.get_properties()
-            properties["active_project"] = fileName
-            self.set_properties(properties)
-            # self.connect_aedtapp.setEnabled(True)
-            self.perform_segmentation.setEnabled(True)
-
-    def open_load_mot_file(self):
-        dialog = QtWidgets.QFileDialog()
-        dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
-        dialog.setFileMode(QtWidgets.QFileDialog.FileMode.AnyFile)
-        dialog.setOption(QtWidgets.QFileDialog.Option.DontConfirmOverwrite, True)
-        dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
-        fileName, _ = dialog.getOpenFileName(
-            self,
-            "Open or create new Motor-CAD file",
-            "",
-            "Motor-CAD Files (*.mot)",
-        )
-        if fileName:
-            self.MCAD_file_path.setText(fileName)
-            properties = self.get_properties()
-            properties["MotorCAD_filepath"] = fileName
-            self.set_properties(properties)
-            response_init_mcad = requests.post(self.url + "/init_motorcad")
-            if response_init_mcad.ok:
-                self.write_log_line("Motor-CAD initialized.")
-                response_load_mcad = requests.post(self.url + "/load_mot_file")
-                if response_load_mcad.ok:
-                    self.write_log_line("Motor-CAD file loaded.")
-                else:
-                    self.write_log_line("Motor-CAD file loading failed.")
-            else:
-                self.write_log_line("Failed to initialize Motor-CAD.")
-        self.set_emag.setEnabled(True)
-        self.export_MCAD.setEnabled(True)
+        if file_name:
+            self.project_name.setText(file_name)
+            self.get_properties()
+            be_properties.active_project = file_name
+            self.set_properties()
 
     def find_process_ids(self):
         self.process_id_combo.clear()
         self.process_id_combo.addItem("Create New Session")
         try:
             # Modify selected version
-            properties = self.get_properties()
-            properties["aedt_version"] = self.aedt_version_combo.currentText()
-            self.set_properties(properties)
+            self.get_properties()
+            if self.aedt_version_combo.currentText():
+                be_properties.aedt_version = self.aedt_version_combo.currentText()
+            self.set_properties()
 
             response = requests.get(self.url + "/aedt_sessions")
             if response.ok:
                 sessions = response.json()
                 for session in sessions:
                     if session[1] == -1:
-                        self.process_id_combo.addItem("Process {}".format(session[0], session[1]))
+                        self.process_id_combo.addItem(f"Process {session[0]}")
                     else:
-                        self.process_id_combo.addItem("Process {} on Grpc {}".format(session[0], session[1]))
+                        self.process_id_combo.addItem(f"Process {session[0]} on Grpc {session[1]}")
             return True
         except requests.exceptions.RequestException:
             self.write_log_line(f"Find AEDT sessions failed")
             return False
 
+    # FXIME: add a loop to wait for the toolkit to be idle ?
     def find_design_names(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+            self.design_aedt_combo.clear()
             try:
-                # Modify selected version
-                properties = self.get_properties()
-                self.set_properties(properties)
-
-                response = requests.get(self.url + "/get_design_names")
+                response = requests.get(self.url + "/design_names")
                 if response.ok:
                     designs = response.json()
                     for design in designs:
@@ -222,34 +222,39 @@ class FrontendGeneric(object):
             except requests.exceptions.RequestException:
                 self.write_log_line(f"Find AEDT designs failed")
                 return False
+        else:
+            self.write_log_line(
+                f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
+                f"or {ToolkitThreadStatus.UNKNOWN.value}"
+            )
 
     def launch_aedt(self):
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             self.update_progress(0)
             response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit not connected to AEDT":
-                properties = self.get_properties()
-                if properties["selected_process"] == 0:
-                    properties["aedt_version"] = self.aedt_version_combo.currentText()
-                    properties["non_graphical"] = True
+            if response.ok and response.json() == str(ToolkitConnectionStatus(desktop=None)):
+                self.get_properties()
+                if be_properties.selected_process == 0:
+                    be_properties.aedt_version = self.aedt_version_combo.currentText()
+                    be_properties.non_graphical = True
                     if self.non_graphical_combo.currentText() == "False":
-                        properties["non_graphical"] = False
+                        be_properties.non_graphical = False
                     if self.process_id_combo.currentText() == "Create New Session":
-                        if not properties["active_project"]:
-                            properties["selected_process"] = 0
+                        if not be_properties.active_project:
+                            be_properties.selected_process = 0
                     else:
                         text_splitted = self.process_id_combo.currentText().split(" ")
                         if len(text_splitted) == 5:
-                            properties["use_grpc"] = True
-                            properties["selected_process"] = int(text_splitted[4])
+                            be_properties.use_grpc = True
+                            be_properties.selected_process = int(text_splitted[4])
                         else:
-                            properties["use_grpc"] = False
-                            properties["selected_process"] = int(text_splitted[1])
-                    self.set_properties(properties)
+                            be_properties.use_grpc = False
+                            be_properties.selected_process = int(text_splitted[1])
+                    self.set_properties()
 
                 response = requests.post(self.url + "/launch_aedt")
 
@@ -259,8 +264,6 @@ class FrontendGeneric(object):
                     self.running = True
                     logger.debug("Launching AEDT")
                     self.start()
-                    if properties["active_project"]:
-                        self.toolkit_tab.removeTab(1)
                 else:
                     self.write_log_line(f"Failed backend call: {self.url}")
                     self.update_progress(100)
@@ -284,22 +287,18 @@ class FrontendGeneric(object):
         )
 
         if file_name:
-            response = requests.get(self.url + "/get_status")
-
-            if response.ok and response.json() == "Backend is running.":
+            response = requests.get(self.url + "/status")
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
                 self.write_log_line("Please wait, toolkit running")
-            elif response.ok and response.json() == "Backend is free.":
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
                 self.project_name.setText(file_name)
-                properties = self.get_properties()
-                # properties["active_project"] = file_name
-                # self.set_properties(properties)
                 self.update_progress(0)
                 response = requests.post(self.url + "/save_project", json=file_name)
                 if response.ok:
                     self.update_progress(50)
                     # Start the thread
                     self.running = True
-                    logger.debug("Saving project: {}".format(file_name))
+                    logger.debug(f"Saving project: {file_name}")
                     self.start()
                     self.write_log_line("Saving project process launched")
                 else:
@@ -307,31 +306,44 @@ class FrontendGeneric(object):
                     logger.debug(msg)
                     self.write_log_line(msg)
                     self.update_progress(100)
+            else:
+                self.write_log_line(response.json())
+                self.update_progress(100)
 
     def release_only(self):
         """Release desktop."""
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        else:
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             properties = {"close_projects": False, "close_on_exit": False}
             if self.close():
                 requests.post(self.url + "/close_aedt", json=properties)
+        else:
+            self.write_log_line(response.json())
+            self.update_progress(100)
 
     def release_and_close(self):
         """Release and close desktop."""
-        response = requests.get(self.url + "/get_status")
+        response = requests.get(self.url + "/status")
 
-        if response.ok and response.json() == "Backend is running.":
+        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
             self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == "Backend is free.":
+        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
             properties = {"close_projects": True, "close_on_exit": True}
             if self.close():
                 requests.post(self.url + "/close_aedt", json=properties)
+        else:
+            self.write_log_line(response.json())
+            self.update_progress(100)
 
     def on_cancel_clicked(self):
         self.close()
+
+    @staticmethod
+    def set_style(ui_obj):
+        ui_obj.setStyleSheet(qdarkstyle.load_stylesheet(qt_api="pyside6"))
 
     @staticmethod
     def set_font(ui_obj):
