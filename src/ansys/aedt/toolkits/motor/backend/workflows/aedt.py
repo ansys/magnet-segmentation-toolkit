@@ -209,22 +209,26 @@ class AEDTWorkflow(AEDTCommonToolkit):
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
             rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
             # Independent and dependent boundary conditions can be assigned either to an object or an object face
-            bound_indep_props = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"][0].props
-            if "Objects" in bound_indep_props:
-                bound_indep_id = bound_indep_props["Objects"][0]
-                indep = self.aedtapp.modeler.objects[bound_indep_id]
-            elif "Faces" in bound_indep_props:
-                bound_indep_id = bound_indep_props["Faces"][0]
-                obj = [o for o in self.aedtapp.modeler.object_list for f in o.faces if f.id == bound_indep_id][0]
-                indep = [f for f in obj.faces if f.id == bound_indep_id][0]
-            bound_dep_props = [bound for bound in self.aedtapp.boundaries if bound.type == "Dependent"][0].props
-            if "Objects" in bound_indep_props:
-                bound_dep_id = bound_dep_props["Objects"][0]
-                dep = self.aedtapp.modeler.objects[bound_dep_id]
-            elif "Faces" in bound_indep_props:
-                bound_dep_id = bound_dep_props["Faces"][0]
-                obj = [o for o in self.aedtapp.modeler.object_list for f in o.faces if f.id == bound_dep_id][0]
-                dep = [f for f in obj.faces if f.id == bound_dep_id][0]
+            independent = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"]
+            dependent = [bound for bound in self.aedtapp.boundaries if bound.type == "Dependent"]
+            # If no indep. o dep. boundary are found it means that the symmetry factor is 1 -> whole motor.
+            if independent or dependent:
+                bound_indep_props = independent[0].props
+                if "Objects" in bound_indep_props:
+                    bound_indep_id = bound_indep_props["Objects"][0]
+                    indep = self.aedtapp.modeler.objects[bound_indep_id]
+                elif "Faces" in bound_indep_props:
+                    bound_indep_id = bound_indep_props["Faces"][0]
+                    obj = [o for o in self.aedtapp.modeler.object_list for f in o.faces if f.id == bound_indep_id][0]
+                    indep = [f for f in obj.faces if f.id == bound_indep_id][0]
+                bound_dep_props = dependent[0].props
+                if "Objects" in bound_indep_props:
+                    bound_dep_id = bound_dep_props["Objects"][0]
+                    dep = self.aedtapp.modeler.objects[bound_dep_id]
+                elif "Faces" in bound_indep_props:
+                    bound_dep_id = bound_dep_props["Faces"][0]
+                    obj = [o for o in self.aedtapp.modeler.object_list for f in o.faces if f.id == bound_dep_id][0]
+                    dep = [f for f in obj.faces if f.id == bound_dep_id][0]
 
             # check whether stator has same rotor material
             if properties.rotor_material == properties.stator_material:
@@ -232,7 +236,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
                 rotor_objects = [
                     x
                     for x in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
-                    if x != stator_obj
+                    if x != stator_obj and x.name != "Shaft"
                 ]
             objs_in_bb = {}
             rotor_skew_ang = 0
@@ -256,17 +260,19 @@ class AEDTWorkflow(AEDTCommonToolkit):
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
                         obj.rotate(cs_axis="Z", angle=rotor_skew_ang)
 
-                    # duplicate around z axis (-360/symmetry_factor)
-                    self.aedtapp.modeler.duplicate_around_axis(
-                        rotor_object,
-                        cs_axis=self.aedtapp.AXIS.Z,
-                        angle=-360 / self.aedtapp.symmetry_multiplier,
-                        nclones=2,
-                        create_new_objects=False,
-                    )
-                    # split - Initial Position 0deg on x-axis
-                    self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
-                    self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
+                    # It means that indep. and dep. boundaries exist -> symmetry factor != 1
+                    if independent and dependent:
+                        # duplicate around z axis (-360/symmetry_multiplier)
+                        self.aedtapp.modeler.duplicate_around_axis(
+                            rotor_object,
+                            cs_axis=self.aedtapp.AXIS.Z,
+                            angle=-360 / self.aedtapp.symmetry_multiplier,
+                            nclones=2,
+                            create_new_objects=False,
+                        )
+                        # split - Initial Position 0deg on x-axis
+                        self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
+                        self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
                 rotor_skew_ang += decompose_variable_value(properties.skew_angle)[0]
 
             self.aedtapp.release_desktop(False, False)

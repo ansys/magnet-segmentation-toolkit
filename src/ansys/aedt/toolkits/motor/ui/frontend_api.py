@@ -84,13 +84,12 @@ class ToolkitFrontend(FrontendGeneric):
                     logger.debug(msg)
                     self.write_log_line(msg)
                     self.update_progress(100)
+                else:
                     msg = f"Failed backend call: {self.url}"
-            else:
-                msg = f"Failed backend call: {self.url}"
-                logger.debug(msg)
-                self.write_log_line(msg)
-                self.update_progress(100)
-                return
+                    logger.debug(msg)
+                    self.write_log_line(msg)
+                    self.update_progress(100)
+                    return
 
     def hide_options(self):
         if self.is_skewed.currentText() == "True":
