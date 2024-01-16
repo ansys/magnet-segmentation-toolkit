@@ -23,6 +23,7 @@ class TestAEDTMotorWorkflow:
     def test_01_segmentation(self, toolkit):
         """Apply objects segmentation."""
         properties = {
+            "motor_type": "IPM",
             "is_skewed": False,
             "magnets_material": "N30UH_65C",
             "magnet_segments_per_slice": 2,
