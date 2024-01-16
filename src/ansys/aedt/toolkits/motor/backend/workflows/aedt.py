@@ -184,8 +184,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
                 self._update_cs(cs)
 
         self.aedtapp.save_project()
-        self.aedtapp.release_desktop(False, False)
-        self.aedtapp = None
+        self.release_aedt(False, False)
         return True
         # except:
         #     return False
@@ -271,8 +270,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
                         self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
                 rotor_skew_ang += decompose_variable_value(properties.skew_angle)[0]
 
-            self.aedtapp.release_desktop(False, False)
-            self.aedtapp = None
+            self.release_aedt(False, False)
             return True
         except:
             return False
