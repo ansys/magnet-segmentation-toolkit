@@ -38,7 +38,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
     def __init__(self):
         super().__init__()
 
-    def analyze_model(self):
+    def analyze_model(self):  # pragma: no cover
         """Analyze model.
 
         Returns
@@ -56,7 +56,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
         except:
             return False
 
-    def get_losses_from_reports(self):
+    def get_losses_from_reports(self):  # pragma: no cover
         """Get magnet losses from reports.
 
         Returns
@@ -115,12 +115,8 @@ class AEDTWorkflow(AEDTCommonToolkit):
                 ):
                     bound.delete()
 
-        self.aedtapp["MagnetsSegmentsPerSlice"] = properties.magnet_segments_per_slice
-
         # If model is already skewed only magnets can be segmented
         if not properties.is_skewed:
-            self.aedtapp["RotorSlices"] = properties.rotor_slices
-
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
             if properties.rotor_material == properties.stator_material:
                 if properties.motor_type == "IPM":

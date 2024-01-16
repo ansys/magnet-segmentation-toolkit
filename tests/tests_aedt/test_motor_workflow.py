@@ -11,26 +11,28 @@ class TestAEDTMotorWorkflow:
 
     def test_00_connect_aedt(self, toolkit):
         """Connect aedt."""
-        new_properties = {
+        properties = {
             "active_design": {"Maxwell3d": f"{DESIGN_NAME}"},
             "designs_by_project_name": {f"{PROJECT_NAME}": [{"Maxwell3d": f"{DESIGN_NAME}"}]},
         }
 
-        assert toolkit.set_properties(new_properties)
+        assert toolkit.set_properties(properties)
         assert toolkit.connect_aedt()
         assert toolkit.aedt_connected()
 
     def test_01_segmentation(self, toolkit):
         """Apply objects segmentation."""
-        new_properties = {
+        properties = {
             "is_skewed": False,
             "magnets_material": "N30UH_65C",
             "magnet_segments_per_slice": 2,
             "rotor_material": "M250-35A_20C",
+            "stator_material": "M250-35A_20C",
             "rotor_slices": 2,
+            "apply_mesh_sheets": True,
+            "mesh_sheets_number": 2,
         }
-
-        assert toolkit.set_properties(new_properties)
+        assert toolkit.set_properties(properties)
         assert toolkit.connect_aedt()
         assert toolkit.segmentation()
 
