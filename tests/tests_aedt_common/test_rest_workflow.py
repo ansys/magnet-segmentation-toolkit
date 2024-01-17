@@ -84,6 +84,7 @@ class TestRESTWorkflow:
         assert response.ok
         new_properties = {"use_grpc": True}
         response = requests.put(self.url + "/properties", json=new_properties)
+        assert response.ok
 
     def test_06_save_project(self, common_temp_dir):
         file_name = os.path.join(common_temp_dir, "Test.aedt")
