@@ -11,7 +11,7 @@ from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
 os.environ["QT_API"] = "pyside6"
 
 # Constants
-TOOLKIT_TITLE = "Motor Toolkit Wizard"
+TOOLKIT_TITLE = "Magnet Segmentation Toolkit Wizard"
 
 # Backend URL and port
 url = general_settings.backend_url

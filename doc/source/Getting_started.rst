@@ -44,7 +44,7 @@ interpreter from the AEDT installation.
 #. In AEDT, select **Tools > Toolkit > Update Menu** to update the **Toolkit** menu.
 
 #. Select **Tools > Toolkit > PersonalLib > TemplateToolkit > Run PyAEDT Toolkit Script** to open the
-   Motor Toolkit Wizard in AEDT:
+   Magnet Segmentation Toolkit Wizard in AEDT:
 
    .. image:: ./_static/design_connected.png
      :width: 800
