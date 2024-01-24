@@ -73,7 +73,7 @@ class AEDTCommonToolkit(object):
     >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
     >>> service = Toolkit()
     >>> properties = service.get_properties()
-    >>> new_properties = {"aedt_version": "2022.2"}
+    >>> new_properties = {"aedt_version": "2023.2"}
     >>> service.set_properties(new_properties)
     >>> new_properties = service.get_properties()
     >>> msg = service.launch_aedt()
