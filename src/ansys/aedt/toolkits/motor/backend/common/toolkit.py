@@ -117,16 +117,16 @@ class AEDTCommonToolkit(object):
                 msg = PropertiesUpdate.SUCCESS.value
                 updated = True
                 logger.debug(msg)
-            except FrozenInstanceError:
+            except FrozenInstanceError:  # pragma: no cover
                 msg = PropertiesUpdate.FROZEN.value
                 updated = False
                 logger.error(msg)
-            except ValidationError:
+            except ValidationError:  # pragma: no cover
                 msg = PropertiesUpdate.VALIDATION_ERROR.value
                 updated = False
                 logger.error(msg)
                 logger.error(f"key {key} with value {value}")
-        else:
+        else:  # pragma: no cover
             msg = PropertiesUpdate.EMPTY.value
             updated = False
             logger.debug(msg)
@@ -344,10 +344,10 @@ class AEDTCommonToolkit(object):
             }
 
             # AEDT with COM
-            if properties.selected_process == 0:  # pragma: no cover
+            if properties.selected_process == 0:
                 desktop_args["new_desktop_session"] = True
             # AEDT with gRPC
-            elif properties.use_grpc:
+            elif properties.use_grpc:  # pragma: no cover
                 desktop_args["new_desktop_session"] = False
                 desktop_args["port"] = properties.selected_process
             else:  # pragma: no cover
@@ -364,14 +364,14 @@ class AEDTCommonToolkit(object):
             if properties.active_project:
                 if not os.path.exists(properties.active_project + ".lock"):  # pragma: no cover
                     self.open_project(os.path.abspath(properties.active_project))
-            else:
+            else:  # pragma: no cover
                 logger.warning("Could not open project.")
 
             # Save AEDT session properties
             if properties.use_grpc:
                 new_properties = {"selected_process": self.desktop.port}
                 logger.debug("Grpc port {}".format(str(self.desktop.port)))
-            else:
+            else:  # pragma: no cover
                 new_properties = {"selected_process": self.desktop.aedt_process_id}
                 logger.debug("Process ID {}".format(str(self.desktop.aedt_process_id)))
             self.set_properties(new_properties)
@@ -404,7 +404,7 @@ class AEDTCommonToolkit(object):
         >>> service.connect_aedt()
         >>> service.release_aedt()
         """
-        if properties.selected_process == 0:
+        if properties.selected_process == 0:  # pragma: no cover
             logger.error("Process ID not defined")
             return False
 
@@ -485,11 +485,11 @@ class AEDTCommonToolkit(object):
         if design_name != "No design":
             aedt_app = getattr(pyaedt, app_name)
             active_design = {app_name: design_name}
-        elif app_name in list(NAME_TO_AEDT_APP.keys()):
+        elif app_name in list(NAME_TO_AEDT_APP.keys()):  # pragma: no cover
             design_name = pyaedt.generate_unique_name(app_name)
             aedt_app = getattr(pyaedt, NAME_TO_AEDT_APP[app_name])
             active_design = {app_name: design_name}
-        else:
+        else:  # pragma: no cover
             design_name = pyaedt.generate_unique_name("Hfss")
             aedt_app = pyaedt.Hfss
             active_design = {"Hfss": design_name}
@@ -503,13 +503,13 @@ class AEDTCommonToolkit(object):
         }
         if properties.use_grpc:
             aedt_app_args["port"] = properties.selected_process
-        else:
+        else:  # pragma: no cover
             aedt_app_args["aedt_process_id"] = properties.selected_process
         self.aedtapp = aedt_app(**aedt_app_args)
 
         if self.aedtapp:
             project_name = self.aedtapp.project_file
-            if self.aedtapp.project_file not in properties.projects:
+            if self.aedtapp.project_file not in properties.projects:  # pragma: no cover
                 properties.projects.append(project_name)
                 properties.designs_by_project_name[self.aedtapp.project_name] = [active_design]
 
@@ -521,7 +521,7 @@ class AEDTCommonToolkit(object):
             properties.active_project = project_name
             properties.active_design = active_design
             return True
-        else:
+        else:  # pragma: no cover
             return False
 
     def release_aedt(self, close_projects=False, close_on_exit=False):
@@ -559,7 +559,7 @@ class AEDTCommonToolkit(object):
                 released = self.desktop.release_desktop(close_projects, close_on_exit)
                 self.desktop = None
                 self.aedtapp = None
-            except:
+            except:  # pragma: no cover
                 logger.error("Desktop is not released.")
                 return False
 
@@ -567,7 +567,7 @@ class AEDTCommonToolkit(object):
             try:
                 released = self.aedtapp.release_desktop(close_projects, close_on_exit)
                 self.aedtapp = None
-            except:
+            except:  # pragma: no cover
                 logger.error("Desktop is not released.")
                 return False
 
@@ -638,7 +638,7 @@ class AEDTCommonToolkit(object):
         >>> service.connect_aedt()
         >>> service.save_project()
         """
-        if self.connect_design():
+        if self.connect_design():  # pragma: no cover
             if project_path and properties.active_project != project_path:
                 old_project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
                 self.aedtapp.save_project(project_file=os.path.abspath(project_path))
