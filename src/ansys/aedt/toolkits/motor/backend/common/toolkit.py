@@ -471,6 +471,7 @@ class AEDTCommonToolkit(object):
         >>> service.connect_design()
 
         """
+        self.release_aedt(False, False)
         project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
         design_name = "No design"
         if properties.active_design:
