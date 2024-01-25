@@ -101,9 +101,13 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
             return False
 
     def backend_busy(self):
-        response = requests.get(self.url + "/status")
-        res = response.ok and response.json() == ToolkitThreadStatus.BUSY.value
-        return res
+        try:
+            response = requests.get(self.url + "/status")
+            res = response.ok and response.json() == ToolkitThreadStatus.BUSY.value
+            return res
+        except requests.exceptions.RequestException:
+            self.write_log_line(f"Get backend status failed")
+            return False
 
     def installed_versions(self):
         """Retrieve AEDT installed versions."""
@@ -203,13 +207,12 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
 
     # FXIME: add a loop to wait for the toolkit to be idle ?
     def find_design_names(self):
-        response = requests.get(self.url + "/status")
-
-        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-            self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-            self.design_aedt_combo.clear()
-            try:
+        try:
+            response = requests.get(self.url + "/status")
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                self.write_log_line("Please wait, toolkit running")
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                self.design_aedt_combo.clear()
                 response = requests.get(self.url + "/design_names")
                 if response.ok:
                     designs = response.json()
@@ -219,60 +222,64 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
                         ]:
                             self.design_aedt_combo.addItem(list(design.values())[0])
                 return True
-            except requests.exceptions.RequestException:
-                self.write_log_line(f"Find AEDT designs failed")
-                return False
-        else:
-            self.write_log_line(
-                f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
-                f"or {ToolkitThreadStatus.UNKNOWN.value}"
-            )
+            else:
+                self.write_log_line(
+                    f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
+                    f"or {ToolkitThreadStatus.UNKNOWN.value}"
+                )
+        except requests.exceptions.RequestException:
+            self.write_log_line(f"Find AEDT designs failed")
+            return False
 
     def launch_aedt(self):
-        response = requests.get(self.url + "/status")
-
-        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-            self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-            self.update_progress(0)
-            response = requests.get(self.url + "/health")
-            if response.ok and response.json() == str(ToolkitConnectionStatus(desktop=None)):
-                self.get_properties()
-                if be_properties.selected_process == 0:
-                    be_properties.aedt_version = self.aedt_version_combo.currentText()
-                    be_properties.non_graphical = True
-                    if self.non_graphical_combo.currentText() == "False":
-                        be_properties.non_graphical = False
-                    if self.process_id_combo.currentText() == "Create New Session":
-                        if not be_properties.active_project:
-                            be_properties.selected_process = 0
-                    else:
-                        text_splitted = self.process_id_combo.currentText().split(" ")
-                        if len(text_splitted) == 5:
-                            be_properties.use_grpc = True
-                            be_properties.selected_process = int(text_splitted[4])
+        try:
+            response = requests.get(self.url + "/status")
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                self.write_log_line("Please wait, toolkit running")
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                self.update_progress(0)
+                response = requests.get(self.url + "/health")
+                if response.ok and response.json() == str(ToolkitConnectionStatus(desktop=None)):
+                    # FIXME: is that call needed ?
+                    self.get_properties()
+                    if be_properties.selected_process == 0:
+                        be_properties.aedt_version = self.aedt_version_combo.currentText()
+                        be_properties.non_graphical = True
+                        if self.non_graphical_combo.currentText() == "False":
+                            be_properties.non_graphical = False
+                        if self.process_id_combo.currentText() == "Create New Session":
+                            if not be_properties.active_project:
+                                be_properties.selected_process = 0
                         else:
-                            be_properties.use_grpc = False
-                            be_properties.selected_process = int(text_splitted[1])
-                    self.set_properties()
+                            text_splitted = self.process_id_combo.currentText().split(" ")
+                            if len(text_splitted) == 5:
+                                be_properties.use_grpc = True
+                                be_properties.selected_process = int(text_splitted[4])
+                            else:
+                                be_properties.use_grpc = False
+                                be_properties.selected_process = int(text_splitted[1])
+                        self.set_properties()
 
-                response = requests.post(self.url + "/launch_aedt")
+                    response = requests.post(self.url + "/launch_aedt")
 
-                if response.status_code == 200:
-                    self.update_progress(50)
-                    # Start the thread
-                    self.running = True
-                    logger.debug("Launching AEDT")
-                    self.start()
+                    if response.status_code == 200:
+                        self.update_progress(50)
+                        # Start the thread
+                        self.running = True
+                        logger.debug("Launching AEDT")
+                        self.start()
+                    else:
+                        self.write_log_line(f"Failed backend call: {self.url}")
+                        self.update_progress(100)
                 else:
-                    self.write_log_line(f"Failed backend call: {self.url}")
+                    self.write_log_line(response.json())
                     self.update_progress(100)
             else:
                 self.write_log_line(response.json())
                 self.update_progress(100)
-        else:
-            self.write_log_line(response.json())
-            self.update_progress(100)
+        except requests.exceptions.RequestException:
+            self.write_log_line(f"Launch AEDT failed")
+            return False
 
     def save_project(self):
         dialog = QtWidgets.QFileDialog()
@@ -287,56 +294,65 @@ class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):
         )
 
         if file_name:
+            try:
+                response = requests.get(self.url + "/status")
+                if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                    self.write_log_line("Please wait, toolkit running")
+                elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                    self.project_name.setText(file_name)
+                    self.update_progress(0)
+                    response = requests.post(self.url + "/save_project", json=file_name)
+                    if response.ok:
+                        self.update_progress(50)
+                        # Start the thread
+                        self.running = True
+                        logger.debug(f"Saving project: {file_name}")
+                        self.start()
+                        self.write_log_line("Saving project process launched")
+                    else:
+                        msg = f"Failed backend call: {self.url}"
+                        logger.debug(msg)
+                        self.write_log_line(msg)
+                        self.update_progress(100)
+                else:
+                    self.write_log_line(response.json())
+                    self.update_progress(100)
+            except requests.exceptions.RequestException:
+                self.write_log_line(f"Save project failed")
+                return False
+
+    def release_only(self):
+        """Release desktop."""
+        try:
+            response = requests.get(self.url + "/status")
+
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                self.write_log_line("Please wait, toolkit running")
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                properties = {"close_projects": False, "close_on_exit": False}
+                if self.close():
+                    requests.post(self.url + "/close_aedt", json=properties)
+            else:
+                self.write_log_line(response.json())
+                self.update_progress(100)
+        except requests.exceptions.RequestException:
+            self.write_log_line(f"Release of AEDT failed")
+
+    def release_and_close(self):
+        """Release and close desktop."""
+        try:
             response = requests.get(self.url + "/status")
             if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
                 self.write_log_line("Please wait, toolkit running")
             elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-                self.project_name.setText(file_name)
-                self.update_progress(0)
-                response = requests.post(self.url + "/save_project", json=file_name)
-                if response.ok:
-                    self.update_progress(50)
-                    # Start the thread
-                    self.running = True
-                    logger.debug(f"Saving project: {file_name}")
-                    self.start()
-                    self.write_log_line("Saving project process launched")
-                else:
-                    msg = f"Failed backend call: {self.url}"
-                    logger.debug(msg)
-                    self.write_log_line(msg)
-                    self.update_progress(100)
+                properties = {"close_projects": True, "close_on_exit": True}
+                if self.close():
+                    requests.post(self.url + "/close_aedt", json=properties)
             else:
                 self.write_log_line(response.json())
                 self.update_progress(100)
-
-    def release_only(self):
-        """Release desktop."""
-        response = requests.get(self.url + "/status")
-
-        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-            self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-            properties = {"close_projects": False, "close_on_exit": False}
-            if self.close():
-                requests.post(self.url + "/close_aedt", json=properties)
-        else:
-            self.write_log_line(response.json())
-            self.update_progress(100)
-
-    def release_and_close(self):
-        """Release and close desktop."""
-        response = requests.get(self.url + "/status")
-
-        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-            self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-            properties = {"close_projects": True, "close_on_exit": True}
-            if self.close():
-                requests.post(self.url + "/close_aedt", json=properties)
-        else:
-            self.write_log_line(response.json())
-            self.update_progress(100)
+        except requests.exceptions.RequestException:
+            self.write_log_line(f"Release and close of AEDT failed")
 
     def on_cancel_clicked(self):
         self.close()
