@@ -36,6 +36,7 @@ if debug:
 
     # Create a stream handler for logging to the console
     console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
 
     # Add the console handler to the logger
     logger.addHandler(console_handler)
