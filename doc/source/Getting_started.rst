@@ -36,7 +36,7 @@ interpreter from the AEDT installation.
 
    .. code:: python
 
-     desktop.add_custom_toolkit("MotorWizard")
+     desktop.add_custom_toolkit("MagnetSegmentationWizard")
      exit()
 
 #. Close the PyAEDT console.
@@ -44,7 +44,7 @@ interpreter from the AEDT installation.
 #. In AEDT, select **Tools > Toolkit > Update Menu** to update the **Toolkit** menu.
 
 #. Select **Tools > Toolkit > PersonalLib > TemplateToolkit > Run PyAEDT Toolkit Script** to open the
-   Motor Toolkit Wizard in AEDT:
+   Magnet Segmentation Toolkit Wizard in AEDT:
 
    .. image:: ./_static/design_connected.png
      :width: 800
@@ -85,7 +85,7 @@ AEDT console.
 
      python -m pip install git+https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
 
-#. Launch the Motor Toolkit Wizard:
+#. Launch the Magnet Segmentation Toolkit Wizard:
 
    .. code:: bash
 
@@ -148,10 +148,12 @@ console and then use this toolkit APIs.
          "magnet_segments_per_slice": "5",
          "rotor_material": rotor_material,
          "rotor_slices": "3",
+         "apply_mesh_sheets": True,
+         "mesh_sheets_number": 2,
      }
 
      # Set service properties
-     toolkit.set_properties()
+     toolkit.set_properties(properties)
 
      # Launch AEDT in a thread
      service.launch_aedt()

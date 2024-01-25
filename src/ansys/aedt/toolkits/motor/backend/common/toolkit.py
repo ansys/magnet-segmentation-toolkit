@@ -73,7 +73,7 @@ class AEDTCommonToolkit(object):
     >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
     >>> service = Toolkit()
     >>> properties = service.get_properties()
-    >>> new_properties = {"aedt_version": "2022.2"}
+    >>> new_properties = {"aedt_version": "2023.2"}
     >>> service.set_properties(new_properties)
     >>> new_properties = service.get_properties()
     >>> msg = service.launch_aedt()
@@ -471,6 +471,7 @@ class AEDTCommonToolkit(object):
         >>> service.connect_design()
 
         """
+        # self.release_aedt(False, False)
         project_name = os.path.splitext(os.path.basename(properties.active_project))[0]
         design_name = "No design"
         if properties.active_design:
@@ -503,7 +504,7 @@ class AEDTCommonToolkit(object):
         if properties.use_grpc:
             aedt_app_args["port"] = properties.selected_process
         else:  # pragma: no cover
-            aedt_app_args["aedt_process_id"] = properties.selected_process
+            aedt_app_args["aedt_process_id"] = self.aedtapp.odesktop.GetProcessID()
         self.aedtapp = aedt_app(**aedt_app_args)
 
         if self.aedtapp:
