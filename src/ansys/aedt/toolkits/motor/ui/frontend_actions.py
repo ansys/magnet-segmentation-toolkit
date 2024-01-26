@@ -57,7 +57,7 @@ class ApplicationWindow(ToolkitFrontend):
         self.status_changed.connect(self.change_thread_status)
 
         # Select AEDT project
-        self.browse_project.clicked.connect(self.browse_for_aedt_project)
+        self.browse_project.clicked.connect(self.browse_and_check_for_aedt_project)
 
         # Close toolkit button
         self.release_button.clicked.connect(self.release_only)
