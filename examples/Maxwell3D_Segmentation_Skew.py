@@ -75,11 +75,25 @@ toolkit.set_properties(properties)
 toolkit.launch_aedt()
 
 #################################################################################
+# Wait for the toolkit thread to be idle
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Wait for the toolkit thread to be idle and ready to accept new task.
+
+toolkit.wait_to_be_idle()
+
+#################################################################################
 # Apply segmentation
 # ~~~~~~~~~~~~~~~~~~
 # Apply segmentation and assign relative coordinate system.
 
 toolkit.segmentation()
+
+#################################################################################
+# Apply skew angle
+# ~~~~~~~~~~~~~~~~
+# Apply skew angle to rotor slices.
+
+toolkit.apply_skew()
 
 #################################################################################
 # Save and Release desktop

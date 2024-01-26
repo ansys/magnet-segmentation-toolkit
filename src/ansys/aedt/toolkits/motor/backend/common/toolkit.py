@@ -5,6 +5,7 @@ from dataclasses import dataclass
 # from dataclasses import dataclass
 from enum import Enum
 import os
+import time
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -659,6 +660,13 @@ class AEDTCommonToolkit(object):
         else:  # pragma: no cover
             logger.error("Project was not saved.")
             return False
+
+    def wait_to_be_idle(self):
+        """Wait for the toolkit thread to be idle and ready to accept new task."""
+        status = self.get_thread_status()
+        while status == ToolkitThreadStatus.BUSY:
+            time.sleep(1)
+            status = self.get_thread_status()
 
     def _save_project_info(self):
         # Save project and design info
