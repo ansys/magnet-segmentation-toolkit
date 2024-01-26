@@ -19,16 +19,16 @@ class ToolkitFrontend(FrontendGeneric):
         An AEDT file is compatible with the segmentation call if it
         contains data for 'SymmetryFactor' and 'HalfAxial'.
         """
-        SYMMETRY_FACTIOR_BEGIN = "VariableProp('SymmetryFactor'"
-        SYMMETRY_FACTIOR_BEGIN = "VariableProp('HalfAxial'"
-        found_data = {target: False for target in [SYMMETRY_FACTIOR_BEGIN, SYMMETRY_FACTIOR_BEGIN]}
+        SYMMETRY_FACTOR_BEGIN = "VariableProp('SymmetryFactor'"
+        HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
+        found_data = {target: False for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]}
 
         with open(be_properties.active_project, "r") as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
 
         for line in lines:
-            for target in [SYMMETRY_FACTIOR_BEGIN, SYMMETRY_FACTIOR_BEGIN]:
+            for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]:
                 if line.lstrip().startswith(target):
                     found_data[target] = True
 
@@ -59,6 +59,7 @@ class ToolkitFrontend(FrontendGeneric):
         return False
 
     def browse_and_check_for_aedt_project(self):
+        self.write_log_line("Browsing")
         super().browse_for_aedt_project()
         segmentation_compatibility = self.check_segmentation_compatibility()
         if not segmentation_compatibility:
