@@ -59,7 +59,6 @@ class ToolkitFrontend(FrontendGeneric):
         return False
 
     def browse_and_check_for_aedt_project(self):
-        self.write_log_line("Browsing")
         super().browse_for_aedt_project()
         segmentation_compatibility = self.check_segmentation_compatibility()
         if not segmentation_compatibility:
