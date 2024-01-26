@@ -24,9 +24,9 @@ from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
 src_folder = os.path.join(Path(__file__).parents[0], "input_files")
 temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_files"))
-project_name = "e9_eMobility_IPM_1seg_cs_test_ANSYSEM_3D"
+project_name = "e9_eMobility_IPM_3D"
 active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
-active_design = "Motor-CAD e9_eMobility_IPM_1seg_cs_test"
+active_design = "e9_eMobility_IPM_3D_test"
 
 #################################################################################
 # Initialize Toolkit
@@ -41,16 +41,17 @@ toolkit = Toolkit()
 # Initialize Properties dictionary.
 
 data = {
-    "aedt_version": "2023.1",
+    "aedt_version": "2023.2",
     "active_project": active_project,
     "active_design": {"Maxwell3d": active_design},
-    "design_list": {project_name: [{"Maxwell3d": active_design}]},
+    "designs_by_project_name": {active_project: [{"Maxwell3d": active_design}]},
     "is_skewed": False,
     "magnets_material": "N30UH_65C",
-    "magnet_segments_per_slice": "2",
+    "magnet_segments_per_slice": 2,
     "rotor_material": "M250-35A_20C",
-    "stator_material": "M250-35A_20C",
-    "rotor_slices": "2",
+    "rotor_slices": 2,
+    "apply_mesh_sheets": True,
+    "mesh_sheets_number": 3,
     "skew_angle": "2deg",
 }
 #################################################################################
@@ -64,18 +65,21 @@ toolkit.set_properties(data)
 # Initialize AEDT
 # ~~~~~~~~~~~~~~~
 # Initialize AEDT.
+
 toolkit.launch_aedt()
 
 #################################################################################
 # Apply segmentation
 # ~~~~~~~~~~~~~~~~~~
 # Apply segmentation and assign relative coordinate system.
+
 toolkit.segmentation()
 
 #################################################################################
 # Apply skew angle
 # ~~~~~~~~~~~~~~~~
 # Apply skew angle to rotor slices.
+
 toolkit.apply_skew()
 
 #################################################################################
