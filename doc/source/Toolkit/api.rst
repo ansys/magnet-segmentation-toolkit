@@ -16,10 +16,7 @@ This code shows how to use the ``Toolkit`` class:
 
 .. code:: python
 
-    # Import required modules
-    import time
-
-    # Import backend
+    # Import required modules and backend
     from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
     # Initialize generic service
@@ -36,11 +33,8 @@ This code shows how to use the ``Toolkit`` class:
     # Launch AEDT
     msg = service.launch_aedt()
 
-    # Wait until thread is finished
-    response = service.get_thread_status()
-    while response[0] == 0:
-        time.sleep(1)
-        response = service.get_thread_status()
+    # Wait for the toolkit thread to be idle
+    service.wait_to_be_idle()
 
     # Segment and skew motor
     service.segmentation()

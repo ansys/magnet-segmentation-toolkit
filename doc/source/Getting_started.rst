@@ -132,38 +132,28 @@ console and then use this toolkit APIs.
      properties = toolkit.get_properties()
 
      # Define properties
-     project_name = "my_3d_model"
-     active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
-     active_design = "my_design"
-     magnets_material = "N30UH_65C"
-     rotor_material = "M250-35A_20C"
 
-     properties = {
-         "aedt_version": "2023.1",
-         "active_project": active_project,
-         "active_design": {"Maxwell3d": active_design},
-         "design_list": {project_name: [{"Maxwell3d": active_design}]},
-         "is_skewed": False,
-         "magnets_material": magnets_material,
-         "magnet_segments_per_slice": "5",
-         "rotor_material": rotor_material,
-         "rotor_slices": "3",
-         "apply_mesh_sheets": True,
-         "mesh_sheets_number": 2,
-     }
+     properties["active_project"] = active_project
+     properties["active_design"] = {"Maxwell3d": active_design}
+     properties["designs_by_project_name"] = {active_project: [{"Maxwell3d": active_design}]}
+     properties["is_skewed"] = False
+     properties["motor_type"] = "IPM"
+     properties["rotor_material"] = "M250-35A_20C"
+     properties["stator_material"] = "M250-35A_20C"
+     properties["magnets_material"] = "N30UH_65C"
+     properties["magnet_segments_per_slice"] = 2
+     properties["rotor_slices"] = 2
+     properties["apply_mesh_sheets"] = True
+     properties["mesh_sheets_number"] = 3
 
      # Set service properties
      toolkit.set_properties(properties)
 
-     # Launch AEDT in a thread
-     service.launch_aedt()
+     # Launch AEDT
+     toolkit.launch_aedt()
 
-     # Wait until thread is finished
-     response = service.get_thread_status()
-
-     while response[0] == 0:
-         time.sleep(1)
-         response = service.get_thread_status()
+     # Wait for the toolkit thread to be idle and ready to accept new task
+     toolkit.wait_to_be_idle()
 
      # Apply segmentation
      toolkit.segmentation()
@@ -171,13 +161,7 @@ console and then use this toolkit APIs.
      # Apply skew
      toolkit.apply_skew()
 
-     # Wait until thread is finished
-     response = service.get_thread_status()
-     while response[0] == 0:
-         time.sleep(1)
-         response = service.get_thread_status()
-
      # Release AEDT
      service.release_aedt()
 
-For descriptions of the APIs available for the Motor Segmentation Toolkit, see :doc:`Toolkit/index`.
+For descriptions of the APIs available for the Magnet Segmentation Toolkit, see :doc:`Toolkit/index`.

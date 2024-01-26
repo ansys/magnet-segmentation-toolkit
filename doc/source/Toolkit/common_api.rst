@@ -19,10 +19,7 @@ to create an object:
 
 .. code:: python
 
-    # Import required modules
-    import time
-
-    # Import backend services
+    # Import required modules and backend
     from ansys.aedt.toolkits.motor.backend.api import Toolkit
 
     # Backend object
@@ -36,17 +33,11 @@ to create an object:
     service.set_properties(new_properties)
     properties = service.get_properties()
 
-    # Get AEDT sessions
-    sessions = service.aedt_sessions()
-
     # Launch AEDT
     msg = service.launch_aedt()
 
-    # Wait until thread is finished
-    response = service.get_thread_status()
-    while response[0] == 0:
-        time.sleep(1)
-        response = service.get_thread_status()
+    # Wait for the toolkit thread to be idle
+    service.wait_to_be_idle()
 
     # Release AEDT
     service.release_aedt()
