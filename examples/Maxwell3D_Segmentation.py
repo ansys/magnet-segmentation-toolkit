@@ -47,26 +47,25 @@ properties = toolkit.get_properties()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Initialize Properties dictionary.
 
-data = {
-    "aedt_version": "2023.2",
-    "active_project": active_project,
-    "active_design": {"Maxwell3d": active_design},
-    "designs_by_project_name": {active_project: [{"Maxwell3d": active_design}]},
-    "is_skewed": False,
-    "magnets_material": "N30UH_65C",
-    "magnet_segments_per_slice": 2,
-    "rotor_material": "M250-35A_20C",
-    "rotor_slices": 2,
-    "apply_mesh_sheets": True,
-    "mesh_sheets_number": 3,
-}
+properties["active_project"] = active_project
+properties["active_design"] = {"Maxwell3d": active_design}
+properties["designs_by_project_name"] = {active_project: [{"Maxwell3d": active_design}]}
+properties["is_skewed"] = False
+properties["motor_type"] = "IPM"
+properties["rotor_material"] = "M250-35A_20C"
+properties["stator_material"] = "M250-35A_20C"
+properties["magnets_material"] = "N30UH_65C"
+properties["magnet_segments_per_slice"] = 2
+properties["rotor_slices"] = 2
+properties["apply_mesh_sheets"] = True
+properties["mesh_sheets_number"] = 3
 
 #################################################################################
 # Set properties
 # ~~~~~~~~~~~~~~
 # Set properties.
 
-toolkit.set_properties(data)
+toolkit.set_properties(properties)
 
 #################################################################################
 # Initialize AEDT
