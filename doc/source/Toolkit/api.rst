@@ -5,6 +5,13 @@ controlling the toolkit workflow. In addition to methods for creating a new
 or connecting to an existing AEDT session, this API provides methods for automating
 the segmentation and skew of a 3D motor.
 
+.. warning::
+    Both segmentation and skew of a 3D motor have requirements on the AEDT
+    active project. Please ensure that the active project:
+    
+    - contains data for both 'SymmetryFactor' and 'HalfAxial' when using segmentation;
+    - has a shaft named 'Shaft' when using skew.
+
 .. currentmodule:: ansys.aedt.toolkits.motor.backend.api
 
 .. autosummary::
