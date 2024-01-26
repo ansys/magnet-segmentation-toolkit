@@ -18,17 +18,20 @@ class ThreadManager(object):
     @classmethod
     def process_exe(cls, process, *args):
         """Execute process."""
-        # Set the variable at process start
-        properties.is_toolkit_busy = True
+        try:
+            # Set the variable at process start
+            properties.is_toolkit_busy = True
 
-        # Start
-        process(*args)
+            # Start
+            process(*args)
 
-        # Waits for the thread closure
-        time.sleep(0.5)
+            # Waits for the thread closure
+            time.sleep(0.5)
 
-        # Set the variable at process end
-        properties.is_toolkit_busy = False
+            # Set the variable at process end
+            properties.is_toolkit_busy = False
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     @classmethod
     def launch_thread(cls, process):

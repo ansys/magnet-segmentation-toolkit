@@ -30,6 +30,7 @@ if properties.debug:
 
     # Create a stream handler for logging to the console
     console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
 
     # Set the log format
     formatter = logging.Formatter("%(levelname)s - %(message)s")

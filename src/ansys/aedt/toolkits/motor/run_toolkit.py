@@ -11,6 +11,7 @@ import requests
 
 from ansys.aedt.toolkits.motor import backend
 from ansys.aedt.toolkits.motor import ui
+from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
 from ansys.aedt.toolkits.motor.ui.common.models import general_settings
 
 # Define global variables or constants
@@ -28,15 +29,18 @@ URL_CALL = f"http://{URL}:{PORT}"
 
 # Global functions
 def run_command(*command):
-    create_no_window = 0x08000000 if not IS_LINUX else 0
-    process = subprocess.Popen(
-        command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        creationflags=create_no_window,
-    )
-    stdout, stderr = process.communicate()
-    print(stdout.decode())
+    try:
+        create_no_window = 0x08000000 if not IS_LINUX else 0
+        process = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=create_no_window,
+        )
+        stdout, stderr = process.communicate()
+        print(stdout.decode())
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 def server_actions(command, name):
@@ -97,10 +101,12 @@ def clean_python_processes():
 
 
 def check_backend_communication():
-    response = requests.get(URL_CALL + "/health")
-    if response.ok:
-        return True
-    return False
+    try:
+        response = requests.get(URL_CALL + "/health")
+        return response.ok
+    except requests.exceptions.RequestException:
+        logger.error("Failed to check backend communication.")
+        return False
 
 
 def process_desktop_properties():
@@ -125,8 +131,12 @@ def process_desktop_properties():
             "aedt_version": desktop_version,
             "use_grpc": grpc,
         }
-        requests.put(URL_CALL + "/properties", json=properties)
-        # requests.post(URL_CALL + "/launch_aedt")
+        try:
+            response = requests.put(URL_CALL + "/properties", json=properties)
+            if not response.ok:
+                logger.error("Properties update failed")
+        except requests.exceptions.RequestException:
+            logger.error("Properties update failed")
 
 
 # Main Execution

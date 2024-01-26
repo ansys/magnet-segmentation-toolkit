@@ -37,24 +37,19 @@ class ToolkitFrontend(FrontendGeneric):
         self.set_properties()
 
         self.update_progress(0)
-        segmentation_response = requests.post(self.url + "/apply_segmentation")
-        if segmentation_response.ok:
-            # self.update_progress(50)
-            # Start the thread
-            # self.running = True
-            # self.start()
-            self.find_design_names()
-            self.skew.setEnabled(True)
-            msg = "Apply segmentation call successful"
+        try:
+            segmentation_response = requests.post(self.url + "/apply_segmentation")
+            if segmentation_response.ok:
+                self.find_design_names()
+                self.skew.setEnabled(True)
+                msg = "Apply segmentation call successful"
+            else:
+                msg = f"Apply segmentation call failed"
             logger.debug(msg)
             self.write_log_line(msg)
             self.update_progress(100)
-        else:
-            msg = f"Failed backend call: {self.url}"
-            logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
-            return
+        except requests.exceptions.RequestException:
+            logger.error("Apply segmentation call failed")
 
     def apply_skew(self):
         if self.backend_busy():
@@ -63,6 +58,7 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             return
 
+        # FIXME: do we need that call ?
         self.get_properties()
         if be_properties.is_skewed:
             msg = "Model is already skewed."
@@ -70,26 +66,21 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             self.update_progress(100)
             return
-        else:
-            if be_properties.skew_angle:
-                self.update_progress(0)
+
+        if be_properties.skew_angle:
+            self.update_progress(0)
+            try:
                 response = requests.post(self.url + "/apply_skew")
                 if response.ok:
-                    # self.update_progress(50)
-                    # Start the thread
-                    # self.running = True
-                    # self.start()
                     self.is_skewed.setCurrentText("True")
                     msg = "Apply skew call successful"
-                    logger.debug(msg)
-                    self.write_log_line(msg)
-                    self.update_progress(100)
                 else:
-                    msg = f"Failed backend call: {self.url}"
-                    logger.debug(msg)
-                    self.write_log_line(msg)
-                    self.update_progress(100)
-                    return
+                    msg = "Apply segmentation call failed"
+                logger.debug(msg)
+                self.write_log_line(msg)
+                self.update_progress(100)
+            except requests.exceptions.RequestException:
+                logger.error("Apply skew call failed")
 
     def hide_options(self):
         if self.is_skewed.currentText() == "True":
@@ -104,19 +95,21 @@ class ToolkitFrontend(FrontendGeneric):
             self.skew_angle.setEnabled(True)
 
     def get_materials(self):
-        response = requests.get(self.url + "/status")
-
-        if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-            self.write_log_line("Please wait, toolkit running")
-        elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-            self.update_progress(0)
-            response = requests.get(self.url + "/health")
-            if response.ok and response.json() == "Toolkit is not connected to AEDT.":
-                response = requests.get(self.url + "/project_materials")
-                if response.ok:
-                    return response.json()
-        else:
-            self.write_log_line(
-                f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
-                f"or {ToolkitThreadStatus.UNKNOWN.value}"
-            )
+        try:
+            response = requests.get(self.url + "/status")
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                self.write_log_line("Please wait, toolkit running")
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                self.update_progress(0)
+                response = requests.get(self.url + "/health")
+                if response.ok and response.json() == "Toolkit is not connected to AEDT.":
+                    response = requests.get(self.url + "/project_materials")
+                    if response.ok:
+                        return response.json()
+            else:
+                self.write_log_line(
+                    f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
+                    f"or {ToolkitThreadStatus.UNKNOWN.value}"
+                )
+        except requests.exceptions.RequestException:
+            logger.error(f"Get materials call failed")
