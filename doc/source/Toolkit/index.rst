@@ -12,10 +12,10 @@ Segmentation Toolkit:
 
 .. warning::
     Both segmentation and skew of a 3D motor have requirements on the AEDT
-    active project. Please ensure that the active project:
+    active project. Please ensure that the active design has:
     
-    - contains data for both 'SymmetryFactor' and 'HalfAxial' when using segmentation;
-    - has a shaft named 'Shaft' when using skew.
+    - defined design settings 'SymmetryFactor' and 'HalfAxial' when using segmentation;
+    - shaft named 'Shaft' when using skew.
 
 - **Generic API**: Contains the ``AEDTCommonToolkit`` class, which provides basic
   functions for controlling AEDT that are shared between the backend and frontend.

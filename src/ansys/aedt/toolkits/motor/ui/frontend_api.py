@@ -16,8 +16,8 @@ class ToolkitFrontend(FrontendGeneric):
     def check_segmentation_compatibility(self):
         """Check compatibility with segmentation call.
 
-        An AEDT file is compatible with the segmentation call if it
-        contains data for 'SymmetryFactor' and 'HalfAxial'.
+        An AEDT file is compatible with the segmentation call if it has defined
+        design settings 'SymmetryFactor' and 'HalfAxial'.
         """
         SYMMETRY_FACTOR_BEGIN = "VariableProp('SymmetryFactor'"
         HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
