@@ -5,6 +5,7 @@ from dataclasses import dataclass
 # from dataclasses import dataclass
 from enum import Enum
 import os
+import time
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -71,16 +72,15 @@ class AEDTCommonToolkit(object):
     --------
     >>> import time
     >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-    >>> service = Toolkit()
-    >>> properties = service.get_properties()
+    >>> toolkit = Toolkit()
+    >>> properties = toolkit.get_properties()
     >>> new_properties = {"aedt_version": "2023.2"}
-    >>> service.set_properties(new_properties)
-    >>> new_properties = service.get_properties()
-    >>> msg = service.launch_aedt()
-    >>> response = service.get_thread_status()
-    >>> while response[0] == 0:
-    >>>     time.sleep(1)
-    >>>     response = service.get_thread_status()
+    >>> toolkit.set_properties(new_properties)
+    >>> new_properties = toolkit.get_properties()
+    >>> msg = toolkit.launch_aedt()
+    >>> response = toolkit.get_thread_status()
+    >>> toolkit.wait_to_be_idle()
+    >>> response = toolkit.get_thread_status()
     """
 
     def __init__(self):
@@ -104,8 +104,8 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.set_properties({"property1": value1, "property2": value2})
+        >>> toolkit = Toolkit()
+        >>> toolkit.set_properties({"property1": value1, "property2": value2})
 
         """
         logger.debug("Updating the internal properties.")
@@ -144,8 +144,8 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.get_properties()
+        >>> toolkit = Toolkit()
+        >>> toolkit.get_properties()
         {"property1": value1, "property2": value2}
         """
         res = properties.model_dump()
@@ -163,8 +163,8 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.get_thread_status()
+        >>> toolkit = Toolkit()
+        >>> toolkit.get_thread_status()
         """
         thread_running = thread.is_toolkit_thread_running()
         is_toolkit_busy = properties.is_toolkit_busy
@@ -190,16 +190,13 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> msg = service.launch_aedt()
-        >>> response = service.get_thread_status()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.connect_aedt()
-        >>> service.aedt_connected()
+        >>> toolkit = Toolkit()
+        >>> msg = toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.connect_aedt()
+        >>> toolkit.aedt_connected()
         (True, "Toolkit connected to process <process_id> on Grpc <grpc_port>")
-        >>> service.release_aedt()
+        >>> toolkit.release_aedt()
         """
         tcs = ToolkitConnectionStatus(desktop=self.desktop)
         connected = tcs.is_connected()
@@ -220,8 +217,8 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.installed_aedt_version()
+        >>> toolkit = Toolkit()
+        >>> toolkit.installed_aedt_version()
         ["2021.1", "2021.2", "2022.1"]
         """
 
@@ -246,9 +243,8 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.aedt_sessions()
-        [[pid1, grpc_port1], [pid2, grpc_port2]]
+        >>> toolkit = Toolkit()
+        >>> toolkit.aedt_sessions()
         """
         res = []
         if not properties.is_toolkit_busy and properties.aedt_version:
@@ -286,12 +282,10 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.get_design_names()
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.get_design_names()
         """
         if properties.selected_process == 0:
             logger.error("Process ID not defined")
@@ -326,12 +320,10 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> toolkit_free = service.get_thread_status()
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> status = toolkit.get_thread_status()
         """
         # Check if the backend is already connected to an AEDT session
         connected, _ = self.aedt_connected()
@@ -396,13 +388,11 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.connect_aedt()
-        >>> service.release_aedt()
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.connect_aedt()
+        >>> toolkit.release_aedt()
         """
         if properties.selected_process == 0:  # pragma: no cover
             logger.error("Process ID not defined")
@@ -463,12 +453,10 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.connect_design()
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.connect_design()
 
         """
         # self.release_aedt(False, False)
@@ -504,7 +492,7 @@ class AEDTCommonToolkit(object):
         if properties.use_grpc:
             aedt_app_args["port"] = properties.selected_process
         else:  # pragma: no cover
-            aedt_app_args["aedt_process_id"] = self.aedtapp.odesktop.GetProcessID()
+            aedt_app_args["aedt_process_id"] = properties.selected_process
         self.aedtapp = aedt_app(**aedt_app_args)
 
         if self.aedtapp:
@@ -545,12 +533,10 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.release_aedt(True, True)
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.release_aedt(True, True)
 
         """
         released = False
@@ -593,13 +579,11 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.open_project("path/to/file")
-        >>> service.release_aedt()
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.open_project("path/to/file")
+        >>> toolkit.release_aedt()
 
         """
         if self.desktop and project_name:
@@ -630,13 +614,11 @@ class AEDTCommonToolkit(object):
         --------
         >>> import time
         >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
-        >>> service = Toolkit()
-        >>> service.launch_aedt()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = service.get_thread_status()
-        >>> service.connect_aedt()
-        >>> service.save_project()
+        >>> toolkit = Toolkit()
+        >>> toolkit.launch_aedt()
+        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.connect_aedt()
+        >>> toolkit.save_project()
         """
         if self.connect_design():  # pragma: no cover
             if project_path and properties.active_project != project_path:
@@ -659,6 +641,13 @@ class AEDTCommonToolkit(object):
         else:  # pragma: no cover
             logger.error("Project was not saved.")
             return False
+
+    def wait_to_be_idle(self):
+        """Wait for the toolkit thread to be idle and ready to accept new task."""
+        status = self.get_thread_status()
+        while status == ToolkitThreadStatus.BUSY:
+            time.sleep(1)
+            status = self.get_thread_status()
 
     def _save_project_info(self):
         # Save project and design info

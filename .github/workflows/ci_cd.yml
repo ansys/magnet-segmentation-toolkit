@@ -132,6 +132,43 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+  # run-examples:
+  #   name: "Run examples"
+  #   runs-on: [self-hosted, pyaedt, toolkits, Windows]
+  #   needs: [ doc-build, tests_windows_aedt ]
+  #   steps:
+  #     - name: "Install Git and clone project"
+  #       uses: actions/checkout@v4
+
+  #     - name: "Set up Python"
+  #       uses: ansys/actions/_setup-python@main
+  #       with:
+  #         python-version: ${{ env.MAIN_PYTHON_VERSION }}
+  #         use-cache: false
+
+  #     - name: Create Python venv
+  #       run: |
+  #         python -m venv .venv
+
+  #     - name: "Update pip"
+  #       run: |
+  #         .\.venv\Scripts\Activate.ps1
+  #         python -m pip install -U pip
+
+  #     - name: Install package
+  #       run: |
+  #         .\.venv\Scripts\Activate.ps1
+  #         pip install .
+
+  #     - name: Execute examples
+  #       run: |
+  #         .\.venv\Scripts\Activate.ps1
+  #         Get-ChildItem -Recurse -Path examples -Filter *.py -File | ForEach-Object {
+  #           Write-Host "Executing example $($_.FullName)"
+  #           $time = Measure-Command {python $_.FullName}
+  #           Write-Host "Time taken for example $($_.FullName): $($time.TotalSeconds) seconds"
+  #         }
+
   build-library:
     name: "Build library artifacts"
     runs-on: ubuntu-latest

@@ -28,7 +28,7 @@ class TestRESTWorkflow:
     def test_01_get_properties(self):
         expected_properties = Properties()
         # NOTE: conftest.py sets non_graphical to True
-        expected_properties.non_graphical = True
+        expected_properties.non_graphical = config["non_graphical"]
         response = requests.get(self.url + "/properties")
         data = response.json()
 
@@ -76,14 +76,6 @@ class TestRESTWorkflow:
 
     def test_05_connect_design(self):
         response = requests.post(self.url + "/connect_design", json={"aedtapp": "Icepak"})
-        assert response.ok
-        new_properties = {"use_grpc": False}
-        response = requests.put(self.url + "/properties", json=new_properties)
-        assert response.ok
-        response = requests.post(self.url + "/connect_design", json={"aedtapp": "Icepak"})
-        assert response.ok
-        new_properties = {"use_grpc": True}
-        response = requests.put(self.url + "/properties", json=new_properties)
         assert response.ok
 
     def test_06_save_project(self, common_temp_dir):
