@@ -1,5 +1,5 @@
 Magnet Segmentation Toolkit documentation |version|
-==================================================
+===================================================
 
 ..
    Simply reuse the root readme
