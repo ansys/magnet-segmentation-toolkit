@@ -3,10 +3,10 @@ import sys
 
 from PySide6 import QtWidgets
 
-from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.models import be_properties
-from ansys.aedt.toolkits.motor.ui.common.models import general_settings
-from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import general_settings
+from ansys.aedt.toolkits.magnet_segmentation.ui.frontend_api import ToolkitFrontend
 
 os.environ["QT_API"] = "pyside6"
 

@@ -1,5 +1,5 @@
-Motor Segmentation Toolkit documentation |version|
-==================================================
+Magnet Segmentation Toolkit documentation |version|
+===================================================
 
 ..
    Simply reuse the root readme

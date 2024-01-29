@@ -21,14 +21,14 @@ from pyaedt.aedt_logger import pyaedt_logger
 import pytest
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
 local_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(local_path)
 
-from ansys.aedt.toolkits.motor import backend
+from ansys.aedt.toolkits.magnet_segmentation import backend
 
 is_linux = os.name == "posix"
 

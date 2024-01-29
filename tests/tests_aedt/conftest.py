@@ -23,7 +23,7 @@ import os
 from pyaedt import settings
 import pytest
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
 # Constants
 PROJECT_NAME = "e9_eMobility_IPM_3D"

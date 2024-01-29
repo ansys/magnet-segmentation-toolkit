@@ -15,9 +15,8 @@ on:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
-  DOCUMENTATION_CNAME: 'aedt.motor.toolkit.docs.pyansys.com'
-  LIBRARY_NAME: 'ansys-aedt-toolkits-motor'
-  LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.motor'
+  DOCUMENTATION_CNAME: 'aedt.magnet.segmentation.toolkit.docs.pyansys.com'
+  PACKAGE_NAME: 'ansys-aedt-toolkits-magnet-segmentation'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
 
 concurrency:
@@ -30,7 +29,7 @@ jobs:
     name: "Code style"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/code-style@v4
+      - uses: ansys/actions/code-style@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -39,7 +38,7 @@ jobs:
     name: "Documentation style"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/doc-style@v4
+      - uses: ansys/actions/doc-style@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: doc-style
     steps:
-      - uses: ansys/actions/doc-build@v4
+      - uses: ansys/actions/doc-build@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           check-links: false
@@ -63,9 +62,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [ code-style ]
     steps:
-      - uses: ansys/actions/build-wheelhouse@v4
+      - uses: ansys/actions/build-wheelhouse@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
@@ -119,7 +118,7 @@ jobs:
 
       - name: "Upload coverage results"
         if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION  }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: .cov/total-html
           name: html-total-coverage
@@ -132,51 +131,14 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-  # run-examples:
-  #   name: "Run examples"
-  #   runs-on: [self-hosted, pyaedt, toolkits, Windows]
-  #   needs: [ doc-build, tests_windows_aedt ]
-  #   steps:
-  #     - name: "Install Git and clone project"
-  #       uses: actions/checkout@v4
-
-  #     - name: "Set up Python"
-  #       uses: ansys/actions/_setup-python@main
-  #       with:
-  #         python-version: ${{ env.MAIN_PYTHON_VERSION }}
-  #         use-cache: false
-
-  #     - name: Create Python venv
-  #       run: |
-  #         python -m venv .venv
-
-  #     - name: "Update pip"
-  #       run: |
-  #         .\.venv\Scripts\Activate.ps1
-  #         python -m pip install -U pip
-
-  #     - name: Install package
-  #       run: |
-  #         .\.venv\Scripts\Activate.ps1
-  #         pip install .
-
-  #     - name: Execute examples
-  #       run: |
-  #         .\.venv\Scripts\Activate.ps1
-  #         Get-ChildItem -Recurse -Path examples -Filter *.py -File | ForEach-Object {
-  #           Write-Host "Executing example $($_.FullName)"
-  #           $time = Measure-Command {python $_.FullName}
-  #           Write-Host "Time taken for example $($_.FullName): $($time.TotalSeconds) seconds"
-  #         }
-
   build-library:
     name: "Build library artifacts"
     runs-on: ubuntu-latest
     needs: [ doc-build, tests_windows_aedt ]
     steps:
-      - uses: ansys/actions/build-library@v4
+      - uses: ansys/actions/build-library@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   release:
@@ -187,23 +149,23 @@ jobs:
     steps:
 
       - name: "Release to the private PyPI"
-        uses: ansys/actions/release-pypi-private@v4
+        uses: ansys/actions/release-pypi-private@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
           twine-username: "__token__"
           twine-token: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
 
       #      - name: "Release to the public PyPI repository"
-      #        uses: ansys/actions/release-pypi-public@v4
+      #        uses: ansys/actions/release-pypi-public@v5
       #        with:
-      #          library-name: ${{ env.LIBRARY_NAME }}
+      #          library-name: ${{ env.PACKAGE_NAME }}
       #          twine-username: "__token__"
       #          twine-token: ${{ secrets.PYPI_TOKEN }}
 
       - name: "Release to GitHub"
-        uses: ansys/actions/release-github@v4
+        uses: ansys/actions/release-github@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
 
   doc-deploy-dev:
     name: "Deploy development documentation"
@@ -211,7 +173,7 @@ jobs:
     needs: build-library
     if: github.event_name == 'push'
     steps:
-      - uses: ansys/actions/doc-deploy-dev@v4
+      - uses: ansys/actions/doc-deploy-dev@v5
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -222,7 +184,7 @@ jobs:
     needs: release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
-      - uses: ansys/actions/doc-deploy-stable@v4
+      - uses: ansys/actions/doc-deploy-stable@v5
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}

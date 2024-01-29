@@ -3,8 +3,8 @@ import threading
 import time
 from typing import List
 
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.models import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 
 class ThreadManager(object):

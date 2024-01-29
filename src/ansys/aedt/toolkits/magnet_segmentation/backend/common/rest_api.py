@@ -2,9 +2,9 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
 
 service = Toolkit()
 settings = service.get_properties()

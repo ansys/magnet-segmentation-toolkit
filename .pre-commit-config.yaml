@@ -1,6 +1,6 @@
 exclude: |
     (?x)(
-        src/ansys/aedt/toolkits/motor/ui/common/frontend_ui.py |
+        src/ansys/aedt/toolkits/magnet_segmentation/ui/common/frontend_ui.py |
         tests/input_data/.* |
         examples/input_files/.*
     )

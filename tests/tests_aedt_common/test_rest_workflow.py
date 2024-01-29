@@ -5,10 +5,10 @@ import time
 import pytest
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
 
-# from ansys.aedt.toolkits.motor.backend.models import AEDTProperties
-from ansys.aedt.toolkits.motor.backend.models import Properties
+# from ansys.aedt.toolkits.magnet_segmentation.backend.models import AEDTProperties
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import Properties
 from tests.tests_aedt_common.conftest import config
 
 pytestmark = [pytest.mark.aedt_common]

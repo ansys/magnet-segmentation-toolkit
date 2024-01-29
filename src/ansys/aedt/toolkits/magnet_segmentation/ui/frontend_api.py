@@ -3,10 +3,10 @@
 from pyaedt.generic.general_methods import _to_boolean
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
-from ansys.aedt.toolkits.motor.ui.common.frontend_api_generic import FrontendGeneric
-from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.models import be_properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.frontend_api_generic import FrontendGeneric
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties
 
 
 class ToolkitFrontend(FrontendGeneric):

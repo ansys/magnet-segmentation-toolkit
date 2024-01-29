@@ -5,7 +5,7 @@ import os
 
 from pydantic import BaseModel
 
-from ansys.aedt.toolkits.motor.backend.models import Properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import Properties
 
 
 class UIProperties(BaseModel, validate_assignment=True):

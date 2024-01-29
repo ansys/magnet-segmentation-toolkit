@@ -18,10 +18,10 @@ from pyaedt import Desktop
 from pyaedt.misc import list_installed_ansysem
 from pydantic import ValidationError
 
-from ansys.aedt.toolkits.motor.backend.common.constants import NAME_TO_AEDT_APP
-from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.thread_manager import ThreadManager
-from ansys.aedt.toolkits.motor.backend.models import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.constants import NAME_TO_AEDT_APP
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.thread_manager import ThreadManager
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 thread = ThreadManager()
 
@@ -71,7 +71,7 @@ class AEDTCommonToolkit(object):
     Examples
     --------
     >>> import time
-    >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
     >>> toolkit = Toolkit()
     >>> properties = toolkit.get_properties()
     >>> new_properties = {"aedt_version": "2023.2"}
@@ -103,7 +103,7 @@ class AEDTCommonToolkit(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.set_properties({"property1": value1, "property2": value2})
 
@@ -143,7 +143,7 @@ class AEDTCommonToolkit(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.get_properties()
         {"property1": value1, "property2": value2}
@@ -162,7 +162,7 @@ class AEDTCommonToolkit(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.get_thread_status()
         """
@@ -189,7 +189,7 @@ class AEDTCommonToolkit(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> msg = toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -216,7 +216,7 @@ class AEDTCommonToolkit(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.installed_aedt_version()
         ["2021.1", "2021.2", "2022.1"]
@@ -242,7 +242,7 @@ class AEDTCommonToolkit(object):
 
         Examples
         --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.aedt_sessions()
         """
@@ -282,7 +282,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -320,7 +320,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -388,7 +388,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -453,7 +453,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -533,7 +533,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -579,7 +579,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
@@ -614,7 +614,7 @@ class AEDTCommonToolkit(object):
         Examples
         --------
         >>> import time
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> toolkit = Toolkit()
         >>> toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()

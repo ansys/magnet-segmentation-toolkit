@@ -4,9 +4,9 @@ build-backend = "flit_core.buildapi"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
-name = "ansys-aedt-toolkits-motor"
+name = "ansys-aedt-toolkits-magnet-segmentation"
 dynamic = ["version"]
-description = "Toolkit to calculate magnet losses for an IPM motor accounting for 3D effects."
+description = "Toolkit used for automating the segmentation and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM) motors using Ansys Electronics Desktop (AEDT)"
 readme = "README.rst"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
@@ -27,7 +27,6 @@ dependencies = [
     "build==1.0.3",
     "twine==4.0.2",
     "pyaedt==0.7.8",
-    # "ansys-motorcad-core",
     "importlib-metadata >=4.0",
     "PySide6-Essentials",
     "pyqtgraph",
@@ -57,12 +56,12 @@ doc = [
 ]
 
 [tool.flit.module]
-name = "ansys.aedt.toolkits.motor"
+name = "ansys.aedt.toolkits.magnet_segmentation"
 
 [project.urls]
-Source = "https://github.com/ansys/pymotorcad-pyaedt-toolkit.git"
-Tracker = "https://github.com/ansys/pymotorcad-pyaedt-toolkit.git/issues"
-Homepage = "https://github.com/ansys/pymotorcad-pyaedt-toolkit.git"
+Source = "https://github.com/ansys/magnet-segmentation-toolkit.git"
+Tracker = "https://github.com/ansys/magnet-segmentation-toolkit.git/issues"
+Homepage = "https://github.com/ansys/magnet-segmentation-toolkit.git"
 
 
 [tool.black]

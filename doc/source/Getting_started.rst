@@ -2,7 +2,7 @@
 Getting started
 ===============
 
-To run the Motor Segmentation Toolkit, you must have a licensed copy of AEDT installed.
+To run the Magnet Segmentation Toolkit, you must have a licensed copy of AEDT installed.
 You have multiple options for installing and launching this toolkit:
 
 - You can install the toolkit in AEDT via an installation script and then launch it as a wizard.
@@ -17,7 +17,7 @@ You have multiple options for installing and launching this toolkit:
 How to install directly in AEDT and launch as a wizard
 ------------------------------------------------------
 
-You install the Motor Segmentation Toolkit directly in AEDT using the base
+You install the Magnet Segmentation Toolkit directly in AEDT using the base
 interpreter from the AEDT installation.
 
 #. From `Install from a Python file <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html#install-from-a-python-file>`_
@@ -31,7 +31,7 @@ interpreter from the AEDT installation.
      :width: 800
      :alt: PyAEDT console in AEDT
 
-#. In the PyAEDT console, run these commands to add the Motor Segmentation Toolkit as a wizard (toolkit UI)
+#. In the PyAEDT console, run these commands to add the Magnet Segmentation Toolkit as a wizard (toolkit UI)
    in AEDT:
 
    .. code:: python
@@ -57,7 +57,7 @@ The wizard is connected directly to the AEDT session. For wizard usage informati
 How to install from the AEDT console and launch as a wizard
 -----------------------------------------------------------
 
-You can install the Motor Segmentation Toolkit in a specific Python environment from the
+You can install the Magnet Segmentation Toolkit in a specific Python environment from the
 AEDT console.
 
 - If you have an existing virtual environment, skip step 1.
@@ -83,13 +83,13 @@ AEDT console.
 
    .. code:: bash
 
-     python -m pip install git+https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
+     python -m pip install git+https://github.com/ansys/magnet-segmentation-toolkit.git
 
 #. Launch the Magnet Segmentation Toolkit Wizard:
 
    .. code:: bash
 
-     python .venv\Lib\site-packages\ansys\aedt\toolkits\motor\run_toolkit.py
+     python .venv\Lib\site-packages\ansys\aedt\toolkits\magnet_segmentation\run_toolkit.py
 
 For wizard usage information, see :doc:`Toolkit/ui`.
 
@@ -98,7 +98,7 @@ For wizard usage information, see :doc:`Toolkit/ui`.
 How to install from a Python console and use the toolkit APIs
 -------------------------------------------------------------
 
-You can install the Motor Segmentation Toolkit in a specific Python environment from a Python
+You can install the Magnet Segmentation Toolkit in a specific Python environment from a Python
 console and then use this toolkit APIs.
 
 .. note::
@@ -123,7 +123,7 @@ console and then use this toolkit APIs.
      import os
 
      # Import backend services
-     from ansys.aedt.toolkits.motor.backend.api import Toolkit
+     from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
      # Backend object
      toolkit = Toolkit()

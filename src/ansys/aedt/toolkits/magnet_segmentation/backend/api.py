@@ -1,4 +1,4 @@
-from ansys.aedt.toolkits.motor.backend.workflows.aedt import AEDTWorkflow
+from ansys.aedt.toolkits.magnet_segmentation.backend.workflows.aedt import AEDTWorkflow
 
 
 class Toolkit(AEDTWorkflow):
@@ -9,7 +9,7 @@ class Toolkit(AEDTWorkflow):
 
     Examples
     --------
-    >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
     >>> import time
     >>> toolkit = Toolkit()
     >>> toolkit.launch_aedt()

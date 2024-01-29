@@ -9,7 +9,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from ansys.aedt.toolkits.motor.backend.common.models import CommonProperties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.models import CommonProperties
 
 
 class AEDTProperties(BaseModel):
