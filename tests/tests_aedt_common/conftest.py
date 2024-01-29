@@ -71,6 +71,7 @@ logger = pyaedt_logger
 # Define desktopVersion explicitly since this is imported by other modules
 desktop_version = config["aedt_version"]
 non_graphical = config["non_graphical"]
+use_grpc = config["use_grpc"]
 # local_scratch = Scratch(scratch_path)
 
 
@@ -179,7 +180,7 @@ def desktop_init():
     properties = {
         "aedt_version": desktop_version,
         "non_graphical": non_graphical,
-        "use_grpc": True,
+        "use_grpc": use_grpc,
     }
     try:
         response = requests.put(url_call + "/properties", json=properties)

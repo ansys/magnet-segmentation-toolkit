@@ -46,7 +46,7 @@ if os.path.exists(local_config_file):
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
-settings.use_grpc_api = config.get("use_grpc", True)
+settings.use_grpc_api = config["use_grpc"]
 settings.non_graphical = config["non_graphical"]
 
 
