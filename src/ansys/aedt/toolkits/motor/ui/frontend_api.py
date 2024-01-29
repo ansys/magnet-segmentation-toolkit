@@ -13,6 +13,64 @@ class ToolkitFrontend(FrontendGeneric):
     def __init__(self):
         FrontendGeneric.__init__(self)
 
+    def check_segmentation_compatibility(self):
+        """Check compatibility with segmentation call.
+
+        An AEDT file is compatible with the segmentation call if it has defined
+        design settings 'SymmetryFactor' and 'HalfAxial'.
+        """
+        SYMMETRY_FACTOR_BEGIN = "VariableProp('SymmetryFactor'"
+        HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
+        found_data = {target: False for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]}
+
+        with open(be_properties.active_project, "r") as file:
+            lines = file.readlines()
+        lines = [line.strip() for line in lines]
+
+        for line in lines:
+            for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]:
+                if line.lstrip().startswith(target):
+                    found_data[target] = True
+
+        res = all(found_data.values())
+        if res:
+            logger.debug("Selected AEDT file is compatible with segmentation call")
+        else:
+            logger.debug("Selected AEDT file is not compatible with segmentation call")
+        return res
+
+    def check_skew_compatibility(self):
+        """Check compatibility with skew call.
+
+        An AEDT file is compatible with the skew call if the name of the shaft
+        is 'Shaft'.
+        """
+        SHAFT_LINES = ["$begin 'GeometryPart'", "$begin 'Attributes'", "Name='Shaft'"]
+        with open(be_properties.active_project, "r") as file:
+            lines = file.readlines()
+        lines = [line.strip() for line in lines]
+
+        for i in range(len(lines) - len(SHAFT_LINES) + 1):
+            if lines[i : i + len(SHAFT_LINES)] == SHAFT_LINES:
+                logger.debug("Selected AEDT file is compatible with skew call")
+                return True
+
+        logger.debug("Selected AEDT file is not compatible with skew call")
+        return False
+
+    def browse_and_check_for_aedt_project(self):
+        super().browse_for_aedt_project()
+        segmentation_compatibility = self.check_segmentation_compatibility()
+        if not segmentation_compatibility:
+            self.write_log_line(
+                f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with segmentation."
+            )
+            self.write_log_line("Please, ensure that 'SymmetryFactor' and 'HalfAxial' are defined")
+        skew_compatibility = self.check_skew_compatibility()
+        if not skew_compatibility:
+            self.write_log_line(f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with skew.")
+            self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
+
     def apply_segmentation(self):
         if self.backend_busy():
             msg = ToolkitThreadStatus.BUSY.value

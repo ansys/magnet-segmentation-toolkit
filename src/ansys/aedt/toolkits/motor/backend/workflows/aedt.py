@@ -43,6 +43,10 @@ class AEDTWorkflow(AEDTCommonToolkit):
 
         This method automatically segments the rotor, rotor pockets, and magnets.
 
+        .. warning::
+            This method only works if the AEDT active project contains data for
+            'SymmetryFactor' and 'HalfAxial'.
+
         Returns
         -------
         bool
@@ -150,6 +154,10 @@ class AEDTWorkflow(AEDTCommonToolkit):
     # @thread.launch_thread
     def apply_skew(self):
         """Apply skew to rotor slices.
+
+        .. warning::
+            This method only works if the AEDT active project contains a shaft
+            named 'Shaft'.
 
         Returns
         -------

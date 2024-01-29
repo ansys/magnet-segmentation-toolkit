@@ -60,6 +60,13 @@ properties["rotor_slices"] = 2
 properties["apply_mesh_sheets"] = True
 properties["mesh_sheets_number"] = 3
 
+##########################################################
+# Set non-graphical mode
+# ~~~~~~~~~~~~~~~~~~~~~~
+# Set non-graphical mode. The default value is ``False``.
+
+properties["non_graphical"] = False
+
 #################################################################################
 # Set properties
 # ~~~~~~~~~~~~~~
