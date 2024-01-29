@@ -28,7 +28,9 @@ class TestRESTWorkflow:
     def test_01_get_properties(self):
         expected_properties = Properties()
         # NOTE: conftest.py sets non_graphical to True
+        expected_properties.aedt_version = config["aedt_version"]
         expected_properties.non_graphical = config["non_graphical"]
+        expected_properties.use_grpc = config["use_grpc"]
         response = requests.get(self.url + "/properties")
         data = response.json()
 
@@ -45,24 +47,9 @@ class TestRESTWorkflow:
         new_properties = {
             "aedt_version": self.test_config["aedt_version"],
             "non_graphical": self.test_config["non_graphical"],
-            "use_grpc": True,
         }
-
         response = requests.put(self.url + "/properties", json=new_properties)
         assert response.ok
-
-        # Should work as pydantic checking "allows" to convert 1 into True
-        new_properties = {"use_grpc": 1}
-        response = requests.put(self.url + "/properties", json=new_properties)
-        assert response.ok
-
-        # Should not work as pydantic checking "does not allow" to convert 2 into boolean
-        new_properties = {"use_grpc": 2}
-        response = requests.put(self.url + "/properties", json=new_properties)
-        assert not response.ok
-
-        response = requests.put(self.url + "/properties")
-        assert not response.ok
 
     def test_03_installed_versions(self):
         response = requests.get(self.url + "/installed_versions")

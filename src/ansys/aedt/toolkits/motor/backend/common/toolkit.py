@@ -258,8 +258,9 @@ class AEDTCommonToolkit(object):
                 cmd = process.cmdline()
                 if version in cmd[0]:
                     try:
-                        port = int(cmd[cmd.index("-grpcsrv") + 1])
-                    except IndexError:
+                        grpc_index = cmd.index("-grpcsrv") + 1
+                        port = int(cmd[grpc_index])
+                    except (ValueError, IndexError):
                         port = -1
                     res.append([process.pid, port])
             logger.debug(f"Active AEDT sessions: {res}.")
