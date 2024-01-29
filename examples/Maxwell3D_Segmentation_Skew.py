@@ -65,7 +65,7 @@ properties["mesh_sheets_number"] = 3
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Set non-graphical mode. The default value is ``False``.
 
-properties["non_graphical"] = True
+properties["non_graphical"] = False
 
 #################################################################################
 # Set properties
