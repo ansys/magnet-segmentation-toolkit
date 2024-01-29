@@ -492,7 +492,7 @@ class AEDTCommonToolkit(object):
         if properties.use_grpc:
             aedt_app_args["port"] = properties.selected_process
         else:  # pragma: no cover
-            aedt_app_args["aedt_process_id"] = self.aedtapp.odesktop.GetProcessID()
+            aedt_app_args["aedt_process_id"] = properties.selected_process
         self.aedtapp = aedt_app(**aedt_app_args)
 
         if self.aedtapp:
