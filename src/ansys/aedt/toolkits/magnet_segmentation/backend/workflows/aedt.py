@@ -1,13 +1,14 @@
 from operator import attrgetter
 
 from pyaedt.application.Variables import decompose_variable_value
+from pyaedt.generic.constants import unit_converter
 from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-# from ansys.aedt.toolkits.motor.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.backend.common.toolkit import AEDTCommonToolkit
-from ansys.aedt.toolkits.motor.backend.models import properties
+# from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import AEDTCommonToolkit
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 
 class AEDTWorkflow(AEDTCommonToolkit):
@@ -17,25 +18,61 @@ class AEDTWorkflow(AEDTCommonToolkit):
 
     Examples
     --------
-        >>> from ansys.aedt.toolkits.motor.backend.api import Toolkit
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
         >>> import time
         >>> toolkit = Toolkit()
         >>> msg1 = toolkit.launch_aedt()
         >>> response = toolkit.get_thread_status()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = toolkit.get_thread_status()
+        >>> toolkit.wait_to_be_idle()
         >>> new_property = {"vbs_path": "path\to\toolkit.vbs"}
         >>> toolkit.set_properties(new_property)
         >>> msg3 = toolkit.run_vbs()
-        >>> response = toolkit.get_thread_status()
-        >>> while response[0] == 0:
-        >>>     time.sleep(1)
-        >>>     response = toolkit.get_thread_status()
+        >>> toolkit.wait_to_be_idle()
     """
 
     def __init__(self):
         super().__init__()
+
+    def analyze_model(self):  # pragma: no cover
+        """Analyze model.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        try:
+            self.aedtapp.analyze_setup(properties.setup_to_analyze)
+            self.aedtapp.release_desktop(False, False)
+            self.aedtapp = None
+            return True
+        except:
+            return False
+
+    def get_losses_from_reports(self):  # pragma: no cover
+        """Get magnet losses from reports.
+
+        Returns
+        -------
+        dict
+            Average values plus units for the reports specified in the JSON file.
+        """
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        try:
+            report_dict = {}
+            self.aedtapp.post.create_report(expressions="SolidLoss", plotname="Losses", primary_sweep_variable="Time")
+            data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
+            avg = sum(data.data_magnitude()) / len(data.data_magnitude())
+            avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
+            report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
+            self.aedtapp.release_desktop(False, False)
+            self.aedtapp = None
+            return True, report_dict
+        except:
+            return False
 
     # @thread.launch_thread
     def segmentation(self):
@@ -44,7 +81,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
         This method automatically segments the rotor, rotor pockets, and magnets.
 
         .. warning::
-            This method only works if the AEDT active project contains data for
+            This method only works if the AEDT active project has defined design settings
             'SymmetryFactor' and 'HalfAxial'.
 
         Returns

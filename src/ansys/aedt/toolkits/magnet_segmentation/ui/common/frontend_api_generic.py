@@ -10,13 +10,13 @@ from pydantic import ValidationError
 import qdarkstyle
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.toolkit import PropertiesUpdate
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitConnectionStatus
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
-from ansys.aedt.toolkits.motor.ui.common.frontend_ui import Ui_MainWindow
-from ansys.aedt.toolkits.motor.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.motor.ui.common.models import be_properties
-from ansys.aedt.toolkits.motor.ui.common.thread_manager import FrontendThread
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import PropertiesUpdate
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitConnectionStatus
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.frontend_ui import Ui_MainWindow
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.thread_manager import FrontendThread
 
 
 class FrontendGeneric(QtWidgets.QMainWindow, Ui_MainWindow, FrontendThread):

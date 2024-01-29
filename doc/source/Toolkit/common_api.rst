@@ -4,7 +4,7 @@ The Common API contains the ``AEDTCommonToolkit`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 
-.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.toolkit
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
 
 .. autosummary::
    :toctree: _autosummary
@@ -20,7 +20,7 @@ to create an object:
 .. code:: python
 
     # Import required modules and backend
-    from ansys.aedt.toolkits.motor.backend.api import Toolkit
+    from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
     # Backend object
     toolkit = Toolkit()

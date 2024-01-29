@@ -10,32 +10,32 @@ The following contribution information is specific to PyAEDT toolkits.
 
 Clone the repository
 --------------------
-To clone and install the latest version of the Motor Segmentation Toolkit in
+To clone and install the latest version of the Magnet Segmentation Toolkit in
 development mode, run these commands:
 
 .. code::
 
-    git clone https://github.com/ansys/pymotorcad-pyaedt-toolkit.git
-    cd pymotorcad-pyaedt-toolkit
+    git clone https://github.com/ansys/magnet-segmentation-toolkit.git
+    cd magnet-segmentation-toolkit
     python -m pip install --upgrade pip
     pip install -e .
 
 Post issues
 -----------
-Use the `Motor Segmentation Toolkit Issues <https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues>`_ page
+Use the `Magnet Segmentation Toolkit Issues <https://github.com/ansys/magnet-segmentation-toolkit/issues>`_ page
 to create issues to report bugs and request new features.
 
 View documentation
 -------------------
-Documentation for the latest stable release is hosted at `Motor Segmentation Toolkit documentation <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/>`_.
+Documentation for the latest stable release is hosted at `Magnet Segmentation Toolkit documentation <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/>`_.
 
-In the upper right corner of the documentation’s title bar, there is an option for switching from viewing
+In the upper right corner of the documentation's title bar, there is an option for switching from viewing
 the documentation for the latest stable release to viewing the documentation for the development version
 or previously released versions.
 
 Adhere to code style
 --------------------
-The Motor Segmentation Toolkit is compliant with `PyAnsys code style
+The Magnet Segmentation Toolkit is compliant with `PyAnsys code style
 <https://dev.docs.pyansys.com/coding-style/index.html>`_. It uses the tool
 `pre-commit <https://pre-commit.com/>`_ to check the code style.
 

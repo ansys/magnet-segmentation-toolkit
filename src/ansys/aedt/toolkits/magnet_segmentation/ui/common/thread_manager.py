@@ -5,10 +5,10 @@ from PySide6.QtCore import QThread
 from PySide6.QtCore import Signal
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
-from ansys.aedt.toolkits.motor.ui.common.models import be_properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties
 
-# from ansys.aedt.toolkits.motor.ui.frontend_api import ToolkitFrontend
+# from ansys.aedt.toolkits.magnet_segmentation.ui.frontend_api import ToolkitFrontend
 
 logger = logging.getLogger("Global")
 

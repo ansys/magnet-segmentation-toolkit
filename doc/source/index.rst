@@ -1,4 +1,4 @@
-Motor Segmentation Toolkit documentation |version|
+Magnet Segmentation Toolkit documentation |version|
 ==================================================
 
 ..
