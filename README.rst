@@ -1,5 +1,5 @@
 Magnet Segmentation Toolkit
-==========================
+===========================
 
 |pyansys| |PythonVersion| |GH-CI| |MIT| |black|
 
