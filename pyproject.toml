@@ -26,13 +26,14 @@ classifiers = [
 dependencies = [
     "build==1.0.3",
     "twine==4.0.2",
-    "pyaedt==0.7.8",
+    "pyaedt==0.7.10",
     "importlib-metadata >=4.0",
     "PySide6-Essentials",
     "pyqtgraph",
     "qdarkstyle",
     "flask",
     "pydantic",
+    "jsonschema",
 ]
 
 [project.optional-dependencies]
