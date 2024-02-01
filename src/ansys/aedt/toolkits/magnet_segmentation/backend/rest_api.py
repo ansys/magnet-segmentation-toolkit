@@ -22,32 +22,6 @@ def get_materials():
         return jsonify("Get project material was unsuccessful."), 500
 
 
-# FIXME: should this call be modified into GET ?
-@app.route("/analyze_model", methods=["POST"])
-def analyze_model():
-    logger.info("[POST] /Analyze AEDT model.")
-
-    response = service.analyze_model()
-    if response:
-        return jsonify("AEDT model analyzed successfully."), 200
-    else:
-        return jsonify("Failure: AEDT model analysis was unsuccessful."), 500
-
-
-@app.route("/magnet_losses", methods=["GET"])
-def get_magnet_losses():
-    logger.info("[GET] /Get magnet losses.")
-
-    response = service.get_losses_from_reports()
-    if response[0]:
-        return (
-            jsonify(response[1]),
-            200,
-        )
-    else:
-        return jsonify("Failure: Magnet losses calculation was unsuccessful."), 500
-
-
 @app.route("/apply_segmentation", methods=["POST"])
 def magnets_segmentation():
     logger.info("[POST] /Apply magnets segmentation.")
