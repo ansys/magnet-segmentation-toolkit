@@ -17,19 +17,19 @@ see these topics:
      :width: 800
      :alt: Settings Tab
 
-#. Under **Project Name**, click **Select AEDT project** to select an AEDT file for a
+#. Under **Project Name**, click **Select aedt project** to select an AEDT file for a
    3D motor model.
 
 #. Near the bottom of the tab, click **Launch AEDT**.
 
-#. On the **Segmentation** tab, set the project and design to work in as well as the
+#. On the **Segmentation** tab, specify the project, design to work in, and
    segmentation settings.
 
    .. image:: ../_static/segmentation_settings.png
      :width: 800
      :alt: Settings Tab
 
-#. Select **File > Save** to save the project.
+#. From the AEDT menu, select **File > Save** to save the project.
 
 The wizard has a progress bar and a logger box, where you can see the status of every operation.
 A red progress bar means that the toolkit is busy. Every operation must wait for the previous
