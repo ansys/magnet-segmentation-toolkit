@@ -15,7 +15,7 @@ see these topics:
    
    .. image:: ../_static/design_connected.png
      :width: 800
-     :alt: Settings Tab
+     :alt: Settings tab
 
 #. Under **Project Name**, click **Select aedt project** to select an AEDT file for a
    3D motor model.
@@ -27,7 +27,7 @@ see these topics:
 
    .. image:: ../_static/segmentation_settings.png
      :width: 800
-     :alt: Settings Tab
+     :alt: Settings tab
 
 #. From the AEDT menu, select **File > Save** to save the project.
 
