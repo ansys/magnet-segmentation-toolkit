@@ -39,8 +39,8 @@ class AEDTWorkflow(AEDTCommonToolkit):
         This method automatically segments the rotor, rotor pockets, and magnets.
 
         .. warning::
-            This method only works if the AEDT active project has defined design settings
-            'SymmetryFactor' and 'HalfAxial'.
+            This method only works if the AEDT active project has
+            ``SymmetryFactor`` and ``HalfAxial`` design settings defined.
 
         Returns
         -------
@@ -151,8 +151,8 @@ class AEDTWorkflow(AEDTCommonToolkit):
         """Apply skew to rotor slices.
 
         .. warning::
-            This method only works if the AEDT active project contains a shaft
-            named 'Shaft'.
+            This method only works if the active AEDT project contains a shaft
+            named ``Shaft``.
 
         Returns
         -------

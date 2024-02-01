@@ -1,7 +1,7 @@
 """
-Maxwell 3D Segmentation
+Maxwell 3D segmentation
 -----------------------
-This example shows how you can use Magnet Segmentation Toolkit to segment
+This example shows how to use the Magnet Segmentation Toolkit to segment
 your AEDT motor model.
 """
 #################################################################################
@@ -17,10 +17,10 @@ from pyaedt import generate_unique_folder_name
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
 #################################################################################
-# Initialize Temporary Folder and Project settings
+# Initialize temporary folder and project settings
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Initialize Temporary Folder to copy the input file into
-# and set project settings.
+# Initialize a temporary folder to copy the input file into
+# and specify project settings.
 
 src_folder = os.path.join(Path(__file__).parents[0], "input_files")
 temp_folder = shutil.copytree(src_folder, os.path.join(generate_unique_folder_name(), "input_files"))
@@ -29,23 +29,23 @@ active_project = os.path.join(temp_folder, "{}.aedt".format(project_name))
 active_design = "e9_eMobility_IPM_3D_test"
 
 #################################################################################
-# Initialize Toolkit
+# Initialize toolkit
 # ~~~~~~~~~~~~~~~~~~
-# Initialize Toolkit.
+# Initialize the toolkit.
 
 toolkit = Toolkit()
 
 #################################################################################
-# Get Toolkit properties
+# Get toolkit properties
 # ~~~~~~~~~~~~~~~~~~~~~~
-# Get Toolkit properties.
+# Get the toolkit properties.
 
 properties = toolkit.get_properties()
 
 #################################################################################
-# Initialize Properties dictionary
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Initialize Properties dictionary.
+# Initialize properties
+# ~~~~~~~~~~~~~~~~~~~~~
+# Initialize a dictionary of properties.
 
 properties["active_project"] = active_project
 properties["active_design"] = {"Maxwell3d": active_design}
@@ -84,28 +84,28 @@ toolkit.launch_aedt()
 #################################################################################
 # Wait for the toolkit thread to be idle
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Wait for the toolkit thread to be idle and ready to accept new task.
+# Wait for the toolkit thread to be idle and ready to accept a new task.
 
 toolkit.wait_to_be_idle()
 
 #################################################################################
 # Apply segmentation
 # ~~~~~~~~~~~~~~~~~~
-# Apply segmentation and assign relative coordinate system.
+# Apply segmentation and assign the relative coordinate system.
 
 toolkit.segmentation()
 
 #################################################################################
 # Apply skew angle
 # ~~~~~~~~~~~~~~~~
-# Apply skew angle to rotor slices.
+# Apply the skew angle to rotor slices.
 
 toolkit.apply_skew()
 
 #################################################################################
-# Save and Release desktop
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-# Save and Release desktop.
+# Save and release AEDT
+# ~~~~~~~~~~~~~~~~~~~~~
+# Save and release AEDT.
 
 # toolkit.save_project()
 
@@ -114,6 +114,6 @@ toolkit.release_aedt(True, True)
 #################################################################################
 # Remove temporary folder
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Remove temporary folder.
+# Remove the temporary folder.
 
 shutil.rmtree(temp_folder, ignore_errors=True)

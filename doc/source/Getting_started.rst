@@ -5,11 +5,11 @@ Getting started
 To run the Magnet Segmentation Toolkit, you must have a licensed copy of AEDT installed.
 You have multiple options for installing and launching this toolkit:
 
-- You can install the toolkit in AEDT via an installation script and then launch it as a wizard.
-  For more information, see :ref:`install-toolkit-AEDT`.
+- You can install the toolkit directly in AEDT via an installation script and then launch it
+  as a wizard. For more information, see :ref:`install-toolkit-AEDT`.
 - You can install the toolkit from the AEDT console and then launch it as a wizard. For more
   information, see :ref:`install_toolkit_console_ui`.
-- You can install and launch the toolkit directly from a Python console and then use the toolkit APIs.
+- You can install and launch the toolkit directly from a Python console and then use the toolkit's APIs.
   For more information, see :ref:`install_toolkit_console_api`.
 
 .. _install-toolkit-AEDT:
@@ -17,11 +17,11 @@ You have multiple options for installing and launching this toolkit:
 How to install directly in AEDT and launch as a wizard
 ------------------------------------------------------
 
-You install the Magnet Segmentation Toolkit directly in AEDT using the base
+You can install the Magnet Segmentation Toolkit directly in AEDT using the base
 interpreter from the AEDT installation.
 
 #. From `Install from a Python file <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html#install-from-a-python-file>`_
-   in the PyAEDT installation documentation, download the ``PyAEDTInstallerFromDesktop.py`` file and then run this Python script.
+   in the PyAEDT documentation, download the ``PyAEDTInstallerFromDesktop.py`` file and then run this Python script.
 
 #. If this is the first toolkit being installed in AEDT, restart AEDT to update its **Tools** menu.
 
@@ -95,16 +95,16 @@ For wizard usage information, see :doc:`Toolkit/ui`.
 
 .. _install_toolkit_console_api:
 
-How to install from a Python console and use the toolkit APIs
--------------------------------------------------------------
+How to install from a Python console and use the toolkit's APIs
+---------------------------------------------------------------
 
 You can install the Magnet Segmentation Toolkit in a specific Python environment from a Python
-console and then use this toolkit APIs.
+console and then use this toolkit's APIs.
 
 .. note::
   The following procedure assumes that you have already performed steps 1 and 2 in
-  :ref:`install_toolkit_console_ui` for creating and activating a virtual environment
-  and installing the toolkit from the GitHub repository.
+  :ref:`install_toolkit_console_ui`. These steps create and activate a virtual environment
+  and install the toolkit from the GitHub repository.
 
 #. Open a Python console in your virtual environment:
 
@@ -112,9 +112,9 @@ console and then use this toolkit APIs.
 
      python
 
-#. Use the toolkit APIs at the toolkit level.
+#. Use the toolkit's APIs at the toolkit level.
 
-   For example, this code shows how to use the toolkit APIs to import the toolkit, launch AEDT,
+   For example, this code shows how to use the toolkit's APIs to import the toolkit, launch AEDT,
    open a 3D motor model, and then segment and skew this model in Maxwell 3D:
 
    .. code:: python
@@ -152,7 +152,7 @@ console and then use this toolkit APIs.
      # Launch AEDT
      toolkit.launch_aedt()
 
-     # Wait for the toolkit thread to be idle and ready to accept new task
+     # Wait for the toolkit thread to be idle and ready to accept a new task
      toolkit.wait_to_be_idle()
 
      # Apply segmentation

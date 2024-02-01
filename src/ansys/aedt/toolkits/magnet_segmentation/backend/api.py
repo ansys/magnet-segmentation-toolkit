@@ -4,8 +4,8 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.workflows.aedt import AEDTW
 class Toolkit(AEDTWorkflow):
     """Provides methods for controlling the toolkit workflow.
 
-    This class provides methods for creating a new or connecting to an existing AEDT
-    session and automating the segmentation and skew of a 3D motor model.
+    This class provides methods for creating an AEDT session, connecting to an existing
+    AEDT session, and automating the segmentation and skew of a 3D motor model.
 
     Examples
     --------

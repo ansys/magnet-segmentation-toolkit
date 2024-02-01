@@ -5,9 +5,12 @@ UI reference
 This section describes how to use the Magnet Segmentation Toolkit Wizard, which requires an installed
 and licensed copy of AEDT. It assumes that you have already launched the wizard from
 either the AEDT menu or AEDT console. For toolkit installation and wizard launching information,
-see :ref:`install-toolkit-AEDT` or :ref:`install_toolkit_console_ui`.
+see these topics:
 
-#. On the **Settings** tab, specify settings for either creating a new AEDT session or
+- :ref:`install-toolkit-AEDT`
+- :ref:`install_toolkit_console_ui`
+
+#. On the **Settings** tab, specify settings for either creating an AEDT session or
    connecting to an existing AEDT session.
    
    .. image:: ../_static/design_connected.png

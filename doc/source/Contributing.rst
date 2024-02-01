@@ -3,10 +3,11 @@ Contribute
 ==========
 Overall guidance on contributing to a PyAnsys repository appears in
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_
-in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar
+in the *PyAnsys developer's guide*. Ensure that you are thoroughly familiar
 with this guide before attempting to contribute to PyAEDT or its toolkits.
  
-The following contribution information is specific to PyAEDT toolkits.
+The following contribution information is specific to the Magnet Segmentation
+Toolkit.
 
 Clone the repository
 --------------------

@@ -1,16 +1,16 @@
 Toolkit API
 ===========
 The Toolkit API contains the ``Toolkit`` class, which provides methods for
-controlling the toolkit workflow. In addition to methods for creating a new
-or connecting to an existing AEDT session, this API provides methods for automating
-the segmentation and skew of a 3D motor.
+controlling the toolkit workflow. In addition to methods for creating an AEDT
+session or connecting to an existing AEDT session, this API provides methods for
+automating the segmentation and skew of a 3D motor.
 
 .. warning::
     Both segmentation and skew of a 3D motor have requirements on the AEDT
-    active project. Please ensure that the active design has:
+    active project. Ensure that the active design meets these requirements:
     
-    - defined design settings 'SymmetryFactor' and 'HalfAxial' when using segmentation;
-    - shaft named 'Shaft' when using skew.
+    - For segmentation, ``SymmetryFactor`` and ``HalfAxial`` design settings must be defined.
+    - For skew, ``Shaft`` must be the name of the shaft.
 
 .. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
 

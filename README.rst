@@ -51,6 +51,6 @@ License
 ~~~~~~~
 The Magnet Segmentation Toolkit is licensed under the MIT license.
 
-This toolkit makes no commercial claim over Ansys whatsoever. The use of the interactive
-control of this toolkit requires a legally licensed local copy of AEDT. For more information,
-see the `Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on the Ansys website.
+This toolkit makes no commercial claim over Ansys whatsoever. The use of this toolkit
+requires a legally licensed copy of AEDT. For more information, see the
+`Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on the Ansys website.

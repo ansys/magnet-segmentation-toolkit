@@ -139,9 +139,9 @@ def process_desktop_properties():
             logger.error("Properties update failed")
 
 
-# Main Execution
+# Main execution
 
-# Clean python process when script ends
+# Clean Python process when script ends
 atexit.register(clean_python_processes)
 
 # Check if backend is already running
