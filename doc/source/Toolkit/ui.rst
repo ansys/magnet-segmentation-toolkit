@@ -29,6 +29,8 @@ see these topics:
      :width: 800
      :alt: Settings tab
 
+#. At the bottom of the tab, click **Perform Segmentation** and then **Apply Skew**.
+
 #. From the AEDT menu, select **File > Save** to save the project.
 
 The wizard has a progress bar and a logger box, where you can see the status of every operation.
