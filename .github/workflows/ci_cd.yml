@@ -42,16 +42,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  doc-build:
-    name: "Build documentation"
-    runs-on: [self-hosted, pyaedt, toolkits, Windows]
-    needs: doc-style
-    steps:
-      - uses: ansys/actions/doc-build@v5
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          check-links: false
-
   docs-build:
     name: "Build documentation"
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
@@ -85,7 +75,7 @@ jobs:
       - name: Retrieve magnet segmentation toolkit version
         run: |
           . .venv\Scripts\Activate.ps1
-          echo "Magnet Segmentation Toolkit version is: $(python -c "from from ansys.aedt.toolkits.magnet_segmentation import __version__; print(); print(__version__)")"
+          echo "Magnet Segmentation Toolkit version is: $(python -c "from ansys.aedt.toolkits.magnet_segmentation import __version__; print(); print(__version__)")"
 
       - name: Build the documentation (HTML)
         run: |
