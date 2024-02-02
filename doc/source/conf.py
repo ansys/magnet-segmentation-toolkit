@@ -7,6 +7,7 @@ import sys
 from ansys_sphinx_theme import ansys_favicon
 from ansys_sphinx_theme import get_version_match
 from ansys_sphinx_theme import pyansys_logo_black
+from sphinx_gallery.sorting import FileNameSortKey
 
 sys.path.append(pathlib.Path(__file__).parent.parent.parent)
 
@@ -24,6 +25,10 @@ release = version = __version__
 cname = os.getenv("DOCUMENTATION_CNAME", "nocname.com")
 switcher_version = get_version_match(__version__)
 print(copyright)
+
+# Specify environment variable to build the doc without grpahical mode while
+# keeping examples graphical mode activated.
+os.environ["PYAEDT_NON_GRAPHICAL"] = "1"
 
 # Select desired logo, theme, and declare the html title
 html_logo = pyansys_logo_black
@@ -121,3 +126,25 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+if os.name != "posix":
+    extensions.append("sphinx_gallery.gen_gallery")
+
+    sphinx_gallery_conf = {
+        # path to your examples scripts
+        "examples_dirs": ["../../examples/"],
+        # path where to save gallery generated examples
+        "gallery_dirs": ["examples"],
+        # Pattern to search for examples files
+        "filename_pattern": r"\.py",
+        # Remove the "Download all examples" button from the top level gallery
+        "download_all_examples": False,
+        # Sort gallery examples by file name instead of number of lines (default)
+        "within_subsection_order": FileNameSortKey,
+        # directory where function granular galleries are stored
+        "backreferences_dir": None,
+        # Modules for which function level galleries are created.  In
+        "doc_module": "ansys-legacy",
+        "ignore_pattern": "flycheck*",
+        "thumbnail_size": (350, 350),
+    }

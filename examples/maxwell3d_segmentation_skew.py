@@ -4,10 +4,12 @@ Maxwell 3D segmentation
 This example shows how to use the Magnet Segmentation Toolkit to segment
 your AEDT motor model.
 """
+
 #################################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports.
+
 import os
 from pathlib import Path
 import shutil

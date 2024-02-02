@@ -14,6 +14,7 @@ Magnet Segmentation Toolkit documentation |version|
    Toolkit/ui
    Toolkit/index
    Contributing
+   examples/index
 
 
 Indices and tables
