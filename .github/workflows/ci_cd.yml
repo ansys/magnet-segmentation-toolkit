@@ -44,13 +44,80 @@ jobs:
 
   doc-build:
     name: "Build documentation"
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
     needs: doc-style
     steps:
       - uses: ansys/actions/doc-build@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           check-links: false
+
+  docs-build:
+    name: "Build documentation"
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: ansys/actions/_setup-python@main
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          use-cache: false
+
+      - name: 'Create virtual env'
+        run: |
+          python -m venv .venv
+
+      - name: "Update pip"
+        run: |
+          . .venv\Scripts\Activate.ps1
+          python -m pip install pip -U
+          python -m pip install wheel setuptools -U
+          python -c "import sys; print(sys.executable)"
+
+      - name: Install magnet segmentation toolkit with doc dependencies
+        run: |
+          . .venv\Scripts\Activate.ps1
+          pip install .
+          pip install .[doc]
+
+      - name: Retrieve magnet segmentation toolkit version
+        run: |
+          . .venv\Scripts\Activate.ps1
+          echo "Magnet Segmentation Toolkit version is: $(python -c "from from ansys.aedt.toolkits.magnet_segmentation import __version__; print(); print(__version__)")"
+
+      - name: Build the documentation (HTML)
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          cd doc
+          .\make.bat html
+
+      - name: Build the documentation (PDF)
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          cd doc
+          .\make.bat pdf
+
+      # Verify that sphinx generates no warnings
+      - name: Check for warnings
+        run: |
+          . .venv\Scripts\Activate.ps1
+          python doc/print_errors.py
+
+      - name: Upload HTML Documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-html
+          path: doc/_build/html
+          retention-days: 1
+
+      - name: Upload PDF Documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-pdf
+          path: doc/_build/latex/*.pdf
+          retention-days: 7
 
   smoke-tests:
     name: "Build and Smoke tests"
