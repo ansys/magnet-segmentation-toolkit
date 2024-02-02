@@ -42,7 +42,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  docs-build:
+  doc-build:
     name: "Build documentation"
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
     timeout-minutes: 10
