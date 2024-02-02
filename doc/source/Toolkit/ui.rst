@@ -17,7 +17,7 @@ see these topics:
      :width: 800
      :alt: Settings tab
 
-#. Under **Project Name**, click **Select aedt project** to select an AEDT file for a
+#. Under **Project Name**, click **Select AEDT project** to select an AEDT file for a
    3D motor model.
 
 #. Near the bottom of the tab, click **Launch AEDT**.
