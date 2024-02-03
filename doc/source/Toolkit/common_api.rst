@@ -1,6 +1,6 @@
-Common AEDT API
-===============
-The Common API contains the ``AEDTCommonToolkit`` class, which provides basic
+AEDT Common Toolkit API
+=======================
+The AEDT Common Toolkit API contains the ``AEDTCommonToolkit`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 

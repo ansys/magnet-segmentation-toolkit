@@ -487,7 +487,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.action_save_project.setText(QCoreApplication.translate("MainWindow", u"Save project", None))
         self.release_button.setText(QCoreApplication.translate("MainWindow", u" Close Toolkit ", None))
-        self.release_and_exit_button.setText(QCoreApplication.translate("MainWindow", u" Close Desktop and Toolkit ", None))
+        self.release_and_exit_button.setText(QCoreApplication.translate("MainWindow", u" Close AEDT and Toolkit ", None))
         self.cores_label.setText(QCoreApplication.translate("MainWindow", u"Number of Cores", None))
         self.numcores.setText(QCoreApplication.translate("MainWindow", u"4", None))
         self.graphical_label.setText(QCoreApplication.translate("MainWindow", u"Non Graphical", None))
@@ -499,7 +499,7 @@ class Ui_MainWindow(object):
         self.process_id_combo.setItemText(0, QCoreApplication.translate("MainWindow", u"Create New Session", None))
 
         self.project_path_label.setText(QCoreApplication.translate("MainWindow", u"Project Name", None))
-        self.browse_project.setText(QCoreApplication.translate("MainWindow", u"Select aedt project", None))
+        self.browse_project.setText(QCoreApplication.translate("MainWindow", u"Select AEDT project", None))
         self.connect_aedtapp.setText(QCoreApplication.translate("MainWindow", u"Launch AEDT", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.AEDTsettings), QCoreApplication.translate("MainWindow", u" AEDT Settings ", None))
         self.projects_label_2.setText(QCoreApplication.translate("MainWindow", u"Projects", None))

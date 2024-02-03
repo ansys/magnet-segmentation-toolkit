@@ -14,6 +14,7 @@ HFSS
 new_toolkit_name
 Magnet Segmentation Toolkit
 toml
+toolkit's
 toolkits
 rst
 UI
