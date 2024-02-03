@@ -55,22 +55,6 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-cache: false
 
-      # - name: Display PATH
-      #   run: |
-      #     echo $PATH
-
-      # - name: Check Pandoc installation
-      #   run: |
-      #     pandoc --version
-
-      # - name: Add Pandoc to PATH
-      #   run: |
-      #     echo "C:\Program Files\Pandoc\" >> $GITHUB_PATH
-
-      # - name: Check Pandoc installation
-      #   run: |
-      #     pandoc --version
-
       - name: 'Create virtual env'
         run: |
           python -m venv .venv
@@ -87,11 +71,7 @@ jobs:
           . .venv\Scripts\Activate.ps1
           pip install .
           pip install .[doc]
-          pip install pypandoc_binary
-
-      # - name: Check Pandoc installation
-      #   run: |
-      #     pandoc --version
+          # pip install pypandoc_binary
 
       - name: Retrieve magnet segmentation toolkit version
         run: |
