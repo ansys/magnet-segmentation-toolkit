@@ -63,13 +63,13 @@ jobs:
       #   run: |
       #     pandoc --version
 
-      - name: Add Pandoc to PATH
-        run: |
-          echo "C:\Program Files\Pandoc\" >> $GITHUB_PATH
+      # - name: Add Pandoc to PATH
+      #   run: |
+      #     echo "C:\Program Files\Pandoc\" >> $GITHUB_PATH
 
-      - name: Check Pandoc installation
-        run: |
-          pandoc --version
+      # - name: Check Pandoc installation
+      #   run: |
+      #     pandoc --version
 
       - name: 'Create virtual env'
         run: |
@@ -87,6 +87,11 @@ jobs:
           . .venv\Scripts\Activate.ps1
           pip install .
           pip install .[doc]
+          pip install pypandoc_binary
+
+      - name: Check Pandoc installation
+        run: |
+          pandoc --version
 
       - name: Retrieve magnet segmentation toolkit version
         run: |
