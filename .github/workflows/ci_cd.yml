@@ -55,6 +55,18 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-cache: false
 
+      - name: Display PATH
+        run: |
+          echo $PATH
+
+      - name: Check Pandoc installation
+        run: |
+          pandoc --version
+
+      - name: Add Pandoc to PATH
+        run: |
+          echo "C:\Program Files\Pandoc\" >> $GITHUB_PATH
+
       - name: 'Create virtual env'
         run: |
           python -m venv .venv
