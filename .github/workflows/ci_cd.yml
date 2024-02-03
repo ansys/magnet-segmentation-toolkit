@@ -67,6 +67,10 @@ jobs:
         run: |
           echo "C:\Program Files\Pandoc\" >> $GITHUB_PATH
 
+      - name: Check Pandoc installation
+        run: |
+          pandoc --version
+
       - name: 'Create virtual env'
         run: |
           python -m venv .venv
