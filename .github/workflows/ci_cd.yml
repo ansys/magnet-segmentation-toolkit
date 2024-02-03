@@ -89,9 +89,9 @@ jobs:
           pip install .[doc]
           pip install pypandoc_binary
 
-      - name: Check Pandoc installation
-        run: |
-          pandoc --version
+      # - name: Check Pandoc installation
+      #   run: |
+      #     pandoc --version
 
       - name: Retrieve magnet segmentation toolkit version
         run: |
