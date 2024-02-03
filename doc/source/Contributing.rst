@@ -3,10 +3,11 @@ Contribute
 ==========
 Overall guidance on contributing to a PyAnsys repository appears in
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_
-in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar
+in the *PyAnsys developer's guide*. Ensure that you are thoroughly familiar
 with this guide before attempting to contribute to PyAEDT or its toolkits.
  
-The following contribution information is specific to PyAEDT toolkits.
+The following contribution information is specific to the Magnet Segmentation
+Toolkit.
 
 Clone the repository
 --------------------
@@ -27,7 +28,7 @@ to create issues to report bugs and request new features.
 
 View documentation
 -------------------
-Documentation for the latest stable release is hosted at `Magnet Segmentation Toolkit documentation <https://aedt.motor.toolkit.docs.pyansys.com/version/stable/>`_.
+Documentation for the latest stable release is hosted at `Magnet Segmentation Toolkit documentation <https://aedt.magnet.segmentation.toolkit.docs.pyansys.com/version/stable/>`_.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from viewing
 the documentation for the latest stable release to viewing the documentation for the development version

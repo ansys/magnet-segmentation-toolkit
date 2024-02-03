@@ -64,7 +64,7 @@ class ToolkitConnectionStatus:
 
 
 class AEDTCommonToolkit(object):
-    """Provides common functions to control AEDT.
+    """Provides common functions for controlling AEDT.
 
     These functions are shared between the backend and frontend and are common to all AEDT toolkits.
 
@@ -422,7 +422,7 @@ class AEDTCommonToolkit(object):
         return True
 
     def connect_design(self, app_name: Optional[str] = None):
-        """Connect to an application design.
+        """Connect to an AEDT application design.
 
         If a design exists, this method uses the active project and design. If a design does not exist,
         this method creates a design of the specified type. If no application is specified, the default is ``"Hfss"``.
@@ -448,7 +448,7 @@ class AEDTCommonToolkit(object):
         Returns
         -------
         bool
-            Returns ``True`` if the connection to a design is successful, ``False`` otherwise.
+            ``True`` if the connection to a design is successful, ``False`` otherwise.
 
         Examples
         --------
@@ -596,14 +596,14 @@ class AEDTCommonToolkit(object):
 
     @thread.launch_thread
     def save_project(self, project_path=None):
-        """Save the project.
+        """Save the AEDT project.
 
         The method uses the properties to get the project path. The method is launched in a thread.
 
         Parameters
         ----------
         project_path : str, optional
-            Full path to save the AEDT project to.
+            Full path to save the project to.
             The default value is ``None``, in which case the current project is overwritten.
 
         Returns
@@ -644,7 +644,7 @@ class AEDTCommonToolkit(object):
             return False
 
     def wait_to_be_idle(self):
-        """Wait for the toolkit thread to be idle and ready to accept new task."""
+        """Wait for the toolkit thread to be idle and ready to accept a new task."""
         status = self.get_thread_status()
         while status == ToolkitThreadStatus.BUSY:
             time.sleep(1)
