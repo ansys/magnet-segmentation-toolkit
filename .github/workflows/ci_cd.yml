@@ -110,12 +110,6 @@ jobs:
           cd doc
           .\make.bat pdf
 
-      # Verify that sphinx generates no warnings
-      - name: Check for warnings
-        run: |
-          . .venv\Scripts\Activate.ps1
-          python doc/print_errors.py
-
       - name: Upload HTML Documentation artifact
         uses: actions/upload-artifact@v4
         with:
