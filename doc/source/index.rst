@@ -13,7 +13,7 @@ from the AEDT UI or launch it directly from a Python console.
         :link: Getting_started
         :link-type: doc
 
-        Learn more about Magnet Segmentation Toolkit and how to install and use it.
+        Learn more about the Magnet Segmentation Toolkit and how to install it.
 
     .. grid-item-card:: UI reference :fa:`book-bookmark`
         :padding: 2 2 2 2
