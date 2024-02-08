@@ -67,7 +67,7 @@ def setup(app):
 
 
 # Project information
-project = "ansys-aedt-toolkits-magnet-segmentation"
+project = "ansys-magnet-segmentation-toolkit"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
@@ -82,7 +82,7 @@ os.environ["PYAEDT_NON_GRAPHICAL"] = "1"
 # Select desired logo, theme, and declare the html title
 html_logo = pyansys_logo_black
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "ansys-aedt-toolkits-magnet-segmentation"
+html_short_title = html_title = "ansys-magnet-segmentation-toolkit"
 
 # specify the location of your GitHub repo
 html_context = {
