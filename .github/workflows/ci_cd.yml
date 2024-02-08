@@ -16,7 +16,7 @@ on:
 env:
   MAIN_PYTHON_VERSION: '3.10'
   DOCUMENTATION_CNAME: 'aedt.magnet.segmentation.toolkit.docs.pyansys.com'
-  PACKAGE_NAME: 'ansys-aedt-toolkits-magnet-segmentation'
+  PACKAGE_NAME: 'ansys-magnet-segmentation-toolkit'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
 
 concurrency:
