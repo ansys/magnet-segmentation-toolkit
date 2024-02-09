@@ -30,14 +30,14 @@ from the AEDT UI or launch it directly from a Python console.
 Requirements
 ~~~~~~~~~~~~
 In addition to the runtime dependencies listed in
-`Getting started <https://aedt.magnet.segmentation.toolkit.docs.pyansys.com/version/stable/Getting_started.html>`_,
+`Getting started <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/Getting_started.html>`_,
 the Magnet Segmentation Toolkit requires AEDT 2023 R1 or later. This toolkit also supports the AEDT
 Student Version for 2023 R1 or later.
 
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Documentation for the latest stable release of the Magnet Segmentation Toolkit is hosted at
-`Magnet Segmentation Toolkit documentation <https://aedt.magnet.segmentation.toolkit.docs.pyansys.com/version/stable/index.html>`_.
+`Magnet Segmentation Toolkit documentation <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/index.html>`_.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from
 viewing the documentation for the latest stable release to viewing the documentation for the
