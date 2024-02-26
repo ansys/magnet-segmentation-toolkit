@@ -1,23 +1,73 @@
+# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Sphinx documentation configuration file."""
 from datetime import datetime
 import os
 import pathlib
+import shutil
 import sys
 
 from ansys_sphinx_theme import ansys_favicon
+from ansys_sphinx_theme import ansys_logo_white
+from ansys_sphinx_theme import ansys_logo_white_cropped
 from ansys_sphinx_theme import get_version_match
+from ansys_sphinx_theme import latex
 from ansys_sphinx_theme import pyansys_logo_black
+from ansys_sphinx_theme import watermark
+from sphinx.util import logging
 
 sys.path.append(pathlib.Path(__file__).parent.parent.parent)
 
 path = os.path.join(pathlib.Path(__file__).parent.parent.parent, "src")
 print(path)
 sys.path.append(path)
-from ansys.aedt.toolkits.motor import __version__
+from ansys.aedt.toolkits.magnet_segmentation import __version__
 
-print(__version__)
+logger = logging.getLogger(__name__)
+path = pathlib.Path(__file__).parent.parent.parent / "examples"
+EXAMPLES_DIRECTORY = path.resolve()
+
+
+def copy_examples(app):
+    """Copy directory examples (root directory) files into the doc/source/examples directory."""
+    DESTINATION_DIRECTORY = pathlib.Path(app.srcdir, "examples").resolve()
+    print(DESTINATION_DIRECTORY)
+    logger.info(f"Copying examples from {EXAMPLES_DIRECTORY} to {DESTINATION_DIRECTORY}.")
+    if os.path.exists(DESTINATION_DIRECTORY):
+        logger.info(f"Directory {DESTINATION_DIRECTORY} already exist, removing it.")
+        shutil.rmtree(DESTINATION_DIRECTORY, ignore_errors=True)
+        logger.info(f"Directory removed.")
+
+    shutil.copytree(EXAMPLES_DIRECTORY, DESTINATION_DIRECTORY)
+    logger.info(f"Copy performed")
+
+
+def setup(app):
+    app.connect("builder-inited", copy_examples)
+
+
 # Project information
-project = "ansys-aedt-toolkits-motor"
+project = "ansys-magnet-segmentation-toolkit"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
@@ -25,15 +75,19 @@ cname = os.getenv("DOCUMENTATION_CNAME", "nocname.com")
 switcher_version = get_version_match(__version__)
 print(copyright)
 
+# Specify environment variable to build the doc without grpahical mode while
+# keeping examples graphical mode activated.
+os.environ["PYAEDT_NON_GRAPHICAL"] = "1"
+
 # Select desired logo, theme, and declare the html title
 html_logo = pyansys_logo_black
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "ansys-aedt-toolkits-motor"
+html_short_title = html_title = "ansys-magnet-segmentation-toolkit"
 
 # specify the location of your GitHub repo
 html_context = {
     "github_user": "ansys",
-    "github_repo": "pymotorcad-pyaedt-toolkit",
+    "github_repo": "magnet-segmentation-toolkit",
     "github_version": "main",
     "doc_path": "doc/source",
 }
@@ -43,7 +97,7 @@ html_theme_options = {
         "version_match": switcher_version,
     },
     "check_switcher": False,
-    "github_url": "https://github.com/ansys/pymotorcad-pyaedt-toolkit",
+    "github_url": "https://github.com/ansys/magnet-segmentation-toolkit",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "collapse_navigation": True,
@@ -54,7 +108,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "Support",
-            "url": "https://github.com/ansys/pymotorcad-pyaedt-toolkit/issues",
+            "url": "https://github.com/ansys/magnet-segmentation-toolkit/issues",
             "icon": "fa fa-comment fa-fw",
         },
     ],
@@ -71,6 +125,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
     "sphinx_copybutton",
+    "sphinx_design",
     "recommonmark",
     "numpydoc",
     "nbsphinx",
@@ -117,7 +172,62 @@ html_favicon = ansys_favicon
 templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
-source_suffix = ".rst"
+source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 
 # The master toctree document.
 master_doc = "index"
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = "sphinx"
+
+# Execute notebooks before conversion
+nbsphinx_execute = "always"
+
+# Allow errors to help debug.
+nbsphinx_allow_errors = True
+
+# # Sphinx gallery customization
+
+nbsphinx_thumbnails = {
+    "examples/maxwell3d_segmentation_skew": "_static/thumbnails/maxwell3d_segmentation_skew.png",
+}
+
+nbsphinx_custom_formats = {
+    ".py": ["jupytext.reads", {"fmt": ""}],
+}
+
+exclude_patterns = ["_build", "sphinx_boogergreen_theme_1", "Thumbs.db", ".DS_Store", "*.txt", "conf.py"]
+
+# if os.name != "posix":
+#     extensions.append("sphinx_gallery.gen_gallery")
+
+#     sphinx_gallery_conf = {
+#         # # convert rst to md for ipynb
+#         "pypandoc": True,
+#         # path to your examples scripts
+#         "examples_dirs": ["../../examples/"],
+#         # path where to save gallery generated examples
+#         "gallery_dirs": ["examples"],
+#         # Pattern to search for examples files
+#         "filename_pattern": r"\.py",
+#         # Remove the "Download all examples" button from the top level gallery
+#         "download_all_examples": False,
+#         # Sort gallery examples by file name instead of number of lines (default)
+#         "within_subsection_order": FileNameSortKey,
+#         # directory where function granular galleries are stored
+#         "backreferences_dir": None,
+#         # Modules for which function level galleries are created.  In
+#         "doc_module": "ansys-legacy",
+#         "ignore_pattern": "flycheck*",
+#         "thumbnail_size": (350, 350),
+#     }
+
+
+# -- Options for LaTeX output ------------------------------------------------
+
+# additional logos for the latex coverpage
+latex_additional_files = [watermark, ansys_logo_white, ansys_logo_white_cropped]
+
+# change the preamble of latex with customized title page
+# variables are the title of pdf, watermark
+latex_elements = {"preamble": latex.generate_preamble(html_title)}

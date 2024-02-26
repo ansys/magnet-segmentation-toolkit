@@ -15,9 +15,8 @@ on:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
-  DOCUMENTATION_CNAME: 'aedt.motor.toolkit.docs.pyansys.com'
-  LIBRARY_NAME: 'ansys-aedt-toolkits-motor'
-  LIBRARY_NAMESPACE: 'ansys.aedt.toolkits.motor'
+  DOCUMENTATION_CNAME: 'magnet.segmentation.toolkit.docs.pyansys.com'
+  PACKAGE_NAME: 'ansys-magnet-segmentation-toolkit'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
 
 concurrency:
@@ -30,7 +29,7 @@ jobs:
     name: "Code style"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/code-style@v4
+      - uses: ansys/actions/code-style@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -39,19 +38,71 @@ jobs:
     name: "Documentation style"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/doc-style@v4
+      - uses: ansys/actions/doc-style@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   doc-build:
     name: "Build documentation"
-    runs-on: ubuntu-latest
-    needs: doc-style
+    runs-on: [self-hosted, pyaedt, toolkits, Windows]
+    timeout-minutes: 10
     steps:
-      - uses: ansys/actions/doc-build@v4
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: ansys/actions/_setup-python@main
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          check-links: false
+          use-cache: false
+
+      - name: 'Create virtual env'
+        run: |
+          python -m venv .venv
+
+      - name: "Update pip"
+        run: |
+          . .venv\Scripts\Activate.ps1
+          python -m pip install pip -U
+          python -m pip install wheel setuptools -U
+          python -c "import sys; print(sys.executable)"
+
+      - name: Install magnet segmentation toolkit with doc dependencies
+        run: |
+          . .venv\Scripts\Activate.ps1
+          pip install .
+          pip install .[doc]
+          # pip install pypandoc_binary
+
+      - name: Retrieve magnet segmentation toolkit version
+        run: |
+          . .venv\Scripts\Activate.ps1
+          echo "Magnet Segmentation Toolkit version is: $(python -c "from ansys.aedt.toolkits.magnet_segmentation import __version__; print(); print(__version__)")"
+
+      - name: Build the documentation (HTML)
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          cd doc
+          .\make.bat html
+
+      - name: Build the documentation (PDF)
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          cd doc
+          .\make.bat pdf
+
+      - name: Upload HTML Documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-html
+          path: doc/_build/html
+          retention-days: 1
+
+      - name: Upload PDF Documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-pdf
+          path: doc/_build/latex/*.pdf
+          retention-days: 7
 
   smoke-tests:
     name: "Build and Smoke tests"
@@ -63,9 +114,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [ code-style ]
     steps:
-      - uses: ansys/actions/build-wheelhouse@v4
+      - uses: ansys/actions/build-wheelhouse@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
@@ -137,9 +188,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ doc-build, tests_windows_aedt ]
     steps:
-      - uses: ansys/actions/build-library@v4
+      - uses: ansys/actions/build-library@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   release:
@@ -148,25 +199,17 @@ jobs:
     needs: build-library
     runs-on: ubuntu-latest
     steps:
-
-      - name: "Release to the private PyPI"
-        uses: ansys/actions/release-pypi-private@v4
+      - name: "Release to the public PyPI repository"
+        uses: ansys/actions/release-pypi-public@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
           twine-username: "__token__"
-          twine-token: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-
-      #      - name: "Release to the public PyPI repository"
-      #        uses: ansys/actions/release-pypi-public@v4
-      #        with:
-      #          library-name: ${{ env.LIBRARY_NAME }}
-      #          twine-username: "__token__"
-      #          twine-token: ${{ secrets.PYPI_TOKEN }}
+          twine-token: ${{ secrets.PYPI_TOKEN }}
 
       - name: "Release to GitHub"
-        uses: ansys/actions/release-github@v4
+        uses: ansys/actions/release-github@v5
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          library-name: ${{ env.PACKAGE_NAME }}
 
   doc-deploy-dev:
     name: "Deploy development documentation"
@@ -174,7 +217,7 @@ jobs:
     needs: build-library
     if: github.event_name == 'push'
     steps:
-      - uses: ansys/actions/doc-deploy-dev@v4
+      - uses: ansys/actions/doc-deploy-dev@v5
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -185,7 +228,7 @@ jobs:
     needs: release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
-      - uses: ansys/actions/doc-deploy-stable@v4
+      - uses: ansys/actions/doc-deploy-stable@v5
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
