@@ -1,3 +1,25 @@
+# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """
 AEDT Motor Test Configuration Module
 ------------------------------------
@@ -19,16 +41,11 @@ directory as this module. An example of the contents of local_config.json
 import json
 import os
 
-# from pathlib import Path
-# import shutil
-import time
-
 # from pyaedt import generate_unique_folder_name
 from pyaedt import settings
 import pytest
 
-from ansys.aedt.toolkits.motor.backend.api import Toolkit
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 
 # Constants
 PROJECT_NAME = "e9_eMobility_IPM_3D"
@@ -51,7 +68,7 @@ if os.path.exists(local_config_file):
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
-settings.use_grpc_api = config.get("use_grpc", True)
+settings.use_grpc_api = config["use_grpc"]
 settings.non_graphical = config["non_graphical"]
 
 
@@ -70,17 +87,9 @@ def toolkit(common_temp_dir):
     }
     toolkit.set_properties(new_properties)
     toolkit.launch_aedt()
-    wait_toolkit(toolkit)
+    toolkit.wait_to_be_idle()
 
     yield toolkit
 
     toolkit.release_aedt(True, True)
     # shutil.rmtree(temp_folder, ignore_errors=True)
-
-
-def wait_toolkit(toolkit):
-    """Wait for the toolkit thread to be idle and ready to accept new task."""
-    status = toolkit.get_thread_status()
-    while status == ToolkitThreadStatus.BUSY:
-        time.sleep(1)
-        status = toolkit.get_thread_status()

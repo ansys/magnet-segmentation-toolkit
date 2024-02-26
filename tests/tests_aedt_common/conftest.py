@@ -1,3 +1,25 @@
+# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 # import datetime
 import gc
 import json
@@ -21,14 +43,14 @@ from pyaedt.aedt_logger import pyaedt_logger
 import pytest
 import requests
 
-from ansys.aedt.toolkits.motor.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
 local_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(local_path)
 
-from ansys.aedt.toolkits.motor import backend
+from ansys.aedt.toolkits.magnet_segmentation import backend
 
 is_linux = os.name == "posix"
 
@@ -71,6 +93,7 @@ logger = pyaedt_logger
 # Define desktopVersion explicitly since this is imported by other modules
 desktop_version = config["aedt_version"]
 non_graphical = config["non_graphical"]
+use_grpc = config["use_grpc"]
 # local_scratch = Scratch(scratch_path)
 
 
@@ -93,6 +116,30 @@ def run_command(*command):
     stdout, stderr = process.communicate()
     print(stdout.decode())
     print(stderr.decode())
+
+
+def desktop_cleanup(flask_pids):
+    """Remove project file logger and kill flask processes."""
+    logger.remove_all_project_file_logger()
+
+    # Register the cleanup function to be called on script exit
+    gc.collect()
+
+    if is_linux:
+        for process in flask_pids:
+            os.kill(process, signal.SIGKILL)
+    else:
+        for process in flask_pids:
+            if process.name() == "python.exe" or process.name() == "python":
+                process.terminate()
+
+
+def desktop_cleanup_and_exit(flask_pids, msg=None):
+    """Log error messages and exit."""
+    if msg:
+        logger.error(f"{msg}")
+    desktop_cleanup(flask_pids)
+    exit(1)
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -136,43 +183,63 @@ def desktop_init():
         flask_pids = [element for element in psutil.Process().children(recursive=True) if element not in initial_pids]
 
     # Wait for the Flask application to start
-    response = requests.get(url_call + "/status")
-    while response.json() != ToolkitThreadStatus.IDLE.value:
-        time.sleep(1)
+    try:
         response = requests.get(url_call + "/status")
+        if response.ok:
+            while response.json() != ToolkitThreadStatus.IDLE.value:
+                time.sleep(1)
+                response = requests.get(url_call + "/status")
+                if not response.ok:
+                    desktop_cleanup_and_exit(
+                        flask_pids, msg=f"Error when starting Flask app: {response.json()['message']}"
+                    )
+        else:
+            desktop_cleanup_and_exit(flask_pids, msg=f"Error when starting Flask app: {response.json()['message']}")
+    except requests.exceptions.RequestException:
+        desktop_cleanup_and_exit(flask_pids)
+        logger.error(f"Failed to start Flask app")
 
     properties = {
         "aedt_version": desktop_version,
         "non_graphical": non_graphical,
-        "use_grpc": True,
+        "use_grpc": use_grpc,
     }
-    requests.put(url_call + "/properties", json=properties)
-    requests.post(url_call + "/launch_aedt", json=properties)
-    response = requests.get(url_call + "/status")
-    while response.json() != ToolkitThreadStatus.IDLE.value:
-        time.sleep(1)
+    try:
+        response = requests.put(url_call + "/properties", json=properties)
+        if not response.ok:
+            desktop_cleanup_and_exit(flask_pids, msg="Properties update failed")
+    except requests.exceptions.RequestException:
+        desktop_cleanup_and_exit(flask_pids)
+        logger.error(f"Failed to update properties")
+
+    try:
+        response = requests.post(url_call + "/launch_aedt", json=properties)
+        if not response.ok:
+            desktop_cleanup_and_exit(flask_pids, msg="Launch AEDT failed")
+    except requests.exceptions.RequestException:
+        desktop_cleanup_and_exit(flask_pids)
+        logger.error(f"Failed to launch AEDT")
+
+    try:
         response = requests.get(url_call + "/status")
-    yield
+        if response.ok:
+            while response.json() != ToolkitThreadStatus.IDLE.value:
+                time.sleep(1)
+                response = requests.get(url_call + "/status")
+                if not response.ok:
+                    desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for Toolkit thread status to be idle")
+            yield
+        else:
+            desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for Toolkit thread status to be idle")
+    except requests.exceptions.RequestException:
+        desktop_cleanup_and_exit(flask_pids)
+        logger.error(f"Something went wrong while waiting for Toolkit to be idle")
+
     properties = {"close_projects": True, "close_on_exit": True}
-    requests.post(url_call + "/close_aedt", json=properties)
+    try:
+        requests.post(url_call + "/close_aedt", json=properties)
+    except requests.exceptions.RequestException:
+        desktop_cleanup_and_exit(flask_pids)
+        logger.error(f"Failed to closed AEDT project")
 
-    logger.remove_all_project_file_logger()
-    # shutil.rmtree(scratch_path, ignore_errors=True)
-
-    # Register the cleanup function to be called on script exit
-    gc.collect()
-
-    if is_linux:
-        for process in flask_pids:
-            os.kill(process, signal.SIGKILL)
-    else:
-        for process in flask_pids:
-            if process.name() == "python.exe" or process.name() == "python":
-                process.terminate()
-
-
-# @pytest.fixture(scope="session")
-# def common_temp_dir(tmp_path_factory):
-#     tmp_dir = tmp_path_factory.mktemp("test_motor_workflows", numbered=True)
-#     yield tmp_dir
-#     shutil.rmtree(str(tmp_dir))
+    desktop_cleanup(flask_pids)

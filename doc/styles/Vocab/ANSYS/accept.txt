@@ -12,8 +12,9 @@ docstring
 GitHub
 HFSS
 new_toolkit_name
-Motor Segmentation Toolkit
+Magnet Segmentation Toolkit
 toml
+toolkit's
 toolkits
 rst
 UI

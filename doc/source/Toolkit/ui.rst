@@ -2,31 +2,36 @@
 UI reference
 ============
 
-This section describes how to use the Motor Toolkit Wizard, which requires an installed
+This section describes how to use the Magnet Segmentation Toolkit Wizard, which requires an installed
 and licensed copy of AEDT. It assumes that you have already launched the wizard from
 either the AEDT menu or AEDT console. For toolkit installation and wizard launching information,
-see :ref:`install-toolkit-AEDT` or :ref:`install_toolkit_console_ui`.
+see these topics:
 
-#. On the **Settings** tab, specify settings for either creating a new AEDT session or
+- :ref:`install-toolkit-AEDT`
+- :ref:`install_toolkit_console_ui`
+
+#. On the **Settings** tab, specify settings for either creating an AEDT session or
    connecting to an existing AEDT session.
    
    .. image:: ../_static/design_connected.png
      :width: 800
-     :alt: Settings Tab
+     :alt: Settings tab
 
 #. Under **Project Name**, click **Select AEDT project** to select an AEDT file for a
    3D motor model.
 
 #. Near the bottom of the tab, click **Launch AEDT**.
 
-#. On the **Segmentation** tab, set the project and design to work in as well as the
+#. On the **Segmentation** tab, specify the project, design to work in, and
    segmentation settings.
 
    .. image:: ../_static/segmentation_settings.png
      :width: 800
-     :alt: Settings Tab
+     :alt: Settings tab
 
-#. Select **File > Save** to save the project.
+#. At the bottom of the tab, click **Perform Segmentation** and then **Apply Skew**.
+
+#. From the AEDT menu, select **File > Save** to save the project.
 
 The wizard has a progress bar and a logger box, where you can see the status of every operation.
 A red progress bar means that the toolkit is busy. Every operation must wait for the previous
