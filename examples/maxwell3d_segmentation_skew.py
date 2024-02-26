@@ -62,6 +62,7 @@ properties["magnet_segments_per_slice"] = 2
 properties["rotor_slices"] = 2
 properties["apply_mesh_sheets"] = True
 properties["mesh_sheets_number"] = 3
+properties["skew_angle"] = "2deg"
 
 # ## Set non-graphical mode
 #
@@ -98,6 +99,17 @@ toolkit.segmentation()
 # Apply the skew angle to rotor slices.
 
 toolkit.apply_skew()
+
+# ## Validate and analyze design
+
+toolkit.validate_and_analyze()
+
+# ## Create magnet loss report
+#
+# Create magnet loss report and compute average value
+
+loss = toolkit.get_magnet_loss()
+print("Average magnet loss: {}{}".format(loss["SolidLoss"]["Value"], loss["SolidLoss"]["Unit"]))
 
 # ## Save and release AEDT
 #

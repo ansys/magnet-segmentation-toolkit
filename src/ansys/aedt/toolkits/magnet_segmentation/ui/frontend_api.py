@@ -155,12 +155,55 @@ class ToolkitFrontend(FrontendGeneric):
                     self.is_skewed.setCurrentText("True")
                     msg = "Apply skew call successful"
                 else:
-                    msg = "Apply segmentation call failed"
+                    msg = "Apply skew call failed"
                 logger.debug(msg)
                 self.write_log_line(msg)
                 self.update_progress(100)
             except requests.exceptions.RequestException:
                 logger.error("Apply skew call failed")
+
+    def validate_and_analyze(self):
+        if self.backend_busy():
+            msg = ToolkitThreadStatus.BUSY.value
+            logger.debug(msg)
+            self.write_log_line(msg)
+            return
+
+        self.get_properties()
+        # check box name setup
+        be_properties.setup_to_analyze = self.setup_name.text()
+        self.set_properties()
+
+        try:
+            response = requests.post(self.url + "/validate_analyze")
+            if response.ok:
+                msg = "Validate and analyze call successful"
+            else:
+                msg = "Validate and analyze call failed"
+                logger.debug(msg)
+                self.write_log_line(msg)
+                self.update_progress(100)
+        except requests.exceptions.RequestException:
+            logger.error("Validate and analyze call failed")
+
+    def get_magnet_loss(self):
+        if self.backend_busy():
+            msg = ToolkitThreadStatus.BUSY.value
+            logger.debug(msg)
+            self.write_log_line(msg)
+            return
+
+        try:
+            response = requests.post(self.url + "/magnet_loss")
+            if response.ok:
+                msg = "Magnet loss call successful"
+            else:
+                msg = "Magnet loss call failed"
+                logger.debug(msg)
+                self.write_log_line(msg)
+                self.update_progress(100)
+        except requests.exceptions.RequestException:
+            logger.error("Magnet loss call failed")
 
     def hide_options(self):
         if self.is_skewed.currentText() == "True":

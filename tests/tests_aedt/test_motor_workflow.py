@@ -61,7 +61,7 @@ class TestAEDTMotorWorkflow:
         assert toolkit.aedt_sessions() != []
 
     def test_05_get_design_names(self, toolkit):
-        """Check deisng names of the project."""
+        """Check design names of the project."""
         res = toolkit.get_design_names()
         assert len(res) == 1
         assert res[0][APP_NAME] == DESIGN_NAME
@@ -87,3 +87,11 @@ class TestAEDTMotorWorkflow:
         """Apply skew angle to rotor slices."""
         assert toolkit.set_properties({"skew_angle": "2deg"})
         assert toolkit.apply_skew()
+
+    def test_08_validate_and_analyze(self, toolkit):
+        assert toolkit.validate_and_analyze()
+
+    def test_09_get_magnet_loss(self, toolkit):
+        magnet_loss = toolkit.get_magnet_loss()
+        assert isinstance(magnet_loss, dict)
+        pass

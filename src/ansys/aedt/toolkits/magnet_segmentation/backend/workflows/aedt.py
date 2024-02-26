@@ -23,6 +23,7 @@
 from operator import attrgetter
 
 from pyaedt.application.Variables import decompose_variable_value
+from pyaedt.generic.constants import unit_converter
 from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
@@ -34,20 +35,18 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 class AEDTWorkflow(AEDTCommonToolkit):
     """Controls the AEDT toolkit workflow.
 
-    This class provides methods for connecting to a selected design.
+    This class provides methods for connecting to a selected design,
+    segment and skew the motor.
 
     Examples
     --------
         >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
-        >>> import time
         >>> toolkit = Toolkit()
         >>> msg1 = toolkit.launch_aedt()
-        >>> response = toolkit.get_thread_status()
         >>> toolkit.wait_to_be_idle()
-        >>> new_property = {"vbs_path": "path\to\toolkit.vbs"}
-        >>> toolkit.set_properties(new_property)
-        >>> msg3 = toolkit.run_vbs()
-        >>> toolkit.wait_to_be_idle()
+        >>> toolkit.segmentation()
+        >>> toolkit.apply_skew()
+        >>> toolkit.release_aedt(True, True)
     """
 
     def __init__(self):
@@ -93,6 +92,9 @@ class AEDTWorkflow(AEDTCommonToolkit):
                 ):
                     bound.delete()
 
+        vacuum_objects = [x for x in self.aedtapp.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"]
+        rotor_pockets = self._get_rotor_pockets(vacuum_objects)
+
         # If model is already skewed only magnets can be segmented
         if not properties.is_skewed:
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
@@ -111,11 +113,6 @@ class AEDTWorkflow(AEDTCommonToolkit):
                     raise RuntimeError(f"Motor type {properties.motor_type} is not yet handled.")
             else:
                 rotor = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)[0]
-
-            vacuum_objects = [
-                x for x in self.aedtapp.modeler.get_objects_by_material("vacuum") if x.object_type == "Solid"
-            ]
-            rotor_pockets = self._get_rotor_pockets(vacuum_objects)
 
             if properties.rotor_slices > 1:
                 # rotor segmentation
@@ -239,23 +236,85 @@ class AEDTWorkflow(AEDTCommonToolkit):
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
                     if independent and dependent:
+                        split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=indep.id)
+                        if not all([self.aedtapp.modeler[o] for o in split]):
+                            self.aedtapp.odesign.Undo()
+                        split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=dep.id)
+                        split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split]
+                        # Get object with minimum volume
+                        min_vol_object = min(split_objects, key=lambda x: x.volume).volume
+                        # Get object whose volume is equal to min_vol_object
+                        obj_rotate = [obj for obj in split_objects if obj.volume == min_vol_object][0]
                         # duplicate around z axis (-360/symmetry_multiplier)
-                        self.aedtapp.modeler.duplicate_around_axis(
-                            rotor_object,
-                            cs_axis=self.aedtapp.AXIS.Z,
-                            angle=-360 / self.aedtapp.symmetry_multiplier,
-                            nclones=2,
-                            create_new_objects=False,
-                        )
-                        # split - Initial Position 0deg on x-axis
-                        self.aedtapp.modeler.split(objects=rotor_object, sides="PositiveOnly", tool=indep.id)
-                        self.aedtapp.modeler.split(objects=rotor_object, sides="NegativeOnly", tool=dep.id)
+                        obj_rotate.rotate(cs_axis=self.aedtapp.AXIS.Z, angle=-360 / self.aedtapp.symmetry_multiplier)
+                        self.aedtapp.modeler.unite([split_objects[0], split_objects[1]])
                 rotor_skew_ang += decompose_variable_value(properties.skew_angle)[0]
 
             self.release_aedt(False, False)
             return True
         except:
             return False
+
+    def validate_and_analyze(self):
+        """Validate and Analyze design.
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+        """
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        if self.aedtapp.validate_simple():
+            self.aedtapp.analyze_setup(properties.setup_to_analyze, use_auto_settings=False)
+            self.aedtapp.release_desktop(False, False)
+            return True
+        else:
+            return False
+
+    def get_magnet_loss(self):
+        """Get magnet loss.
+
+        Returns
+        -------
+        bool, dict
+            ``True`` and a dictionary containing the average magnet loss value when successful, ``False`` when failed.
+        """
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        try:
+            report_dict = {}
+            self.aedtapp.post.create_report(expressions="SolidLoss", plotname="Losses", primary_sweep_variable="Time")
+            data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
+            avg = sum(data.data_magnitude()) / len(data.data_magnitude())
+            avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
+            report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
+            self.aedtapp.release_desktop(False, False)
+            return True, report_dict
+        except:
+            return False
+
+    def get_magnet_loss(self):
+        """Get magnet loss.
+
+        Automatically generates magnet loss report and compute average value in ``W``.
+
+        Returns
+        -------
+        dict
+            Average magnet loss value in ``W``.
+        """
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        report_dict = {}
+        self.aedtapp.post.create_report(expressions="SolidLoss", plotname="Magnet Loss", primary_sweep_variable="Time")
+        data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
+        avg = sum(data.data_magnitude()) / len(data.data_magnitude())
+        avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
+        report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
+
+        self.aedtapp.release_desktop(False, False)
+        return report_dict
 
     def _get_rotor_pockets(self, vacuum_objects):
         """Get the rotor pockets if any.

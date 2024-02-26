@@ -105,6 +105,12 @@ class ApplicationWindow(ToolkitFrontend):
         # Apply Skew
         self.skew.clicked.connect(self.apply_skew)
 
+        # Validate and analyze design
+        self.validate_and_analyze.clicked.connect(self.validate_and_analyze)
+
+        # Magnet loss report
+        self.get_magnet_loss.clicked.connect(self.get_magnet_loss)
+
         # Save project
         self.action_save_project.triggered.connect(lambda checked: self.save_project())
 
