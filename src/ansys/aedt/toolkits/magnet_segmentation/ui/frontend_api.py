@@ -162,7 +162,7 @@ class ToolkitFrontend(FrontendGeneric):
             except requests.exceptions.RequestException:
                 logger.error("Apply skew call failed")
 
-    def validate_and_analyze(self):
+    def val_check_and_analysis(self):
         if self.backend_busy():
             msg = ToolkitThreadStatus.BUSY.value
             logger.debug(msg)
@@ -186,7 +186,7 @@ class ToolkitFrontend(FrontendGeneric):
         except requests.exceptions.RequestException:
             logger.error("Validate and analyze call failed")
 
-    def get_magnet_loss(self):
+    def get_report(self):
         if self.backend_busy():
             msg = ToolkitThreadStatus.BUSY.value
             logger.debug(msg)
