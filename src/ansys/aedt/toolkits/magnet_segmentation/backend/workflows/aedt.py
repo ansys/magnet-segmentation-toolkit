@@ -277,8 +277,8 @@ class AEDTWorkflow(AEDTCommonToolkit):
 
         Returns
         -------
-        bool, dict
-            ``True`` and a dictionary containing the average magnet loss value when successful, ``False`` when failed.
+        dict
+            dictionary containing the average magnet loss value when successful, ``False`` when failed.
         """
         self.connect_design(app_name=list(properties.active_design.keys())[0])
 
@@ -290,7 +290,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
             avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
             report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
             self.aedtapp.release_desktop(False, False)
-            return True, report_dict
+            return report_dict
         except:
             return False
 
