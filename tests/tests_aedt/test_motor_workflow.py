@@ -89,7 +89,7 @@ class TestAEDTMotorWorkflow:
         assert toolkit.apply_skew()
 
     def test_08_validate_and_analyze(self, toolkit):
-        assert toolkit.val_check_and_analysis()
+        assert toolkit.validate_and_analyze()
 
     def test_09_get_magnet_loss(self, toolkit):
         magnet_loss = toolkit.get_report()
