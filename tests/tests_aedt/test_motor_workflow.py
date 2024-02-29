@@ -92,5 +92,5 @@ class TestAEDTMotorWorkflow:
         assert toolkit.validate_and_analyze()
 
     def test_09_get_magnet_loss(self, toolkit):
-        magnet_loss = toolkit.get_report()
+        magnet_loss = toolkit.get_magnet_loss()
         assert isinstance(magnet_loss, dict)

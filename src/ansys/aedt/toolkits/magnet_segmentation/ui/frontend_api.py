@@ -194,7 +194,7 @@ class ToolkitFrontend(FrontendGeneric):
             return
 
         try:
-            response = requests.post(self.url + "/magnet_loss")
+            response = requests.get(self.url + "/magnet_loss")
             if response.ok:
                 msg = "Magnet loss call successful"
             else:
