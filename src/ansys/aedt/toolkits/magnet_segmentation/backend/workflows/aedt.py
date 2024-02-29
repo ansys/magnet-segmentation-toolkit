@@ -256,7 +256,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
             return False
 
     def validate_and_analyze(self):
-        """Validate and Analyze design.
+        """Validate and analyze the design.
 
         Returns
         -------
@@ -293,28 +293,6 @@ class AEDTWorkflow(AEDTCommonToolkit):
             return True, report_dict
         except:
             return False
-
-    def get_magnet_loss(self):
-        """Get magnet loss.
-
-        Automatically generates magnet loss report and compute average value in ``W``.
-
-        Returns
-        -------
-        dict
-            Average magnet loss value in ``W``.
-        """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
-
-        report_dict = {}
-        self.aedtapp.post.create_report(expressions="SolidLoss", plotname="Magnet Loss", primary_sweep_variable="Time")
-        data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
-        avg = sum(data.data_magnitude()) / len(data.data_magnitude())
-        avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
-        report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
-
-        self.aedtapp.release_desktop(False, False)
-        return report_dict
 
     def _get_rotor_pockets(self, vacuum_objects):
         """Get the rotor pockets if any.

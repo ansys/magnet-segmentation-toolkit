@@ -106,10 +106,10 @@ toolkit.validate_and_analyze()
 
 # ## Create magnet loss report
 #
-# Create magnet loss report and compute average value
+# Create magnet loss report and compute average value.
 
-loss = toolkit.get_magnet_loss()
-print("Average magnet loss: {}{}".format(loss["SolidLoss"]["Value"], loss["SolidLoss"]["Unit"]))
+magnet_loss = toolkit.get_magnet_loss()
+print(f"Average magnet loss: {magnet_loss['SolidLoss']['Value']}{magnet_loss['SolidLoss']['Unit']}")
 
 # ## Save and release AEDT
 #
