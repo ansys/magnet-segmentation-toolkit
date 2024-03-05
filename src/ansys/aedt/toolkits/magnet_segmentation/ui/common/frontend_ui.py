@@ -290,6 +290,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_32.addWidget(self.apply_mesh_sheets)
 
+
         self.verticalLayout_2.addLayout(self.horizontalLayout_32)
 
         self.horizontalLayout_4 = QHBoxLayout()
@@ -411,6 +412,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_33.addWidget(self.mesh_sheets_number)
 
+
         self.verticalLayout_2.addLayout(self.horizontalLayout_33)
 
         self.horizontalLayout_23 = QHBoxLayout()
@@ -436,6 +438,7 @@ class Ui_MainWindow(object):
         self.perform_segmentation.setObjectName(u"perform_segmentation")
         self.perform_segmentation.setEnabled(True)
         self.perform_segmentation.setMinimumSize(QSize(0, 40))
+        self.perform_segmentation.setMaximumSize(QSize(16777215, 16777215))
 
         self.verticalLayout_2.addWidget(self.perform_segmentation)
 
@@ -454,6 +457,51 @@ class Ui_MainWindow(object):
         self.horizontalLayout_.addItem(self.horizontalSpacer_4)
 
         self.toolkit_tab.addTab(self.Segmentation, "")
+        self.Post_Processing = QWidget()
+        self.Post_Processing.setObjectName(u"Post_Processing")
+        self.verticalLayoutWidget = QWidget(self.Post_Processing)
+        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
+        self.verticalLayoutWidget.setGeometry(QRect(9, 9, 701, 441))
+        self.verticalLayout_3 = QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.label = QLabel(self.verticalLayoutWidget)
+        self.label.setObjectName(u"label")
+        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy1)
+        self.label.setMinimumSize(QSize(0, 0))
+
+        self.horizontalLayout.addWidget(self.label)
+
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_6)
+
+        self.setup_name = QLineEdit(self.verticalLayoutWidget)
+        self.setup_name.setObjectName(u"setup_name")
+
+        self.horizontalLayout.addWidget(self.setup_name)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout)
+
+        self.validate_and_analyze = QPushButton(self.verticalLayoutWidget)
+        self.validate_and_analyze.setObjectName(u"validate_and_analyze")
+        self.validate_and_analyze.setMinimumSize(QSize(0, 40))
+        self.validate_and_analyze.setMaximumSize(QSize(16777215, 16777215))
+
+        self.verticalLayout_3.addWidget(self.validate_and_analyze)
+
+        self.get_magnet_loss = QPushButton(self.verticalLayoutWidget)
+        self.get_magnet_loss.setObjectName(u"get_magnet_loss")
+        self.get_magnet_loss.setMinimumSize(QSize(0, 40))
+        self.get_magnet_loss.setMaximumSize(QSize(16777215, 16777215))
+
+        self.verticalLayout_3.addWidget(self.get_magnet_loss)
+
+        self.toolkit_tab.addTab(self.Post_Processing, "")
 
         self.gridLayout.addWidget(self.toolkit_tab, 0, 0, 1, 5)
 
@@ -559,6 +607,10 @@ class Ui_MainWindow(object):
         self.perform_segmentation.setText(QCoreApplication.translate("MainWindow", u"Perform Segmentation", None))
         self.skew.setText(QCoreApplication.translate("MainWindow", u"Apply Skew", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Segmentation), QCoreApplication.translate("MainWindow", u"Segmentation", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Setup to analyze", None))
+        self.validate_and_analyze.setText(QCoreApplication.translate("MainWindow", u"Validate and Analyze", None))
+        self.get_magnet_loss.setText(QCoreApplication.translate("MainWindow", u"Get Magnet Loss", None))
+        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Post_Processing), QCoreApplication.translate("MainWindow", u" Post-Processing ", None))
         self.top_menu.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

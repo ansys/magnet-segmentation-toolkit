@@ -28,6 +28,8 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api import logg
 from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api import settings
 
 service = Toolkit()
+
+
 # Toolkit entrypoints
 
 
@@ -68,6 +70,31 @@ def apply_skew():
         )
     else:
         return jsonify("Failure: Skew angle application was unsuccessful."), 500
+
+
+@app.route("/validate_analyze", methods=["POST"])
+def analyze_model():
+    logger.info("[POST] /Validate and analyze AEDT model.")
+
+    response = service.validate_and_analyze()
+    if response:
+        return jsonify("AEDT model analyzed successfully."), 200
+    else:
+        return jsonify("Failure: AEDT model analysis was unsuccessful."), 500
+
+
+@app.route("/magnet_loss", methods=["GET"])
+def get_magnet_loss():
+    logger.info("[GET] /Get magnet loss.")
+
+    response = service.get_magnet_loss()
+    if response[0]:
+        return (
+            jsonify(response[1]),
+            200,
+        )
+    else:
+        return jsonify("Failure: Magnet loss calculation was unsuccessful."), 500
 
 
 if __name__ == "__main__":
