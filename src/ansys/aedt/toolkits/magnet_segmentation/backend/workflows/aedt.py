@@ -364,3 +364,14 @@ class AEDTWorkflow(AEDTCommonToolkit):
         self.aedtapp = None
 
         return mats
+
+    def _get_setups(self):
+        """Get design setups."""
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        setup_names = [setup.name for setup in self.aedtapp.setups]
+
+        self.aedtapp.release_desktop(False, False)
+        self.aedtapp = None
+
+        return setup_names

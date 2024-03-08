@@ -170,14 +170,14 @@ class ToolkitFrontend(FrontendGeneric):
             return
 
         self.get_properties()
-        # check box name setup
-        be_properties.setup_to_analyze = self.setup_name.text()
+        be_properties.setup_to_analyze = self.setup_name.currentText()
         self.set_properties()
 
         try:
             response = requests.post(self.url + "/validate_analyze")
             if response.ok:
                 msg = "Validate and analyze call successful"
+                self.get_magnet_loss.setEnabled(True)
             else:
                 msg = "Validate and analyze call failed"
                 logger.debug(msg)
@@ -236,3 +236,23 @@ class ToolkitFrontend(FrontendGeneric):
                 )
         except requests.exceptions.RequestException:
             logger.error(f"Get materials call failed")
+
+    def get_setups(self):
+        try:
+            response = requests.get(self.url + "/status")
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                self.write_log_line("Please wait, toolkit running")
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                self.update_progress(0)
+                response = requests.get(self.url + "/health")
+                if response.ok and response.json() == "Toolkit is not connected to AEDT.":
+                    response = requests.get(self.url + "/design_setups")
+                    if response.ok:
+                        return response.json()
+            else:
+                self.write_log_line(
+                    f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
+                    f"or {ToolkitThreadStatus.UNKNOWN.value}"
+                )
+        except requests.exceptions.RequestException:
+            logger.error(f"Get setups call failed")

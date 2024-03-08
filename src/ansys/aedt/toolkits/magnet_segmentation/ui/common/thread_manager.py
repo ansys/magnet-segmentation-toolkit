@@ -75,6 +75,12 @@ class FrontendThread(QThread):
                                 if list(design_name.values())[0] == design:
                                     self.design_aedt_combo.setCurrentIndex(cont)
                                 cont += 1
+
+                    if "setup_name" in self.__dir__():
+                        setups = self.get_setups()
+                        for setup in setups:
+                            self.setup_name.addItem(setup)
+
                     if (
                         "magnets_material" in self.__dir__()
                         and "rotor_material" in self.__dir__()

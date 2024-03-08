@@ -43,6 +43,16 @@ def get_materials():
     else:
         return jsonify("Get project material was unsuccessful."), 500
 
+@app.route("/design_setups", methods=["GET"])
+def get_setups():
+    logger.info("[GET] /Get design setups.")
+
+    response = service._get_setups()
+    if response:
+        return response
+    else:
+        return jsonify("Get design setups was unsuccessful."), 500
+
 
 @app.route("/apply_segmentation", methods=["POST"])
 def magnets_segmentation():
