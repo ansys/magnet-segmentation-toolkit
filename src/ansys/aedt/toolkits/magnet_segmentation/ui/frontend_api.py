@@ -178,6 +178,7 @@ class ToolkitFrontend(FrontendGeneric):
         be_properties.setup_to_analyze = self.setup_name.currentText()
         self.set_properties()
 
+        self.update_progress(0)
         try:
             response = requests.post(self.url + "/validate_analyze")
             if response.ok:
@@ -186,8 +187,8 @@ class ToolkitFrontend(FrontendGeneric):
             else:
                 msg = "Validate and analyze call failed"
                 logger.debug(msg)
-                self.write_log_line(msg)
-                self.update_progress(100)
+            self.write_log_line(msg)
+            self.update_progress(100)
         except requests.exceptions.RequestException:
             logger.error("Validate and analyze call failed")
 
@@ -198,6 +199,7 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             return
 
+        self.update_progress(0)
         try:
             response = requests.get(self.url + "/magnet_loss")
             if response.ok:
@@ -205,8 +207,8 @@ class ToolkitFrontend(FrontendGeneric):
             else:
                 msg = "Magnet loss call failed"
                 logger.debug(msg)
-                self.write_log_line(msg)
-                self.update_progress(100)
+            self.write_log_line(msg)
+            self.update_progress(100)
         except requests.exceptions.RequestException:
             logger.error("Magnet loss call failed")
 
