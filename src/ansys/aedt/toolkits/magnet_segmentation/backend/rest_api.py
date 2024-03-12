@@ -98,11 +98,8 @@ def get_magnet_loss():
     logger.info("[GET] /Get magnet loss.")
 
     response = service.get_magnet_loss()
-    if response[0]:
-        return (
-            jsonify(response[1]),
-            200,
-        )
+    if response:
+        return jsonify(response), 200
     else:
         return jsonify("Failure: Magnet loss calculation was unsuccessful."), 500
 
