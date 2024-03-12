@@ -94,7 +94,9 @@ class ToolkitFrontend(FrontendGeneric):
         elif segmentation_compatibility:
             skew_compatibility = self.check_skew_compatibility()
             if not skew_compatibility:
-                self.write_log_line(f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with skew.")
+                self.write_log_line(
+                    f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with skew."
+                )
                 self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
 
     def apply_segmentation(self):

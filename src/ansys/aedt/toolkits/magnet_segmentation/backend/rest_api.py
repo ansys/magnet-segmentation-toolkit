@@ -43,6 +43,7 @@ def get_materials():
     else:
         return jsonify("Get project material was unsuccessful."), 500
 
+
 @app.route("/design_setups", methods=["GET"])
 def get_setups():
     logger.info("[GET] /Get design setups.")
