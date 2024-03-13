@@ -217,6 +217,8 @@ class SegmentationMenu(object):
         be_properties["active_project"] = self.projects_aedt_combo.currentText()
         be_properties["active_design"] = self.design_aedt_combo.currentText()
 
+        self.main_window.set_properties(be_properties)
+
         if be_properties.get("active_project"):
             self.ui.update_progress(0)
             selected_project = self.main_window.home_menu.project_combobox.currentText()

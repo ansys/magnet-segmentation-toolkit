@@ -106,36 +106,49 @@ class Frontend(FrontendGeneric):
                 )
                 self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
 
-    def apply_segmentation(self):
+    def apply_segmentation(self, project_selected=None, design_selected=None):
         be_properties = self.get_properties()
-        be_properties.motor_type = self.motor_type_combo.currentText()
-        be_properties.is_skewed = _to_boolean(self.is_skewed.currentText())
-        if not be_properties.is_skewed:
-            be_properties.rotor_material = self.rotor_material.currentText()
-            be_properties.stator_material = self.stator_material.currentText()
-            be_properties.rotor_slices = int(self.rotor_slices.text())
-            be_properties.skew_angle = self.skew_angle.text()
-        be_properties.magnets_material = self.magnets_material.currentText()
-        be_properties.magnet_segments_per_slice = int(self.magnet_segments_per_slice.text())
-        # be_properties.setup_to_analyze = self.setup_to_analyze.text()
-        be_properties.active_design = {"Maxwell3d": self.design_aedt_combo.currentText()}
+        if project_selected and design_selected:
+            for project in be_properties["project_list"]:
+                if self.get_project_name(project) == project_selected:
+                    be_properties["active_project"] = project
+                    if project_selected in list(be_properties["design_list"].keys()):
+                        designs = be_properties["design_list"][project_selected]
+                        for design in designs:
+                            if design_selected == design:
+                                be_properties["active_design"] = design
+                                break
+                    break
+        else:
+            msg = "Please load a valid AEDT project."
+            logger.info(msg)
+
+        # be_properties["motor_type"] = self.motor_type_combo.currentText()
+        # be_properties["is_skewed"] = _to_boolean(self.is_skewed.currentText())
+        # if not be_properties["is_skewed"]:
+        #     be_properties["rotor_material"] = self.rotor_material.currentText()
+        #     be_properties["stator_material"] = self.stator_material.currentText()
+        #     be_properties["rotor_slices"] = int(self.rotor_slices.text())
+        #     be_properties["skew_angle"] = self.skew_angle.text()
+        # be_properties["magnets_material"] = self.magnets_material.currentText()
+        # be_properties["magnet_segments_per_slice"] = int(self.magnet_segments_per_slice.text())
+        # be_properties["active_project"] = self.projects_aedt_combo.currentText()
+        # be_properties["active_design"] = self.design_aedt_combo.currentText()
+        # if _to_boolean(self.apply_mesh_sheets.currentText()):
+        #     be_properties["apply_mesh_sheets"] = _to_boolean(self.apply_mesh_sheets.currentText())
+        #     be_properties["mesh_sheets_number"] = int(self.mesh_sheets_number.text())
         self.set_properties(be_properties)
-        if _to_boolean(self.apply_mesh_sheets.currentText()):
-            be_properties.apply_mesh_sheets = _to_boolean(self.apply_mesh_sheets.currentText())
-            be_properties.mesh_sheets_number = int(self.mesh_sheets_number.text())
-        self.set_properties()
 
         try:
             segmentation_response = requests.post(self.url + "/apply_segmentation")
             if segmentation_response.ok:
                 #self.find_design_names()
-                #self.skew.setEnabled(True)
+                self.skew.setEnabled(True)
                 msg = "Apply segmentation call successful"
+                logger.info(msg)
             else:
                 msg = f"Apply segmentation call failed"
-            logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
+                logger.error(msg)
         except requests.exceptions.RequestException:
             logger.error("Apply segmentation call failed")
 
