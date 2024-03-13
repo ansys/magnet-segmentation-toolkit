@@ -267,7 +267,7 @@ class AEDTWorkflow(Common):
 
         if self.aedtapp.validate_simple():
             self.aedtapp.analyze_setup(properties.setup_to_analyze, use_auto_settings=False)
-            self.aedtapp.release_desktop(False, False)
+            self.release_aedt(False, False)
             return True
         else:
             return False
@@ -289,7 +289,7 @@ class AEDTWorkflow(Common):
             avg = sum(data.data_magnitude()) / len(data.data_magnitude())
             avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
             report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
-            self.aedtapp.release_desktop(False, False)
+            self.release_aedt(False, False)
             return report_dict
         except:
             return False
@@ -364,3 +364,14 @@ class AEDTWorkflow(Common):
         self.aedtapp = None
 
         return mats
+
+    def _get_design_setup_names(self):
+        """Get the design setup names."""
+        self.connect_design(app_name=list(properties.active_design.keys())[0])
+
+        setup_names = [setup.name for setup in self.aedtapp.setups]
+
+        self.aedtapp.release_desktop(False, False)
+        self.aedtapp = None
+
+        return setup_names

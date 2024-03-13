@@ -44,6 +44,17 @@ def get_materials():
         return jsonify("Get project material was unsuccessful."), 500
 
 
+@app.route("/design_setups", methods=["GET"])
+def get_design_setups():
+    logger.info("[GET] /Get design setups.")
+
+    response = service._get_design_setup_names()
+    if response:
+        return response
+    else:
+        return jsonify("Get design setups was unsuccessful."), 500
+
+
 @app.route("/apply_segmentation", methods=["POST"])
 def magnets_segmentation():
     logger.info("[POST] /Apply magnets segmentation.")
@@ -88,11 +99,8 @@ def get_magnet_loss():
     logger.info("[GET] /Get magnet loss.")
 
     response = toolkit_api.get_magnet_loss()
-    if response[0]:
-        return (
-            jsonify(response[1]),
-            200,
-        )
+    if response:
+        return jsonify(response), 200
     else:
         return jsonify("Failure: Magnet loss calculation was unsuccessful."), 500
 
