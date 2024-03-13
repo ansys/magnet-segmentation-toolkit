@@ -227,13 +227,13 @@ def desktop_init():
                 time.sleep(1)
                 response = requests.get(url_call + "/status")
                 if not response.ok:
-                    desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for Toolkit thread status to be idle")
+                    desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle")
             yield
         else:
-            desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for Toolkit thread status to be idle")
+            desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle")
     except requests.exceptions.RequestException:
         desktop_cleanup_and_exit(flask_pids)
-        logger.error(f"Something went wrong while waiting for Toolkit to be idle")
+        logger.error(f"Something went wrong while waiting for ToolkitBackend to be idle")
 
     properties = {"close_projects": True, "close_on_exit": True}
     try:

@@ -20,16 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 from ansys.aedt.toolkits.common.backend.multithreading_server import MultithreadingServer
 from ansys.aedt.toolkits.common.backend.rest_api import app
 from ansys.aedt.toolkits.common.backend.rest_api import jsonify
 from ansys.aedt.toolkits.common.backend.rest_api import logger
 
-toolkit_api = Toolkit()
+from api import ToolkitBackend
+
+toolkit_api = ToolkitBackend()
 
 
-# Toolkit entrypoints
+# ToolkitBackend entrypoints
 
 
 @app.route("/project_materials", methods=["GET"])

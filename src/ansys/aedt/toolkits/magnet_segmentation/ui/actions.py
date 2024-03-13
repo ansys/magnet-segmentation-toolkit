@@ -97,12 +97,6 @@ class Frontend(FrontendGeneric):
             self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
 
     def apply_segmentation(self):
-        if self.backend_busy():
-            msg = ToolkitThreadStatus.BUSY.value
-            logger.debug(msg)
-            self.write_log_line(msg)
-            return
-
         be_properties = self.get_properties()
         be_properties.motor_type = self.motor_type_combo.currentText()
         be_properties.is_skewed = _to_boolean(self.is_skewed.currentText())
@@ -117,14 +111,13 @@ class Frontend(FrontendGeneric):
         be_properties.mesh_sheets_number = int(self.mesh_sheets_number.text())
         # be_properties.setup_to_analyze = self.setup_to_analyze.text()
         be_properties.active_design = {"Maxwell3d": self.design_aedt_combo.currentText()}
-        self.set_properties()
+        self.set_properties(be_properties)
 
-        self.update_progress(0)
         try:
             segmentation_response = requests.post(self.url + "/apply_segmentation")
             if segmentation_response.ok:
-                self.find_design_names()
-                self.skew.setEnabled(True)
+                #self.find_design_names()
+                #self.skew.setEnabled(True)
                 msg = "Apply segmentation call successful"
             else:
                 msg = f"Apply segmentation call failed"
@@ -227,7 +220,7 @@ class Frontend(FrontendGeneric):
             elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
                 self.update_progress(0)
                 response = requests.get(self.url + "/health")
-                if response.ok and response.json() == "Toolkit is not connected to AEDT.":
+                if response.ok and response.json() == "ToolkitBackend is not connected to AEDT.":
                     response = requests.get(self.url + "/project_materials")
                     if response.ok:
                         return response.json()

@@ -7,11 +7,11 @@ in the *PyAnsys developer's guide*. Ensure that you are thoroughly familiar
 with this guide before attempting to contribute to PyAEDT or its toolkits.
  
 The following contribution information is specific to the Magnet Segmentation
-Toolkit.
+ToolkitBackend.
 
 Clone the repository
 --------------------
-To clone and install the latest version of the Magnet Segmentation Toolkit in
+To clone and install the latest version of the Magnet Segmentation ToolkitBackend in
 development mode, run these commands:
 
 .. code::
@@ -23,12 +23,12 @@ development mode, run these commands:
 
 Post issues
 -----------
-Use the `Magnet Segmentation Toolkit Issues <https://github.com/ansys/magnet-segmentation-toolkit/issues>`_ page
+Use the `Magnet Segmentation ToolkitBackend Issues <https://github.com/ansys/magnet-segmentation-toolkit/issues>`_ page
 to create issues to report bugs and request new features.
 
 View documentation
 -------------------
-Documentation for the latest stable release is hosted at `Magnet Segmentation Toolkit documentation <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/>`_.
+Documentation for the latest stable release is hosted at `Magnet Segmentation ToolkitBackend documentation <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/>`_.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from viewing
 the documentation for the latest stable release to viewing the documentation for the development version
@@ -36,7 +36,7 @@ or previously released versions.
 
 Adhere to code style
 --------------------
-The Magnet Segmentation Toolkit is compliant with `PyAnsys code style
+The Magnet Segmentation ToolkitBackend is compliant with `PyAnsys code style
 <https://dev.docs.pyansys.com/coding-style/index.html>`_. It uses the tool
 `pre-commit <https://pre-commit.com/>`_ to check the code style.
 

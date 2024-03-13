@@ -1,6 +1,6 @@
 Examples
 ========
-End-to-end examples show how you can use the Magnet Segmentation Toolkit.
+End-to-end examples show how you can use the Magnet Segmentation ToolkitBackend.
 
 .. nbgallery::
 

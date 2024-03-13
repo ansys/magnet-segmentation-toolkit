@@ -5,9 +5,9 @@ API reference
 =============
 
 This section provides descriptions of the two APIs available for the Magnet
-Segmentation Toolkit:
+Segmentation ToolkitBackend:
 
-- **Toolkit API**: Contains the ``Toolkit`` class, which provides methods for
+- **ToolkitBackend API**: Contains the ``ToolkitBackend`` class, which provides methods for
   controlling the toolkit workflow. In addition to methods for creating an AEDT
   session or connecting to an existing AEDT session, this API provides methods
   for automating the segmentation and skew of a 3D motor.
@@ -19,7 +19,7 @@ Segmentation Toolkit:
       - For segmentation, ``SymmetryFactor`` and ``HalfAxial`` design settings must be defined.
       - For skew, ``Shaft`` must be the name of the shaft.
 
-- **AEDT Common Toolkit API**: Contains the ``AEDTCommonToolkit`` class, which provides basic
+- **AEDT Common ToolkitBackend API**: Contains the ``AEDTCommonToolkit`` class, which provides basic
   functions for controlling AEDT that are shared between the backend and frontend.
   These functions are the same for all AEDT toolkits.
 

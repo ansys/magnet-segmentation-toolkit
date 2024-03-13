@@ -1,6 +1,6 @@
 # # Maxwell 3D segmentation
 #
-# This example shows how to use the Magnet Segmentation Toolkit to segment
+# This example shows how to use the Magnet Segmentation ToolkitBackend to segment
 # your AEDT motor model.
 
 # ## Perform required imports

@@ -1,4 +1,6 @@
 {
+  "active_design": "",
+  "active_project": "",
   "motor_type": "IPM",
   "is_skewed": false,
   "apply_mesh_sheets": false,

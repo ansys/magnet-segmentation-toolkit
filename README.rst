@@ -1,4 +1,4 @@
-Magnet Segmentation Toolkit
+Magnet Segmentation ToolkitBackend
 ===========================
 
 |pyansys| |PythonVersion| |GH-CI| |MIT| |black|
@@ -22,7 +22,7 @@ Magnet Segmentation Toolkit
 
 .. reuse_start
 
-The Magnet Segmentation Toolkit is a Python wrapper for automating the segmentation
+The Magnet Segmentation ToolkitBackend is a Python wrapper for automating the segmentation
 and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM)
 motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit
 from the AEDT UI or launch it directly from a Python console.
@@ -31,25 +31,25 @@ Requirements
 ~~~~~~~~~~~~
 In addition to the runtime dependencies listed in
 `Getting started <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/Getting_started.html>`_,
-the Magnet Segmentation Toolkit requires AEDT 2023 R1 or later. This toolkit also supports the AEDT
+the Magnet Segmentation ToolkitBackend requires AEDT 2023 R1 or later. This toolkit also supports the AEDT
 Student Version for 2023 R1 or later.
 
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Documentation for the latest stable release of the Magnet Segmentation Toolkit is hosted at
-`Magnet Segmentation Toolkit documentation <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/index.html>`_.
+Documentation for the latest stable release of the Magnet Segmentation ToolkitBackend is hosted at
+`Magnet Segmentation ToolkitBackend documentation <https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/index.html>`_.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from
 viewing the documentation for the latest stable release to viewing the documentation for the
 development version or previously released versions.
 
-On the `Magnet Segmentation Toolkit Issues <https://github.com/ansys/magnet-segmentation-toolkit/issues>`_
+On the `Magnet Segmentation ToolkitBackend Issues <https://github.com/ansys/magnet-segmentation-toolkit/issues>`_
 page, you can create issues to report bugs and request new features. On the `Discussions <https://discuss.ansys.com/>`_
 page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback.
 
 License
 ~~~~~~~
-The Magnet Segmentation Toolkit is licensed under the MIT license.
+The Magnet Segmentation ToolkitBackend is licensed under the MIT license.
 
 This toolkit makes no commercial claim over Ansys whatsoever. The use of this toolkit
 requires a legally licensed copy of AEDT. For more information, see the

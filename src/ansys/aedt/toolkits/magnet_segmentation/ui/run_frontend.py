@@ -27,7 +27,7 @@ import sys
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QApplication
 
-# Toolkit frontend API
+# ToolkitBackend frontend API
 from actions import Frontend
 
 # Default user interface properties
@@ -36,6 +36,7 @@ from models import properties
 # Windows
 
 # New windows
+from windows.segmentation.segmentation_menu import SegmentationMenu
 from windows.plot_design.plot_design_menu import PlotDesignMenu
 
 # Common windows
@@ -102,19 +103,43 @@ class ApplicationWindow(QMainWindow, Frontend):
             if be_properties.get("aedt_version") in installed_versions:
                 self.settings_menu.aedt_version.setCurrentText(be_properties.get("aedt_version"))
 
-            # Custom toolkit setup starts here
+        # Custom toolkit setup starts here
 
-            # Home menu
-            self.home_menu = HomeMenu(self)
-            self.home_menu.setup()
+        # Home menu
+        self.home_menu = HomeMenu(self)
+        self.home_menu.setup()
 
-            # Plot design menu
-            self.plot_design_menu = PlotDesignMenu(self)
-            self.plot_design_menu.setup()
-            #self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
+        # Segmentation menu
+        self.segmentation_menu = SegmentationMenu(self)
+        self.segmentation_menu.setup()
+        self.ui.left_menu.clicked.connect(self.segmentation_menu_clicked)
 
-            # Home page as first page
-            self.ui.set_page(self.ui.load_pages.home_page)
+        # Plot design menu
+        self.plot_design_menu = PlotDesignMenu(self)
+        self.plot_design_menu.setup()
+        #self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
+
+        # Home page as first page
+        self.ui.set_page(self.ui.load_pages.home_page)
+
+    def segmentation_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+
+        if menu_name == "segmentation_menu":
+            selected_menu.set_active(True)
+            self.ui.set_page(self.segmentation_menu.segmentation_menu_widget)
+
+            is_left_visible = self.ui.is_left_column_visible()
+
+            self.ui.set_left_column_menu(
+                menu=self.segmentation_menu.segmentation_column_widget,
+                title="Segmentation",
+                icon_path=self.ui.images_load.icon_path("icon_plot_3d.svg"),
+            )
+
+            if not is_left_visible:
+                self.ui.toggle_left_column()
 
 
 if __name__ == "__main__":

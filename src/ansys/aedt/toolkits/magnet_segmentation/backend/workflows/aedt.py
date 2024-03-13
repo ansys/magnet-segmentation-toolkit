@@ -40,8 +40,8 @@ class AEDTWorkflow(Common):
 
     Examples
     --------
-        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
-        >>> toolkit = Toolkit()
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
+        >>> toolkit = ToolkitBackend()
         >>> msg1 = toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
         >>> toolkit.segmentation()

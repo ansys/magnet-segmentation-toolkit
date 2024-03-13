@@ -22,9 +22,9 @@
       },
       {
             "btn_icon": "icon_plot_3d.svg",
-            "btn_id": "geometry_menu",
-            "btn_text": "Primitives Builder",
-            "btn_tooltip": "Builder",
+            "btn_id": "segmentation_menu",
+            "btn_text": "Segmentation",
+            "btn_tooltip": "Segmentation",
             "show_top": true,
             "is_active": false
       },

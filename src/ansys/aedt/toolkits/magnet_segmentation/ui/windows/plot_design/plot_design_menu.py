@@ -102,7 +102,7 @@ class PlotDesignMenu(object):
             return False
 
         if self.get_model_thread and self.get_model_thread.isRunning() or self.main_window.backend_busy():
-            msg = "Toolkit running"
+            msg = "ToolkitBackend running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
             return False
@@ -127,7 +127,7 @@ class PlotDesignMenu(object):
             self.get_model_thread.start()
 
         else:
-            self.ui.update_logger("Toolkit not connect to AEDT.")
+            self.ui.update_logger("ToolkitBackend not connect to AEDT.")
 
     def get_model_finished(self):
         self.ui.update_progress(100)
