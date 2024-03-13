@@ -45,21 +45,24 @@ class ToolkitFrontend(FrontendGeneric):
         HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
         found_data = {target: False for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]}
 
-        with open(be_properties.active_project, "r") as file:
-            lines = file.readlines()
-        lines = [line.strip() for line in lines]
-
-        for line in lines:
-            for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]:
-                if line.lstrip().startswith(target):
-                    found_data[target] = True
-
-        res = all(found_data.values())
-        if res:
-            logger.debug("Selected AEDT file is compatible with segmentation call")
+        if not be_properties.active_project:
+            return
         else:
-            logger.debug("Selected AEDT file is not compatible with segmentation call")
-        return res
+            with open(be_properties.active_project, "r") as file:
+                lines = file.readlines()
+            lines = [line.strip() for line in lines]
+
+            for line in lines:
+                for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]:
+                    if line.lstrip().startswith(target):
+                        found_data[target] = True
+
+            res = all(found_data.values())
+            if res:
+                logger.debug("Selected AEDT file is compatible with segmentation call")
+            else:
+                logger.debug("Selected AEDT file is not compatible with segmentation call")
+            return res
 
     def check_skew_compatibility(self):
         """Check compatibility with skew call.
@@ -83,15 +86,18 @@ class ToolkitFrontend(FrontendGeneric):
     def browse_and_check_for_aedt_project(self):
         super().browse_for_aedt_project()
         segmentation_compatibility = self.check_segmentation_compatibility()
-        if not segmentation_compatibility:
+        if not segmentation_compatibility and segmentation_compatibility is not None:
             self.write_log_line(
                 f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with segmentation."
             )
             self.write_log_line("Please, ensure that 'SymmetryFactor' and 'HalfAxial' are defined")
-        skew_compatibility = self.check_skew_compatibility()
-        if not skew_compatibility:
-            self.write_log_line(f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with skew.")
-            self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
+        elif segmentation_compatibility:
+            skew_compatibility = self.check_skew_compatibility()
+            if not skew_compatibility:
+                self.write_log_line(
+                    f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with skew."
+                )
+                self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
 
     def apply_segmentation(self):
         if self.backend_busy():
@@ -108,12 +114,13 @@ class ToolkitFrontend(FrontendGeneric):
             be_properties.stator_material = self.stator_material.currentText()
             be_properties.rotor_slices = int(self.rotor_slices.text())
             be_properties.skew_angle = self.skew_angle.text()
-        be_properties.apply_mesh_sheets = _to_boolean(self.apply_mesh_sheets.currentText())
         be_properties.magnets_material = self.magnets_material.currentText()
         be_properties.magnet_segments_per_slice = int(self.magnet_segments_per_slice.text())
-        be_properties.mesh_sheets_number = int(self.mesh_sheets_number.text())
         # be_properties.setup_to_analyze = self.setup_to_analyze.text()
         be_properties.active_design = {"Maxwell3d": self.design_aedt_combo.currentText()}
+        if _to_boolean(self.apply_mesh_sheets.currentText()):
+            be_properties.apply_mesh_sheets = _to_boolean(self.apply_mesh_sheets.currentText())
+            be_properties.mesh_sheets_number = int(self.mesh_sheets_number.text())
         self.set_properties()
 
         self.update_progress(0)
@@ -170,19 +177,20 @@ class ToolkitFrontend(FrontendGeneric):
             return
 
         self.get_properties()
-        # check box name setup
-        be_properties.setup_to_analyze = self.setup_name.text()
+        be_properties.setup_to_analyze = self.setup_name.currentText()
         self.set_properties()
 
+        self.update_progress(0)
         try:
             response = requests.post(self.url + "/validate_analyze")
             if response.ok:
                 msg = "Validate and analyze call successful"
+                self.get_magnet_loss.setEnabled(True)
             else:
                 msg = "Validate and analyze call failed"
                 logger.debug(msg)
-                self.write_log_line(msg)
-                self.update_progress(100)
+            self.write_log_line(msg)
+            self.update_progress(100)
         except requests.exceptions.RequestException:
             logger.error("Validate and analyze call failed")
 
@@ -193,6 +201,7 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             return
 
+        self.update_progress(0)
         try:
             response = requests.get(self.url + "/magnet_loss")
             if response.ok:
@@ -200,8 +209,8 @@ class ToolkitFrontend(FrontendGeneric):
             else:
                 msg = "Magnet loss call failed"
                 logger.debug(msg)
-                self.write_log_line(msg)
-                self.update_progress(100)
+            self.write_log_line(msg)
+            self.update_progress(100)
         except requests.exceptions.RequestException:
             logger.error("Magnet loss call failed")
 
@@ -236,3 +245,23 @@ class ToolkitFrontend(FrontendGeneric):
                 )
         except requests.exceptions.RequestException:
             logger.error(f"Get materials call failed")
+
+    def get_design_setups(self):
+        try:
+            response = requests.get(self.url + "/status")
+            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
+                self.write_log_line("Please wait, toolkit running")
+            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
+                self.update_progress(0)
+                response = requests.get(self.url + "/health")
+                if response.ok and response.json() == "Toolkit is not connected to AEDT.":
+                    response = requests.get(self.url + "/design_setups")
+                    if response.ok:
+                        return response.json()
+            else:
+                self.write_log_line(
+                    f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
+                    f"or {ToolkitThreadStatus.UNKNOWN.value}"
+                )
+        except requests.exceptions.RequestException:
+            logger.error(f"Get setups call failed")

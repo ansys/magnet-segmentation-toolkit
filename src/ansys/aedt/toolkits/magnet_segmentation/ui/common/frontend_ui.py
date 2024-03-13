@@ -25,7 +25,7 @@
 ################################################################################
 ## Form generated from reading UI file 'toolkit.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.6.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -49,7 +49,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(890, 1178)
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
@@ -64,28 +64,28 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.main_menu = QWidget(self.centralwidget)
         self.main_menu.setObjectName(u"main_menu")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.main_menu.sizePolicy().hasHeightForWidth())
         self.main_menu.setSizePolicy(sizePolicy1)
         self.gridLayout = QGridLayout(self.main_menu)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.release_and_exit_button = QPushButton(self.main_menu)
+        self.release_and_exit_button.setObjectName(u"release_and_exit_button")
+        self.release_and_exit_button.setMinimumSize(QSize(0, 40))
+
+        self.gridLayout.addWidget(self.release_and_exit_button, 3, 3, 1, 1)
+
         self.release_button = QPushButton(self.main_menu)
         self.release_button.setObjectName(u"release_button")
         self.release_button.setMinimumSize(QSize(0, 40))
 
         self.gridLayout.addWidget(self.release_button, 3, 2, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.gridLayout.addItem(self.horizontalSpacer, 3, 1, 1, 1)
-
-        self.release_and_exit_button = QPushButton(self.main_menu)
-        self.release_and_exit_button.setObjectName(u"release_and_exit_button")
-        self.release_and_exit_button.setMinimumSize(QSize(0, 40))
-
-        self.gridLayout.addWidget(self.release_and_exit_button, 3, 3, 1, 1)
 
         self.toolkit_tab = QTabWidget(self.main_menu)
         self.toolkit_tab.setObjectName(u"toolkit_tab")
@@ -105,7 +105,7 @@ class Ui_MainWindow(object):
 
         self.cores_layout.addWidget(self.cores_label)
 
-        self.horizontalSpacer_30 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_30 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.cores_layout.addItem(self.horizontalSpacer_30)
 
@@ -172,7 +172,7 @@ class Ui_MainWindow(object):
 
         self.project_path_layout.addWidget(self.project_path_label)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
         self.project_path_layout.addItem(self.horizontalSpacer_2)
 
@@ -186,7 +186,7 @@ class Ui_MainWindow(object):
 
         self.select_aedt_proj_layout = QHBoxLayout()
         self.select_aedt_proj_layout.setObjectName(u"select_aedt_proj_layout")
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.select_aedt_proj_layout.addItem(self.horizontalSpacer_5)
 
@@ -203,7 +203,7 @@ class Ui_MainWindow(object):
 
         self.settings_layout.addLayout(self.horizontalLayout_5)
 
-        self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.settings_layout.addItem(self.verticalSpacer_8)
 
@@ -217,7 +217,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_25.addLayout(self.settings_layout)
 
-        self.horizontalSpacer_29 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.horizontalSpacer_29 = QSpacerItem(40, 20, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_25.addItem(self.horizontalSpacer_29)
 
@@ -365,7 +365,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21.addWidget(self.label_15)
 
-        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_21)
 
@@ -384,7 +384,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_22.addWidget(self.label_16)
 
-        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_22.addItem(self.horizontalSpacer_22)
 
@@ -403,7 +403,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_33.addWidget(self.label_20)
 
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_33.addItem(self.horizontalSpacer_3)
 
@@ -422,7 +422,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_23.addWidget(self.label_17)
 
-        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_23.addItem(self.horizontalSpacer_23)
 
@@ -444,7 +444,7 @@ class Ui_MainWindow(object):
 
         self.skew = QPushButton(self.Segmentation)
         self.skew.setObjectName(u"skew")
-        self.skew.setEnabled(True)
+        self.skew.setEnabled(False)
         self.skew.setMinimumSize(QSize(0, 40))
 
         self.verticalLayout_2.addWidget(self.skew)
@@ -452,56 +452,81 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_.addLayout(self.verticalLayout_2)
 
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_.addItem(self.horizontalSpacer_4)
 
         self.toolkit_tab.addTab(self.Segmentation, "")
-        self.Post_Processing = QWidget()
-        self.Post_Processing.setObjectName(u"Post_Processing")
-        self.verticalLayoutWidget = QWidget(self.Post_Processing)
-        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(9, 9, 701, 441))
-        self.verticalLayout_3 = QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label = QLabel(self.verticalLayoutWidget)
+        self.PostProcessing = QWidget()
+        self.PostProcessing.setObjectName(u"PostProcessing")
+        self.horizontalLayout_post = QHBoxLayout(self.PostProcessing)
+        self.horizontalLayout_post.setObjectName(u"horizontalLayout_post")
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer_4)
+
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.label = QLabel(self.PostProcessing)
         self.label.setObjectName(u"label")
         sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy1)
         self.label.setMinimumSize(QSize(0, 0))
 
-        self.horizontalLayout.addWidget(self.label)
+        self.horizontalLayout_8.addWidget(self.label)
 
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout.addItem(self.horizontalSpacer_6)
+        self.horizontalLayout_8.addItem(self.horizontalSpacer_7)
 
-        self.setup_name = QLineEdit(self.verticalLayoutWidget)
+        self.setup_name = QComboBox(self.PostProcessing)
+        self.setup_name.addItem("")
         self.setup_name.setObjectName(u"setup_name")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.setup_name.sizePolicy().hasHeightForWidth())
+        self.setup_name.setSizePolicy(sizePolicy2)
 
-        self.horizontalLayout.addWidget(self.setup_name)
+        self.horizontalLayout_8.addWidget(self.setup_name)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_8)
 
-        self.validate_and_analyze = QPushButton(self.verticalLayoutWidget)
+        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer_5)
+
+        self.validate_and_analyze = QPushButton(self.PostProcessing)
         self.validate_and_analyze.setObjectName(u"validate_and_analyze")
         self.validate_and_analyze.setMinimumSize(QSize(0, 40))
         self.validate_and_analyze.setMaximumSize(QSize(16777215, 16777215))
 
-        self.verticalLayout_3.addWidget(self.validate_and_analyze)
+        self.verticalLayout_4.addWidget(self.validate_and_analyze)
 
-        self.get_magnet_loss = QPushButton(self.verticalLayoutWidget)
+        self.get_magnet_loss = QPushButton(self.PostProcessing)
         self.get_magnet_loss.setObjectName(u"get_magnet_loss")
+        self.get_magnet_loss.setEnabled(False)
         self.get_magnet_loss.setMinimumSize(QSize(0, 40))
         self.get_magnet_loss.setMaximumSize(QSize(16777215, 16777215))
 
-        self.verticalLayout_3.addWidget(self.get_magnet_loss)
+        self.verticalLayout_4.addWidget(self.get_magnet_loss)
 
-        self.toolkit_tab.addTab(self.Post_Processing, "")
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_9)
+
+
+        self.horizontalLayout_post.addLayout(self.verticalLayout_4)
+
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_post.addItem(self.horizontalSpacer_8)
+
+        self.toolkit_tab.addTab(self.PostProcessing, "")
 
         self.gridLayout.addWidget(self.toolkit_tab, 0, 0, 1, 5)
 
@@ -556,8 +581,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.action_save_project.setText(QCoreApplication.translate("MainWindow", u"Save project", None))
-        self.release_button.setText(QCoreApplication.translate("MainWindow", u" Close Toolkit ", None))
         self.release_and_exit_button.setText(QCoreApplication.translate("MainWindow", u" Close AEDT and Toolkit ", None))
+        self.release_button.setText(QCoreApplication.translate("MainWindow", u" Close Toolkit ", None))
         self.cores_label.setText(QCoreApplication.translate("MainWindow", u"Number of Cores", None))
         self.numcores.setText(QCoreApplication.translate("MainWindow", u"4", None))
         self.graphical_label.setText(QCoreApplication.translate("MainWindow", u"Non Graphical", None))
@@ -608,9 +633,12 @@ class Ui_MainWindow(object):
         self.skew.setText(QCoreApplication.translate("MainWindow", u"Apply Skew", None))
         self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Segmentation), QCoreApplication.translate("MainWindow", u"Segmentation", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Setup to analyze", None))
+        self.setup_name.setItemText(0, QCoreApplication.translate("MainWindow", u"--Select Setup--", None))
+
+        self.setup_name.setCurrentText(QCoreApplication.translate("MainWindow", u"--Select Setup--", None))
         self.validate_and_analyze.setText(QCoreApplication.translate("MainWindow", u"Validate and Analyze", None))
         self.get_magnet_loss.setText(QCoreApplication.translate("MainWindow", u"Get Magnet Loss", None))
-        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.Post_Processing), QCoreApplication.translate("MainWindow", u" Post-Processing ", None))
+        self.toolkit_tab.setTabText(self.toolkit_tab.indexOf(self.PostProcessing), QCoreApplication.translate("MainWindow", u"Post-Processing", None))
         self.top_menu.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 
