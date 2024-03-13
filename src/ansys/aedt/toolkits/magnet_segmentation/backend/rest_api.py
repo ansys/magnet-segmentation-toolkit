@@ -45,10 +45,10 @@ def get_materials():
 
 
 @app.route("/design_setups", methods=["GET"])
-def get_setups():
+def get_design_setups():
     logger.info("[GET] /Get design setups.")
 
-    response = service._get_setups()
+    response = service._get_design_setup_names()
     if response:
         return response
     else:

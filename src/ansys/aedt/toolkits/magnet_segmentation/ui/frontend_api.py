@@ -246,7 +246,7 @@ class ToolkitFrontend(FrontendGeneric):
         except requests.exceptions.RequestException:
             logger.error(f"Get materials call failed")
 
-    def get_setups(self):
+    def get_design_setups(self):
         try:
             response = requests.get(self.url + "/status")
             if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:

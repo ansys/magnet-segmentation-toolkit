@@ -77,7 +77,7 @@ class FrontendThread(QThread):
                                 cont += 1
 
                     if "setup_name" in self.__dir__():
-                        setups = self.get_setups()
+                        setups = self.get_design_setups()
                         for setup in setups:
                             self.setup_name.addItem(setup)
 
