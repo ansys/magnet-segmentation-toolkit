@@ -267,7 +267,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
 
         if self.aedtapp.validate_simple():
             self.aedtapp.analyze_setup(properties.setup_to_analyze, use_auto_settings=False)
-            self.aedtapp.release_desktop(False, False)
+            self.release_aedt(False, False)
             return True
         else:
             return False
@@ -289,7 +289,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
             avg = sum(data.data_magnitude()) / len(data.data_magnitude())
             avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
             report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
-            self.aedtapp.release_desktop(False, False)
+            self.release_aedt(False, False)
             return report_dict
         except:
             return False
