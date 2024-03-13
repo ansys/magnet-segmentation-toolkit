@@ -30,18 +30,19 @@ import time
 
 import psutil
 import requests
+import ui
+from ui.models import properties
 
-from ansys.aedt.toolkits.magnet_segmentation import backend
-from ansys.aedt.toolkits.magnet_segmentation import ui
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.logger_handler import logger
-from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import general_settings
+import backend
+
+from ansys.aedt.toolkits.common.backend.rest_api import logger
 
 # Define global variables or constants
-BACKEND_FILE = os.path.join(backend.__path__[0], "rest_api.py")
-FRONTEND_FILE = os.path.join(ui.__path__[0], "frontend_actions.py")
+BACKEND_FILE = os.path.join(backend.__path__[0], "run_backend.py")
+FRONTEND_FILE = os.path.join(ui.__path__[0], "run_frontend.py")
 IS_LINUX = os.name == "posix"
-URL = general_settings.backend_url
-PORT = general_settings.backend_port
+URL = properties.backend_url
+PORT = properties.backend_port
 PYTHON_PATH = sys.executable
 KILL_BACKEND = True
 BACKEND_COMMAND = [PYTHON_PATH, BACKEND_FILE]

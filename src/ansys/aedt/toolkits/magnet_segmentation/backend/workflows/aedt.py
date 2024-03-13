@@ -28,11 +28,11 @@ from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import AEDTCommonToolkit
+from ansys.aedt.toolkits.common.backend.api import Common
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 
-class AEDTWorkflow(AEDTCommonToolkit):
+class AEDTWorkflow(Common):
     """Controls the AEDT toolkit workflow.
 
     This class provides methods for connecting to a selected design,

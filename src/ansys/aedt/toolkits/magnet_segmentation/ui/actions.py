@@ -25,13 +25,12 @@
 from pyaedt.generic.general_methods import _to_boolean
 import requests
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
-from ansys.aedt.toolkits.magnet_segmentation.ui.common.frontend_api_generic import FrontendGeneric
-from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
-from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
+from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
+from ansys.aedt.toolkits.common.ui.logger_handler import logger
 
 
-class ToolkitFrontend(FrontendGeneric):
+class Frontend(FrontendGeneric):
     def __init__(self):
         FrontendGeneric.__init__(self)
 
@@ -45,6 +44,7 @@ class ToolkitFrontend(FrontendGeneric):
         HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
         found_data = {target: False for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]}
 
+        be_properties = self.get_properties()
         with open(be_properties.active_project, "r") as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
@@ -68,6 +68,8 @@ class ToolkitFrontend(FrontendGeneric):
         is 'Shaft'.
         """
         SHAFT_LINES = ["$begin 'GeometryPart'", "$begin 'Attributes'", "Name='Shaft'"]
+
+        be_properties = self.get_properties()
         with open(be_properties.active_project, "r") as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
@@ -81,6 +83,7 @@ class ToolkitFrontend(FrontendGeneric):
         return False
 
     def browse_and_check_for_aedt_project(self):
+        be_properties = self.get_properties()
         super().browse_for_aedt_project()
         segmentation_compatibility = self.check_segmentation_compatibility()
         if not segmentation_compatibility:
@@ -100,7 +103,7 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             return
 
-        self.get_properties()
+        be_properties = self.get_properties()
         be_properties.motor_type = self.motor_type_combo.currentText()
         be_properties.is_skewed = _to_boolean(self.is_skewed.currentText())
         if not be_properties.is_skewed:
@@ -138,8 +141,7 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             return
 
-        # FIXME: do we need that call ?
-        self.get_properties()
+        be_properties = self.get_properties()
         if be_properties.is_skewed:
             msg = "Model is already skewed."
             logger.debug(msg)
@@ -169,7 +171,7 @@ class ToolkitFrontend(FrontendGeneric):
             self.write_log_line(msg)
             return
 
-        self.get_properties()
+        be_properties = self.get_properties()
         # check box name setup
         be_properties.setup_to_analyze = self.setup_name.text()
         self.set_properties()

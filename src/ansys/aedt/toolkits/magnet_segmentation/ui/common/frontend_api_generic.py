@@ -32,9 +32,9 @@ from pydantic import ValidationError
 import qdarkstyle
 import requests
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import PropertiesUpdate
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitConnectionStatus
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.common.backend.api import PropertiesUpdate
+from ansys.aedt.toolkits.common.backend.api import ToolkitConnectionStatus
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 from ansys.aedt.toolkits.magnet_segmentation.ui.common.frontend_ui import Ui_MainWindow
 from ansys.aedt.toolkits.magnet_segmentation.ui.common.logger_handler import logger
 from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties

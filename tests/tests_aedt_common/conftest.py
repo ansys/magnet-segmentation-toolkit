@@ -43,7 +43,7 @@ from pyaedt.aedt_logger import pyaedt_logger
 import pytest
 import requests
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
@@ -150,7 +150,7 @@ def desktop_init():
         initial_pids = psutil.Process().children(recursive=True)
 
     # Define the command to start the Flask application
-    backend_file = os.path.join(backend.__path__[0], "rest_api.py")
+    backend_file = os.path.join(backend.__path__[0], "run_backend.py")
     backend_command = [python_path, backend_file]
     # Create a thread to run the Flask application
     flask_thread = threading.Thread(target=run_command, args=backend_command)

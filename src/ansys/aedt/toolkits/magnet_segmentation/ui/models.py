@@ -20,16 +20,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Utils module"""
+"""Data classes used to store data related to UI settings.
+"""
 
-import requests
+import json
+import os
+
+from pydantic import BaseModel
+
+from ansys.aedt.toolkits.common.ui.models import UIProperties
+from ansys.aedt.toolkits.common.ui.models import general_settings
 
 
-def download_file(url, local_filename):
-    """Download a file from an URL inti a local file."""
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(local_filename, "wb") as f:
-            for chunk in r.iter_content(chunk_size=4096):
-                f.write(chunk)
-    return local_filename
+class Properties(UIProperties, validate_assignment=True):
+    """Store all properties."""
+
+
+frontend_properties = {}
+if os.path.exists(os.path.join(os.path.dirname(__file__), "frontend_properties.json")):
+    with open(os.path.join(os.path.dirname(__file__), "frontend_properties.json")) as file_handler:
+        frontend_properties = json.load(file_handler)
+
+toolkit_property = {}
+if frontend_properties:
+    for frontend_key in frontend_properties:
+        if hasattr(general_settings, frontend_key):
+            setattr(general_settings, frontend_key, frontend_properties[frontend_key])
+        else:
+            toolkit_property[frontend_key] = frontend_properties[frontend_key]
+
+new_common_properties = {}
+for common_key in general_settings:
+    new_common_properties[common_key[0]] = common_key[1]
+
+properties = Properties(**toolkit_property, **new_common_properties)

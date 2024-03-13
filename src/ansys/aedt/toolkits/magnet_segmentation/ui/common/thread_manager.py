@@ -27,10 +27,10 @@ from PySide6.QtCore import QThread
 from PySide6.QtCore import Signal
 import requests
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 from ansys.aedt.toolkits.magnet_segmentation.ui.common.models import be_properties
 
-# from ansys.aedt.toolkits.magnet_segmentation.ui.frontend_api import ToolkitFrontend
+# from ansys.aedt.toolkits.magnet_segmentation.ui.frontend_api import Frontend
 
 logger = logging.getLogger("Global")
 
