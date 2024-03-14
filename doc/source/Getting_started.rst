@@ -2,7 +2,7 @@
 Getting started
 ===============
 
-To run the Magnet Segmentation Toolkit, you must have a licensed copy of AEDT installed.
+To run the Magnet Segmentation ToolkitBackend, you must have a licensed copy of AEDT installed.
 You have multiple options for installing and launching this toolkit:
 
 - You can install the toolkit directly in AEDT via an installation script and then launch it
@@ -17,7 +17,7 @@ You have multiple options for installing and launching this toolkit:
 How to install directly in AEDT and launch as a wizard
 ------------------------------------------------------
 
-You can install the Magnet Segmentation Toolkit directly in AEDT using the base
+You can install the Magnet Segmentation ToolkitBackend directly in AEDT using the base
 interpreter from the AEDT installation.
 
 #. From `Install from a Python file <https://aedt.docs.pyansys.com/version/stable//Getting_started/Installation.html#install-from-a-python-file>`_
@@ -25,13 +25,13 @@ interpreter from the AEDT installation.
 
 #. If this is the first toolkit being installed in AEDT, restart AEDT to update its **Tools** menu.
 
-#. In AEDT, select **Tools > Toolkit > PyAEDT > Console** to load the PyAEDT console:
+#. In AEDT, select **Tools > ToolkitBackend > PyAEDT > Console** to load the PyAEDT console:
 
    .. image:: ./_static/console.png
      :width: 800
      :alt: PyAEDT console in AEDT
 
-#. In the PyAEDT console, run these commands to add the Magnet Segmentation Toolkit as a wizard (toolkit UI)
+#. In the PyAEDT console, run these commands to add the Magnet Segmentation ToolkitBackend as a wizard (toolkit UI)
    in AEDT:
 
    .. code:: python
@@ -41,23 +41,23 @@ interpreter from the AEDT installation.
 
 #. Close the PyAEDT console.
 
-#. In AEDT, select **Tools > Toolkit > Update Menu** to update the **Toolkit** menu.
+#. In AEDT, select **Tools > ToolkitBackend > Update Menu** to update the **ToolkitBackend** menu.
 
-#. Select **Tools > Toolkit > PersonalLib > TemplateToolkit > Run PyAEDT Toolkit Script** to open the
-   Magnet Segmentation Toolkit Wizard in AEDT:
+#. Select **Tools > ToolkitBackend > PersonalLib > TemplateToolkit > Run PyAEDT ToolkitBackend Script** to open the
+   Magnet Segmentation ToolkitBackend Wizard in AEDT:
 
    .. image:: ./_static/design_connected.png
      :width: 800
      :alt: UI opened from AEDT, design tab
 
-The wizard is connected directly to the AEDT session. For wizard usage information, see :doc:`Toolkit/ui`.
+The wizard is connected directly to the AEDT session. For wizard usage information, see :doc:`ToolkitBackend/ui`.
 
 .. _install_toolkit_console_ui:
 
 How to install from the AEDT console and launch as a wizard
 -----------------------------------------------------------
 
-You can install the Magnet Segmentation Toolkit in a specific Python environment from the
+You can install the Magnet Segmentation ToolkitBackend in a specific Python environment from the
 AEDT console.
 
 - If you have an existing virtual environment, skip step 1.
@@ -85,20 +85,20 @@ AEDT console.
 
      python -m pip install git+https://github.com/ansys/magnet-segmentation-toolkit.git
 
-#. Launch the Magnet Segmentation Toolkit Wizard:
+#. Launch the Magnet Segmentation ToolkitBackend Wizard:
 
    .. code:: bash
 
      python .venv\Lib\site-packages\ansys\aedt\toolkits\magnet_segmentation\run_toolkit.py
 
-For wizard usage information, see :doc:`Toolkit/ui`.
+For wizard usage information, see :doc:`ToolkitBackend/ui`.
 
 .. _install_toolkit_console_api:
 
 How to install from a Python console and use the toolkit's APIs
 ---------------------------------------------------------------
 
-You can install the Magnet Segmentation Toolkit in a specific Python environment from a Python
+You can install the Magnet Segmentation ToolkitBackend in a specific Python environment from a Python
 console and then use this toolkit's APIs.
 
 .. note::
@@ -123,10 +123,10 @@ console and then use this toolkit's APIs.
      import os
 
      # Import backend services
-     from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
+     from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
      # Backend object
-     toolkit = Toolkit()
+     toolkit = ToolkitBackend()
 
      # Get service properties
      properties = toolkit.get_properties()
@@ -164,4 +164,4 @@ console and then use this toolkit's APIs.
      # Release AEDT
      service.release_aedt()
 
-For descriptions of the APIs available for the Magnet Segmentation Toolkit, see :doc:`Toolkit/index`.
+For descriptions of the APIs available for the Magnet Segmentation ToolkitBackend, see :doc:`ToolkitBackend/index`.

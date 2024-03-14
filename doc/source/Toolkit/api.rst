@@ -1,6 +1,6 @@
-Toolkit API
+ToolkitBackend API
 ===========
-The Toolkit API contains the ``Toolkit`` class, which provides methods for
+The ToolkitBackend API contains the ``ToolkitBackend`` class, which provides methods for
 controlling the toolkit workflow. In addition to methods for creating an AEDT
 session or connecting to an existing AEDT session, this API provides methods for
 automating the segmentation and skew of a 3D motor.
@@ -17,17 +17,17 @@ automating the segmentation and skew of a 3D motor.
 .. autosummary::
    :toctree: _autosummary
 
-   Toolkit
+   ToolkitBackend
 
-This code shows how to use the ``Toolkit`` class:
+This code shows how to use the ``ToolkitBackend`` class:
 
 .. code:: python
 
     # Import required modules and backend
-    from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
+    from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
     # Initialize generic service
-    toolkit = Toolkit()
+    toolkit = ToolkitBackend()
 
     # Get the default properties loaded from JSON file
     properties = toolkit.get_properties()

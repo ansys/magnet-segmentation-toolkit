@@ -2,7 +2,7 @@
 UI reference
 ============
 
-This section describes how to use the Magnet Segmentation Toolkit Wizard, which requires an installed
+This section describes how to use the Magnet Segmentation ToolkitBackend Wizard, which requires an installed
 and licensed copy of AEDT. It assumes that you have already launched the wizard from
 either the AEDT menu or AEDT console. For toolkit installation and wizard launching information,
 see these topics:

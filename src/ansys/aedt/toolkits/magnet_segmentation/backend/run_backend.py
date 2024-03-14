@@ -20,24 +20,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.multithreading_server import MultithreadingServer
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api import app
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api import jsonify
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api import logger
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.rest_api import settings
+from ansys.aedt.toolkits.common.backend.multithreading_server import MultithreadingServer
+from ansys.aedt.toolkits.common.backend.rest_api import app
+from ansys.aedt.toolkits.common.backend.rest_api import jsonify
+from ansys.aedt.toolkits.common.backend.rest_api import logger
 
-service = Toolkit()
+from api import ToolkitBackend
+
+toolkit_api = ToolkitBackend()
 
 
-# Toolkit entrypoints
+# ToolkitBackend entrypoints
 
 
 @app.route("/project_materials", methods=["GET"])
 def get_materials():
     logger.info("[GET] /Get project materials.")
 
-    response = service._get_project_materials()
+    response = toolkit_api._get_project_materials()
     if response:
         return response
     else:
@@ -48,7 +48,7 @@ def get_materials():
 def get_design_setups():
     logger.info("[GET] /Get design setups.")
 
-    response = service._get_design_setup_names()
+    response = toolkit_api._get_design_setup_names()
     if response:
         return response
     else:
@@ -59,7 +59,7 @@ def get_design_setups():
 def magnets_segmentation():
     logger.info("[POST] /Apply magnets segmentation.")
 
-    response = service.segmentation()
+    response = toolkit_api.segmentation()
     if response:
         return (
             jsonify("Magnets segmentation applied successfully."),
@@ -73,7 +73,7 @@ def magnets_segmentation():
 def apply_skew():
     logger.info("[POST] /Apply skew.")
 
-    response = service.apply_skew()
+    response = toolkit_api.apply_skew()
     if response:
         return (
             jsonify("Skew angle applied successfully."),
@@ -87,7 +87,7 @@ def apply_skew():
 def analyze_model():
     logger.info("[POST] /Validate and analyze AEDT model.")
 
-    response = service.validate_and_analyze()
+    response = toolkit_api.validate_and_analyze()
     if response:
         return jsonify("AEDT model analyzed successfully."), 200
     else:
@@ -98,7 +98,7 @@ def analyze_model():
 def get_magnet_loss():
     logger.info("[GET] /Get magnet loss.")
 
-    response = service.get_magnet_loss()
+    response = toolkit_api.get_magnet_loss()
     if response:
         return jsonify(response), 200
     else:
@@ -106,6 +106,6 @@ def get_magnet_loss():
 
 
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = toolkit_api.properties.debug
     server = MultithreadingServer()
-    server.run(host=settings["url"], port=settings["port"], app=app)
+    server.run(host=toolkit_api.properties.url, port=toolkit_api.properties.port, app=app)

@@ -21,5 +21,5 @@
 # SOFTWARE.
 
 """
-Magnet Segmentation Toolkit backend module.
+Magnet Segmentation ToolkitBackend backend module.
 """

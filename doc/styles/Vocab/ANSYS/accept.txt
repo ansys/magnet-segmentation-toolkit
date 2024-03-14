@@ -12,7 +12,7 @@ docstring
 GitHub
 HFSS
 new_toolkit_name
-Magnet Segmentation Toolkit
+Magnet Segmentation ToolkitBackend
 toml
 toolkit's
 toolkits

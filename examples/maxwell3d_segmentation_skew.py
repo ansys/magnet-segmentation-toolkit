@@ -1,6 +1,6 @@
 # # Maxwell 3D segmentation
 #
-# This example shows how to use the Magnet Segmentation Toolkit to segment
+# This example shows how to use the Magnet Segmentation ToolkitBackend to segment
 # your AEDT motor model.
 
 # ## Perform required imports
@@ -14,7 +14,7 @@ import shutil
 from pyaedt import generate_unique_folder_name
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
-from ansys.aedt.toolkits.magnet_segmentation.utils import download_file
+from ansys.aedt.toolkits.common.utils import download_file
 
 # -
 

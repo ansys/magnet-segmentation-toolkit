@@ -1,6 +1,6 @@
-AEDT Common Toolkit API
+AEDT Common ToolkitBackend API
 =======================
-The AEDT Common Toolkit API contains the ``AEDTCommonToolkit`` class, which provides basic
+The AEDT Common ToolkitBackend API contains the ``AEDTCommonToolkit`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 
@@ -11,19 +11,19 @@ These functions are the same for all AEDT toolkits.
 
    AEDTCommonToolkit
 
-You can access the ``AEDTCommonToolkit`` class directly from the ``Toolkit`` class
+You can access the ``AEDTCommonToolkit`` class directly from the ``ToolkitBackend`` class
 because it is inherited.
 
-This code shows how to use both the ``Toolkit`` and ``AEDTCommonToolkit`` classes
+This code shows how to use both the ``ToolkitBackend`` and ``AEDTCommonToolkit`` classes
 to create an object:
 
 .. code:: python
 
     # Import required modules and backend
-    from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
+    from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
     # Backend object
-    toolkit = Toolkit()
+    toolkit = ToolkitBackend()
 
     # Get the default properties loaded from JSON file
     properties = toolkit.get_properties()
