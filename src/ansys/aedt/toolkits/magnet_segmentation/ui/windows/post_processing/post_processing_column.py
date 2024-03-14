@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'post-processing_column.ui'
+## Form generated from reading UI file 'post_processing_column.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##

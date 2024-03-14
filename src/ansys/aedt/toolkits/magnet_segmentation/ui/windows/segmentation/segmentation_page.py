@@ -8,16 +8,11 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect, QSize)
+from PySide6.QtWidgets import (QComboBox, QHBoxLayout, QLabel,
+                               QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+                               QVBoxLayout)
+
 
 class Ui_Segmentation(object):
     def setupUi(self, Segmentation):
@@ -49,7 +44,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_3.addWidget(self.projects_aedt_combo)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
 
         self.horizontalLayout_6 = QHBoxLayout()
@@ -65,7 +59,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_6.addWidget(self.design_aedt_combo)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
         self.horizontalLayout_66 = QHBoxLayout()
@@ -80,7 +73,6 @@ class Ui_Segmentation(object):
         self.motor_type_combo.setObjectName(u"motor_type_combo")
 
         self.horizontalLayout_66.addWidget(self.motor_type_combo)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_66)
 
@@ -98,7 +90,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_32.addWidget(self.apply_mesh_sheets)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_32)
 
         self.horizontalLayout_4 = QHBoxLayout()
@@ -115,7 +106,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_4.addWidget(self.is_skewed)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
 
         self.horizontalLayout_7 = QHBoxLayout()
@@ -130,7 +120,6 @@ class Ui_Segmentation(object):
         self.magnets_material.setObjectName(u"magnets_material")
 
         self.horizontalLayout_7.addWidget(self.magnets_material)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_7)
 
@@ -147,7 +136,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_20.addWidget(self.rotor_material)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_20)
 
         self.horizontalLayout_20a = QHBoxLayout()
@@ -162,7 +150,6 @@ class Ui_Segmentation(object):
         self.stator_material.setObjectName(u"stator_material")
 
         self.horizontalLayout_20a.addWidget(self.stator_material)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_20a)
 
@@ -182,7 +169,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_21.addWidget(self.rotor_slices)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_21)
 
         self.horizontalLayout_22 = QHBoxLayout()
@@ -200,7 +186,6 @@ class Ui_Segmentation(object):
         self.magnet_segments_per_slice.setObjectName(u"magnet_segments_per_slice")
 
         self.horizontalLayout_22.addWidget(self.magnet_segments_per_slice)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_22)
 
@@ -220,7 +205,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_33.addWidget(self.mesh_sheets_number)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_33)
 
         self.horizontalLayout_23 = QHBoxLayout()
@@ -239,7 +223,6 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_23.addWidget(self.skew_angle)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_23)
 
         self.perform_segmentation = QPushButton(Segmentation)
@@ -257,23 +240,20 @@ class Ui_Segmentation(object):
 
         self.verticalLayout_2.addWidget(self.skew)
 
-
         self.horizontalLayout_.addLayout(self.verticalLayout_2)
 
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_.addItem(self.horizontalSpacer_4)
 
-
         self.verticalLayout.addLayout(self.horizontalLayout_)
-
 
         self.retranslateUi(Segmentation)
 
         self.projects_aedt_combo.setCurrentIndex(0)
 
-
         QMetaObject.connectSlotsByName(Segmentation)
+
     # setupUi
 
     def retranslateUi(self, Segmentation):
@@ -307,10 +287,10 @@ class Ui_Segmentation(object):
         self.stator_material.setItemText(0, QCoreApplication.translate("Segmentation", u"--Select Material--", None))
 
         self.rotor_slices_label.setText(QCoreApplication.translate("Segmentation", u"Rotor Slices", None))
-        self.magnet_segments_per_slice_label.setText(QCoreApplication.translate("Segmentation", u"Magnet Segments Per Slice", None))
+        self.magnet_segments_per_slice_label.setText(
+            QCoreApplication.translate("Segmentation", u"Magnet Segments Per Slice", None))
         self.mesh_sheets_number_label.setText(QCoreApplication.translate("Segmentation", u"Mesh Sheets Number", None))
         self.skew_angle_label.setText(QCoreApplication.translate("Segmentation", u"Skew Angle (deg)", None))
         self.perform_segmentation.setText(QCoreApplication.translate("Segmentation", u"Perform Segmentation", None))
         self.skew.setText(QCoreApplication.translate("Segmentation", u"Apply Skew", None))
     # retranslateUi
-

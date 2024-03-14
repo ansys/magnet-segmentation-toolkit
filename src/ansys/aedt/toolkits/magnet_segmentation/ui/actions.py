@@ -106,7 +106,7 @@ class Frontend(FrontendGeneric):
                 )
                 self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
 
-    def apply_segmentation(self, project_selected=None, design_selected=None):
+    def apply_segmentation(self):
         be_properties = self.get_properties()
         if project_selected and design_selected:
             for project in be_properties["project_list"]:
@@ -251,40 +251,24 @@ class Frontend(FrontendGeneric):
 
     def get_materials(self):
         try:
-            response = requests.get(self.url + "/status")
-            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-                self.write_log_line("Please wait, toolkit running")
-            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-                self.update_progress(0)
-                response = requests.get(self.url + "/health")
-                if response.ok and response.json() == "ToolkitBackend is not connected to AEDT.":
-                    response = requests.get(self.url + "/project_materials")
-                    if response.ok:
-                        return response.json()
+            response = requests.get(self.url + "/project_materials")
+            if response.ok:
+                msg = "Load materials call successful."
+                logger.info(msg)
             else:
-                self.write_log_line(
-                    f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
-                    f"or {ToolkitThreadStatus.UNKNOWN.value}"
-                )
+                msg = "Load materials call failed."
+                logger.error(msg)
         except requests.exceptions.RequestException:
-            logger.error(f"Get materials call failed")
+            logger.error("Load materials call failed.")
 
     def get_design_setups(self):
         try:
-            response = requests.get(self.url + "/status")
-            if response.ok and response.json() == ToolkitThreadStatus.BUSY.value:
-                self.write_log_line("Please wait, toolkit running")
-            elif response.ok and response.json() == ToolkitThreadStatus.IDLE.value:
-                self.update_progress(0)
-                response = requests.get(self.url + "/health")
-                if response.ok and response.json() == "Toolkit is not connected to AEDT.":
-                    response = requests.get(self.url + "/design_setups")
-                    if response.ok:
-                        return response.json()
+            response = requests.get(self.url + "/design_setups")
+            if response.ok:
+                msg = "Get design setups call successful."
+                logger.info(msg)
             else:
-                self.write_log_line(
-                    f"Something is wrong, either the {ToolkitThreadStatus.CRASHED.value} "
-                    f"or {ToolkitThreadStatus.UNKNOWN.value}"
-                )
+                msg = "Get design setups call failed."
+                logger.error(msg)
         except requests.exceptions.RequestException:
-            logger.error(f"Get setups call failed")
+            logger.error("Get design setups call failed.")

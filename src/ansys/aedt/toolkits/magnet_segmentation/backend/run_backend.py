@@ -48,7 +48,7 @@ def get_materials():
 def get_design_setups():
     logger.info("[GET] /Get design setups.")
 
-    response = service._get_design_setup_names()
+    response = toolkit_api._get_design_setup_names()
     if response:
         return response
     else:

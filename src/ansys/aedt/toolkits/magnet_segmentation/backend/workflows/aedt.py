@@ -28,11 +28,11 @@ from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-from ansys.aedt.toolkits.common.backend.api import Common
+from ansys.aedt.toolkits.common.backend.api import AEDTCommon
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 
-class AEDTWorkflow(Common):
+class AEDTWorkflow(AEDTCommon):
     """Controls the AEDT toolkit workflow.
 
     This class provides methods for connecting to a selected design,
@@ -67,7 +67,7 @@ class AEDTWorkflow(Common):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         # Requirements: Design needs  a design variable "HalfAxial"
         if self.aedtapp["HalfAxial"] == "1":
@@ -178,7 +178,7 @@ class AEDTWorkflow(Common):
             ``True`` when successful, ``False`` when failed.
         """
         try:
-            self.connect_design(app_name=list(properties.active_design.keys())[0])
+            self.connect_design()
 
             magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
             rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
@@ -263,7 +263,7 @@ class AEDTWorkflow(Common):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         if self.aedtapp.validate_simple():
             self.aedtapp.analyze_setup(properties.setup_to_analyze, use_auto_settings=False)
@@ -280,7 +280,7 @@ class AEDTWorkflow(Common):
         dict
             dictionary containing the average magnet loss value when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         try:
             report_dict = {}
@@ -356,22 +356,20 @@ class AEDTWorkflow(Common):
     # @thread.launch_thread
     def _get_project_materials(self):
         """Get the project materials."""
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         mats = self.aedtapp.materials.get_used_project_material_names()
 
-        self.aedtapp.release_desktop(False, False)
-        self.aedtapp = None
+        self.release_aedt(False, False)
 
         return mats
 
     def _get_design_setup_names(self):
         """Get the design setup names."""
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         setup_names = [setup.name for setup in self.aedtapp.setups]
 
-        self.aedtapp.release_desktop(False, False)
-        self.aedtapp = None
+        self.release_aedt(False, False)
 
         return setup_names

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'post-processing_page.ui'
+## Form generated from reading UI file 'post_processing_page.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -15,7 +15,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
     QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
     QWidget)
 
@@ -53,13 +53,22 @@ class Ui_PostProcessing(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_6)
 
-        self.setup_name = QLineEdit(PostProcessing)
-        self.setup_name.setObjectName(u"setup_name")
+        self.setup_name_combo = QComboBox(PostProcessing)
+        self.setup_name_combo.setObjectName(u"setup_name_combo")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.setup_name_combo.sizePolicy().hasHeightForWidth())
+        self.setup_name_combo.setSizePolicy(sizePolicy2)
 
-        self.horizontalLayout_2.addWidget(self.setup_name)
+        self.horizontalLayout_2.addWidget(self.setup_name_combo)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
 
         self.validate_and_analyze = QPushButton(PostProcessing)
         self.validate_and_analyze.setObjectName(u"validate_and_analyze")

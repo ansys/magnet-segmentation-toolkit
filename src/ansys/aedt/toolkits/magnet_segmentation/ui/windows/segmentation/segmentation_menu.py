@@ -3,7 +3,6 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QComboBox
 from PySide6.QtWidgets import QLabel
 from PySide6.QtWidgets import QLineEdit
-from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtWidgets import QWidget
 from PySide6.QtWidgets import QPushButton
 
@@ -110,6 +109,10 @@ class SegmentationMenu(object):
 
         self.perform_segmentation_button.clicked.connect(self.segmentation_button_clicked)
         self.apply_skew_button.clicked.connect(self.skew_button_clicked)
+
+        # Motor Type
+        # Add in UI
+        self.motor_type_combo.addItems(["IPM", "SPM"])
 
         # UI from Designer
         # Combo boxes
@@ -301,6 +304,14 @@ class SegmentationMenu(object):
         self.ui.update_progress(100)
         selected_project = self.main_window.home_menu.project_combobox.currentText()
         selected_design = self.main_window.home_menu.design_combobox.currentText()
+
+        # Populate combo boxes
+        # Materials
+        materials = self.main_window.get_materials()
+        for mat in materials:
+            self.magnets_material.addItem(mat)
+            self.rotor_material.addItem(mat)
+            self.stator_material.addItem(mat)
 
         properties = self.main_window.get_properties()
         active_project = self.main_window.get_project_name(properties["active_project"])

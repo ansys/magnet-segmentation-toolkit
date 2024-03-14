@@ -2,15 +2,11 @@ from PySide6.QtCore import QThread
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QComboBox
 from PySide6.QtWidgets import QLabel
-from PySide6.QtWidgets import QLineEdit
-from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtWidgets import QWidget
 from PySide6.QtWidgets import QPushButton
 
-from pyaedt.generic.general_methods import _to_boolean
-
-from windows.segmentation.segmentation_page import Ui_PostProcessing
-from windows.segmentation.segmentation_column import Ui_LeftColumn
+from windows.post_processing.post_processing_page import Ui_PostProcessing
+from windows.post_processing.post_processing_column import Ui_LeftColumn
 
 # toolkit PySide6 Widgets
 from ansys.aedt.toolkits.common.ui.utils.widgets import PyLabel
@@ -72,8 +68,8 @@ class PostProcessingMenu(object):
         # Specific properties
         # Labels
         self.setup_name_label = self.postprocessing_menu_widget.findChild(QLabel, "setup_name_label")
-        # LineEdits
-        self.setup_name = self.postprocessing_menu_widget.findChild(QLineEdit, "setup_name")
+        # Combobox
+        self.setup_name_combo = self.postprocessing_menu_widget.findChild(QComboBox, "setup_name_combo")
         # Buttons
         self.validate_and_analyze_button = self.postprocessing_menu_widget.findChild(QPushButton, "validate_and_analyze")
         self.get_magnet_loss_button = self.postprocessing_menu_widget.findChild(QPushButton, "get_magnet_loss")
@@ -90,21 +86,18 @@ class PostProcessingMenu(object):
         self.get_magnet_loss_button.clicked.connect(self.magnet_loss_button_clicked)
 
         # UI from Designer
-        # Multiplier line
-        line_style = """
-            QLineEdit {{
-            border: none;
-            padding: 10px;
-            color: {_color};
-            background-color: {_bg_color};
-            selection-background-color: red;
-            font-size: {_font_size}pt;
-            }}
-        """
-        custom_style = line_style.format(
+        # Multiplier label button
+        multiplier_label_style = """
+                            QLabel {{
+                            color: {_color};
+                            font-size: {_font_size}pt;
+                            font-weight: bold;
+                            }}
+                            """
+        custom_style = multiplier_label_style.format(
             _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
         )
-        self.setup_name.setStyleSheet(custom_style)
+        self.setup_name_label.setStyleSheet(custom_style)
 
         # Multiplier label button
         multiplier_label_style = """
@@ -120,18 +113,26 @@ class PostProcessingMenu(object):
         self.validate_and_analyze_button.setStyleSheet(custom_style)
         self.get_magnet_loss_button.setStyleSheet(custom_style)
 
-        # Geometry label button
-        select_geometry_label_style = """
-                            QLabel {{
-                            color: {_color};
-                            font-size: {_font_size}pt;
-                            font-weight: bold;
-                            }}
-                            """
-        custom_style = select_geometry_label_style.format(
+        # Combo boxes
+        combo_box_style = """
+                    QComboBox {{
+                        border: none;
+                        padding: 10px;
+                        color: {_color};
+                        background-color: {_bg_color};
+                        selection-background-color: red;
+                        font-size: {_font_size}pt;
+                    }}
+                    QComboBox QAbstractItemView {{
+                        border: none;
+                        background-color: {_bg_color};
+                        color: {_color};
+                    }}
+                """
+        custom_style = combo_box_style.format(
             _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
         )
-        self.setup_name_label.setStyleSheet(custom_style)
+        self.setup_name_combo.setStyleSheet(custom_style)
 
         # Set Column
         msg = "Post-Processing"
@@ -157,7 +158,7 @@ class PostProcessingMenu(object):
 
         be_properties = self.main_window.get_properties()
 
-        be_properties["setup_to_analyze"] = self.setup_name.currentText()
+        be_properties["setup_to_analyze"] = self.setup_name_combo.currentText()
 
         self.main_window.set_properties(be_properties)
 
@@ -221,6 +222,11 @@ class PostProcessingMenu(object):
         self.ui.update_progress(100)
         selected_project = self.main_window.home_menu.project_combobox.currentText()
         selected_design = self.main_window.home_menu.design_combobox.currentText()
+
+        # Populate setup combo box
+        setups = self.main_window.get_design_setups()
+        for setup in setups:
+            self.setup_name.addItem(setup)
 
         properties = self.main_window.get_properties()
         active_project = self.main_window.get_project_name(properties["active_project"])

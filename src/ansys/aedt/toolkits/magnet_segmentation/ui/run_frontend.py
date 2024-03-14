@@ -38,6 +38,7 @@ from models import properties
 # New windows
 from windows.segmentation.segmentation_menu import SegmentationMenu
 from windows.plot_design.plot_design_menu import PlotDesignMenu
+from windows.post_processing.post_processing_menu import PostProcessingMenu
 
 # Common windows
 from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWindowLayout
@@ -114,6 +115,12 @@ class ApplicationWindow(QMainWindow, Frontend):
         self.segmentation_menu.setup()
         self.ui.left_menu.clicked.connect(self.segmentation_menu_clicked)
 
+        # Post-processing menu
+        self.post_processing_menu = PostProcessingMenu(self)
+        self.post_processing_menu.setup()
+        self.ui.left_menu.clicked.connect(self.post_processing_menu_clicked)
+
+
         # Plot design menu
         self.plot_design_menu = PlotDesignMenu(self)
         self.plot_design_menu.setup()
@@ -136,6 +143,25 @@ class ApplicationWindow(QMainWindow, Frontend):
                 menu=self.segmentation_menu.segmentation_column_widget,
                 title="Segmentation",
                 icon_path=self.ui.images_load.icon_path("icon_plot_3d.svg"),
+            )
+
+            if not is_left_visible:
+                self.ui.toggle_left_column()
+
+    def post_processing_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+
+        if menu_name == "post_processing_menu":
+            selected_menu.set_active(True)
+            self.ui.set_page(self.post_processing_menu.postprocessing_menu_widget)
+
+            is_left_visible = self.ui.is_left_column_visible()
+
+            self.ui.set_left_column_menu(
+                menu=self.post_processing_menu.postprocessing_column_widget,
+                title="PostProcessing",
+                icon_path=self.ui.images_load.icon_path("icon_plot_2d.svg"),
             )
 
             if not is_left_visible:
