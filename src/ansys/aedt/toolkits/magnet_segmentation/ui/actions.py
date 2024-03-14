@@ -123,27 +123,12 @@ class Frontend(FrontendGeneric):
             msg = "Please load a valid AEDT project."
             logger.info(msg)
 
-        # be_properties["motor_type"] = self.motor_type_combo.currentText()
-        # be_properties["is_skewed"] = _to_boolean(self.is_skewed.currentText())
-        # if not be_properties["is_skewed"]:
-        #     be_properties["rotor_material"] = self.rotor_material.currentText()
-        #     be_properties["stator_material"] = self.stator_material.currentText()
-        #     be_properties["rotor_slices"] = int(self.rotor_slices.text())
-        #     be_properties["skew_angle"] = self.skew_angle.text()
-        # be_properties["magnets_material"] = self.magnets_material.currentText()
-        # be_properties["magnet_segments_per_slice"] = int(self.magnet_segments_per_slice.text())
-        # be_properties["active_project"] = self.projects_aedt_combo.currentText()
-        # be_properties["active_design"] = self.design_aedt_combo.currentText()
-        # if _to_boolean(self.apply_mesh_sheets.currentText()):
-        #     be_properties["apply_mesh_sheets"] = _to_boolean(self.apply_mesh_sheets.currentText())
-        #     be_properties["mesh_sheets_number"] = int(self.mesh_sheets_number.text())
         self.set_properties(be_properties)
-
         try:
             segmentation_response = requests.post(self.url + "/apply_segmentation")
             if segmentation_response.ok:
                 #self.find_design_names()
-                self.skew.setEnabled(True)
+                #self.skew.setEnabled(True)
                 msg = "Apply segmentation call successful"
                 logger.info(msg)
             else:
@@ -152,81 +137,105 @@ class Frontend(FrontendGeneric):
         except requests.exceptions.RequestException:
             logger.error("Apply segmentation call failed")
 
-    def apply_skew(self):
-        if self.backend_busy():
-            msg = ToolkitThreadStatus.BUSY.value
-            logger.debug(msg)
-            self.write_log_line(msg)
-            return
-
+    def apply_skew(self, project_selected=None, design_selected=None):
         be_properties = self.get_properties()
-        if be_properties.is_skewed:
+        if project_selected and design_selected:
+            for project in be_properties["project_list"]:
+                if self.get_project_name(project) == project_selected:
+                    be_properties["active_project"] = project
+                    if project_selected in list(be_properties["design_list"].keys()):
+                        designs = be_properties["design_list"][project_selected]
+                        for design in designs:
+                            if design_selected == design:
+                                be_properties["active_design"] = design
+                                break
+                    break
+        else:
+            msg = "Please load a valid AEDT project."
+            logger.info(msg)
+
+        self.set_properties(be_properties)
+
+        if be_properties["is_skewed"]:
             msg = "Model is already skewed."
-            logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
+            logger.info(msg)
             return
 
-        if be_properties.skew_angle:
-            self.update_progress(0)
+        if be_properties["skew_angle"]:
             try:
                 response = requests.post(self.url + "/apply_skew")
                 if response.ok:
                     self.is_skewed.setCurrentText("True")
-                    msg = "Apply skew call successful"
+                    msg = "Apply skew call successful."
+                    logger.info(msg)
                 else:
-                    msg = "Apply skew call failed"
-                logger.debug(msg)
-                self.write_log_line(msg)
-                self.update_progress(100)
+                    msg = "Apply skew call failed."
+                    logger.error(msg)
             except requests.exceptions.RequestException:
-                logger.error("Apply skew call failed")
+                logger.error("Apply skew call failed.")
 
-    def val_check_and_analysis(self):
-        if self.backend_busy():
-            msg = ToolkitThreadStatus.BUSY.value
-            logger.debug(msg)
-            self.write_log_line(msg)
-            return
-
+    def val_check_and_analysis(self, project_selected=None, design_selected=None):
         be_properties = self.get_properties()
+        if project_selected and design_selected:
+            for project in be_properties["project_list"]:
+                if self.get_project_name(project) == project_selected:
+                    be_properties["active_project"] = project
+                    if project_selected in list(be_properties["design_list"].keys()):
+                        designs = be_properties["design_list"][project_selected]
+                        for design in designs:
+                            if design_selected == design:
+                                be_properties["active_design"] = design
+                                break
+                    break
+        else:
+            msg = "Please load a valid AEDT project."
+            logger.info(msg)
+
         # check box name setup
         be_properties.setup_to_analyze = self.setup_name.text()
-        self.get_properties()
-        be_properties.setup_to_analyze = self.setup_name.currentText()
-        self.set_properties()
+        self.set_properties(be_properties)
 
         try:
             response = requests.post(self.url + "/validate_analyze")
             if response.ok:
                 msg = "Validate and analyze call successful"
-                self.get_magnet_loss.setEnabled(True)
+                logger.info(msg)
+                #self.get_magnet_loss.setEnabled(True)
             else:
                 msg = "Validate and analyze call failed"
-                logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
+                logger.error(msg)
         except requests.exceptions.RequestException:
             logger.error("Validate and analyze call failed")
 
-    def get_report(self):
-        if self.backend_busy():
-            msg = ToolkitThreadStatus.BUSY.value
-            logger.debug(msg)
-            self.write_log_line(msg)
-            return
+    def get_report(self, project_selected=None, design_selected=None):
+        be_properties = self.get_properties()
+        if project_selected and design_selected:
+            for project in be_properties["project_list"]:
+                if self.get_project_name(project) == project_selected:
+                    be_properties["active_project"] = project
+                    if project_selected in list(be_properties["design_list"].keys()):
+                        designs = be_properties["design_list"][project_selected]
+                        for design in designs:
+                            if design_selected == design:
+                                be_properties["active_design"] = design
+                                break
+                    break
+        else:
+            msg = "Please load a valid AEDT project."
+            logger.info(msg)
+
+        self.set_properties(be_properties)
 
         try:
             response = requests.get(self.url + "/magnet_loss")
             if response.ok:
-                msg = "Magnet loss call successful"
+                msg = "Magnet loss call successful."
+                logger.info(msg)
             else:
-                msg = "Magnet loss call failed"
-                logger.debug(msg)
-            self.write_log_line(msg)
-            self.update_progress(100)
+                msg = "Magnet loss call failed."
+                logger.error(msg)
         except requests.exceptions.RequestException:
-            logger.error("Magnet loss call failed")
+            logger.error("Magnet loss call failed.")
 
     def hide_options(self):
         if self.is_skewed.currentText() == "True":

@@ -21,13 +21,29 @@ class SegmentationThread(QThread):
 
     def __init__(self, app, selected_project, selected_design):
         super().__init__()
-        self.geometry_menu = app
+        self.segmentation_menu = app
         self.main_window = app.main_window
         self.selected_project = selected_project
         self.selected_design = selected_design
 
     def run(self):
         success = self.main_window.apply_segmentation(
+            self.selected_project, self.selected_design
+        )
+        self.finished_signal.emit(success)
+
+class SkewThread(QThread):
+    finished_signal = Signal(bool)
+
+    def __init__(self, app, selected_project, selected_design):
+        super().__init__()
+        self.segmentation_menu = app
+        self.main_window = app.main_window
+        self.selected_project = selected_project
+        self.selected_design = selected_design
+
+    def run(self):
+        success = self.main_window.apply_skew(
             self.selected_project, self.selected_design
         )
         self.finished_signal.emit(success)
@@ -84,6 +100,7 @@ class SegmentationMenu(object):
         self.perform_segmentation_button = self.segmentation_menu_widget.findChild(QPushButton, "perform_segmentation")
         self.apply_skew_button = self.segmentation_menu_widget.findChild(QPushButton, "skew")
         self.segmentation_thread = None
+        self.skew_thread = None
 
     def setup(self):
         # Modify theme
@@ -92,6 +109,7 @@ class SegmentationMenu(object):
         background = app_color["dark_three"]
 
         self.perform_segmentation_button.clicked.connect(self.segmentation_button_clicked)
+        self.apply_skew_button.clicked.connect(self.skew_button_clicked)
 
         # UI from Designer
         # Combo boxes
@@ -193,7 +211,9 @@ class SegmentationMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if self.segmentation_thread and self.segmentation_thread.isRunning() or self.main_window.backend_busy():
+        if (self.segmentation_thread or self.skew_thread
+                and self.segmentation_thread.isRunning() or self.skew_thread.isRunning()
+                or self.main_window.backend_busy()):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
@@ -230,7 +250,7 @@ class SegmentationMenu(object):
                 selected_project=selected_project,
                 selected_design=selected_design,
             )
-            self.segmentation_thread.finished_signal.connect(self.segmentation_finished)
+            self.segmentation_thread.finished_signal.connect(self.process_finished)
 
             msg = "Segmentation successfull."
             self.ui.update_logger(msg)
@@ -239,7 +259,45 @@ class SegmentationMenu(object):
         else:
             self.ui.update_logger("Toolkit not connect to AEDT.")
 
-    def segmentation_finished(self, success):
+    def skew_button_clicked(self):
+        if not self.main_window.check_connection():
+            msg = "Backend not running."
+            self.ui.update_logger(msg)
+            return False
+
+        if (self.segmentation_thread or self.skew_thread
+                and self.segmentation_thread.isRunning() or self.skew_thread.isRunning()
+                or self.main_window.backend_busy()):
+            msg = "Toolkit running"
+            self.ui.update_logger(msg)
+            self.main_window.logger.debug(msg)
+            return False
+
+        be_properties = self.main_window.get_properties()
+
+        self.main_window.set_properties(be_properties)
+
+        if be_properties.get("active_project"):
+            self.ui.update_progress(0)
+            selected_project = self.main_window.home_menu.project_combobox.currentText()
+            selected_design = self.main_window.home_menu.design_combobox.currentText()
+
+            # Start a separate thread for the backend call
+            self.skew_thread = SkewThread(
+                app=self,
+                selected_project=selected_project,
+                selected_design=selected_design,
+            )
+            self.skew_thread.finished_signal.connect(self.process_finished)
+
+            msg = "Segmentation successfull."
+            self.ui.update_logger(msg)
+
+            self.skew_thread.start()
+        else:
+            self.ui.update_logger("Toolkit not connect to AEDT.")
+
+    def process_finished(self, success):
         self.ui.update_progress(100)
         selected_project = self.main_window.home_menu.project_combobox.currentText()
         selected_design = self.main_window.home_menu.design_combobox.currentText()
@@ -252,7 +310,7 @@ class SegmentationMenu(object):
             self.main_window.home_menu.update_design()
 
         if success:
-            msg = "Segmentation successfully finished."
+            msg = "Process successfully finished."
             self.ui.update_logger(msg)
         else:
             msg = f"Failed backend call: {self.main_window.url}"
