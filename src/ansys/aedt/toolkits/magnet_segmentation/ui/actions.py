@@ -22,12 +22,10 @@
 
 # import os.path
 
-from pyaedt.generic.general_methods import _to_boolean
-import requests
-
 from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
+import requests
 
 
 class Frontend(FrontendGeneric):
@@ -44,18 +42,10 @@ class Frontend(FrontendGeneric):
         HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
         found_data = {target: False for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]}
 
-        be_properties = self.get_properties()
-        if not be_properties.active_project:
-            return
-        else:
-            with open(be_properties.active_project, "r") as file:
-                lines = file.readlines()
-            lines = [line.strip() for line in lines]
-        be_properties = self.get_properties()
-        with open(be_properties.active_project, "r") as file:
+        aedt_file = self.file.text()
+        with open(aedt_file, "r") as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
-
         for line in lines:
             for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]:
                 if line.lstrip().startswith(target):
@@ -89,22 +79,22 @@ class Frontend(FrontendGeneric):
         logger.debug("Selected AEDT file is not compatible with skew call")
         return False
 
-    def browse_and_check_for_aedt_project(self):
-        be_properties = self.get_properties()
-        super().browse_for_aedt_project()
-        segmentation_compatibility = self.check_segmentation_compatibility()
-        if not segmentation_compatibility and segmentation_compatibility is not None:
-            self.write_log_line(
-                f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with segmentation."
+    # NOTE: It might be wise to disable the buttons to perform some actions.
+    # This depends on the content of the file (see segmentation_page.py)
+    def browse_file(self):
+        """Browse file and perform checks on the fly."""
+        super().browse_file()
+        aedt_file = self.file.text()
+        if not self.check_segmentation_compatibility():
+            logger.warning(
+                f"AEDT file '{aedt_file}' is not compatible with segmentation. "
+                "Please, ensure that 'SymmetryFactor' and 'HalfAxial' are defined"
             )
-            self.write_log_line("Please, ensure that 'SymmetryFactor' and 'HalfAxial' are defined")
-        elif segmentation_compatibility:
-            skew_compatibility = self.check_skew_compatibility()
-            if not skew_compatibility:
-                self.write_log_line(
-                    f"[Warning] AEDT file '{be_properties.active_project}' is not compatible with skew."
-                )
-                self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
+        if not self.check_skew_compatibility():
+            logger.warning(
+                f"AEDT file '{aedt_file}' is not compatible with skew. "
+                "Please, ensure that the name of the shaft is 'Shaft'"
+            )
 
     def apply_segmentation(self, project_selected=None, design_selected=None):
         be_properties = self.get_properties()
@@ -127,8 +117,8 @@ class Frontend(FrontendGeneric):
         try:
             segmentation_response = requests.post(self.url + "/apply_segmentation")
             if segmentation_response.ok:
-                #self.find_design_names()
-                #self.skew.setEnabled(True)
+                # self.find_design_names()
+                # self.skew.setEnabled(True)
                 msg = "Apply segmentation call successful"
                 logger.info(msg)
             else:
@@ -200,7 +190,7 @@ class Frontend(FrontendGeneric):
             if response.ok:
                 msg = "Validate and analyze call successful"
                 logger.info(msg)
-                #self.get_magnet_loss.setEnabled(True)
+                # self.get_magnet_loss.setEnabled(True)
             else:
                 msg = "Validate and analyze call failed"
                 logger.error(msg)
