@@ -259,7 +259,7 @@ class SegmentationMenu(object):
             )
             self.segmentation_thread.finished_signal.connect(self.process_finished)
 
-            msg = "Segmentation successfull."
+            msg = "Segmentation successful."
             self.ui.update_logger(msg)
 
             self.segmentation_thread.start()
@@ -299,7 +299,7 @@ class SegmentationMenu(object):
             )
             self.skew_thread.finished_signal.connect(self.process_finished)
 
-            msg = "Segmentation successfull."
+            msg = "Segmentation successful."
             self.ui.update_logger(msg)
 
             self.skew_thread.start()

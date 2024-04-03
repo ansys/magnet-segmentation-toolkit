@@ -175,7 +175,7 @@ class PostProcessingMenu(object):
             )
             self.validate_analyze_thread.finished_signal.connect(self.process_finished)
 
-            msg = "Validation and analysis successfull."
+            msg = "Validation and analysis successful."
             self.ui.update_logger(msg)
 
             self.validate_analyze_thread.start()
@@ -211,7 +211,7 @@ class PostProcessingMenu(object):
             )
             self.magnet_loss_thread.finished_signal.connect(self.process_finished)
 
-            msg = "Magnet loss computation successfull."
+            msg = "Magnet loss computation successful."
             self.ui.update_logger(msg)
 
             self.magnet_loss_thread.start()

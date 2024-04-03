@@ -22,8 +22,6 @@
 
 """Data classes used to store data related to UI settings.
 """
-
-import json
 import os
 import sys
 

@@ -21,11 +21,8 @@
 # SOFTWARE.
 
 # import os.path
-
-from pyaedt.generic.general_methods import _to_boolean
 import requests
 
-from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
 
@@ -106,7 +103,7 @@ class Frontend(FrontendGeneric):
                 )
                 self.write_log_line("Please, ensure that the name of the shaft is 'Shaft'")
 
-    def apply_segmentation(self):
+    def apply_segmentation(self, project_selected=None, design_selected=None):
         be_properties = self.get_properties()
         if project_selected and design_selected:
             for project in be_properties["project_list"]:
