@@ -77,6 +77,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <item>
+            <property name="text">
+             <string>--No Setups--</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -99,6 +104,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="validate_and_analyze">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -118,6 +129,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="get_magnet_loss">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>0</width>

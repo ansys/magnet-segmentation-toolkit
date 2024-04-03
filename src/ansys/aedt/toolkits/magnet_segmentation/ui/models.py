@@ -25,11 +25,15 @@
 
 import json
 import os
-
-from pydantic import BaseModel
+import sys
 
 from ansys.aedt.toolkits.common.ui.models import UIProperties
 from ansys.aedt.toolkits.common.ui.models import general_settings
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 class Properties(UIProperties, validate_assignment=True):
@@ -37,15 +41,17 @@ class Properties(UIProperties, validate_assignment=True):
 
 
 frontend_properties = {}
-if os.path.exists(os.path.join(os.path.dirname(__file__), "frontend_properties.json")):
-    with open(os.path.join(os.path.dirname(__file__), "frontend_properties.json")) as file_handler:
-        frontend_properties = json.load(file_handler)
+if os.path.exists(os.path.join(os.path.dirname(__file__), "frontend_properties.toml")):
+    with open(os.path.join(os.path.dirname(__file__), "frontend_properties.toml"), mode="rb") as file_handler:
+        frontend_properties = tomllib.load(file_handler)
 
 toolkit_property = {}
 if frontend_properties:
     for frontend_key in frontend_properties:
-        if hasattr(general_settings, frontend_key):
-            setattr(general_settings, frontend_key, frontend_properties[frontend_key])
+        if frontend_key == "defaults":
+            for toolkit_key in frontend_properties["defaults"]:
+                if hasattr(general_settings, toolkit_key):
+                    setattr(general_settings, toolkit_key, frontend_properties["defaults"][toolkit_key])
         else:
             toolkit_property[frontend_key] = frontend_properties[frontend_key]
 

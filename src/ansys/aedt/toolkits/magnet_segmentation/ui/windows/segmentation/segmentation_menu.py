@@ -3,16 +3,14 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QComboBox
 from PySide6.QtWidgets import QLabel
 from PySide6.QtWidgets import QLineEdit
-from PySide6.QtWidgets import QWidget
 from PySide6.QtWidgets import QPushButton
-
-from pyaedt.generic.general_methods import _to_boolean
-
-from windows.segmentation.segmentation_page import Ui_Segmentation
-from windows.segmentation.segmentation_column import Ui_LeftColumn
+from PySide6.QtWidgets import QWidget
 
 # toolkit PySide6 Widgets
 from ansys.aedt.toolkits.common.ui.utils.widgets import PyLabel
+from pyaedt.generic.general_methods import _to_boolean
+from windows.segmentation.segmentation_column import Ui_LeftColumn
+from windows.segmentation.segmentation_page import Ui_Segmentation
 
 
 class SegmentationThread(QThread):
@@ -26,10 +24,9 @@ class SegmentationThread(QThread):
         self.selected_design = selected_design
 
     def run(self):
-        success = self.main_window.apply_segmentation(
-            self.selected_project, self.selected_design
-        )
+        success = self.main_window.apply_segmentation(self.selected_project, self.selected_design)
         self.finished_signal.emit(success)
+
 
 class SkewThread(QThread):
     finished_signal = Signal(bool)
@@ -42,9 +39,7 @@ class SkewThread(QThread):
         self.selected_design = selected_design
 
     def run(self):
-        success = self.main_window.apply_skew(
-            self.selected_project, self.selected_design
-        )
+        success = self.main_window.apply_skew(self.selected_project, self.selected_design)
         self.finished_signal.emit(success)
 
 
@@ -69,8 +64,6 @@ class SegmentationMenu(object):
 
         # Specific properties
         # Combo boxes
-        self.projects_aedt_combo = self.segmentation_menu_widget.findChild(QComboBox, "projects_aedt_combo")
-        self.design_aedt_combo = self.segmentation_menu_widget.findChild(QComboBox, "design_aedt_combo")
         self.motor_type_combo = self.segmentation_menu_widget.findChild(QComboBox, "motor_type_combo")
         self.apply_mesh_sheets = self.segmentation_menu_widget.findChild(QComboBox, "apply_mesh_sheets")
         self.is_skewed = self.segmentation_menu_widget.findChild(QComboBox, "is_skewed")
@@ -92,7 +85,9 @@ class SegmentationMenu(object):
         self.rotor_material_label = self.segmentation_menu_widget.findChild(QLabel, "rotor_material_label")
         self.stator_material_label = self.segmentation_menu_widget.findChild(QLabel, "stator_material_label")
         self.rotor_slices_label = self.segmentation_menu_widget.findChild(QLabel, "rotor_slices_label")
-        self.magnet_segments_per_slice_label = self.segmentation_menu_widget.findChild(QLabel, "magnet_segments_per_slice_label")
+        self.magnet_segments_per_slice_label = self.segmentation_menu_widget.findChild(
+            QLabel, "magnet_segments_per_slice_label"
+        )
         self.mesh_sheets_number_label = self.segmentation_menu_widget.findChild(QLabel, "mesh_sheets_number_label")
         self.skew_angle_label = self.segmentation_menu_widget.findChild(QLabel, "skew_angle_label")
         # Buttons
@@ -103,6 +98,16 @@ class SegmentationMenu(object):
 
     def setup(self):
         # Modify theme
+        # Populate combo boxes
+        # Materials
+        self.main_window.settings_menu.connect_aedt.clicked.connect(self.main_window.get_materials())
+        materials = self.main_window.get_materials()
+        if materials:
+            for mat in materials:
+                self.segmentation_menu.magnets_material.addItem(mat)
+                self.segmentation_menu.rotor_material.addItem(mat)
+                self.segmentation_menu.stator_material.addItem(mat)
+
         app_color = self.main_window.ui.themes["app_color"]
         text_color = app_color["text_active"]
         background = app_color["dark_three"]
@@ -134,8 +139,6 @@ class SegmentationMenu(object):
         custom_style = combo_box_style.format(
             _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
         )
-        self.projects_aedt_combo.setStyleSheet(custom_style)
-        self.design_aedt_combo.setStyleSheet(custom_style)
         self.motor_type_combo.setStyleSheet(custom_style)
         self.apply_mesh_sheets.setStyleSheet(custom_style)
         self.is_skewed.setStyleSheet(custom_style)
@@ -173,8 +176,6 @@ class SegmentationMenu(object):
         custom_style = multiplier_label_style.format(
             _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
         )
-        self.projects_aedt_combo_label.setStyleSheet(custom_style)
-        self.design_aedt_combo_label.setStyleSheet(custom_style)
         self.motor_type_combo_label.setStyleSheet(custom_style)
         self.apply_mesh_sheets_label.setStyleSheet(custom_style)
         self.is_skewed_label.setStyleSheet(custom_style)
@@ -205,7 +206,8 @@ class SegmentationMenu(object):
         label_widget = PyLabel(
             text=msg,
             font_size=self.ui.app.properties.font["title_size"],
-            color=self.ui.themes["app_color"]["text_description"])
+            color=self.ui.themes["app_color"]["text_description"],
+        )
         self.segmentation_column_vertical_layout.addWidget(label_widget)
 
     def segmentation_button_clicked(self):
@@ -214,9 +216,13 @@ class SegmentationMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if (self.segmentation_thread or self.skew_thread
-                and self.segmentation_thread.isRunning() or self.skew_thread.isRunning()
-                or self.main_window.backend_busy()):
+        if (
+            self.segmentation_thread
+            or self.skew_thread
+            and self.segmentation_thread.isRunning()
+            or self.skew_thread.isRunning()
+            or self.main_window.backend_busy()
+        ):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
@@ -237,8 +243,6 @@ class SegmentationMenu(object):
         be_properties["magnets_material"] = self.magnets_material.currentText()
         be_properties["magnet_segments_per_slice"] = int(self.magnet_segments_per_slice.text())
         # be_properties.setup_to_analyze = self.setup_to_analyze.text()
-        be_properties["active_project"] = self.projects_aedt_combo.currentText()
-        be_properties["active_design"] = self.design_aedt_combo.currentText()
 
         self.main_window.set_properties(be_properties)
 
@@ -268,17 +272,19 @@ class SegmentationMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if (self.segmentation_thread or self.skew_thread
-                and self.segmentation_thread.isRunning() or self.skew_thread.isRunning()
-                or self.main_window.backend_busy()):
+        if (
+            self.segmentation_thread
+            or self.skew_thread
+            and self.segmentation_thread.isRunning()
+            or self.skew_thread.isRunning()
+            or self.main_window.backend_busy()
+        ):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
             return False
 
         be_properties = self.main_window.get_properties()
-
-        self.main_window.set_properties(be_properties)
 
         if be_properties.get("active_project"):
             self.ui.update_progress(0)
@@ -304,14 +310,6 @@ class SegmentationMenu(object):
         self.ui.update_progress(100)
         selected_project = self.main_window.home_menu.project_combobox.currentText()
         selected_design = self.main_window.home_menu.design_combobox.currentText()
-
-        # Populate combo boxes
-        # Materials
-        materials = self.main_window.get_materials()
-        for mat in materials:
-            self.magnets_material.addItem(mat)
-            self.rotor_material.addItem(mat)
-            self.stator_material.addItem(mat)
 
         properties = self.main_window.get_properties()
         active_project = self.main_window.get_project_name(properties["active_project"])

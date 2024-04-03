@@ -22,13 +22,13 @@
 
 from operator import attrgetter
 
+from ansys.aedt.toolkits.common.backend.api import AEDTCommon
 from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
 from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-from ansys.aedt.toolkits.common.backend.api import AEDTCommon
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 
@@ -358,6 +358,8 @@ class AEDTWorkflow(AEDTCommon):
         """Get the project materials."""
         self.connect_design()
 
+        if not self.aedtapp:
+            return
         mats = self.aedtapp.materials.get_used_project_material_names()
 
         self.release_aedt(False, False)

@@ -25,14 +25,18 @@
 The settings include common AEDT toolkit settings and settings associated
 to motor workflows in AEDT.
 """
-import json
 import os
+import sys
 from typing import Literal
-
-from pydantic import BaseModel
 
 from ansys.aedt.toolkits.common.backend.models import CommonProperties
 from ansys.aedt.toolkits.common.backend.models import common_properties
+from pydantic import BaseModel
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 class AEDTProperties(BaseModel):
@@ -58,9 +62,9 @@ class Properties(CommonProperties, AEDTProperties, validate_assignment=True):
 
 
 backend_properties = {}
-if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.json")):
-    with open(os.path.join(os.path.dirname(__file__), "aedt_properties.json")) as file_handler:
-        backend_properties = json.load(file_handler)
+if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.toml")):
+    with open(os.path.join(os.path.dirname(__file__), "aedt_properties.toml"), mode="rb") as file_handler:
+        backend_properties = tomllib.load(file_handler)
 
 toolkit_property = {}
 if backend_properties:
