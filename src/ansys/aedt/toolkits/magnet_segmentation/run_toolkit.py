@@ -28,14 +28,12 @@ import sys
 import threading
 import time
 
+from ansys.aedt.toolkits.common.backend.rest_api import logger
+import backend
 import psutil
 import requests
 import ui
 from ui.models import properties
-
-import backend
-
-from ansys.aedt.toolkits.common.backend.rest_api import logger
 
 # Define global variables or constants
 BACKEND_FILE = os.path.join(backend.__path__[0], "run_backend.py")

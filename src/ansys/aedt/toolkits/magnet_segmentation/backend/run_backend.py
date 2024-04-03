@@ -24,7 +24,6 @@ from ansys.aedt.toolkits.common.backend.multithreading_server import Multithread
 from ansys.aedt.toolkits.common.backend.rest_api import app
 from ansys.aedt.toolkits.common.backend.rest_api import jsonify
 from ansys.aedt.toolkits.common.backend.rest_api import logger
-
 from api import ToolkitBackend
 
 toolkit_api = ToolkitBackend()

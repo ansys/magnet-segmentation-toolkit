@@ -34,6 +34,7 @@ import sys
 import threading
 import time
 
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 import psutil
 
 # from pyaedt.generic.filesystem import Scratch
@@ -42,8 +43,6 @@ from pyaedt import settings
 from pyaedt.aedt_logger import pyaedt_logger
 import pytest
 import requests
-
-from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
@@ -227,7 +226,9 @@ def desktop_init():
                 time.sleep(1)
                 response = requests.get(url_call + "/status")
                 if not response.ok:
-                    desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle")
+                    desktop_cleanup_and_exit(
+                        flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle"
+                    )
             yield
         else:
             desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle")

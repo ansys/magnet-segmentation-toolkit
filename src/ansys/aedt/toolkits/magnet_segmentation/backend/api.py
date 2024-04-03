@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from models import properties
 from ansys.aedt.toolkits.common.backend.api import AEDTCommon
+from models import properties
 from workflows.aedt import AEDTWorkflow
 
 

@@ -24,29 +24,30 @@ import os
 import sys
 
 # PySide6 Widgets
-from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QMainWindow
 
 # ToolkitBackend frontend API
 from actions import Frontend
-
-# Default user interface properties
-from models import properties
-
-# Windows
-
-# New windows
-from windows.segmentation.segmentation_menu import SegmentationMenu
-from windows.plot_design.plot_design_menu import PlotDesignMenu
-from windows.post_processing.post_processing_menu import PostProcessingMenu
-
-# Common windows
-from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWindowLayout
 from ansys.aedt.toolkits.common.ui.common_windows.home_menu import HomeMenu
 from ansys.aedt.toolkits.common.ui.common_windows.settings_column import SettingsMenu
 
 # Import general common frontend modules
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
+
+# Common windows
+from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWindowLayout
+
+# Default user interface properties
+from models import properties
+from windows.plot_design.plot_design_menu import PlotDesignMenu
+from windows.post_processing.post_processing_menu import PostProcessingMenu
+
+# New windows
+from windows.segmentation.segmentation_menu import SegmentationMenu
+
+# Windows
+
 
 # Backend URL and port
 url = properties.backend_url
@@ -120,11 +121,10 @@ class ApplicationWindow(QMainWindow, Frontend):
         self.post_processing_menu.setup()
         self.ui.left_menu.clicked.connect(self.post_processing_menu_clicked)
 
-
         # Plot design menu
         self.plot_design_menu = PlotDesignMenu(self)
         self.plot_design_menu.setup()
-        #self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
+        # self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
 
         # Home page as first page
         self.ui.set_page(self.ui.load_pages.home_page)

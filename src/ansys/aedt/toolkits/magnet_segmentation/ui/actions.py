@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# import os.path
-import requests
-
 from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
+
+# import os.path
+import requests
 
 
 class Frontend(FrontendGeneric):
@@ -124,8 +124,8 @@ class Frontend(FrontendGeneric):
         try:
             segmentation_response = requests.post(self.url + "/apply_segmentation")
             if segmentation_response.ok:
-                #self.find_design_names()
-                #self.skew.setEnabled(True)
+                # self.find_design_names()
+                # self.skew.setEnabled(True)
                 msg = "Apply segmentation call successful"
                 logger.info(msg)
             else:
@@ -197,7 +197,7 @@ class Frontend(FrontendGeneric):
             if response.ok:
                 msg = "Validate and analyze call successful"
                 logger.info(msg)
-                #self.get_magnet_loss.setEnabled(True)
+                # self.get_magnet_loss.setEnabled(True)
             else:
                 msg = "Validate and analyze call failed"
                 logger.error(msg)
