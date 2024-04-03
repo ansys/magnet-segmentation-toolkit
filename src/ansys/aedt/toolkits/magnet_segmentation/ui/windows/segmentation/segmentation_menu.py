@@ -264,7 +264,7 @@ class SegmentationMenu(object):
 
             self.segmentation_thread.start()
         else:
-            self.ui.update_logger("Toolkit not connect to AEDT.")
+            self.ui.update_logger("Toolkit not connected to AEDT.")
 
     def skew_button_clicked(self):
         if not self.main_window.check_connection():
@@ -304,7 +304,7 @@ class SegmentationMenu(object):
 
             self.skew_thread.start()
         else:
-            self.ui.update_logger("Toolkit not connect to AEDT.")
+            self.ui.update_logger("Toolkit not connected to AEDT.")
 
     def process_finished(self, success):
         self.ui.update_progress(100)

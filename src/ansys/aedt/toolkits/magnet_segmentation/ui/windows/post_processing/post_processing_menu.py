@@ -180,7 +180,7 @@ class PostProcessingMenu(object):
 
             self.validate_analyze_thread.start()
         else:
-            self.ui.update_logger("Toolkit not connect to AEDT.")
+            self.ui.update_logger("Toolkit not connected to AEDT.")
 
     def magnet_loss_button_clicked(self):
         if not self.main_window.check_connection():
@@ -216,7 +216,7 @@ class PostProcessingMenu(object):
 
             self.magnet_loss_thread.start()
         else:
-            self.ui.update_logger("Toolkit not connect to AEDT.")
+            self.ui.update_logger("Toolkit not connected to AEDT.")
 
     def process_finished(self, success):
         self.ui.update_progress(100)
