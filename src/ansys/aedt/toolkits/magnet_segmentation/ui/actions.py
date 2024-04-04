@@ -234,27 +234,21 @@ class Frontend(FrontendGeneric):
         except requests.exceptions.RequestException:
             logger.error("Magnet loss call failed.")
 
-    def hide_options(self):
-        if self.is_skewed.currentText() == "True":
-            self.rotor_material.setEnabled(False)
-            self.stator_material.setEnabled(False)
-            self.rotor_slices.setEnabled(False)
-            self.skew_angle.setEnabled(False)
-        else:
-            self.rotor_material.setEnabled(True)
-            self.stator_material.setEnabled(True)
-            self.rotor_slices.setEnabled(True)
-            self.skew_angle.setEnabled(True)
-
     def get_materials(self):
         try:
-            response = requests.get(self.url + "/project_materials")
-            if response.ok:
-                msg = "Load materials call successful."
-                logger.info(msg)
-            else:
-                msg = "Load materials call failed."
-                logger.error(msg)
+            thread_response = self.wait_thread(60)
+            if thread_response:
+                response = requests.get(self.url + "/project_materials")
+                if response.ok:
+                    msg = "Load materials call successful."
+                    logger.info(msg)
+                    return response.json()
+                else:
+                    msg = "Load materials call failed."
+                    logger.error(msg)
+                    return False
+            # else toolkit busy
+
         except requests.exceptions.RequestException:
             logger.error("Load materials call failed.")
 

@@ -148,6 +148,12 @@ class ApplicationWindow(QMainWindow, Frontend):
             if not is_left_visible:
                 self.ui.toggle_left_column()
 
+            # Check backend connection
+            success = self.check_connection()
+
+            if success:
+                self.segmentation_menu.get_materials()
+
     def post_processing_menu_clicked(self):
         selected_menu = self.ui.get_selected_menu()
         menu_name = selected_menu.objectName()

@@ -98,16 +98,6 @@ class SegmentationMenu(object):
 
     def setup(self):
         # Modify theme
-        # Populate combo boxes
-        # Materials
-        self.main_window.settings_menu.connect_aedt.clicked.connect(self.main_window.get_materials())
-        materials = self.main_window.get_materials()
-        if materials:
-            for mat in materials:
-                self.segmentation_menu.magnets_material.addItem(mat)
-                self.segmentation_menu.rotor_material.addItem(mat)
-                self.segmentation_menu.stator_material.addItem(mat)
-
         app_color = self.main_window.ui.themes["app_color"]
         text_color = app_color["text_active"]
         background = app_color["dark_three"]
@@ -217,16 +207,25 @@ class SegmentationMenu(object):
             return False
 
         if (
-            self.segmentation_thread
-            or self.skew_thread
-            and self.segmentation_thread.isRunning()
-            or self.skew_thread.isRunning()
+            self.segmentation_thread and self.segmentation_thread.isRunning()
+            or self.skew_thread and self.skew_thread.isRunning()
             or self.main_window.backend_busy()
         ):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
             return False
+
+        if self.is_skewed.currentText() == "True":
+            self.rotor_material.setEnabled(False)
+            self.stator_material.setEnabled(False)
+            self.rotor_slices.setEnabled(False)
+            self.skew_angle.setEnabled(False)
+        else:
+            self.rotor_material.setEnabled(True)
+            self.stator_material.setEnabled(True)
+            self.rotor_slices.setEnabled(True)
+            self.skew_angle.setEnabled(True)
 
         be_properties = self.main_window.get_properties()
 
@@ -272,13 +271,7 @@ class SegmentationMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if (
-            self.segmentation_thread
-            or self.skew_thread
-            and self.segmentation_thread.isRunning()
-            or self.skew_thread.isRunning()
-            or self.main_window.backend_busy()
-        ):
+        if (self.skew_thread and self.skew_thread.isRunning() or self.main_window.backend_busy()):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
@@ -299,7 +292,7 @@ class SegmentationMenu(object):
             )
             self.skew_thread.finished_signal.connect(self.process_finished)
 
-            msg = "Segmentation successful."
+            msg = "Skew successful."
             self.ui.update_logger(msg)
 
             self.skew_thread.start()
@@ -324,3 +317,14 @@ class SegmentationMenu(object):
         else:
             msg = f"Failed backend call: {self.main_window.url}"
             self.ui.update_logger(msg)
+
+    def get_materials(self):
+        backend_properties = self.ui.app.get_properties()
+        materials = []
+        if backend_properties.get("active_project") and backend_properties.get("active_design"):
+            materials = self.main_window.get_materials()
+        if materials:
+            for mat in materials:
+                self.magnets_material.addItem(mat)
+                self.rotor_material.addItem(mat)
+                self.stator_material.addItem(mat)
