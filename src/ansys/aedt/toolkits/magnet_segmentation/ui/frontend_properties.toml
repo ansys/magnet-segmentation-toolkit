@@ -21,7 +21,7 @@ show_top= true
 is_active= false
 
 [[defaults.add_left_menus]]
-btn_icon= "icon_plot_3d.svg"
+btn_icon= "motor.svg"
 btn_id= "segmentation_menu"
 btn_text= "Segmentation"
 btn_tooltip= "Segmentation"
@@ -37,7 +37,7 @@ show_top= true
 is_active= false
 
 [[defaults.add_left_menus]]
-btn_icon= "icon_plot_2d.svg"
+btn_icon= "cylindrical_data_graphic.svg"
 btn_id= "plot_design_menu"
 btn_text= "Plot Design"
 btn_tooltip= "Design"
