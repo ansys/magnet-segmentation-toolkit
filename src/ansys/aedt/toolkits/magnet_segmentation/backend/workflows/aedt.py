@@ -158,12 +158,16 @@ class AEDTWorkflow(AEDTCommon):
             self.aedtapp.assign_insulating(faces, "{}_segments".format(magnet.name))
             if isinstance(cs, CoordinateSystem):
                 self._update_cs(cs)
+            # self.properties.objects.extend([f.id for f in faces])
+
+        magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
+        magnets = [m.transparency == 0.8 for m in magnets]
+        self.properties.objects.extend([m.name for m in magnets])
+        self.set_properties(self.properties.model_dump())
 
         self.aedtapp.save_project()
         self.release_aedt(False, False)
         return True
-        # except:
-        #     return False
 
     # @thread.launch_thread
     def apply_skew(self):
@@ -245,7 +249,9 @@ class AEDTWorkflow(AEDTCommon):
                         # Get object with minimum volume
                         min_vol_object = min(split_objects, key=lambda x: x.volume).volume
                         # Get object whose volume is equal to min_vol_object
-                        obj_rotate = [obj for obj in split_objects if obj.volume == min_vol_object][0]
+                        obj_rotate = [obj for obj in split_objects if round(obj.volume, 4) == round(min_vol_object, 4)][
+                            0
+                        ]
                         # duplicate around z axis (-360/symmetry_multiplier)
                         obj_rotate.rotate(cs_axis=self.aedtapp.AXIS.Z, angle=-360 / self.aedtapp.symmetry_multiplier)
                         self.aedtapp.modeler.unite([split_objects[0], split_objects[1]])

@@ -124,7 +124,7 @@ class ApplicationWindow(QMainWindow, Frontend):
         # Plot design menu
         self.plot_design_menu = PlotDesignMenu(self)
         self.plot_design_menu.setup()
-        # self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
+        self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
 
         # Home page as first page
         self.ui.set_page(self.ui.load_pages.home_page)
@@ -142,7 +142,7 @@ class ApplicationWindow(QMainWindow, Frontend):
             self.ui.set_left_column_menu(
                 menu=self.segmentation_menu.segmentation_column_widget,
                 title="Segmentation",
-                icon_path=self.ui.images_load.icon_path("icon_plot_3d.svg"),
+                icon_path=self.ui.images_load.icon_path("motor.svg"),
             )
 
             if not is_left_visible:
@@ -152,6 +152,9 @@ class ApplicationWindow(QMainWindow, Frontend):
             success = self.check_connection()
 
             if success:
+                # msg = "Loading materials..."
+                # self.ui.update_logger(msg)
+                # logger.info(msg)
                 self.segmentation_menu.get_materials()
 
     def post_processing_menu_clicked(self):
@@ -170,6 +173,24 @@ class ApplicationWindow(QMainWindow, Frontend):
                 icon_path=self.ui.images_load.icon_path("icon_plot_2d.svg"),
             )
 
+            if not is_left_visible:
+                self.ui.toggle_left_column()
+
+    def plot_design_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+
+        if menu_name == "plot_design_menu":
+            selected_menu.set_active(True)
+            self.ui.set_page(self.plot_design_menu.plot_design_menu_widget)
+
+            self.ui.set_left_column_menu(
+                menu=self.plot_design_menu.plot_design_column_widget,
+                title="Plot Design",
+                icon_path=self.ui.images_load.icon_path("cylindrical_data_graphic.svg"),
+            )
+
+            is_left_visible = self.ui.is_left_column_visible()
             if not is_left_visible:
                 self.ui.toggle_left_column()
 

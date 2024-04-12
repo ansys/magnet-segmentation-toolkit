@@ -22,10 +22,11 @@ class SegmentationThread(QThread):
         self.main_window = app.main_window
         self.selected_project = selected_project
         self.selected_design = selected_design
+        self.is_finished = False
 
     def run(self):
-        success = self.main_window.apply_segmentation(self.selected_project, self.selected_design)
-        self.finished_signal.emit(success)
+        self.is_finished = self.main_window.apply_segmentation(self.selected_project, self.selected_design)
+        self.finished_signal.emit(self.is_finished)
 
 
 class SkewThread(QThread):
@@ -37,10 +38,11 @@ class SkewThread(QThread):
         self.main_window = app.main_window
         self.selected_project = selected_project
         self.selected_design = selected_design
+        self.is_finished = False
 
     def run(self):
-        success = self.main_window.apply_skew(self.selected_project, self.selected_design)
-        self.finished_signal.emit(success)
+        self.is_finished = self.main_window.apply_skew(self.selected_project, self.selected_design)
+        self.finished_signal.emit(self.is_finished)
 
 
 class SegmentationMenu(object):
@@ -216,18 +218,21 @@ class SegmentationMenu(object):
             self.main_window.logger.debug(msg)
             return False
 
-        if self.is_skewed.currentText() == "True":
-            self.rotor_material.setEnabled(False)
-            self.stator_material.setEnabled(False)
-            self.rotor_slices.setEnabled(False)
-            self.skew_angle.setEnabled(False)
-        else:
-            self.rotor_material.setEnabled(True)
-            self.stator_material.setEnabled(True)
-            self.rotor_slices.setEnabled(True)
-            self.skew_angle.setEnabled(True)
+        # if self.is_skewed.currentText() == "True":
+        #     self.rotor_material.setEnabled(False)
+        #     self.stator_material.setEnabled(False)
+        #     self.rotor_slices.setEnabled(False)
+        #     self.skew_angle.setEnabled(False)
+        # else:
+        #     self.rotor_material.setEnabled(True)
+        #     self.stator_material.setEnabled(True)
+        #     self.rotor_slices.setEnabled(True)
+        #     self.skew_angle.setEnabled(True)
 
         be_properties = self.main_window.get_properties()
+
+        be_properties["active_project"] = self.main_window.home_menu.project_combobox.currentText()
+        be_properties["active_design"] = self.main_window.home_menu.design_combobox.currentText()
 
         be_properties["motor_type"] = self.motor_type_combo.currentText()
         be_properties["is_skewed"] = _to_boolean(self.is_skewed.currentText())
@@ -256,10 +261,7 @@ class SegmentationMenu(object):
                 selected_project=selected_project,
                 selected_design=selected_design,
             )
-            self.segmentation_thread.finished_signal.connect(self.process_finished)
-
-            msg = "Segmentation successful."
-            self.ui.update_logger(msg)
+            self.segmentation_thread.finished_signal.connect(self.segmentation_process_finished)
 
             self.segmentation_thread.start()
         else:
@@ -271,7 +273,9 @@ class SegmentationMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if (self.skew_thread and self.skew_thread.isRunning() or self.main_window.backend_busy()):
+        if (self.skew_thread and self.skew_thread.isRunning()
+            or self.segmentation_thread and self.segmentation_thread.isRunning()
+            or self.main_window.backend_busy()):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
             self.main_window.logger.debug(msg)
@@ -290,16 +294,28 @@ class SegmentationMenu(object):
                 selected_project=selected_project,
                 selected_design=selected_design,
             )
-            self.skew_thread.finished_signal.connect(self.process_finished)
-
-            msg = "Skew successful."
-            self.ui.update_logger(msg)
+            self.skew_thread.finished_signal.connect(self.skew_process_finished)
 
             self.skew_thread.start()
         else:
             self.ui.update_logger("Toolkit not connected to AEDT.")
 
-    def process_finished(self, success):
+    def segmentation_process_finished(self):
+        self.ui.update_progress(100)
+        properties = self.main_window.get_properties()
+        active_design = properties["active_design"]
+
+        self.main_window.home_menu.update_design()
+        self.main_window.home_menu.design_combobox.setCurrentText(active_design)
+
+        if self.segmentation_thread.is_finished:
+            msg = "Segmentation successful."
+            self.ui.update_logger(msg)
+        else:
+            msg = f"Failed backend call: {self.main_window.url}"
+            self.ui.update_logger(msg)
+
+    def skew_process_finished(self):
         self.ui.update_progress(100)
         selected_project = self.main_window.home_menu.project_combobox.currentText()
         selected_design = self.main_window.home_menu.design_combobox.currentText()
@@ -311,8 +327,8 @@ class SegmentationMenu(object):
             self.main_window.home_menu.update_project()
             self.main_window.home_menu.update_design()
 
-        if success:
-            msg = "Process successfully finished."
+        if self.skew_thread.is_finished:
+            msg = "Skew successful."
             self.ui.update_logger(msg)
         else:
             msg = f"Failed backend call: {self.main_window.url}"

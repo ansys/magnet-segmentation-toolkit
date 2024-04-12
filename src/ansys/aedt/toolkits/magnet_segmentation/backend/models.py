@@ -53,12 +53,11 @@ class AEDTProperties(BaseModel):
     mesh_sheets_number: int = 0
     skew_angle: str = ""
     setup_to_analyze: str = "Setup1"
+    objects: list = []
 
 
 class Properties(CommonProperties, AEDTProperties, validate_assignment=True):
     """Store all properties."""
-
-    pass
 
 
 backend_properties = {}

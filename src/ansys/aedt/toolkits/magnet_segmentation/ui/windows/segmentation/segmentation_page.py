@@ -320,7 +320,7 @@ class Ui_Segmentation(object):
         self.is_skewed.setItemText(0, QCoreApplication.translate("Segmentation", u"False", None))
         self.is_skewed.setItemText(1, QCoreApplication.translate("Segmentation", u"True", None))
 
-        self.magnets_material_label.setText(QCoreApplication.translate("Segmentation", u"Magnets Material", None))
+        self.magnets_material_label.setText(QCoreApplication.translate("Segmentation", u"Magnet Material", None))
         self.magnets_material.setItemText(0, QCoreApplication.translate("Segmentation", u"--Select Material--", None))
 
         self.rotor_material_label.setText(QCoreApplication.translate("Segmentation", u"Rotor Material", None))

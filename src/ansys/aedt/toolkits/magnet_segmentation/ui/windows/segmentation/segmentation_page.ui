@@ -185,7 +185,7 @@
          <item>
           <widget class="QLabel" name="magnets_material_label">
            <property name="text">
-            <string>Magnets Material</string>
+            <string>Magnet Material</string>
            </property>
           </widget>
          </item>

@@ -128,9 +128,11 @@ class Frontend(FrontendGeneric):
                 # self.skew.setEnabled(True)
                 msg = "Apply segmentation call successful"
                 logger.info(msg)
+                return True
             else:
                 msg = f"Apply segmentation call failed"
                 logger.error(msg)
+                return False
         except requests.exceptions.RequestException:
             logger.error("Apply segmentation call failed")
 
@@ -162,12 +164,13 @@ class Frontend(FrontendGeneric):
             try:
                 response = requests.post(self.url + "/apply_skew")
                 if response.ok:
-                    self.is_skewed.setCurrentText("True")
                     msg = "Apply skew call successful."
                     logger.info(msg)
+                    return True
                 else:
                     msg = "Apply skew call failed."
                     logger.error(msg)
+                    return False
             except requests.exceptions.RequestException:
                 logger.error("Apply skew call failed.")
 

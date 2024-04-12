@@ -21,8 +21,9 @@
 # SOFTWARE.
 
 from ansys.aedt.toolkits.common.backend.api import AEDTCommon
-from models import properties
-from workflows.aedt import AEDTWorkflow
+
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.workflows.aedt import AEDTWorkflow
 
 
 class ToolkitBackend(AEDTWorkflow, AEDTCommon):

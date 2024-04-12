@@ -25,10 +25,10 @@ class PlotDesignThread(QThread):
         self.model_info = None
 
     def run(self):
+        be_properties = self.main_window.get_properties()
         self.model_info = self.main_window.get_aedt_model(
-            self.selected_project, self.selected_design, air_objects=True
+            self.selected_project, self.selected_design, air_objects=False, obj_list=be_properties["objects"]
         )
-
         self.finished_signal.emit(self.model_info)
 
 
@@ -85,7 +85,7 @@ class PlotDesignMenu(object):
             self.plot_design_column_vertical_layout, num_buttons=1,
             height=40,
             width=[200],
-            text=["Plot design"],
+            text=["View Model"],
             font_size=self.main_window.properties.font["title_size"]
         )
 
