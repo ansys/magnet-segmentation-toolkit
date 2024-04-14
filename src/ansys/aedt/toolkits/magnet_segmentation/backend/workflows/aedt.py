@@ -161,7 +161,6 @@ class AEDTWorkflow(AEDTCommon):
             # self.properties.objects.extend([f.id for f in faces])
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
-        magnets = [m.transparency == 0.8 for m in magnets]
         self.properties.objects.extend([m.name for m in magnets])
         self.set_properties(self.properties.model_dump())
 
