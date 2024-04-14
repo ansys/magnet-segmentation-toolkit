@@ -11,28 +11,37 @@ see these topics:
 - :ref:`install_toolkit_console_ui`
 
 #. On the **Settings** tab, specify settings for either creating an AEDT session or
-   connecting to an existing AEDT session.
+   connecting to an existing AEDT session and click **Connect to AEDT**.
    
-   .. image:: ../_static/design_connected.png
+   .. image:: ../_static/settings_tab.png
      :width: 800
      :alt: Settings tab
 
-#. Under **Project Name**, click **Select AEDT project** to select an AEDT file for a
-   3D motor model.
+#. Choose project and design from the drop-down list in the **Home menu**.
 
-#. Near the bottom of the tab, click **Launch AEDT**.
+   .. image:: ../_static/home_menu.png
+     :width: 800
+     :alt: Settings tab
 
-#. On the **Segmentation** tab, specify the project, design to work in, and
-   segmentation settings.
+#. Click on the **Segmentation menu** to specify segmentation settings.
 
-   .. image:: ../_static/segmentation_settings.png
+   .. image:: ../_static/segmentation_menu.png
      :width: 800
      :alt: Settings tab
 
 #. At the bottom of the tab, click **Perform Segmentation** and then **Apply Skew**.
 
-#. From the AEDT menu, select **File > Save** to save the project.
+#. Click on the **Post-processing menu** to select the desired setup to validate and analyze.
 
-The wizard has a progress bar and a logger box, where you can see the status of every operation.
-A red progress bar means that the toolkit is busy. Every operation must wait for the previous
-operation to release the toolkit.
+   .. image:: ../_static/post_processing_menu.png
+     :width: 800
+     :alt: Settings tab
+
+#. Click on **Get Magnet Loss** to automatically compute Magnet Loss in AEDT.
+   The report will be automatically generated in AEDT.
+
+#. Click on the **Design menu** to visualize within the toolkit the segmented magnets.
+
+
+The wizard has a progress circle and a logger box, where you can see the status of every operation.
+Every operation must wait for the previous operation to release the toolkit.

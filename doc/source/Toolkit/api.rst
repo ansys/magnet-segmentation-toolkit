@@ -33,12 +33,21 @@ This code shows how to use the ``ToolkitBackend`` class:
     properties = toolkit.get_properties()
 
     # Set properties
-    new_properties = {"aedt_version": "2023.2"}
+    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME}.aedt")
+    new_properties = {
+        "aedt_version": "2024.1",
+        "non_graphical": True,
+        "active_project": aedt_file,
+        "active_design": DESIGN_NAME,
+        "design_list": {PROJECT_NAME: [DESIGN_NAME]},
+        "use_grpc": config["use_grpc"],
+    }
     toolkit.set_properties(new_properties)
-    properties = toolkit.get_properties()
 
-    # Launch AEDT
+    # Launch AEDT and open project
     msg = toolkit.launch_aedt()
+    toolkit.open_project(aedt_file)
+    toolkit.connect_design("Maxwell3D")
 
     # Wait for the toolkit thread to be idle
     toolkit.wait_to_be_idle()

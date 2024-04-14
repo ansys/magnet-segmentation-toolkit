@@ -134,8 +134,8 @@ console and then use this toolkit's APIs.
      # Define properties
 
      properties["active_project"] = active_project
-     properties["active_design"] = {"Maxwell3d": active_design}
-     properties["designs_by_project_name"] = {active_project: [{"Maxwell3d": active_design}]}
+     properties["active_design"] = active_design
+     properties["design_list"] = {active_project: [active_design]}
      properties["is_skewed"] = False
      properties["motor_type"] = "IPM"
      properties["rotor_material"] = "M250-35A_20C"
@@ -149,8 +149,10 @@ console and then use this toolkit's APIs.
      # Set service properties
      toolkit.set_properties(properties)
 
-     # Launch AEDT
+     # Launch AEDT, open project and connect to Maxwell3d design
      toolkit.launch_aedt()
+     toolkit.open_project(aedt_file)
+     toolkit.connect_design("Maxwell3D")
 
      # Wait for the toolkit thread to be idle and ready to accept a new task
      toolkit.wait_to_be_idle()
