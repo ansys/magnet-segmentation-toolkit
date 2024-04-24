@@ -161,7 +161,10 @@ class AEDTWorkflow(AEDTCommon):
             # self.properties.objects.extend([f.id for f in faces])
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
+        segments = self.aedtapp.modeler.get_objects_in_group("Insulating")
+
         self.properties.objects.extend([m.name for m in magnets])
+        self.properties.objects.extend(segments)
         self.set_properties(self.properties.model_dump())
 
         self.aedtapp.save_project()

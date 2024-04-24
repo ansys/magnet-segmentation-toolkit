@@ -176,6 +176,15 @@ class ApplicationWindow(QMainWindow, Frontend):
             if not is_left_visible:
                 self.ui.toggle_left_column()
 
+            # Check backend connection
+            success = self.check_connection()
+
+            if success:
+                # msg = "Loading setups..."
+                # self.ui.update_logger(msg)
+                # logger.info(msg)
+                self.post_processing_menu.get_setups()
+
     def plot_design_menu_clicked(self):
         selected_menu = self.ui.get_selected_menu()
         menu_name = selected_menu.objectName()

@@ -191,8 +191,6 @@ class Frontend(FrontendGeneric):
             msg = "Please load a valid AEDT project."
             logger.info(msg)
 
-        # check box name setup
-        be_properties.setup_to_analyze = self.setup_name.text()
         self.set_properties(be_properties)
 
         try:
@@ -200,10 +198,11 @@ class Frontend(FrontendGeneric):
             if response.ok:
                 msg = "Validate and analyze call successful"
                 logger.info(msg)
-                # self.get_magnet_loss.setEnabled(True)
+                return True
             else:
                 msg = "Validate and analyze call failed"
                 logger.error(msg)
+                return False
         except requests.exceptions.RequestException:
             logger.error("Validate and analyze call failed")
 
@@ -231,9 +230,11 @@ class Frontend(FrontendGeneric):
             if response.ok:
                 msg = "Magnet loss call successful."
                 logger.info(msg)
+                return True
             else:
                 msg = "Magnet loss call failed."
                 logger.error(msg)
+                return False
         except requests.exceptions.RequestException:
             logger.error("Magnet loss call failed.")
 
@@ -261,8 +262,10 @@ class Frontend(FrontendGeneric):
             if response.ok:
                 msg = "Get design setups call successful."
                 logger.info(msg)
+                return response.json()
             else:
                 msg = "Get design setups call failed."
                 logger.error(msg)
+                return False
         except requests.exceptions.RequestException:
             logger.error("Get design setups call failed.")

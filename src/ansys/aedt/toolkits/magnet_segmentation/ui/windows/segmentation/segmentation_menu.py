@@ -101,8 +101,8 @@ class SegmentationMenu(object):
     def setup(self):
         # Modify theme
         app_color = self.main_window.ui.themes["app_color"]
-        text_color = app_color["text_active"]
-        background = app_color["dark_three"]
+        text_foreground = app_color["text_foreground"]
+        combo_color = app_color["dark_three"]
 
         self.perform_segmentation_button.clicked.connect(self.segmentation_button_clicked)
         self.apply_skew_button.clicked.connect(self.skew_button_clicked)
@@ -129,7 +129,7 @@ class SegmentationMenu(object):
             }}
         """
         custom_style = combo_box_style.format(
-            _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
+            _color=text_foreground, _bg_color=combo_color, _font_size=self.main_window.properties.font["title_size"]
         )
         self.motor_type_combo.setStyleSheet(custom_style)
         self.apply_mesh_sheets.setStyleSheet(custom_style)
@@ -150,7 +150,7 @@ class SegmentationMenu(object):
             }}
         """
         custom_style = line_style.format(
-            _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
+            _color=text_foreground, _bg_color=combo_color, _font_size=self.main_window.properties.font["title_size"]
         )
         self.rotor_slices.setStyleSheet(custom_style)
         self.magnet_segments_per_slice.setStyleSheet(custom_style)
@@ -166,7 +166,7 @@ class SegmentationMenu(object):
                     }}
                     """
         custom_style = multiplier_label_style.format(
-            _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
+            _color=text_foreground, _bg_color=combo_color, _font_size=self.main_window.properties.font["title_size"]
         )
         self.motor_type_combo_label.setStyleSheet(custom_style)
         self.apply_mesh_sheets_label.setStyleSheet(custom_style)
@@ -188,7 +188,7 @@ class SegmentationMenu(object):
                             }}
                             """
         custom_style = select_geometry_label_style.format(
-            _color=text_color, _bg_color=background, _font_size=self.main_window.properties.font["title_size"]
+            _color=text_foreground, _bg_color=combo_color, _font_size=self.main_window.properties.font["title_size"]
         )
         self.perform_segmentation_button.setStyleSheet(custom_style)
         self.apply_skew_button.setStyleSheet(custom_style)
@@ -288,7 +288,6 @@ class SegmentationMenu(object):
             selected_project = self.main_window.home_menu.project_combobox.currentText()
             selected_design = self.main_window.home_menu.design_combobox.currentText()
 
-            # Start a separate thread for the backend call
             self.skew_thread = SkewThread(
                 app=self,
                 selected_project=selected_project,

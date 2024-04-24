@@ -21,12 +21,13 @@ class ValidateAnalyzeThread(QThread):
         self.main_window = app.main_window
         self.selected_project = selected_project
         self.selected_design = selected_design
+        self.is_finished = False
 
     def run(self):
-        success = self.main_window.val_check_and_analysis(
+        self.is_finished = self.main_window.val_check_and_analysis(
             self.selected_project, self.selected_design
         )
-        self.finished_signal.emit(success)
+        self.finished_signal.emit(self.is_finished)
 
 
 class MagnetLossThread(QThread):
@@ -38,12 +39,13 @@ class MagnetLossThread(QThread):
         self.main_window = app.main_window
         self.selected_project = selected_project
         self.selected_design = selected_design
+        self.is_finished = False
 
     def run(self):
-        success = self.main_window.get_magnet_loss(
+        self.is_finished = self.main_window.get_report(
             self.selected_project, self.selected_design
         )
-        self.finished_signal.emit(success)
+        self.finished_signal.emit(self.is_finished)
 
 
 class PostProcessingMenu(object):
@@ -71,7 +73,8 @@ class PostProcessingMenu(object):
         # Combobox
         self.setup_name_combo = self.postprocessing_menu_widget.findChild(QComboBox, "setup_name_combo")
         # Buttons
-        self.validate_and_analyze_button = self.postprocessing_menu_widget.findChild(QPushButton, "validate_and_analyze")
+        self.validate_and_analyze_button = self.postprocessing_menu_widget.findChild(QPushButton,
+                                                                                     "validate_and_analyze")
         self.get_magnet_loss_button = self.postprocessing_menu_widget.findChild(QPushButton, "get_magnet_loss")
         self.validate_analyze_thread = None
         self.magnet_loss_thread = None
@@ -148,8 +151,8 @@ class PostProcessingMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if (self.validate_analyze_thread or self.magnet_loss_thread
-                and self.validate_analyze_thread.isRunning() or self.magnet_loss_thread.isRunning()
+        if (self.validate_analyze_thread and self.validate_analyze_thread.isRunning()
+                or self.magnet_loss_thread and self.magnet_loss_thread.isRunning()
                 or self.main_window.backend_busy()):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
@@ -173,10 +176,7 @@ class PostProcessingMenu(object):
                 selected_project=selected_project,
                 selected_design=selected_design,
             )
-            self.validate_analyze_thread.finished_signal.connect(self.process_finished)
-
-            msg = "Validation and analysis successful."
-            self.ui.update_logger(msg)
+            self.validate_analyze_thread.finished_signal.connect(self.validate_analyze_process_finished)
 
             self.validate_analyze_thread.start()
         else:
@@ -188,8 +188,8 @@ class PostProcessingMenu(object):
             self.ui.update_logger(msg)
             return False
 
-        if (self.validate_analyze_thread or self.magnet_loss_thread
-                and self.validate_analyze_thread.isRunning() or self.magnet_loss_thread.isRunning()
+        if (self.validate_analyze_thread and self.validate_analyze_thread.isRunning()
+                or self.magnet_loss_thread and self.magnet_loss_thread.isRunning()
                 or self.main_window.backend_busy()):
             msg = "Toolkit running"
             self.ui.update_logger(msg)
@@ -209,35 +209,48 @@ class PostProcessingMenu(object):
                 selected_project=selected_project,
                 selected_design=selected_design,
             )
-            self.magnet_loss_thread.finished_signal.connect(self.process_finished)
-
-            msg = "Magnet loss computation successful."
-            self.ui.update_logger(msg)
+            self.magnet_loss_thread.finished_signal.connect(self.magnet_loss_process_finished)
 
             self.magnet_loss_thread.start()
         else:
             self.ui.update_logger("Toolkit not connected to AEDT.")
 
-    def process_finished(self, success):
+    def validate_analyze_process_finished(self):
         self.ui.update_progress(100)
-        selected_project = self.main_window.home_menu.project_combobox.currentText()
-        selected_design = self.main_window.home_menu.design_combobox.currentText()
-
-        # Populate setup combo box
-        setups = self.main_window.get_design_setups()
-        for setup in setups:
-            self.setup_name.addItem(setup)
-
         properties = self.main_window.get_properties()
-        active_project = self.main_window.get_project_name(properties["active_project"])
         active_design = properties["active_design"]
-        if active_project != selected_project or active_design != selected_design:
-            self.main_window.home_menu.update_project()
-            self.main_window.home_menu.update_design()
 
-        if success:
-            msg = "Process successfully finished."
+        self.main_window.home_menu.update_design()
+        self.main_window.home_menu.design_combobox.setCurrentText(active_design)
+
+        if self.validate_analyze_thread.is_finished:
+            msg = "Validation and analysis successful."
             self.ui.update_logger(msg)
         else:
             msg = f"Failed backend call: {self.main_window.url}"
             self.ui.update_logger(msg)
+
+    def magnet_loss_process_finished(self):
+        self.ui.update_progress(100)
+        properties = self.main_window.get_properties()
+        active_design = properties["active_design"]
+
+        self.main_window.home_menu.update_design()
+        self.main_window.home_menu.design_combobox.setCurrentText(active_design)
+
+        if self.magnet_loss_thread.is_finished:
+            msg = "Magnet loss computation successful."
+            self.ui.update_logger(msg)
+        else:
+            msg = f"Failed backend call: {self.main_window.url}"
+            self.ui.update_logger(msg)
+
+    def get_setups(self):
+        backend_properties = self.ui.app.get_properties()
+        setups = []
+        if backend_properties.get("active_project") and backend_properties.get("active_design"):
+            setups = self.main_window.get_design_setups()
+        self.setup_name_combo.clear()
+        if setups:
+            for setup in setups:
+                self.setup_name_combo.addItem(setup)
