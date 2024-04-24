@@ -42,7 +42,7 @@ else:
 class AEDTProperties(BaseModel):
     """Store AEDT properties."""
 
-    motor_type: Literal["", "IPM", "SPM"] = ""
+    motor_type: Literal["", "IPM", "SPM"] = "IPM"
     is_skewed: bool = False
     apply_mesh_sheets: bool = False
     magnets_material: str = ""
