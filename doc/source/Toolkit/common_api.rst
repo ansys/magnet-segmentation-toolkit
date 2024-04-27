@@ -1,10 +1,10 @@
 AEDT Common ToolkitBackend API
-=======================
+==============================
 The AEDT Common ToolkitBackend API contains the ``AEDTCommonToolkit`` class, which provides basic
 functions for controlling AEDT that are shared between the backend and frontend.
 These functions are the same for all AEDT toolkits.
 
-.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
 
 .. autosummary::
    :toctree: _autosummary
