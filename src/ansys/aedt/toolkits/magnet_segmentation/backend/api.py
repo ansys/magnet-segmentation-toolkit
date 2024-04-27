@@ -35,7 +35,6 @@ class ToolkitBackend(AEDTWorkflow, AEDTCommon):
     Examples
     --------
     >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
-    >>> import time
     >>> toolkit = ToolkitBackend()
     >>> toolkit.launch_aedt()
     """
