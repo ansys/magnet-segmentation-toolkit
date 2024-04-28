@@ -10,7 +10,6 @@
 # +
 import os
 import shutil
-import sys
 import tempfile
 
 from ansys.aedt.toolkits.common.utils import download_file
@@ -79,24 +78,15 @@ toolkit.set_properties(properties)
 
 # ## Initialize AEDT
 #
-# Launch a new AEDT session in a thread.
+# Launch a new AEDT session.
 
-thread_msg = toolkit.launch_thread(toolkit.launch_aedt)
-
-# ## Wait for the toolkit thread to be idle
-#
-# Wait for the toolkit thread to be idle and ready to accept a new task.
-
-idle = toolkit.wait_to_be_idle()
-if not idle:
-    print("AEDT not initialized.")
-    sys.exit()
+toolkit.launch_aedt()
 
 # ## Open project
 #
 # Open the project.
 
-open_msg = toolkit.open_project(active_project)
+toolkit.open_project(active_project)
 
 # ## Connect design
 #
@@ -120,14 +110,14 @@ toolkit.apply_skew()
 #
 # Uncomment the line to validate and analyze the design.
 
-toolkit.validate_and_analyze()
+# toolkit.validate_and_analyze()
 
 # ## Create magnet loss report
 #
 # Uncomment the lines to create magnet loss report and compute average value.
 
-magnet_loss = toolkit.get_magnet_loss()
-print(f"Average magnet loss: {magnet_loss['SolidLoss']['Value']}{magnet_loss['SolidLoss']['Unit']}")
+# magnet_loss = toolkit.get_magnet_loss()
+# print(f"Average magnet loss: {magnet_loss['SolidLoss']['Value']}{magnet_loss['SolidLoss']['Unit']}")
 
 # ## Save and release AEDT
 #
