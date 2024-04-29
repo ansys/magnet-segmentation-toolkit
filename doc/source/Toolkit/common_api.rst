@@ -29,7 +29,7 @@ to create an object:
     properties = toolkit.get_properties()
 
     # Set properties
-    new_properties = {"aedt_version": "2023.2"}
+    new_properties = {"aedt_version": "2024.1"}
     toolkit.set_properties(new_properties)
     properties = toolkit.get_properties()
 

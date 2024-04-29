@@ -50,7 +50,7 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
 # Constants
 PROJECT_NAME = "e9_eMobility_IPM_3D"
 DESIGN_NAME = "e9"
-AEDT_DEFAULT_VERSION = "2023.2"
+AEDT_DEFAULT_VERSION = "2024.1"
 
 config = {
     "desktop_version": AEDT_DEFAULT_VERSION,

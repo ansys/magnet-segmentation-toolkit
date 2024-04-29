@@ -56,7 +56,7 @@ is_linux = os.name == "posix"
 
 # Initialize default configuration
 config = {
-    "aedt_version": "2023.2",
+    "aedt_version": "2024.1",
     "non_graphical": True,
     "use_grpc": True,
     "url": "127.0.0.1",
