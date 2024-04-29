@@ -21,13 +21,13 @@ see these topics:
 
    .. image:: ../_static/home_menu.png
      :width: 800
-     :alt: Settings tab
+     :alt: Project tab
 
 #. Click on the **Segmentation menu** to specify segmentation settings.
 
    .. image:: ../_static/segmentation_menu.png
      :width: 800
-     :alt: Settings tab
+     :alt: Segmentation tab
 
 #. At the bottom of the tab, click **Perform Segmentation** and then **Apply Skew**.
 
@@ -35,13 +35,20 @@ see these topics:
 
    .. image:: ../_static/post_processing_menu.png
      :width: 800
-     :alt: Settings tab
+     :alt: Post-processing tab
 
 #. Click on **Get Magnet Loss** to automatically compute Magnet Loss in AEDT.
    The report will be automatically generated in AEDT.
 
 #. Click on the **Design menu** to visualize within the toolkit the segmented magnets.
 
+    .. image:: ../_static/view_model.png
+       :width: 800
+       :alt: Design menu tab
 
-The wizard has a progress circle and a logger box, where you can see the status of every operation.
-Every operation must wait for the previous operation to release the toolkit.
+#. The wizard has a progress circle and a logger box where you can see the status of
+   every operation. Every operation must wait for the previous operation to release the toolkit.
+
+    .. image:: ../_static/logger.png
+       :width: 800
+       :alt: Logger tab

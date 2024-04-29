@@ -136,6 +136,8 @@ class AEDTWorkflow(AEDTCommon):
                 rotor_slices.clear()
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
+        faces = []
+        mesh_sheets = []
         for magnet in magnets:
             cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
             magnet.part_coordinate_system = cs.name
@@ -146,9 +148,9 @@ class AEDTWorkflow(AEDTCommon):
                 apply_mesh_sheets=self.properties.apply_mesh_sheets,
                 mesh_sheets_number=self.properties.mesh_sheets_number,
             )
-            faces = []
             if self.properties.apply_mesh_sheets:
                 magnet_segments = objects_segmentation[0]
+                mesh_sheets.extend([s.name for s in objects_segmentation[1][magnet.name]])
             else:
                 magnet_segments = objects_segmentation
             for face in magnet_segments[magnet.name]:
@@ -158,13 +160,13 @@ class AEDTWorkflow(AEDTCommon):
             self.aedtapp.assign_insulating(faces, "{}_segments".format(magnet.name))
             if isinstance(cs, CoordinateSystem):
                 self._update_cs(cs)
-            # self.properties.objects.extend([f.id for f in faces])
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
         segments = self.aedtapp.modeler.get_objects_in_group("Insulating")
 
         self.properties.objects.extend([m.name for m in magnets])
         self.properties.objects.extend(segments)
+        # self.properties.objects.extend(mesh_sheets)
         self.set_properties(self.properties.model_dump())
 
         self.aedtapp.save_project()
