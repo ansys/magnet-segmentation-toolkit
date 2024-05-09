@@ -136,9 +136,9 @@ class AEDTWorkflow(AEDTCommon):
                 rotor_slices.clear()
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
-        faces = []
-        mesh_sheets = []
         for magnet in magnets:
+            faces = []
+            mesh_sheets = []
             cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
             magnet.part_coordinate_system = cs.name
             self.aedtapp.modeler.set_working_coordinate_system("Global")
