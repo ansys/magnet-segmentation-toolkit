@@ -1,5 +1,5 @@
 Magnet Segmentation ToolkitBackend
-===========================
+==================================
 
 |pyansys| |PythonVersion| |GH-CI| |MIT| |black|
 
