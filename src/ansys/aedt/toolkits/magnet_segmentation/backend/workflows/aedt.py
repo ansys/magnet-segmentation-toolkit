@@ -246,7 +246,7 @@ class AEDTWorkflow(AEDTCommon):
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
                     if independent and dependent:
                         split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=indep.id)
-                        if not all([self.aedtapp.modeler[o] for o in split]):
+                        if [s for s in split if s not in self.aedtapp.modeler.objects_by_name]:
                             self.aedtapp.odesign.Undo()
                         split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=dep.id)
                         split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split]
@@ -257,7 +257,9 @@ class AEDTWorkflow(AEDTCommon):
                             0
                         ]
                         # duplicate around z axis (-360/symmetry_multiplier)
-                        obj_rotate.rotate(cs_axis=self.aedtapp.AXIS.Z, angle=-360 / self.aedtapp.symmetry_multiplier)
+                        self.aedtapp.modeler.rotate(
+                            obj_rotate, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
+                        )
                         self.aedtapp.modeler.unite([split_objects[0], split_objects[1]])
                 rotor_skew_ang += decompose_variable_value(self.properties.skew_angle)[0]
 
