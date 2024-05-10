@@ -6,9 +6,9 @@ build-backend = "flit_core.buildapi"
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-magnet-segmentation-toolkit"
 dynamic = ["version"]
-description = "ToolkitBackend used for automating the segmentation and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM) motors using Ansys Electronics Desktop (AEDT)"
+description = "Toolkit used for automating the segmentation and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM) motors using Ansys Electronics Desktop (AEDT)"
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"},
@@ -24,15 +24,18 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "ansys-aedt-toolkits-common"
+    "ansys-aedt-toolkits-common[all]"
 ]
 
 [project.optional-dependencies]
+all = [
+    "ansys-aedt-toolkits-common[all]"
+]
 tests = [
-    'ansys-aedt-toolkits-common[tests]'
+    "ansys-aedt-toolkits-common[tests]"
 ]
 doc = [
-    'ansys-aedt-toolkits-common[doc]'
+    "ansys-aedt-toolkits-common[doc]"
 ]
 
 [tool.flit.module]

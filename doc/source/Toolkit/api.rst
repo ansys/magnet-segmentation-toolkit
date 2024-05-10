@@ -1,6 +1,6 @@
-ToolkitBackend API
+Toolkit API
 ===========
-The ToolkitBackend API contains the ``ToolkitBackend`` class, which provides methods for
+The Toolkit API contains the ``Toolkit`` class, which provides methods for
 controlling the toolkit workflow. In addition to methods for creating an AEDT
 session or connecting to an existing AEDT session, this API provides methods for
 automating the segmentation and skew of a 3D motor.
@@ -17,44 +17,41 @@ automating the segmentation and skew of a 3D motor.
 .. autosummary::
    :toctree: _autosummary
 
-   ToolkitBackend
+   Toolkit
 
 This code shows how to use the ``ToolkitBackend`` class:
 
-.. code:: python
+    .. code:: python
 
-    # Import required modules and backend
-    from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
+        # Import required modules and backend
+        from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
-    # Initialize generic service
-    toolkit = ToolkitBackend()
+        # Initialize generic service
+        toolkit = ToolkitBackend()
 
-    # Get the default properties loaded from JSON file
-    properties = toolkit.get_properties()
+        # Get the default properties loaded from JSON file
+        properties = toolkit.get_properties()
 
-    # Set properties
-    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME}.aedt")
-    new_properties = {
-        "aedt_version": "2024.1",
-        "non_graphical": True,
-        "active_project": aedt_file,
-        "active_design": DESIGN_NAME,
-        "design_list": {PROJECT_NAME: [DESIGN_NAME]},
-        "use_grpc": config["use_grpc"],
-    }
-    toolkit.set_properties(new_properties)
+        # Set properties
+        aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME}.aedt")
+        new_properties = {
+            "aedt_version": "2024.1",
+            "non_graphical": True,
+            "active_project": aedt_file,
+            "active_design": DESIGN_NAME,
+            "design_list": {PROJECT_NAME: [DESIGN_NAME]},
+            "use_grpc": config["use_grpc"],
+        }
+        toolkit.set_properties(new_properties)
 
-    # Launch AEDT and open project
-    msg = toolkit.launch_aedt()
-    toolkit.open_project(aedt_file)
-    toolkit.connect_design("Maxwell3D")
+        # Launch AEDT and open project
+        msg = toolkit.launch_aedt()
+        toolkit.open_project(aedt_file)
+        toolkit.connect_design("Maxwell3D")
 
-    # Wait for the toolkit thread to be idle
-    toolkit.wait_to_be_idle()
+        # Segment and skew motor
+        toolkit.segmentation()
+        toolkit.apply_skew()
 
-    # Segment and skew motor
-    toolkit.segmentation()
-    toolkit.apply_skew()
-
-    # Release AEDT
-    toolkit.release_aedt()
+        # Release AEDT
+        toolkit.release_aedt()
