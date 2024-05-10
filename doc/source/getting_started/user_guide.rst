@@ -28,7 +28,7 @@ interpreter from the AEDT installation.
       :width: 800
       :alt: PyAEDT console in AEDT
 
-#. In the PyAEDT console, run these commands to add the Magnet Segmentation Toolkit Toolkit as a wizard (toolkit UI) in AEDT:
+#. In the PyAEDT console, run these commands to add the Magnet Segmentation Toolkit as a wizard (toolkit UI) in AEDT:
 
    .. code:: python
 
@@ -76,7 +76,7 @@ You can install the Magnet Segmentation Toolkit in a specific Python environment
 
        python -m pip install ansys-magnet-segmentation-toolkit
 
-#. Launch the Magnet Segmentation Toolkit Toolkit Wizard:
+#. Launch the Magnet Segmentation Toolkit Wizard:
 
    .. code:: bash
 
