@@ -20,10 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from ansys.aedt.toolkits.common.backend.api import AEDTCommon
+
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 from ansys.aedt.toolkits.magnet_segmentation.backend.workflows.aedt import AEDTWorkflow
 
 
-class Toolkit(AEDTWorkflow):
+class ToolkitBackend(AEDTWorkflow, AEDTCommon):
     """Provides methods for controlling the toolkit workflow.
 
     This class provides methods for creating an AEDT session, connecting to an existing
@@ -31,11 +34,11 @@ class Toolkit(AEDTWorkflow):
 
     Examples
     --------
-    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
-    >>> import time
-    >>> toolkit = Toolkit()
+    >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
+    >>> toolkit = ToolkitBackend()
     >>> toolkit.launch_aedt()
     """
 
     def __init__(self):
+        AEDTCommon.__init__(self, properties)
         super().__init__()

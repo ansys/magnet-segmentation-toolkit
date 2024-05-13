@@ -45,12 +45,12 @@ import os
 from pyaedt import settings
 import pytest
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
 # Constants
 PROJECT_NAME = "e9_eMobility_IPM_3D"
 DESIGN_NAME = "e9"
-AEDT_DEFAULT_VERSION = "2023.2"
+AEDT_DEFAULT_VERSION = "2024.1"
 
 config = {
     "desktop_version": AEDT_DEFAULT_VERSION,
@@ -78,15 +78,19 @@ def toolkit(common_temp_dir):
     The AEDT file is created at the beginning of each test and removed after each test.
     """
     aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME}.aedt")
-    toolkit = Toolkit()
+    toolkit = ToolkitBackend()
     new_properties = {
         "aedt_version": config["desktop_version"],
         "non_graphical": config["non_graphical"],
         "active_project": aedt_file,
+        "active_design": DESIGN_NAME,
+        "design_list": {PROJECT_NAME: [DESIGN_NAME]},
         "use_grpc": config["use_grpc"],
     }
     toolkit.set_properties(new_properties)
     toolkit.launch_aedt()
+    toolkit.open_project(aedt_file)
+    toolkit.connect_design("Maxwell3D")
     toolkit.wait_to_be_idle()
 
     yield toolkit

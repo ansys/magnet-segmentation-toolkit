@@ -24,7 +24,6 @@
 from datetime import datetime
 import os
 import pathlib
-import shutil
 import sys
 
 from ansys_sphinx_theme import ansys_favicon
@@ -36,35 +35,69 @@ from ansys_sphinx_theme import pyansys_logo_black
 from ansys_sphinx_theme import watermark
 from sphinx.util import logging
 
-sys.path.append(pathlib.Path(__file__).parent.parent.parent)
+root_path = str(pathlib.Path(__file__).parent.parent.parent)
 
-path = os.path.join(pathlib.Path(__file__).parent.parent.parent, "src")
-print(path)
-sys.path.append(path)
-from ansys.aedt.toolkits.magnet_segmentation import __version__
+try:
+    from ansys.aedt.toolkits.antenna import __version__
+except ImportError:
+    sys.path.append(root_path)
+    src_path = os.path.join(root_path, "src")
+    sys.path.append(src_path)
+    from ansys.aedt.toolkits.magnet_segmentation import __version__
 
 logger = logging.getLogger(__name__)
-path = pathlib.Path(__file__).parent.parent.parent / "examples"
+path = pathlib.Path(os.path.join(root_path, "examples"))
 EXAMPLES_DIRECTORY = path.resolve()
 
+# Sphinx event hooks
 
-def copy_examples(app):
-    """Copy directory examples (root directory) files into the doc/source/examples directory."""
-    DESTINATION_DIRECTORY = pathlib.Path(app.srcdir, "examples").resolve()
-    print(DESTINATION_DIRECTORY)
-    logger.info(f"Copying examples from {EXAMPLES_DIRECTORY} to {DESTINATION_DIRECTORY}.")
-    if os.path.exists(DESTINATION_DIRECTORY):
-        logger.info(f"Directory {DESTINATION_DIRECTORY} already exist, removing it.")
-        shutil.rmtree(DESTINATION_DIRECTORY, ignore_errors=True)
-        logger.info(f"Directory removed.")
 
-    shutil.copytree(EXAMPLES_DIRECTORY, DESTINATION_DIRECTORY)
-    logger.info(f"Copy performed")
+def check_example_error(app, pagename, context):
+    """Log an error if the execution of an example as a notebook triggered an error.
+
+    Since the documentation build might not stop if the execution of a notebook triggered
+    an error, we use a flag to log that an error is spotted in the html page context.
+    """
+    # Check if the HTML contains an error message
+    if pagename.startswith("examples") and not pagename.endswith("/index"):
+        if any(
+            map(
+                lambda msg: msg in context["body"],
+                ["UsageError", "NameError", "DeadKernelError", "NotebookError"],
+            )
+        ):
+            logger.error(f"An error was detected in file {pagename}")
+            app.builder.config.html_context["build_error"] = True
+
+
+def check_build_finished_without_error(app):
+    """Check that no error is detected along the documentation build process."""
+    if app.builder.config.html_context.get("build_error", False):
+        raise Exception("Build failed due to an error in html-page-context")
+
+
+def check_pandoc_installed(app):
+    """Ensure that pandoc is installed"""
+    import pypandoc
+
+    try:
+        pandoc_path = pypandoc.get_pandoc_path()
+        pandoc_dir = os.path.dirname(pandoc_path)
+        if pandoc_dir not in os.environ["PATH"].split(os.pathsep):
+            logger.info("Pandoc directory is not in $PATH.")
+            os.environ["PATH"] += os.pathsep + pandoc_dir
+            logger.info(f"Pandoc directory '{pandoc_dir}' has been added to $PATH")
+    except OSError:
+        logger.error("Pandoc was not found, please add it to your path or install pypandoc-binary")
 
 
 def setup(app):
-    app.connect("builder-inited", copy_examples)
+    app.connect("builder-inited", check_pandoc_installed)
+    app.connect("html-page-context", check_example_error)
+    app.connect("build-finished", check_build_finished_without_error)
 
+
+print(__version__)
 
 # Project information
 project = "ansys-magnet-segmentation-toolkit"

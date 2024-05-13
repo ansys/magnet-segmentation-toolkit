@@ -24,10 +24,9 @@
 import os
 import time
 
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 import pytest
 import requests
-
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
 
 # from ansys.aedt.toolkits.magnet_segmentation.backend.models import AEDTProperties
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import Properties
@@ -80,7 +79,7 @@ class TestRESTWorkflow:
     def test_04_aedt_sessions(self):
         response = requests.get(self.url + "/aedt_sessions")
         assert response.ok
-        assert isinstance(response.json(), list)
+        assert isinstance(response.json(), dict)
         assert response.json()
 
     def test_05_connect_design(self):
