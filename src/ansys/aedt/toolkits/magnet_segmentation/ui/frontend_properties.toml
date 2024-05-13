@@ -1,0 +1,53 @@
+[defaults]
+"toolkit_name" = "Magnet Segmentation Toolkit Wizard"
+"backend_url" = "127.0.0.1"
+"backend_port" = 5001
+"debug" = false
+"app_name" = "Magnet Segmentation Wizard"
+"main_title" = "Magnet Segmentation Toolkit"
+"welcome_message" = "Welcome to the magnet segmentation toolkit"
+"version" = "v0.3.3"
+"copyright" = "By: gmalinve"
+"year" = 2023
+"theme" = "ansys_dark.json"
+"high_resolution" = true
+
+[[defaults.add_left_menus]]
+btn_icon= "icon_home.svg"
+btn_id= "home_menu"
+btn_text= "Home"
+btn_tooltip= "Home"
+show_top= true
+is_active= false
+
+[[defaults.add_left_menus]]
+btn_icon= "motor.svg"
+btn_id= "segmentation_menu"
+btn_text= "Segmentation"
+btn_tooltip= "Segmentation"
+show_top= true
+is_active= false
+
+[[defaults.add_left_menus]]
+btn_icon= "icon_plot_2d.svg"
+btn_id= "post_processing_menu"
+btn_text= "Post-Processing"
+btn_tooltip= "Post-Processing"
+show_top= true
+is_active= false
+
+[[defaults.add_left_menus]]
+btn_icon= "cylindrical_data_graphic.svg"
+btn_id= "plot_design_menu"
+btn_text= "Plot Design"
+btn_tooltip= "Design"
+show_top= true
+is_active= false
+
+[[defaults.add_left_menus]]
+btn_icon= "icon_log.svg"
+btn_id= "progress_menu"
+btn_text= "Progress"
+btn_tooltip= "Progress"
+show_top= false
+is_active= false

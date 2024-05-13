@@ -22,17 +22,17 @@
 
 from operator import attrgetter
 
+from ansys.aedt.toolkits.common.backend.api import AEDTCommon
 from pyaedt.application.Variables import decompose_variable_value
 from pyaedt.generic.constants import unit_converter
 from pyaedt.modeler.cad.Modeler import CoordinateSystem
 from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
 from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import AEDTCommonToolkit
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
 
-class AEDTWorkflow(AEDTCommonToolkit):
+class AEDTWorkflow(AEDTCommon):
     """Controls the AEDT toolkit workflow.
 
     This class provides methods for connecting to a selected design,
@@ -40,8 +40,8 @@ class AEDTWorkflow(AEDTCommonToolkit):
 
     Examples
     --------
-        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import Toolkit
-        >>> toolkit = Toolkit()
+        >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import AEDTWorkflow
+        >>> toolkit = AEDTWorkflow()
         >>> msg1 = toolkit.launch_aedt()
         >>> toolkit.wait_to_be_idle()
         >>> toolkit.segmentation()
@@ -50,7 +50,8 @@ class AEDTWorkflow(AEDTCommonToolkit):
     """
 
     def __init__(self):
-        super().__init__()
+        AEDTCommon.__init__(self, properties)
+        self.properties = properties
 
     # @thread.launch_thread
     def segmentation(self):
@@ -67,7 +68,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         # Requirements: Design needs  a design variable "HalfAxial"
         if self.aedtapp["HalfAxial"] == "1":
@@ -76,12 +77,12 @@ class AEDTWorkflow(AEDTCommonToolkit):
         for obj in self.aedtapp.modeler.unclassified_objects:
             obj.model = False
 
-        self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
-        self.aedtapp.duplicate_design(properties.active_design["Maxwell3d"])
-        properties.active_design = {"Maxwell3d": self.aedtapp.design_name}
-        self.aedtapp.set_active_design(properties.active_design["Maxwell3d"])
-        properties.designs_by_project_name[self.aedtapp.project_name].append(properties.active_design)
-        self.set_properties(properties.model_dump())
+        self.aedtapp.set_active_design(self.properties.active_design)
+        self.aedtapp.duplicate_design(self.properties.active_design)
+        self.properties.active_design = self.aedtapp.design_name
+        self.aedtapp.set_active_design(self.properties.active_design)
+        self.properties.design_list[self.aedtapp.project_name].append(self.properties.active_design)
+        self.set_properties(self.properties.model_dump())
 
         # try:
         if [bound for bound in self.aedtapp.boundaries if bound.type == "Insulating"]:
@@ -96,28 +97,28 @@ class AEDTWorkflow(AEDTCommonToolkit):
         rotor_pockets = self._get_rotor_pockets(vacuum_objects)
 
         # If model is already skewed only magnets can be segmented
-        if not properties.is_skewed:
-            magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
-            if properties.rotor_material == properties.stator_material:
-                if properties.motor_type == "IPM":
-                    for obj in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material):
+        if not self.properties.is_skewed:
+            magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
+            if self.properties.rotor_material == self.properties.stator_material:
+                if self.properties.motor_type == "IPM":
+                    for obj in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material):
                         if [i for i in magnets if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)]:
                             rotor = obj
-                elif properties.motor_type == "SPM":
-                    for obj in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material):
+                elif self.properties.motor_type == "SPM":
+                    for obj in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material):
                         if not [
                             i for i in magnets if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
                         ]:
                             rotor = obj
                 else:
-                    raise RuntimeError(f"Motor type {properties.motor_type} is not yet handled.")
+                    raise RuntimeError(f"Motor type {self.properties.motor_type} is not yet handled.")
             else:
-                rotor = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)[0]
+                rotor = self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)[0]
 
-            if properties.rotor_slices > 1:
+            if self.properties.rotor_slices > 1:
                 # rotor segmentation
                 rotor_slices = self.aedtapp.modeler.objects_segmentation(
-                    rotor.id, segments_number=properties.rotor_slices, apply_mesh_sheets=False
+                    rotor.id, segments_number=self.properties.rotor_slices, apply_mesh_sheets=False
                 )
                 # rotor and rotor pockets split
                 rotor_objs = [rotor.name]
@@ -134,20 +135,22 @@ class AEDTWorkflow(AEDTCommonToolkit):
                     self.aedtapp.modeler.delete_objects_containing(slice.name)
                 rotor_slices.clear()
 
-        magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
+        magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
         for magnet in magnets:
+            faces = []
+            mesh_sheets = []
             cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
             magnet.part_coordinate_system = cs.name
             self.aedtapp.modeler.set_working_coordinate_system("Global")
             objects_segmentation = self.aedtapp.modeler.objects_segmentation(
                 magnet.id,
-                segments_number=properties.magnet_segments_per_slice,
-                apply_mesh_sheets=properties.apply_mesh_sheets,
-                mesh_sheets_number=properties.mesh_sheets_number,
+                segments_number=self.properties.magnet_segments_per_slice,
+                apply_mesh_sheets=self.properties.apply_mesh_sheets,
+                mesh_sheets_number=self.properties.mesh_sheets_number,
             )
-            faces = []
-            if properties.apply_mesh_sheets:
+            if self.properties.apply_mesh_sheets:
                 magnet_segments = objects_segmentation[0]
+                mesh_sheets.extend([s.name for s in objects_segmentation[1][magnet.name]])
             else:
                 magnet_segments = objects_segmentation
             for face in magnet_segments[magnet.name]:
@@ -158,11 +161,17 @@ class AEDTWorkflow(AEDTCommonToolkit):
             if isinstance(cs, CoordinateSystem):
                 self._update_cs(cs)
 
+        magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
+        segments = self.aedtapp.modeler.get_objects_in_group("Insulating")
+
+        self.properties.objects.extend([m.name for m in magnets])
+        self.properties.objects.extend(segments)
+        # self.properties.objects.extend(mesh_sheets)
+        self.set_properties(self.properties.model_dump())
+
         self.aedtapp.save_project()
         self.release_aedt(False, False)
         return True
-        # except:
-        #     return False
 
     # @thread.launch_thread
     def apply_skew(self):
@@ -178,10 +187,10 @@ class AEDTWorkflow(AEDTCommonToolkit):
             ``True`` when successful, ``False`` when failed.
         """
         try:
-            self.connect_design(app_name=list(properties.active_design.keys())[0])
+            self.connect_design()
 
-            magnets = self.aedtapp.modeler.get_objects_by_material(properties.magnets_material)
-            rotor_objects = self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
+            magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
+            rotor_objects = self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)
             # Independent and dependent boundary conditions can be assigned either to an object or an object face
             independent = [bound for bound in self.aedtapp.boundaries if bound.type == "Independent"]
             dependent = [bound for bound in self.aedtapp.boundaries if bound.type == "Dependent"]
@@ -205,11 +214,11 @@ class AEDTWorkflow(AEDTCommonToolkit):
                     dep = [f for f in obj.faces if f.id == bound_dep_id][0]
 
             # check whether stator has same rotor material
-            if properties.rotor_material == properties.stator_material:
+            if self.properties.rotor_material == self.properties.stator_material:
                 stator_obj = max(rotor_objects, key=attrgetter("volume"))
                 rotor_objects = [
                     x
-                    for x in self.aedtapp.modeler.get_objects_by_material(properties.rotor_material)
+                    for x in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)
                     if x != stator_obj and x.name != "Shaft"
                 ]
             objs_in_bb = {}
@@ -237,18 +246,22 @@ class AEDTWorkflow(AEDTCommonToolkit):
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
                     if independent and dependent:
                         split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=indep.id)
-                        if not all([self.aedtapp.modeler[o] for o in split]):
+                        if [s for s in split if s not in self.aedtapp.modeler.objects_by_name]:
                             self.aedtapp.odesign.Undo()
                         split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=dep.id)
                         split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split]
                         # Get object with minimum volume
                         min_vol_object = min(split_objects, key=lambda x: x.volume).volume
                         # Get object whose volume is equal to min_vol_object
-                        obj_rotate = [obj for obj in split_objects if obj.volume == min_vol_object][0]
+                        obj_rotate = [obj for obj in split_objects if round(obj.volume, 4) == round(min_vol_object, 4)][
+                            0
+                        ]
                         # duplicate around z axis (-360/symmetry_multiplier)
-                        obj_rotate.rotate(cs_axis=self.aedtapp.AXIS.Z, angle=-360 / self.aedtapp.symmetry_multiplier)
+                        self.aedtapp.modeler.rotate(
+                            obj_rotate, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
+                        )
                         self.aedtapp.modeler.unite([split_objects[0], split_objects[1]])
-                rotor_skew_ang += decompose_variable_value(properties.skew_angle)[0]
+                rotor_skew_ang += decompose_variable_value(self.properties.skew_angle)[0]
 
             self.release_aedt(False, False)
             return True
@@ -263,10 +276,10 @@ class AEDTWorkflow(AEDTCommonToolkit):
         bool
             ``True`` when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         if self.aedtapp.validate_simple():
-            self.aedtapp.analyze_setup(properties.setup_to_analyze, use_auto_settings=False)
+            self.aedtapp.analyze_setup(self.properties.setup_to_analyze, use_auto_settings=False)
             self.release_aedt(False, False)
             return True
         else:
@@ -280,7 +293,7 @@ class AEDTWorkflow(AEDTCommonToolkit):
         dict
             dictionary containing the average magnet loss value when successful, ``False`` when failed.
         """
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         try:
             report_dict = {}
@@ -356,22 +369,22 @@ class AEDTWorkflow(AEDTCommonToolkit):
     # @thread.launch_thread
     def _get_project_materials(self):
         """Get the project materials."""
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
+        if not self.aedtapp:
+            return
         mats = self.aedtapp.materials.get_used_project_material_names()
 
-        self.aedtapp.release_desktop(False, False)
-        self.aedtapp = None
+        self.release_aedt(False, False)
 
         return mats
 
     def _get_design_setup_names(self):
         """Get the design setup names."""
-        self.connect_design(app_name=list(properties.active_design.keys())[0])
+        self.connect_design()
 
         setup_names = [setup.name for setup in self.aedtapp.setups]
 
-        self.aedtapp.release_desktop(False, False)
-        self.aedtapp = None
+        self.release_aedt(False, False)
 
         return setup_names

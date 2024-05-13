@@ -34,6 +34,7 @@ import sys
 import threading
 import time
 
+from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 import psutil
 
 # from pyaedt.generic.filesystem import Scratch
@@ -42,8 +43,6 @@ from pyaedt import settings
 from pyaedt.aedt_logger import pyaedt_logger
 import pytest
 import requests
-
-from ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit import ToolkitThreadStatus
 
 settings.enable_error_handler = False
 settings.enable_desktop_logs = False
@@ -56,7 +55,7 @@ is_linux = os.name == "posix"
 
 # Initialize default configuration
 config = {
-    "aedt_version": "2023.2",
+    "aedt_version": "2024.1",
     "non_graphical": True,
     "use_grpc": True,
     "url": "127.0.0.1",
@@ -150,7 +149,7 @@ def desktop_init():
         initial_pids = psutil.Process().children(recursive=True)
 
     # Define the command to start the Flask application
-    backend_file = os.path.join(backend.__path__[0], "rest_api.py")
+    backend_file = os.path.join(backend.__path__[0], "run_backend.py")
     backend_command = [python_path, backend_file]
     # Create a thread to run the Flask application
     flask_thread = threading.Thread(target=run_command, args=backend_command)
@@ -227,13 +226,15 @@ def desktop_init():
                 time.sleep(1)
                 response = requests.get(url_call + "/status")
                 if not response.ok:
-                    desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for Toolkit thread status to be idle")
+                    desktop_cleanup_and_exit(
+                        flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle"
+                    )
             yield
         else:
-            desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for Toolkit thread status to be idle")
+            desktop_cleanup_and_exit(flask_pids, msg="Error while waiting for ToolkitBackend thread status to be idle")
     except requests.exceptions.RequestException:
         desktop_cleanup_and_exit(flask_pids)
-        logger.error(f"Something went wrong while waiting for Toolkit to be idle")
+        logger.error(f"Something went wrong while waiting for ToolkitBackend to be idle")
 
     properties = {"close_projects": True, "close_on_exit": True}
     try:

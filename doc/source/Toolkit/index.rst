@@ -4,7 +4,7 @@
 API reference
 =============
 
-This section provides descriptions of the two APIs available for the Magnet
+This section provides descriptions of the available API for the Magnet
 Segmentation Toolkit:
 
 - **Toolkit API**: Contains the ``Toolkit`` class, which provides methods for
@@ -19,12 +19,7 @@ Segmentation Toolkit:
       - For segmentation, ``SymmetryFactor`` and ``HalfAxial`` design settings must be defined.
       - For skew, ``Shaft`` must be the name of the shaft.
 
-- **AEDT Common Toolkit API**: Contains the ``AEDTCommonToolkit`` class, which provides basic
-  functions for controlling AEDT that are shared between the backend and frontend.
-  These functions are the same for all AEDT toolkits.
-
 .. toctree::
    :maxdepth: 2
 
    api
-   common_api

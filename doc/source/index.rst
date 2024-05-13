@@ -10,7 +10,7 @@ from the AEDT UI or launch it directly from a Python console.
 
     .. grid-item-card:: Getting started :fa:`person-running`
         :padding: 2 2 2 2
-        :link: Getting_started
+        :link: getting_started/index
         :link-type: doc
 
         Learn more about the Magnet Segmentation Toolkit and how to install it.
@@ -34,7 +34,7 @@ from the AEDT UI or launch it directly from a Python console.
         :link: examples/index
         :link-type: doc
 
-        Explore examples that show how to use the Magnet Segmentation Toolkit to
+        Explore example that shows how to use the Magnet Segmentation Toolkit to
         perform many different types of operations.
 
     .. grid-item-card:: Contribute :fa:`people-group`
@@ -47,7 +47,7 @@ from the AEDT UI or launch it directly from a Python console.
 .. toctree::
    :hidden:
 
-   Getting_started
+   getting_started/index
    Toolkit/ui
    Toolkit/index
    examples/index

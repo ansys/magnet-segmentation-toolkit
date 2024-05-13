@@ -2,7 +2,8 @@ exclude: |
     (?x)(
         src/ansys/aedt/toolkits/magnet_segmentation/ui/common/frontend_ui.py |
         tests/input_data/.* |
-        examples/input_files/.*
+        examples/input_files/.* |
+        src/ansys/aedt/toolkits/magnet_segmentation/ui/windows/.*
     )
 
 repos:

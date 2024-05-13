@@ -20,18 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Data classes used to store data related to various settings.
-
-The settings include common AEDT toolkit settings and settings associated
-to motor workflows in AEDT.
+"""Data classes used to store data related to UI settings.
 """
 import os
 import sys
-from typing import Literal
 
-from ansys.aedt.toolkits.common.backend.models import CommonProperties
-from ansys.aedt.toolkits.common.backend.models import common_properties
-from pydantic import BaseModel
+from ansys.aedt.toolkits.common.ui.models import UIProperties
+from ansys.aedt.toolkits.common.ui.models import general_settings
 
 if sys.version_info >= (3, 11):
     import tomllib
@@ -39,42 +34,27 @@ else:
     import tomli as tomllib
 
 
-class AEDTProperties(BaseModel):
-    """Store AEDT properties."""
-
-    motor_type: Literal["", "IPM", "SPM"] = "IPM"
-    is_skewed: bool = False
-    apply_mesh_sheets: bool = False
-    magnets_material: str = ""
-    rotor_material: str = ""
-    stator_material: str = ""
-    rotor_slices: int = 0
-    magnet_segments_per_slice: int = 0
-    mesh_sheets_number: int = 0
-    skew_angle: str = ""
-    setup_to_analyze: str = "Setup1"
-    objects: list = []
-
-
-class Properties(CommonProperties, AEDTProperties, validate_assignment=True):
+class Properties(UIProperties, validate_assignment=True):
     """Store all properties."""
 
 
-backend_properties = {}
-if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.toml")):
-    with open(os.path.join(os.path.dirname(__file__), "aedt_properties.toml"), mode="rb") as file_handler:
-        backend_properties = tomllib.load(file_handler)
+frontend_properties = {}
+if os.path.exists(os.path.join(os.path.dirname(__file__), "frontend_properties.toml")):
+    with open(os.path.join(os.path.dirname(__file__), "frontend_properties.toml"), mode="rb") as file_handler:
+        frontend_properties = tomllib.load(file_handler)
 
 toolkit_property = {}
-if backend_properties:
-    for backend_key in backend_properties:
-        if hasattr(common_properties, backend_key):
-            setattr(common_properties, backend_key, backend_properties[backend_key])
+if frontend_properties:
+    for frontend_key in frontend_properties:
+        if frontend_key == "defaults":
+            for toolkit_key in frontend_properties["defaults"]:
+                if hasattr(general_settings, toolkit_key):
+                    setattr(general_settings, toolkit_key, frontend_properties["defaults"][toolkit_key])
         else:
-            toolkit_property[backend_key] = backend_properties[backend_key]
+            toolkit_property[frontend_key] = frontend_properties[frontend_key]
 
 new_common_properties = {}
-for common_key in common_properties:
+for common_key in general_settings:
     new_common_properties[common_key[0]] = common_key[1]
 
 properties = Properties(**toolkit_property, **new_common_properties)

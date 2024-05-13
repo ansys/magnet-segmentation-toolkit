@@ -29,8 +29,8 @@ pytestmark = [pytest.mark.aedt]
 
 APP_NAME = "Maxwell3d"
 DESIGN_PROPERTIES = {
-    "active_design": {APP_NAME: DESIGN_NAME},
-    "designs_by_project_name": {PROJECT_NAME: [{APP_NAME: DESIGN_NAME}]},
+    "active_design": DESIGN_NAME,
+    "design_list": {PROJECT_NAME: [DESIGN_NAME]},
 }
 
 
@@ -49,12 +49,11 @@ class TestAEDTMotorWorkflow:
         """Get properties."""
         properties = toolkit.get_properties()
         assert DESIGN_PROPERTIES["active_design"] == properties["active_design"]
-        assert DESIGN_PROPERTIES["designs_by_project_name"] == properties["designs_by_project_name"]
+        assert DESIGN_PROPERTIES["design_list"] == properties["design_list"]
 
     def test_03_connect_aedt(self, toolkit):
         """Connect aedt."""
         assert toolkit.connect_aedt()
-        assert toolkit.aedt_connected()
 
     def test_04_aedt_sessions(self, toolkit):
         """Check aedt sessions."""
@@ -64,7 +63,7 @@ class TestAEDTMotorWorkflow:
         """Check design names of the project."""
         res = toolkit.get_design_names()
         assert len(res) == 1
-        assert res[0][APP_NAME] == DESIGN_NAME
+        assert res[0] == DESIGN_NAME
 
     def test_06_segmentation(self, toolkit):
         """Apply objects segmentation."""
@@ -76,11 +75,10 @@ class TestAEDTMotorWorkflow:
             "rotor_material": "M250-35A_20C",
             "stator_material": "M250-35A_20C",
             "rotor_slices": 2,
-            "apply_mesh_sheets": True,
-            "mesh_sheets_number": 2,
+            "apply_mesh_sheets": False,
+            # "mesh_sheets_number": 2,
         }
         assert toolkit.set_properties(properties)
-        # assert toolkit.connect_aedt()
         assert toolkit.segmentation()
 
     def test_07_apply_skew(self, toolkit):

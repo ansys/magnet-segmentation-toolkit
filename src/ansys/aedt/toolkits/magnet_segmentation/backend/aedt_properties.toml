@@ -1,0 +1,13 @@
+"active_design" = ""
+"active_project" = ""
+"motor_type" = "IPM"
+"is_skewed" = false
+"apply_mesh_sheets" = false
+"magnets_material" = ""
+"rotor_material" = ""
+"stator_material" = ""
+"rotor_slices" = 0
+"magnet_segments_per_slice" = 0
+"mesh_sheets_number" = 0
+"skew_angle" = ""
+"setup_to_analyze" = "Setup1"
