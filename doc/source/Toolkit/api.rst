@@ -17,7 +17,7 @@ automating the segmentation and skew of a 3D motor.
 .. autosummary::
    :toctree: _autosummary
 
-   Toolkit
+   ToolkitBackend
 
 This code shows how to use the ``ToolkitBackend`` class:
 
