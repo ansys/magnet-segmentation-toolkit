@@ -52,7 +52,7 @@ EXAMPLES_DIRECTORY = path.resolve()
 # Sphinx event hooks
 
 
-def check_example_error(app, pagename, context):
+def check_example_error(app, pagename, templatename, context, doctree):
     """Log an error if the execution of an example as a notebook triggered an error.
 
     Since the documentation build might not stop if the execution of a notebook triggered
@@ -63,7 +63,13 @@ def check_example_error(app, pagename, context):
         if any(
             map(
                 lambda msg: msg in context["body"],
-                ["UsageError", "NameError", "DeadKernelError", "NotebookError"],
+                [
+                    "UsageError",
+                    "NameError",
+                    "DeadKernelError",
+                    "NotebookError",
+                    "CellExecutionError",
+                ],
             )
         ):
             logger.error(f"An error was detected in file {pagename}")
@@ -73,7 +79,8 @@ def check_example_error(app, pagename, context):
 def check_build_finished_without_error(app, exception):
     """Check that no error is detected along the documentation build process."""
     if app.builder.config.html_context.get("build_error", False):
-        raise Exception("Build failed due to an error in html-page-context")
+        logger.info("Build failed due to an error in html-page-context")
+        exit(1)
 
 
 def check_pandoc_installed(app):
