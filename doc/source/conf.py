@@ -70,7 +70,7 @@ def check_example_error(app, pagename, context):
             app.builder.config.html_context["build_error"] = True
 
 
-def check_build_finished_without_error(app):
+def check_build_finished_without_error(app, exception):
     """Check that no error is detected along the documentation build process."""
     if app.builder.config.html_context.get("build_error", False):
         raise Exception("Build failed due to an error in html-page-context")
