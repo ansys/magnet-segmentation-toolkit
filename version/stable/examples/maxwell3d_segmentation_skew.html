@@ -1,0 +1,1458 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Maxwell 3D segmentation &#8212; ansys-magnet-segmentation-toolkit</title>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css\ansys_sphinx_theme.css?v=35e44410" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+ 
+<link href="../_static/css/breadcrumbs.css" rel="stylesheet" />
+
+    <script src="../_static/documentation_options.js?v=340bb9e5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js\table.js?v=b64f5182"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/maxwell3d_segmentation_skew';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://magnet.segmentation.toolkit.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="icon" href="../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contribute" href="../Contributing.html" />
+    <link rel="prev" title="Examples" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <link rel="canonical" href="https://magnet.segmentation.toolkit.docs.pyansys.com/version/stable/examples/maxwell3d_segmentation_skew.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container"><!-- Debugging: html_theme_options =  -->
+
+<!-- If there is no MiliSearch enabled, use the PyData search -->
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+   
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pyansys-logo-black-cropped.png" class="logo__image only-light" alt="ansys-magnet-segmentation-toolkit - Home"/>
+    <script>document.write(`<img src="../_static/pyansys-logo-black-cropped.png" class="logo__image only-dark" alt="ansys-magnet-segmentation-toolkit - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../Toolkit/ui.html">
+                        UI reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../Toolkit/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../Contributing.html">
+                        Contribute
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/magnet-segmentation-toolkit" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/magnet-segmentation-toolkit/issues" title="Support" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../Toolkit/ui.html">
+                        UI reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../Toolkit/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../Contributing.html">
+                        Contribute
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/magnet-segmentation-toolkit" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/magnet-segmentation-toolkit/issues" title="Support" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Maxwell 3D segmentation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page">Maxwell 3D segmentation</li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Maxwell-3D-segmentation">
+<h1>Maxwell 3D segmentation<a class="headerlink" href="#Maxwell-3D-segmentation" title="Link to this heading">#</a></h1>
+<p>This example shows how to use the Magnet Segmentation ToolkitBackend to segment your AEDT motor model.</p>
+<section id="Perform-required-imports">
+<h2>Perform required imports<a class="headerlink" href="#Perform-required-imports" title="Link to this heading">#</a></h2>
+<p>Perform required imports.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">from</span> <span class="nn">ansys.aedt.toolkits.common.utils</span> <span class="kn">import</span> <span class="n">download_file</span>
+
+<span class="kn">from</span> <span class="nn">ansys.aedt.toolkits.magnet_segmentation.backend.api</span> <span class="kn">import</span> <span class="n">ToolkitBackend</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Initialize-temporary-folder-and-project-settings">
+<h2>Initialize temporary folder and project settings<a class="headerlink" href="#Initialize-temporary-folder-and-project-settings" title="Link to this heading">#</a></h2>
+<p>Initialize a temporary folder to copy the input file into and specify project settings.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">URL_BASE</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/ansys/example-data/master/toolkits/magnet_segmentation/&quot;</span>
+<span class="n">AEDT_PROJECT</span> <span class="o">=</span> <span class="s2">&quot;e9_eMobility_IPM_3D&quot;</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">URL_BASE</span><span class="p">,</span> <span class="n">AEDT_PROJECT</span> <span class="o">+</span> <span class="s2">&quot;.aedt&quot;</span><span class="p">)</span>
+
+<span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.ansys&quot;</span><span class="p">)</span>
+<span class="n">active_project</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">AEDT_PROJECT</span> <span class="o">+</span> <span class="s2">&quot;.aedt&quot;</span><span class="p">)</span>
+<span class="n">download_file</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">active_project</span><span class="p">)</span>
+<span class="n">active_design</span> <span class="o">=</span> <span class="s2">&quot;e9_eMobility_IPM_3D_test&quot;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Initialize-toolkit">
+<h2>Initialize toolkit<a class="headerlink" href="#Initialize-toolkit" title="Link to this heading">#</a></h2>
+<p>Initialize the toolkit.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span> <span class="o">=</span> <span class="n">ToolkitBackend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Get-toolkit-properties">
+<h2>Get toolkit properties<a class="headerlink" href="#Get-toolkit-properties" title="Link to this heading">#</a></h2>
+<p>Get the toolkit properties.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">properties</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Initialize-properties">
+<h2>Initialize properties<a class="headerlink" href="#Initialize-properties" title="Link to this heading">#</a></h2>
+<p>Initialize a dictionary of properties.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">properties</span><span class="p">[</span><span class="s2">&quot;active_project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AEDT_PROJECT</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;active_design&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">active_design</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;design_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">AEDT_PROJECT</span><span class="p">:</span> <span class="p">[</span><span class="n">active_design</span><span class="p">]}</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;is_skewed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;motor_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;IPM&quot;</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;rotor_material&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;M250-35A_20C&quot;</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;stator_material&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;M250-35A_20C&quot;</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;magnets_material&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;N30UH_65C&quot;</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;magnet_segments_per_slice&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;rotor_slices&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;apply_mesh_sheets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># properties[&quot;mesh_sheets_number&quot;] = 3</span>
+<span class="n">properties</span><span class="p">[</span><span class="s2">&quot;skew_angle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2deg&quot;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Set-non-graphical-mode">
+<h2>Set non-graphical mode<a class="headerlink" href="#Set-non-graphical-mode" title="Link to this heading">#</a></h2>
+<p>Set non-graphical mode. The default value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">properties</span><span class="p">[</span><span class="s2">&quot;non_graphical&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Set-properties">
+<h2>Set properties<a class="headerlink" href="#Set-properties" title="Link to this heading">#</a></h2>
+<p>Set properties.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - Updating internal properties.
+DEBUG - Updating &#39;motor_type&#39; with value IPM
+DEBUG - Updating &#39;is_skewed&#39; with value False
+DEBUG - Updating &#39;apply_mesh_sheets&#39; with value False
+DEBUG - Updating &#39;magnets_material&#39; with value N30UH_65C
+DEBUG - Updating &#39;rotor_material&#39; with value M250-35A_20C
+DEBUG - Updating &#39;stator_material&#39; with value M250-35A_20C
+DEBUG - Updating &#39;rotor_slices&#39; with value 2
+DEBUG - Updating &#39;magnet_segments_per_slice&#39; with value 2
+DEBUG - Updating &#39;mesh_sheets_number&#39; with value 0
+DEBUG - Updating &#39;skew_angle&#39; with value 2deg
+DEBUG - Updating &#39;setup_to_analyze&#39; with value Setup1
+DEBUG - Updating &#39;objects&#39; with value []
+DEBUG - Updating &#39;aedt_version&#39; with value 2024.1
+DEBUG - Updating &#39;non_graphical&#39; with value False
+DEBUG - Updating &#39;active_project&#39; with value e9_eMobility_IPM_3D
+DEBUG - Updating &#39;active_design&#39; with value e9_eMobility_IPM_3D_test
+DEBUG - Updating &#39;project_list&#39; with value []
+DEBUG - Updating &#39;design_list&#39; with value {&#39;e9_eMobility_IPM_3D&#39;: [&#39;e9_eMobility_IPM_3D_test&#39;]}
+DEBUG - Updating &#39;selected_process&#39; with value 0
+DEBUG - Updating &#39;use_grpc&#39; with value True
+DEBUG - Updating &#39;is_toolkit_busy&#39; with value False
+DEBUG - Updating &#39;url&#39; with value 127.0.0.1
+DEBUG - Updating &#39;port&#39; with value 5001
+DEBUG - Updating &#39;debug&#39; with value True
+DEBUG - Updating &#39;toolkit_name&#39; with value common
+DEBUG - Updating &#39;log_file&#39; with value common_backend.log
+DEBUG - Properties were updated successfully.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(True, &#39;Properties were updated successfully.&#39;)
+</pre></div></div>
+</div>
+</section>
+<section id="Initialize-AEDT">
+<h2>Initialize AEDT<a class="headerlink" href="#Initialize-AEDT" title="Link to this heading">#</a></h2>
+<p>Launch a new AEDT session.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">launch_aedt</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is not connected to AEDT.
+DEBUG - Launching AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Initializing new Desktop session.
+PyAEDT INFO: StdOut is enabled
+PyAEDT INFO: Log on file is enabled
+PyAEDT INFO: Log on Desktop Message Manager is enabled
+PyAEDT INFO: Debug logger is disabled. PyAEDT methods will not be logged.
+PyAEDT INFO: Launching PyAEDT outside AEDT with gRPC plugin.
+PyAEDT INFO: New AEDT session is starting on gRPC port 62973
+PyAEDT INFO: AEDT installation Path C:\Program Files\AnsysEM\v241\Win64
+PyAEDT INFO: Ansoft.ElectronicsDesktop.2024.1 version started with process ID 2688.
+PyAEDT INFO: pyaedt v0.9.3
+PyAEDT INFO: Python version 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+PyAEDT INFO: AEDT 2024.1.0 Build Date 2023-11-27 22:16:18
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - AEDT launched.
+DEBUG - Grpc port 62973.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Desktop has been released.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - AEDT is released.
+DEBUG - AEDT is released and project properties are loaded.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Open-project">
+<h2>Open project<a class="headerlink" href="#Open-project" title="Link to this heading">#</a></h2>
+<p>Open the project.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">open_project</span><span class="p">(</span><span class="n">active_project</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is not connected to AEDT.
+DEBUG - Connecting AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Initializing new Desktop session.
+PyAEDT INFO: StdOut is enabled
+PyAEDT INFO: Log on file is enabled
+PyAEDT INFO: Log on Desktop Message Manager is disabled
+PyAEDT INFO: Debug logger is disabled. PyAEDT methods will not be logged.
+PyAEDT INFO: Launching PyAEDT outside AEDT with gRPC plugin.
+PyAEDT INFO: Connecting to AEDT session on gRPC port 62973
+PyAEDT INFO: AEDT installation Path C:\Program Files\AnsysEM\v241\Win64
+PyAEDT INFO: pyaedt v0.9.3
+PyAEDT INFO: Python version 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+PyAEDT INFO: AEDT 2024.1.0 Build Date 2023-11-27 22:16:18
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is connected to AEDT.
+DEBUG - Project C:\Users\ansys\AppData\Local\Temp\tmp9nbg_nst.ansys\e9_eMobility_IPM_3D.aedt is opened
+DEBUG - Project name: e9_eMobility_IPM_3D
+INFO - Updating internal properties.
+DEBUG - Updating &#39;project_list&#39; with value [&#39;C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt&#39;]
+DEBUG - Updating &#39;active_design&#39; with value e9
+DEBUG - Updating &#39;active_project&#39; with value C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt
+DEBUG - Updating &#39;design_list&#39; with value {&#39;e9_eMobility_IPM_3D&#39;: [&#39;e9&#39;]}
+DEBUG - Properties were updated successfully.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Desktop has been released.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - AEDT is released.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Connect-design">
+<h2>Connect design<a class="headerlink" href="#Connect-design" title="Link to this heading">#</a></h2>
+<p>Connect or create a new design.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">connect_design</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is not connected to AEDT.
+DEBUG - Connecting AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Initializing new Desktop session.
+PyAEDT INFO: StdOut is enabled
+PyAEDT INFO: Log on file is enabled
+PyAEDT INFO: Log on Desktop Message Manager is disabled
+PyAEDT INFO: Debug logger is disabled. PyAEDT methods will not be logged.
+PyAEDT INFO: Launching PyAEDT outside AEDT with gRPC plugin.
+PyAEDT INFO: Connecting to AEDT session on gRPC port 62973
+PyAEDT INFO: AEDT installation Path C:\Program Files\AnsysEM\v241\Win64
+PyAEDT INFO: pyaedt v0.9.3
+PyAEDT INFO: Python version 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+PyAEDT INFO: AEDT 2024.1.0 Build Date 2023-11-27 22:16:18
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is connected to AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Returning found Desktop session with PID 2688!
+PyAEDT INFO: Project e9_eMobility_IPM_3D set to active.
+PyAEDT INFO: Aedt Objects correctly read
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - Toolkit is connected to AEDT design.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Apply-segmentation">
+<h2>Apply segmentation<a class="headerlink" href="#Apply-segmentation" title="Link to this heading">#</a></h2>
+<p>Apply segmentation and assign the relative coordinate system.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">segmentation</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Desktop has been released.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - AEDT is released.
+DEBUG - Toolkit is not connected to AEDT.
+DEBUG - Connecting AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Initializing new Desktop session.
+PyAEDT INFO: StdOut is enabled
+PyAEDT INFO: Log on file is enabled
+PyAEDT INFO: Log on Desktop Message Manager is disabled
+PyAEDT INFO: Debug logger is disabled. PyAEDT methods will not be logged.
+PyAEDT INFO: Launching PyAEDT outside AEDT with gRPC plugin.
+PyAEDT INFO: Connecting to AEDT session on gRPC port 62973
+PyAEDT INFO: AEDT installation Path C:\Program Files\AnsysEM\v241\Win64
+PyAEDT INFO: pyaedt v0.9.3
+PyAEDT INFO: Python version 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+PyAEDT INFO: AEDT 2024.1.0 Build Date 2023-11-27 22:16:18
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is connected to AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Returning found Desktop session with PID 2688!
+PyAEDT INFO: Project e9_eMobility_IPM_3D set to active.
+PyAEDT INFO: Aedt Objects correctly read
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - Toolkit is connected to AEDT design.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Parsing C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt.
+PyAEDT INFO: File C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt correctly loaded. Elapsed time: 0m 1sec
+PyAEDT INFO: aedt file load time 0.6576089859008789
+PyAEDT INFO: Modeler class has been initialized! Elapsed time: 0m 1sec
+PyAEDT INFO: Returning found Desktop session with PID 2688!
+PyAEDT INFO: Project e9_eMobility_IPM_3D set to active.
+PyAEDT INFO: Aedt Objects correctly read
+PyAEDT INFO: Returning found Desktop session with PID 2688!
+PyAEDT INFO: Project e9_eMobility_IPM_3D set to active.
+PyAEDT INFO: Aedt Objects correctly read
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - Updating internal properties.
+DEBUG - Updating &#39;motor_type&#39; with value IPM
+DEBUG - Updating &#39;is_skewed&#39; with value False
+DEBUG - Updating &#39;apply_mesh_sheets&#39; with value False
+DEBUG - Updating &#39;magnets_material&#39; with value N30UH_65C
+DEBUG - Updating &#39;rotor_material&#39; with value M250-35A_20C
+DEBUG - Updating &#39;stator_material&#39; with value M250-35A_20C
+DEBUG - Updating &#39;rotor_slices&#39; with value 2
+DEBUG - Updating &#39;magnet_segments_per_slice&#39; with value 2
+DEBUG - Updating &#39;mesh_sheets_number&#39; with value 0
+DEBUG - Updating &#39;skew_angle&#39; with value 2deg
+DEBUG - Updating &#39;setup_to_analyze&#39; with value Setup1
+DEBUG - Updating &#39;objects&#39; with value []
+DEBUG - Updating &#39;aedt_version&#39; with value 2024.1
+DEBUG - Updating &#39;non_graphical&#39; with value False
+DEBUG - Updating &#39;active_project&#39; with value C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt
+DEBUG - Updating &#39;active_design&#39; with value e9_1
+DEBUG - Updating &#39;project_list&#39; with value [&#39;C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt&#39;]
+DEBUG - Updating &#39;design_list&#39; with value {&#39;e9_eMobility_IPM_3D&#39;: [&#39;e9&#39;, &#39;e9_1&#39;]}
+DEBUG - Updating &#39;selected_process&#39; with value 62973
+DEBUG - Updating &#39;use_grpc&#39; with value True
+DEBUG - Updating &#39;is_toolkit_busy&#39; with value False
+DEBUG - Updating &#39;url&#39; with value 127.0.0.1
+DEBUG - Updating &#39;port&#39; with value 5001
+DEBUG - Updating &#39;debug&#39; with value True
+DEBUG - Updating &#39;toolkit_name&#39; with value common
+DEBUG - Updating &#39;log_file&#39; with value common_backend.log
+DEBUG - Properties were updated successfully.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Parsing C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt.
+PyAEDT INFO: File C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt correctly loaded. Elapsed time: 0m 1sec
+PyAEDT INFO: aedt file load time 1.4375860691070557
+PyAEDT INFO: Modeler class has been initialized! Elapsed time: 0m 2sec
+PyAEDT INFO: Parsing design objects. This operation can take time
+PyAEDT INFO: 3D Modeler objects parsed. Elapsed time: 0m 0sec
+PyAEDT INFO: Deleted 1 Objects: Rotor_1_ObjectFromFace1_1.
+PyAEDT INFO: Deleted 1 objects
+PyAEDT INFO: Boundary Insulating L1_1Magnet1N1_1_1_segments has been correctly created.
+PyAEDT INFO: Boundary Insulating L1_1Magnet2N1_1_1_segments has been correctly created.
+PyAEDT INFO: Boundary Insulating L1_1Magnet1N1_1_1_Split1_segments has been correctly created.
+PyAEDT INFO: Boundary Insulating L1_1Magnet2N1_1_1_Split1_segments has been correctly created.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - Updating internal properties.
+DEBUG - Updating &#39;motor_type&#39; with value IPM
+DEBUG - Updating &#39;is_skewed&#39; with value False
+DEBUG - Updating &#39;apply_mesh_sheets&#39; with value False
+DEBUG - Updating &#39;magnets_material&#39; with value N30UH_65C
+DEBUG - Updating &#39;rotor_material&#39; with value M250-35A_20C
+DEBUG - Updating &#39;stator_material&#39; with value M250-35A_20C
+DEBUG - Updating &#39;rotor_slices&#39; with value 2
+DEBUG - Updating &#39;magnet_segments_per_slice&#39; with value 2
+DEBUG - Updating &#39;mesh_sheets_number&#39; with value 0
+DEBUG - Updating &#39;skew_angle&#39; with value 2deg
+DEBUG - Updating &#39;setup_to_analyze&#39; with value Setup1
+DEBUG - Updating &#39;objects&#39; with value [&#39;L1_1Magnet1N1_1_1&#39;, &#39;L1_1Magnet2N1_1_1&#39;, &#39;L1_1Magnet1N1_1_1_Split1&#39;, &#39;L1_1Magnet2N1_1_1_Split1&#39;, &#39;L1_1Magnet1N1_1_1_ObjectFromFace1_1_ObjectFromFace1&#39;, &#39;L1_1Magnet2N1_1_1_ObjectFromFace1_1_ObjectFromFace1&#39;, &#39;L1_1Magnet1N1_1_1_Split1_ObjectFromFace1_1_ObjectFromFace1&#39;, &#39;L1_1Magnet2N1_1_1_Split1_ObjectFromFace1_1_ObjectFromFace1&#39;]
+DEBUG - Updating &#39;aedt_version&#39; with value 2024.1
+DEBUG - Updating &#39;non_graphical&#39; with value False
+DEBUG - Updating &#39;active_project&#39; with value C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt
+DEBUG - Updating &#39;active_design&#39; with value e9_1
+DEBUG - Updating &#39;project_list&#39; with value [&#39;C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt&#39;]
+DEBUG - Updating &#39;design_list&#39; with value {&#39;e9_eMobility_IPM_3D&#39;: [&#39;e9&#39;, &#39;e9_1&#39;]}
+DEBUG - Updating &#39;selected_process&#39; with value 62973
+DEBUG - Updating &#39;use_grpc&#39; with value True
+DEBUG - Updating &#39;is_toolkit_busy&#39; with value False
+DEBUG - Updating &#39;url&#39; with value 127.0.0.1
+DEBUG - Updating &#39;port&#39; with value 5001
+DEBUG - Updating &#39;debug&#39; with value True
+DEBUG - Updating &#39;toolkit_name&#39; with value common
+DEBUG - Updating &#39;log_file&#39; with value common_backend.log
+DEBUG - Properties were updated successfully.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Project e9_eMobility_IPM_3D Saved correctly
+PyAEDT INFO: Desktop has been released.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - AEDT is released.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Apply-skew-angle">
+<h2>Apply skew angle<a class="headerlink" href="#Apply-skew-angle" title="Link to this heading">#</a></h2>
+<p>Apply the skew angle to rotor slices.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">apply_skew</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is not connected to AEDT.
+DEBUG - Connecting AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Initializing new Desktop session.
+PyAEDT INFO: StdOut is enabled
+PyAEDT INFO: Log on file is enabled
+PyAEDT INFO: Log on Desktop Message Manager is disabled
+PyAEDT INFO: Debug logger is disabled. PyAEDT methods will not be logged.
+PyAEDT INFO: Launching PyAEDT outside AEDT with gRPC plugin.
+PyAEDT INFO: Connecting to AEDT session on gRPC port 62973
+PyAEDT INFO: AEDT installation Path C:\Program Files\AnsysEM\v241\Win64
+PyAEDT INFO: pyaedt v0.9.3
+PyAEDT INFO: Python version 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+PyAEDT INFO: AEDT 2024.1.0 Build Date 2023-11-27 22:16:18
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is connected to AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Returning found Desktop session with PID 2688!
+PyAEDT INFO: Project e9_eMobility_IPM_3D set to active.
+PyAEDT INFO: Aedt Objects correctly read
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - Toolkit is connected to AEDT design.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Parsing C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt.
+PyAEDT INFO: File C:/Users/ansys/AppData/Local/Temp/tmp9nbg_nst.ansys/e9_eMobility_IPM_3D.aedt correctly loaded. Elapsed time: 0m 1sec
+PyAEDT INFO: aedt file load time 1.4063966274261475
+PyAEDT INFO: Modeler class has been initialized! Elapsed time: 0m 2sec
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `cs_axis` is deprecated for method `rotate`; use `axis` instead.
+PyAEDT WARNING: Argument `objects` is deprecated for method `split`; use `assignment` instead.
+PyAEDT INFO: Parsing design objects. This operation can take time
+PyAEDT INFO: 3D Modeler objects parsed. Elapsed time: 0m 1sec
+PyAEDT WARNING: Argument `objects` is deprecated for method `split`; use `assignment` instead.
+PyAEDT INFO: Union of 2 objects has been executed.
+PyAEDT INFO: Desktop has been released.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - AEDT is released.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Validate-and-analyze-design">
+<h2>Validate and analyze design<a class="headerlink" href="#Validate-and-analyze-design" title="Link to this heading">#</a></h2>
+<p>Uncomment the line to validate and analyze the design.</p>
+<p>toolkit.validate_and_analyze()</p>
+</section>
+<section id="Create-magnet-loss-report">
+<h2>Create magnet loss report<a class="headerlink" href="#Create-magnet-loss-report" title="Link to this heading">#</a></h2>
+<p>Uncomment the lines to create magnet loss report and compute average value.</p>
+<p>magnet_loss = toolkit.get_magnet_loss() print(f”Average magnet loss: {magnet_loss[‘SolidLoss’][‘Value’]}{magnet_loss[‘SolidLoss’][‘Unit’]}”)</p>
+</section>
+<section id="Save-and-release-AEDT">
+<h2>Save and release AEDT<a class="headerlink" href="#Save-and-release-AEDT" title="Link to this heading">#</a></h2>
+<p>Save and release AEDT.</p>
+<p>toolkit.save_project()</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">toolkit</span><span class="o">.</span><span class="n">release_aedt</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is not connected to AEDT.
+DEBUG - Connecting AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Initializing new Desktop session.
+PyAEDT INFO: StdOut is enabled
+PyAEDT INFO: Log on file is enabled
+PyAEDT INFO: Log on Desktop Message Manager is disabled
+PyAEDT INFO: Debug logger is disabled. PyAEDT methods will not be logged.
+PyAEDT INFO: Launching PyAEDT outside AEDT with gRPC plugin.
+PyAEDT INFO: Connecting to AEDT session on gRPC port 62973
+PyAEDT INFO: AEDT installation Path C:\Program Files\AnsysEM\v241\Win64
+PyAEDT INFO: pyaedt v0.9.3
+PyAEDT INFO: Python version 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+PyAEDT INFO: AEDT 2024.1.0 Build Date 2023-11-27 22:16:18
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+DEBUG - Toolkit is connected to AEDT.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PyAEDT INFO: Desktop has been released and closed.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO - AEDT is released.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Remove-temporary-folder">
+<h2>Remove temporary folder<a class="headerlink" href="#Remove-temporary-folder" title="Link to this heading">#</a></h2>
+<p>Remove the temporary folder.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Perform-required-imports">Perform required imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Initialize-temporary-folder-and-project-settings">Initialize temporary folder and project settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Initialize-toolkit">Initialize toolkit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Get-toolkit-properties">Get toolkit properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Initialize-properties">Initialize properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Set-non-graphical-mode">Set non-graphical mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Set-properties">Set properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Initialize-AEDT">Initialize AEDT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Open-project">Open project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Connect-design">Connect design</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Apply-segmentation">Apply segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Apply-skew-angle">Apply skew angle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Validate-and-analyze-design">Validate and analyze design</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Create-magnet-loss-report">Create magnet loss report</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Save-and-release-AEDT">Save and release AEDT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Remove-temporary-folder">Remove temporary folder</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item"> 
+<div class="tocsection editthispage">
+  <a href="https://github.com/ansys/magnet-segmentation-toolkit/edit/main/doc/source/examples/maxwell3d_segmentation_skew.py">
+    <i class="fa-solid fa-pencil"></i>
+       Edit
+    on GitHub  
+  </a>
+</div>
+
+</div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/examples/maxwell3d_segmentation_skew.py.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2024 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  0.15.2. <br />Last updated on
+  <span id="date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var lastModifiedDate = new Date(document.lastModified);
+  var date = lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("date").innerHTML = date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
