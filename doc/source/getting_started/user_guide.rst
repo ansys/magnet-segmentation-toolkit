@@ -43,6 +43,8 @@ interpreter from the AEDT installation.
 
 The wizard is connected directly to the AEDT session. For wizard usage information, see :doc:`Toolkit/ui`.
 
+.. _install_toolkit_console_ui:
+
 Install toolkit from Python console and launch the Magnet Segmentation Toolkit
 ------------------------------------------------------------------------------
 
