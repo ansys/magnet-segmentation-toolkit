@@ -24,8 +24,9 @@ Magnet Segmentation ToolkitBackend
 
 The Magnet Segmentation ToolkitBackend is a Python wrapper for automating the segmentation
 and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM)
-motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit
-from the AEDT UI or launch it directly from a Python console.
+motors using Ansys Electronics Desktop (AEDT). You can launch this toolkit from the AEDT UI
+or launch it directly from a Python console. This toolkit can also be launched as desktop
+application based on `Pyside6 <https://doc.qt.io/qtforpython-6/quickstart.html>`_.
 
 Requirements
 ~~~~~~~~~~~~

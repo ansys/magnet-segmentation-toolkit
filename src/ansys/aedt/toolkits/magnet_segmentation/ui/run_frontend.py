@@ -45,6 +45,7 @@ from windows.post_processing.post_processing_menu import PostProcessingMenu
 
 # New windows
 from windows.segmentation.segmentation_menu import SegmentationMenu
+from windows.help.help_menu import HelpMenu
 
 # Windows
 
@@ -126,6 +127,11 @@ class ApplicationWindow(QMainWindow, Frontend):
         self.plot_design_menu.setup()
         self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
 
+        # Help menu
+        self.help_menu = HelpMenu(self)
+        self.help_menu.setup()
+        self.ui.left_menu.clicked.connect(self.help_menu_clicked)
+
         # Home page as first page
         self.ui.set_page(self.ui.load_pages.home_page)
 
@@ -203,6 +209,24 @@ class ApplicationWindow(QMainWindow, Frontend):
             if not is_left_visible:
                 self.ui.toggle_left_column()
 
+    def help_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+
+        if menu_name == "help_menu":
+            selected_menu.set_active(True)
+            self.ui.set_page(self.help_menu.help_menu_widget)
+
+            # TODO: Update path once help menu is released
+            self.ui.set_left_column_menu(
+                menu=self.help_menu.help_column_widget,
+                title="Help",
+                icon_path=self.ui.images_load.icon_path("help.svg"),
+            )
+
+            is_left_visible = self.ui.is_left_column_visible()
+            if not is_left_visible:
+                self.ui.toggle_left_column()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
