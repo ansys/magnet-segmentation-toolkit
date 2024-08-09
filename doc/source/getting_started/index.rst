@@ -4,7 +4,7 @@
 Getting started
 ===============
 
-This section explains how to install the AEDT Antenna Toolkit.
+This section explains how to install the AEDT Magnet Segmentation Toolkit.
 
 .. grid:: 2
 
@@ -13,14 +13,14 @@ This section explains how to install the AEDT Antenna Toolkit.
         :link: installation
         :link-type: doc
 
-        Learn how to install the AEDT Antenna Toolkit.
+        Learn how to install the AEDT Magnet Segmentation Toolkit.
 
     .. grid-item-card:: User guide :fa:`person-running`
         :padding: 2 2 2 2
         :link: user_guide
         :link-type: doc
 
-        Learn more about the Antenna wizard and how to use it.
+        Learn more about the Magnet Segmentation wizard and how to use it.
 
 
 .. toctree::
