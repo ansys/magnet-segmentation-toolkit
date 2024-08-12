@@ -38,7 +38,7 @@ from sphinx.util import logging
 root_path = str(pathlib.Path(__file__).parent.parent.parent)
 
 try:
-    from ansys.aedt.toolkits.antenna import __version__
+    from ansys.aedt.toolkits.magnet_segmentation import __version__
 except ImportError:
     sys.path.append(root_path)
     src_path = os.path.join(root_path, "src")

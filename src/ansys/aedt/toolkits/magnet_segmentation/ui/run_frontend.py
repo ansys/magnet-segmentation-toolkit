@@ -40,6 +40,7 @@ from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWin
 
 # Default user interface properties
 from models import properties
+from windows.help.help_menu import HelpMenu
 from windows.plot_design.plot_design_menu import PlotDesignMenu
 from windows.post_processing.post_processing_menu import PostProcessingMenu
 
@@ -126,6 +127,11 @@ class ApplicationWindow(QMainWindow, Frontend):
         self.plot_design_menu.setup()
         self.ui.left_menu.clicked.connect(self.plot_design_menu_clicked)
 
+        # Help menu
+        self.help_menu = HelpMenu(self)
+        self.help_menu.setup()
+        self.ui.left_menu.clicked.connect(self.help_menu_clicked)
+
         # Home page as first page
         self.ui.set_page(self.ui.load_pages.home_page)
 
@@ -197,6 +203,25 @@ class ApplicationWindow(QMainWindow, Frontend):
                 menu=self.plot_design_menu.plot_design_column_widget,
                 title="Plot Design",
                 icon_path=self.ui.images_load.icon_path("cylindrical_data_graphic.svg"),
+            )
+
+            is_left_visible = self.ui.is_left_column_visible()
+            if not is_left_visible:
+                self.ui.toggle_left_column()
+
+    def help_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+
+        if menu_name == "help_menu":
+            selected_menu.set_active(True)
+            self.ui.set_page(self.help_menu.help_menu_widget)
+
+            # TODO: Update path once help menu is released
+            self.ui.set_left_column_menu(
+                menu=self.help_menu.help_column_widget,
+                title="Help",
+                icon_path=self.ui.images_load.icon_path("help.svg"),
             )
 
             is_left_visible = self.ui.is_left_column_visible()
