@@ -40,12 +40,12 @@ from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWin
 
 # Default user interface properties
 from models import properties
+from windows.help.help_menu import HelpMenu
 from windows.plot_design.plot_design_menu import PlotDesignMenu
 from windows.post_processing.post_processing_menu import PostProcessingMenu
 
 # New windows
 from windows.segmentation.segmentation_menu import SegmentationMenu
-from windows.help.help_menu import HelpMenu
 
 # Windows
 
@@ -227,6 +227,7 @@ class ApplicationWindow(QMainWindow, Frontend):
             is_left_visible = self.ui.is_left_column_visible()
             if not is_left_visible:
                 self.ui.toggle_left_column()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
