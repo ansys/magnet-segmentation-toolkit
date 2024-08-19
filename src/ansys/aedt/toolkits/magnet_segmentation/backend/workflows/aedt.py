@@ -22,12 +22,12 @@
 
 from operator import attrgetter
 
+from ansys.aedt.core.application.Variables import decompose_variable_value
+from ansys.aedt.core.generic.constants import unit_converter
+from ansys.aedt.core.modeler.cad.Modeler import CoordinateSystem
+from ansys.aedt.core.modeler.cad.Modeler import FaceCoordinateSystem
+from ansys.aedt.core.modeler.geometry_operators import GeometryOperators as go
 from ansys.aedt.toolkits.common.backend.api import AEDTCommon
-from pyaedt.application.Variables import decompose_variable_value
-from pyaedt.generic.constants import unit_converter
-from pyaedt.modeler.cad.Modeler import CoordinateSystem
-from pyaedt.modeler.cad.Modeler import FaceCoordinateSystem
-from pyaedt.modeler.geometry_operators import GeometryOperators as go
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
 
@@ -318,7 +318,7 @@ class AEDTWorkflow(AEDTCommon):
         Returns
         -------
         list
-            List of the class:`pyaedt.modeler.cad.object3d.Object3d` classes.
+            List of the class:`ansys.aedt.core.modeler.cad.object3d.Object3d` classes.
         """
         rotor_pockets = []
         for obj in vacuum_objects:
@@ -335,7 +335,7 @@ class AEDTWorkflow(AEDTCommon):
 
         Parameters
         ----------
-        cs : :class:`pyaedt.modeler.Modeler.CoordinateSystem`
+        cs : :class:`ansys.aedt.core.modeler.Modeler.CoordinateSystem`
             Coordinate system.
 
         Returns

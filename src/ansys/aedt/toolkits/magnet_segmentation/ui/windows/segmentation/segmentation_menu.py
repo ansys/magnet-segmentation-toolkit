@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QWidget
 
 # toolkit PySide6 Widgets
 from ansys.aedt.toolkits.common.ui.utils.widgets import PyLabel
-from pyaedt.generic.general_methods import _to_boolean
+from ansys.aedt.core.generic.general_methods import _to_boolean
 from windows.segmentation.segmentation_column import Ui_LeftColumn
 from windows.segmentation.segmentation_page import Ui_Segmentation
 
