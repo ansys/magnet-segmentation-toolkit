@@ -157,7 +157,6 @@ and toolkit level.
         properties["active_design"] = active_design
         properties["design_list"] = {active_project: [active_design]}
         properties["is_skewed"] = False
-        properties["motor_type"] = "IPM"
         properties["rotor_material"] = "M250-35A_20C"
         properties["stator_material"] = "M250-35A_20C"
         properties["magnets_material"] = "N30UH_65C"

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'segmentation_page.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.1
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,7 +24,7 @@ class Ui_Segmentation(object):
         if not Segmentation.objectName():
             Segmentation.setObjectName(u"Segmentation")
         Segmentation.resize(627, 456)
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Segmentation.sizePolicy().hasHeightForWidth())
@@ -36,32 +36,6 @@ class Ui_Segmentation(object):
         self.horizontalLayout_.setObjectName(u"horizontalLayout_")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.horizontalLayout_66 = QHBoxLayout()
-        self.horizontalLayout_66.setObjectName(u"horizontalLayout_66")
-        self.motor_type_combo_label = QLabel(Segmentation)
-        self.motor_type_combo_label.setObjectName(u"motor_type_combo_label")
-
-        self.horizontalLayout_66.addWidget(self.motor_type_combo_label)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_66.addItem(self.horizontalSpacer)
-
-        self.motor_type_combo = QComboBox(Segmentation)
-        self.motor_type_combo.addItem("")
-        self.motor_type_combo.setObjectName(u"motor_type_combo")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.motor_type_combo.sizePolicy().hasHeightForWidth())
-        self.motor_type_combo.setSizePolicy(sizePolicy1)
-        self.motor_type_combo.setMinimumSize(QSize(300, 0))
-
-        self.horizontalLayout_66.addWidget(self.motor_type_combo)
-
-
-        self.verticalLayout_2.addLayout(self.horizontalLayout_66)
-
         self.horizontalLayout_32 = QHBoxLayout()
         self.horizontalLayout_32.setObjectName(u"horizontalLayout_32")
         self.apply_mesh_sheets_label = QLabel(Segmentation)
@@ -69,7 +43,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_32.addWidget(self.apply_mesh_sheets_label)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_32.addItem(self.horizontalSpacer_2)
 
@@ -77,6 +51,9 @@ class Ui_Segmentation(object):
         self.apply_mesh_sheets.addItem("")
         self.apply_mesh_sheets.addItem("")
         self.apply_mesh_sheets.setObjectName(u"apply_mesh_sheets")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.apply_mesh_sheets.sizePolicy().hasHeightForWidth())
         self.apply_mesh_sheets.setSizePolicy(sizePolicy1)
         self.apply_mesh_sheets.setMinimumSize(QSize(300, 0))
@@ -93,7 +70,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_4.addWidget(self.is_skewed_label)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_5)
 
@@ -117,7 +94,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_7.addWidget(self.magnets_material_label)
 
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_7.addItem(self.horizontalSpacer_6)
 
@@ -140,7 +117,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_20.addWidget(self.rotor_material_label)
 
-        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_7)
 
@@ -163,7 +140,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_20a.addWidget(self.stator_material_label)
 
-        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_20a.addItem(self.horizontalSpacer_8)
 
@@ -186,7 +163,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_21.addWidget(self.rotor_slices_label)
 
-        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_21)
 
@@ -208,7 +185,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_22.addWidget(self.magnet_segments_per_slice_label)
 
-        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_22.addItem(self.horizontalSpacer_22)
 
@@ -230,7 +207,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_33.addWidget(self.mesh_sheets_number_label)
 
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_33.addItem(self.horizontalSpacer_3)
 
@@ -252,7 +229,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_23.addWidget(self.skew_angle_label)
 
-        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_23.addItem(self.horizontalSpacer_23)
 
@@ -267,7 +244,7 @@ class Ui_Segmentation(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_23)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Maximum)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
@@ -293,7 +270,7 @@ class Ui_Segmentation(object):
 
         self.horizontalLayout_.addLayout(self.verticalLayout_2)
 
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_.addItem(self.horizontalSpacer_4)
 
@@ -308,10 +285,6 @@ class Ui_Segmentation(object):
 
     def retranslateUi(self, Segmentation):
         Segmentation.setWindowTitle(QCoreApplication.translate("Segmentation", u"Form", None))
-        self.motor_type_combo_label.setText(QCoreApplication.translate("Segmentation", u"Motor Type", None))
-        self.motor_type_combo.setItemText(0, QCoreApplication.translate("Segmentation", u"--Select Motor Type--", None))
-
-        self.motor_type_combo.setCurrentText(QCoreApplication.translate("Segmentation", u"--Select Motor Type--", None))
         self.apply_mesh_sheets_label.setText(QCoreApplication.translate("Segmentation", u"Apply Mesh Sheets", None))
         self.apply_mesh_sheets.setItemText(0, QCoreApplication.translate("Segmentation", u"False", None))
         self.apply_mesh_sheets.setItemText(1, QCoreApplication.translate("Segmentation", u"True", None))
