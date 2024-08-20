@@ -27,7 +27,6 @@ to motor workflows in AEDT.
 """
 import os
 import sys
-from typing import Literal
 
 from ansys.aedt.toolkits.common.backend.models import CommonProperties
 from ansys.aedt.toolkits.common.backend.models import common_properties
@@ -42,7 +41,6 @@ else:
 class AEDTProperties(BaseModel):
     """Store AEDT properties."""
 
-    motor_type: Literal["", "IPM", "SPM"] = "IPM"
     is_skewed: bool = False
     apply_mesh_sheets: bool = False
     magnets_material: str = ""

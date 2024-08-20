@@ -100,25 +100,20 @@ class AEDTWorkflow(AEDTCommon):
         if not self.properties.is_skewed:
             magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
             if self.properties.rotor_material == self.properties.stator_material:
-                if self.properties.motor_type == "IPM":
-                    for obj in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material):
-                        if [i for i in magnets if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)]:
-                            rotor = obj
-                elif self.properties.motor_type == "SPM":
-                    for obj in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material):
-                        if not [
-                            i for i in magnets if i in self.aedtapp.modeler.objects_in_bounding_box(obj.bounding_box)
-                        ]:
-                            rotor = obj
-                else:
-                    raise RuntimeError(f"Motor type {self.properties.motor_type} is not yet handled.")
+                rotor_stator = self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)
+                stator_obj = max(rotor_stator, key=attrgetter("volume"))
+                rotor = [
+                    x
+                    for x in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)
+                    if x != stator_obj and x.name != "Shaft"
+                ][0]
             else:
                 rotor = self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)[0]
 
             if self.properties.rotor_slices > 1:
                 # rotor segmentation
                 rotor_slices = self.aedtapp.modeler.objects_segmentation(
-                    rotor.id, segments_number=self.properties.rotor_slices, apply_mesh_sheets=False
+                    rotor.id, segments=self.properties.rotor_slices, apply_mesh_sheets=False
                 )
                 # rotor and rotor pockets split
                 rotor_objs = [rotor.name]
@@ -144,9 +139,9 @@ class AEDTWorkflow(AEDTCommon):
             self.aedtapp.modeler.set_working_coordinate_system("Global")
             objects_segmentation = self.aedtapp.modeler.objects_segmentation(
                 magnet.id,
-                segments_number=self.properties.magnet_segments_per_slice,
+                segments=self.properties.magnet_segments_per_slice,
                 apply_mesh_sheets=self.properties.apply_mesh_sheets,
-                mesh_sheets_number=self.properties.mesh_sheets_number,
+                mesh_sheets=self.properties.mesh_sheets_number,
             )
             if self.properties.apply_mesh_sheets:
                 magnet_segments = objects_segmentation[0]
@@ -221,34 +216,32 @@ class AEDTWorkflow(AEDTCommon):
                     for x in self.aedtapp.modeler.get_objects_by_material(self.properties.rotor_material)
                     if x != stator_obj and x.name != "Shaft"
                 ]
-            objs_in_bb = {}
             rotor_skew_ang = 0
             # rotate objects and apply skew
             for rotor_object in rotor_objects:
                 if rotor_skew_ang != 0:
-                    objs_in_bb[rotor_object.name] = self.aedtapp.modeler.objects_in_bounding_box(
-                        rotor_object.bounding_box
-                    )
-                    for obj in objs_in_bb[rotor_object.name]:
-                        if obj in magnets:
-                            magnet_cs = [
-                                cs
-                                for cs in self.aedtapp.modeler.coordinate_systems
-                                if cs.name == obj.part_coordinate_system
-                            ][0]
-                            if isinstance(magnet_cs, CoordinateSystem):
-                                magnet_cs.props["Phi"] = "{}+{}deg".format(magnet_cs.props["Phi"], rotor_skew_ang)
-                            elif isinstance(magnet_cs, FaceCoordinateSystem):
-                                magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
+                    touching_objects = [self.aedtapp.modeler.objects_by_name[o] for o in rotor_object.touching_objects]
+                    touching_magnets = list(set(touching_objects).intersection(magnets))
+                    for obj in touching_magnets:
+                        magnet_cs = [
+                            cs
+                            for cs in self.aedtapp.modeler.coordinate_systems
+                            if cs.name == obj.part_coordinate_system
+                        ][0]
+                        if isinstance(magnet_cs, CoordinateSystem):
+                            magnet_cs.props["Phi"] = "{}+{}deg".format(magnet_cs.props["Phi"], rotor_skew_ang)
+                        elif isinstance(magnet_cs, FaceCoordinateSystem):
+                            magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
                         obj.rotate(cs_axis="Z", angle=rotor_skew_ang)
+                    rotor_object.rotate(axis="Z", angle=rotor_skew_ang)
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
                     if independent and dependent:
-                        split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=indep.id)
+                        split = self.aedtapp.modeler.split(assignment=rotor_object, sides="Both", tool=indep.id)
                         if [s for s in split if s not in self.aedtapp.modeler.objects_by_name]:
                             self.aedtapp.odesign.Undo()
-                        split = self.aedtapp.modeler.split(objects=rotor_object, sides="Both", tool=dep.id)
+                        split = self.aedtapp.modeler.split(assignment=rotor_object, sides="Both", tool=dep.id)
                         split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split]
                         # Get object with minimum volume
                         min_vol_object = min(split_objects, key=lambda x: x.volume).volume
@@ -297,7 +290,7 @@ class AEDTWorkflow(AEDTCommon):
 
         try:
             report_dict = {}
-            self.aedtapp.post.create_report(expressions="SolidLoss", plotname="Losses", primary_sweep_variable="Time")
+            self.aedtapp.post.create_report(expressions="SolidLoss", plot_name="Losses", primary_sweep_variable="Time")
             data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
             avg = sum(data.data_magnitude()) / len(data.data_magnitude())
             avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")

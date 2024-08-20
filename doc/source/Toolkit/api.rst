@@ -1,6 +1,6 @@
 Toolkit API
 ===========
-The Toolkit API contains the ``Toolkit`` class, which provides methods for
+The Toolkit API contains the ``ToolkitBackend`` class, which provides methods for
 controlling the toolkit workflow. In addition to methods for creating an AEDT
 session or connecting to an existing AEDT session, this API provides methods for
 automating the segmentation and skew of a 3D motor.

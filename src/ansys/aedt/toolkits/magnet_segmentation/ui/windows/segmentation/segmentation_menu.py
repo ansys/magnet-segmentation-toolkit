@@ -66,7 +66,6 @@ class SegmentationMenu(object):
 
         # Specific properties
         # Combo boxes
-        self.motor_type_combo = self.segmentation_menu_widget.findChild(QComboBox, "motor_type_combo")
         self.apply_mesh_sheets = self.segmentation_menu_widget.findChild(QComboBox, "apply_mesh_sheets")
         self.is_skewed = self.segmentation_menu_widget.findChild(QComboBox, "is_skewed")
         self.magnets_material = self.segmentation_menu_widget.findChild(QComboBox, "magnets_material")
@@ -80,7 +79,6 @@ class SegmentationMenu(object):
         # Labels
         self.projects_aedt_combo_label = self.segmentation_menu_widget.findChild(QLabel, "projects_aedt_combo_label")
         self.design_aedt_combo_label = self.segmentation_menu_widget.findChild(QLabel, "design_aedt_combo_label")
-        self.motor_type_combo_label = self.segmentation_menu_widget.findChild(QLabel, "motor_type_combo_label")
         self.apply_mesh_sheets_label = self.segmentation_menu_widget.findChild(QLabel, "apply_mesh_sheets_label")
         self.is_skewed_label = self.segmentation_menu_widget.findChild(QLabel, "is_skewed_label")
         self.magnets_material_label = self.segmentation_menu_widget.findChild(QLabel, "magnets_material_label")
@@ -107,10 +105,6 @@ class SegmentationMenu(object):
         self.perform_segmentation_button.clicked.connect(self.segmentation_button_clicked)
         self.apply_skew_button.clicked.connect(self.skew_button_clicked)
 
-        # Motor Type
-        # Add in UI
-        self.motor_type_combo.addItems(["IPM", "SPM"])
-
         # UI from Designer
         # Combo boxes
         combo_box_style = """
@@ -131,7 +125,6 @@ class SegmentationMenu(object):
         custom_style = combo_box_style.format(
             _color=text_foreground, _bg_color=combo_color, _font_size=self.main_window.properties.font["title_size"]
         )
-        self.motor_type_combo.setStyleSheet(custom_style)
         self.apply_mesh_sheets.setStyleSheet(custom_style)
         self.is_skewed.setStyleSheet(custom_style)
         self.magnets_material.setStyleSheet(custom_style)
@@ -168,7 +161,6 @@ class SegmentationMenu(object):
         custom_style = multiplier_label_style.format(
             _color=text_foreground, _bg_color=combo_color, _font_size=self.main_window.properties.font["title_size"]
         )
-        self.motor_type_combo_label.setStyleSheet(custom_style)
         self.apply_mesh_sheets_label.setStyleSheet(custom_style)
         self.is_skewed_label.setStyleSheet(custom_style)
         self.magnets_material_label.setStyleSheet(custom_style)
@@ -234,7 +226,6 @@ class SegmentationMenu(object):
         be_properties["active_project"] = self.main_window.home_menu.project_combobox.currentText()
         be_properties["active_design"] = self.main_window.home_menu.design_combobox.currentText()
 
-        be_properties["motor_type"] = self.motor_type_combo.currentText()
         be_properties["is_skewed"] = _to_boolean(self.is_skewed.currentText())
         if not be_properties["is_skewed"]:
             be_properties["rotor_material"] = self.rotor_material.currentText()
