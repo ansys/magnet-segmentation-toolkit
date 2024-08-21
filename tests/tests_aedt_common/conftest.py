@@ -34,13 +34,10 @@ import sys
 import threading
 import time
 
+from ansys.aedt.core import settings
+from ansys.aedt.core.aedt_logger import pyaedt_logger
 from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 import psutil
-
-# from pyaedt.generic.filesystem import Scratch
-# from pyaedt import generate_unique_folder_name
-from pyaedt import settings
-from pyaedt.aedt_logger import pyaedt_logger
 import pytest
 import requests
 
