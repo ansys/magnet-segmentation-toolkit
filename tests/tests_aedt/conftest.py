@@ -41,8 +41,7 @@ directory as this module. An example of the contents of local_config.json
 import json
 import os
 
-# from pyaedt import generate_unique_folder_name
-from pyaedt import settings
+from ansys.aedt.core import settings
 import pytest
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
