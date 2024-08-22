@@ -22,10 +22,10 @@
 
 from operator import attrgetter
 
-from ansys.aedt.core.application.Variables import decompose_variable_value
+from ansys.aedt.core.application.variables import decompose_variable_value
 from ansys.aedt.core.generic.constants import unit_converter
-from ansys.aedt.core.modeler.cad.Modeler import CoordinateSystem
-from ansys.aedt.core.modeler.cad.Modeler import FaceCoordinateSystem
+from ansys.aedt.core.modeler.cad.modeler import CoordinateSystem
+from ansys.aedt.core.modeler.cad.modeler import FaceCoordinateSystem
 from ansys.aedt.core.modeler.geometry_operators import GeometryOperators as go
 from ansys.aedt.toolkits.common.backend.api import AEDTCommon
 
