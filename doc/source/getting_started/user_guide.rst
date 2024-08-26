@@ -41,7 +41,7 @@ interpreter from the AEDT installation.
      :width: 800
      :alt: UI opened from AEDT, design tab
 
-The wizard is connected directly to the AEDT session. For wizard usage information, see :doc:`Toolkit/ui`.
+The wizard is connected directly to the AEDT session. For wizard usage information, see :doc:`../Toolkit/ui`.
 
 .. _install_toolkit_console_ui:
 
@@ -180,4 +180,4 @@ and toolkit level.
         # Release AEDT
         service.release_aedt()
 
-For descriptions of the APIs available for the Magnet Segmentation Toolkit, see :doc:`Toolkit/index`.
+For descriptions of the APIs available for the Magnet Segmentation Toolkit, see :doc:`../Toolkit/index`.

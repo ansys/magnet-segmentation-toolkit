@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# from dataclasses import asdict
 import os
 import time
 
@@ -28,7 +27,6 @@ from ansys.aedt.toolkits.common.backend.api import ToolkitThreadStatus
 import pytest
 import requests
 
-# from ansys.aedt.toolkits.magnet_segmentation.backend.models import AEDTProperties
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import Properties
 from tests.tests_aedt_common.conftest import config
 
