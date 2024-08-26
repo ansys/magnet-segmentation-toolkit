@@ -20,17 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# import datetime
 import gc
 import json
 import os
-
-# import shutil
 import signal
 import subprocess
 import sys
-
-# import tempfile
 import threading
 import time
 
