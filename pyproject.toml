@@ -58,7 +58,11 @@ default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["ansys.aedt"]
+source = ["ansys.aedt.toolkits.magnet_segmentation"]
+omit = [
+    # Omit UI testing
+    "src/ansys/aedt/toolkits/magnet_segmentation/ui/*,
+]
 relative_files = true
 
 [tool.coverage.report]
