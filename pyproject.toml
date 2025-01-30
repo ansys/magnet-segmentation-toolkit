@@ -61,7 +61,7 @@ src_paths = ["doc", "src", "tests"]
 source = ["ansys.aedt.toolkits.magnet_segmentation"]
 omit = [
     # Omit UI testing
-    "src/ansys/aedt/toolkits/magnet_segmentation/ui/*,
+    "src/ansys/aedt/toolkits/magnet_segmentation/ui/*",
 ]
 relative_files = true
 
