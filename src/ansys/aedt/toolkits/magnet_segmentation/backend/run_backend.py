@@ -99,7 +99,7 @@ def get_magnet_loss():
 
     response = toolkit_api.get_magnet_loss()
     if response:
-        return jsonify("Magnet Loss (avg)[W] = {}".format(response["SolidLoss"]["Value"])), 200
+        return jsonify(f"Magnet Loss (avg)[W] = {response}"), 200
     else:
         return jsonify("Failure: Magnet loss calculation was unsuccessful."), 500
 

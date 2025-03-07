@@ -50,6 +50,7 @@ properties = toolkit.get_properties()
 #
 # Initialize a dictionary of properties.
 
+properties["aedt_version"] = "2025.1"
 properties["active_project"] = AEDT_PROJECT
 properties["active_design"] = active_design
 properties["design_list"] = {AEDT_PROJECT: [active_design]}
@@ -109,14 +110,14 @@ toolkit.apply_skew()
 #
 # Uncomment the line to validate and analyze the design.
 
-# toolkit.validate_and_analyze()
+toolkit.validate_and_analyze()
 
 # ## Create magnet loss report
 #
 # Uncomment the lines to create magnet loss report and compute average value.
 
-# magnet_loss = toolkit.get_magnet_loss()
-# print(f"Average magnet loss: {magnet_loss['SolidLoss']['Value']}{magnet_loss['SolidLoss']['Unit']}")
+magnet_loss = toolkit.get_magnet_loss()
+print(f"Average magnet loss: {magnet_loss} W")
 
 # ## Save and release AEDT
 #

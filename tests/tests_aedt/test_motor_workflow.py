@@ -37,36 +37,35 @@ DESIGN_PROPERTIES = {
 class TestAEDTMotorWorkflow:
     """Class defining a simple AEDT motor related workflow."""
 
-    def test_00_installed_aedt_version(self, toolkit):
+    def test_00_installed_aedt_version(self, aedtapp):
         """Check installed aedt version."""
-        assert toolkit.installed_aedt_version() != []
+        assert aedtapp.installed_aedt_version() != []
 
-    def test_01_set_properties(self, toolkit):
+    def test_01_set_properties(self, aedtapp):
         """Set properties."""
-        assert toolkit.set_properties(DESIGN_PROPERTIES)
+        assert aedtapp.set_properties(DESIGN_PROPERTIES)
 
-    def test_02_get_properties(self, toolkit):
+    def test_02_get_properties(self, aedtapp):
         """Get properties."""
-        properties = toolkit.get_properties()
+        properties = aedtapp.get_properties()
         assert DESIGN_PROPERTIES["active_design"] == properties["active_design"]
         assert DESIGN_PROPERTIES["design_list"] == properties["design_list"]
 
-    def test_03_connect_aedt(self, toolkit):
+    def test_03_connect_aedt(self, aedtapp):
         """Connect aedt."""
-        assert toolkit.connect_aedt()
+        assert aedtapp.connect_aedt()
 
-    def test_04_aedt_sessions(self, toolkit):
+    def test_04_aedt_sessions(self, aedtapp):
         """Check aedt sessions."""
-        assert toolkit.aedt_sessions() != []
+        assert aedtapp.aedt_sessions() != []
 
-    def test_05_get_design_names(self, toolkit):
+    def test_05_get_design_names(self, aedtapp):
         """Check design names of the project."""
-        res = toolkit.get_design_names()
+        res = aedtapp.get_design_names()
         assert len(res) == 1
         assert res[0] == DESIGN_NAME
 
-    def test_06_segmentation(self, toolkit):
-        """Apply objects segmentation."""
+    def test_06_segmentation(self, aedtapp):
         properties = {
             "is_skewed": False,
             "magnets_material": "N30UH_65C",
@@ -77,17 +76,27 @@ class TestAEDTMotorWorkflow:
             "apply_mesh_sheets": False,
             # "mesh_sheets_number": 2,
         }
-        assert toolkit.set_properties(properties)
-        assert toolkit.segmentation()
+        assert aedtapp.set_properties(properties)
+        assert aedtapp.segmentation()
 
-    def test_07_apply_skew(self, toolkit):
+    def test_07_apply_skew(self, aedtapp_segmented):
         """Apply skew angle to rotor slices."""
-        assert toolkit.set_properties({"skew_angle": "2deg"})
-        assert toolkit.apply_skew()
+        properties = {
+            "is_skewed": False,
+            "magnets_material": "N30UH_65C",
+            "magnet_segments_per_slice": 2,
+            "rotor_material": "M250-35A_20C",
+            "stator_material": "M250-35A_20C",
+            "rotor_slices": 2,
+            "apply_mesh_sheets": False,
+            "skew_angle": "2deg",
+        }
+        assert aedtapp_segmented.set_properties(properties)
+        assert aedtapp_segmented.apply_skew()
 
-    def test_08_validate_and_analyze(self, toolkit):
-        assert toolkit.validate_and_analyze()
+    def test_08_validate_and_analyze(self, aedtapp_skewed):
+        assert aedtapp_skewed.validate_and_analyze()
 
-    def test_09_get_magnet_loss(self, toolkit):
-        magnet_loss = toolkit.get_magnet_loss()
-        assert isinstance(magnet_loss, dict)
+    def test_09_get_magnet_loss(self, aedtapp_analyzed):
+        magnet_loss = aedtapp_analyzed.get_magnet_loss()
+        assert isinstance(magnet_loss, str)
