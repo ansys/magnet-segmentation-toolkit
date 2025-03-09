@@ -52,7 +52,7 @@ PROJECT_NAME_SEGMENTED = "e9_eMobility_IPM_3D_segmented"
 PROJECT_NAME_SKEWED = "e9_eMobility_IPM_3D_skewed"
 PROJECT_NAME_ANALYZED = "e9_eMobility_IPM_3D_analyzed"
 DESIGN_NAME = "e9"
-AEDT_DEFAULT_VERSION = "2024.1"
+AEDT_DEFAULT_VERSION = "2025.1"
 
 config = {
     "desktop_version": AEDT_DEFAULT_VERSION,
