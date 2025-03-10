@@ -48,62 +48,13 @@ jobs:
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v8
-
-      - name: "Set up Python"
-        uses: ansys/actions/_setup-python@main
+      - name: Build documentation
+        uses: ansys/actions/doc-build@v8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          use-cache: false
-
-      - name: 'Create virtual env'
-        run: |
-          python -m venv .venv
-
-      - name: "Update pip"
-        run: |
-          . .venv\Scripts\Activate.ps1
-          python -m pip install pip -U
-          python -m pip install wheel setuptools -U
-          python -c "import sys; print(sys.executable)"
-
-      - name: Install magnet segmentation toolkit with doc dependencies
-        run: |
-          . .venv\Scripts\Activate.ps1
-          pip install .
-          pip install .[doc]
-          # pip install pypandoc_binary
-
-      - name: Retrieve magnet segmentation toolkit version
-        run: |
-          . .venv\Scripts\Activate.ps1
-          echo "Magnet Segmentation Toolkit version is: $(python -c "from ansys.aedt.toolkits.magnet_segmentation import __version__; print(); print(__version__)")"
-
-      - name: Build the documentation (HTML)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat html
-
-      - name: Build the documentation (PDF)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat pdf
-
-      - name: Upload HTML Documentation artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: documentation-html
-          path: doc/_build/html
-          retention-days: 1
-
-      - name: Upload PDF Documentation artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: documentation-pdf
-          path: doc/_build/latex/*.pdf
-          retention-days: 7
+          use-python-cache: false
+          add-pdf-html-docs-as-assets: true
+          check-links: true
 
   smoke-tests:
     name: "Build and Smoke tests"
@@ -111,7 +62,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest, ubuntu-latest ]
-        python-version: [ '3.8', '3.10' ]
+        python-version: [ '3.10' ]
     runs-on: ${{ matrix.os }}
     needs: [ code-style ]
     steps:
@@ -126,7 +77,7 @@ jobs:
     name: "Windows Tests AEDT"
     strategy:
       matrix:
-        python-version: [ '3.8', '3.10' ]
+        python-version: [ '3.10' ]
       fail-fast: false
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
     needs: [smoke-tests]
@@ -227,6 +178,8 @@ jobs:
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
   doc-deploy-stable:
     name: "Deploy stable documentation"
@@ -238,3 +191,5 @@ jobs:
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
