@@ -120,6 +120,7 @@ jobs:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
+          whitelist-license-check: ['jeepney']
 
   tests_windows_aedt:
     name: "Windows Tests AEDT"
