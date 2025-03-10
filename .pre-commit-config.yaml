@@ -52,9 +52,3 @@ repos:
 #   - id: pydocstyle
 #     additional_dependencies: [toml]
 #     exclude: "tests/"
-
-- repo: https://github.com/asottile/blacken-docs
-  rev: 1.16.0
-  hooks:
-  -   id: blacken-docs
-      additional_dependencies: [black==24.1.1]
