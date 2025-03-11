@@ -215,6 +215,7 @@ jobs:
         uses: ansys/actions/release-github@v6
         with:
           library-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   doc-deploy-dev:
     name: "Deploy development documentation"
