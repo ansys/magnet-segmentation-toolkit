@@ -238,7 +238,8 @@ class AEDTWorkflow(AEDTCommon):
                         elif isinstance(magnet_cs, FaceCoordinateSystem):
                             magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
-                    [obj.rotate(axis="Z", angle=rotor_skew_ang) for obj in obj_in_bb]
+                    for obj in obj_in_bb:
+                        obj.rotate(axis="Z", angle=rotor_skew_ang)
                     rotor_object.rotate(axis="Z", angle=rotor_skew_ang)
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
