@@ -77,6 +77,7 @@ class ApplicationWindow(QMainWindow, Frontend):
         # Settings menu
         self.settings_menu = SettingsMenu(self)
         self.settings_menu.setup()
+        self.ui.title_bar.clicked.connect(self.settings_menu_clicked)
 
         # Check backend connection
         success = self.check_connection()
@@ -132,8 +133,47 @@ class ApplicationWindow(QMainWindow, Frontend):
         self.help_menu.setup()
         self.ui.left_menu.clicked.connect(self.help_menu_clicked)
 
+        # Close column
+        self.ui.title_bar.clicked.connect(self.close_menu_clicked)
+        self.ui.left_menu.clicked.connect(self.progress_menu_clicked)
+        self.ui.left_column.clicked.connect(self.close_menu_clicked)
+
         # Home page as first page
         self.ui.set_page(self.ui.load_pages.home_page)
+
+    def settings_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+        is_right_visible = self.ui.is_right_column_visible()
+        is_left_visible = self.ui.is_left_column_visible()
+
+        if menu_name == "top_settings" and not is_right_visible:
+            self.ui.app.settings_menu.show_widgets()
+            if is_left_visible:
+                self.ui.toggle_left_column()
+                self.ui.left_menu.deselect_all()
+            self.ui.toggle_right_column()
+            self.ui.set_right_column_menu(title="Settings")
+
+    def close_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+        if menu_name != "top_settings" and self.ui.is_left_column_visible():
+            selected_menu.set_active(False)
+            self.ui.toggle_left_column()
+            self.ui.left_menu.deselect_all()
+        if menu_name == "top_settings" and self.ui.is_right_column_visible():
+            self.ui.toggle_right_column()
+
+    def progress_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+        self.ui.left_menu.select_only_one(selected_menu.objectName())
+        if menu_name == "progress_menu":
+            is_progress_visible = self.ui.is_progress_visible()
+            if is_progress_visible:
+                selected_menu.set_active(False)
+            self.ui.toggle_progress()
 
     def segmentation_menu_clicked(self):
         selected_menu = self.ui.get_selected_menu()
