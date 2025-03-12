@@ -20,8 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Data classes used to store data related to UI settings.
-"""
+"""Data classes used to store data related to UI settings."""
 import os
 import sys
 

@@ -48,8 +48,11 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
 # Constants
 PROJECT_NAME = "e9_eMobility_IPM_3D"
+PROJECT_NAME_SEGMENTED = "e9_eMobility_IPM_3D_segmented"
+PROJECT_NAME_SKEWED = "e9_eMobility_IPM_3D_skewed"
+PROJECT_NAME_ANALYZED = "e9_eMobility_IPM_3D_analyzed"
 DESIGN_NAME = "e9"
-AEDT_DEFAULT_VERSION = "2024.1"
+AEDT_DEFAULT_VERSION = "2025.1"
 
 config = {
     "desktop_version": AEDT_DEFAULT_VERSION,
@@ -72,10 +75,7 @@ settings.non_graphical = config["non_graphical"]
 
 
 @pytest.fixture(scope="class")
-def toolkit(common_temp_dir):
-    """Initialize the toolkit with a temporary AEDT file.
-    The AEDT file is created at the beginning of each test and removed after each test.
-    """
+def aedtapp(common_temp_dir):
     aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME}.aedt")
     toolkit = ToolkitBackend()
     new_properties = {
@@ -95,4 +95,72 @@ def toolkit(common_temp_dir):
     yield toolkit
 
     toolkit.release_aedt(True, True)
-    # shutil.rmtree(temp_folder, ignore_errors=True)
+
+
+@pytest.fixture(scope="class")
+def aedtapp_segmented(common_temp_dir):
+    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_SEGMENTED}.aedt")
+    toolkit = ToolkitBackend()
+    new_properties = {
+        "aedt_version": config["desktop_version"],
+        "non_graphical": config["non_graphical"],
+        "active_project": aedt_file,
+        "active_design": DESIGN_NAME,
+        "design_list": {PROJECT_NAME_SEGMENTED: [DESIGN_NAME]},
+        "use_grpc": config["use_grpc"],
+    }
+    toolkit.set_properties(new_properties)
+    toolkit.launch_aedt()
+    toolkit.open_project(aedt_file)
+    toolkit.connect_design("Maxwell3D")
+    toolkit.wait_to_be_idle()
+
+    yield toolkit
+
+    toolkit.release_aedt(True, True)
+
+
+@pytest.fixture(scope="class")
+def aedtapp_skewed(common_temp_dir):
+    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_SKEWED}.aedt")
+    toolkit = ToolkitBackend()
+    new_properties = {
+        "aedt_version": config["desktop_version"],
+        "non_graphical": config["non_graphical"],
+        "active_project": aedt_file,
+        "active_design": DESIGN_NAME,
+        "design_list": {PROJECT_NAME_SKEWED: [DESIGN_NAME]},
+        "use_grpc": config["use_grpc"],
+    }
+    toolkit.set_properties(new_properties)
+    toolkit.launch_aedt()
+    toolkit.open_project(aedt_file)
+    toolkit.connect_design("Maxwell3D")
+    toolkit.wait_to_be_idle()
+
+    yield toolkit
+
+    toolkit.release_aedt(True, True)
+
+
+@pytest.fixture(scope="class")
+def aedtapp_analyzed(common_temp_dir):
+    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_ANALYZED}.aedtz")
+    toolkit = ToolkitBackend()
+    new_properties = {
+        "aedt_version": config["desktop_version"],
+        "non_graphical": config["non_graphical"],
+        "active_project": aedt_file,
+        "active_design": DESIGN_NAME,
+        "design_list": {PROJECT_NAME_ANALYZED: [DESIGN_NAME]},
+        "use_grpc": config["use_grpc"],
+    }
+    toolkit.set_properties(new_properties)
+    toolkit.launch_aedt()
+    toolkit.open_project(aedt_file)
+    toolkit.connect_design("Maxwell3D")
+    toolkit.wait_to_be_idle()
+
+    yield toolkit
+
+    toolkit.release_aedt(True, True)

@@ -23,7 +23,7 @@
 from operator import attrgetter
 
 from ansys.aedt.core.application.variables import decompose_variable_value
-from ansys.aedt.core.generic.constants import unit_converter
+from ansys.aedt.core.generic.numbers import Quantity
 from ansys.aedt.core.modeler.cad.modeler import CoordinateSystem
 from ansys.aedt.core.modeler.cad.modeler import FaceCoordinateSystem
 from ansys.aedt.core.modeler.geometry_operators import GeometryOperators as go
@@ -222,6 +222,11 @@ class AEDTWorkflow(AEDTCommon):
                 if rotor_skew_ang != 0:
                     touching_objects = [self.aedtapp.modeler.objects_by_name[o] for o in rotor_object.touching_objects]
                     touching_magnets = list(set(touching_objects).intersection(magnets))
+                    obj_in_bb = self.aedtapp.modeler.objects_in_bounding_box(
+                        rotor_object.bounding_box, check_lines=False, check_sheets=False
+                    )
+                    if not touching_magnets:
+                        touching_magnets = list(set(obj_in_bb).intersection(magnets))
                     for obj in touching_magnets:
                         magnet_cs = [
                             cs
@@ -233,6 +238,7 @@ class AEDTWorkflow(AEDTCommon):
                         elif isinstance(magnet_cs, FaceCoordinateSystem):
                             magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
+                    for obj in obj_in_bb:
                         obj.rotate(axis="Z", angle=rotor_skew_ang)
                     rotor_object.rotate(axis="Z", angle=rotor_skew_ang)
 
@@ -289,14 +295,14 @@ class AEDTWorkflow(AEDTCommon):
         self.connect_design()
 
         try:
-            report_dict = {}
             self.aedtapp.post.create_report(expressions="SolidLoss", plot_name="Losses", primary_sweep_variable="Time")
             data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
-            avg = sum(data.data_magnitude()) / len(data.data_magnitude())
-            avg = unit_converter(avg, "Power", data.units_data["SolidLoss"], "W")
-            report_dict["SolidLoss"] = {"Value": round(avg, 4), "Unit": "W"}
+            avg = Quantity(
+                expression=sum(data.data_magnitude()) / len(data.data_magnitude()), unit=data.units_data["SolidLoss"]
+            )
+            avg_w = avg.to("W")
             self.release_aedt(False, False)
-            return report_dict
+            return str(avg_w)
         except:
             return False
 

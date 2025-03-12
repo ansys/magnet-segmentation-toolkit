@@ -115,7 +115,7 @@ cname = os.getenv("DOCUMENTATION_CNAME", "nocname.com")
 switcher_version = get_version_match(__version__)
 print(copyright)
 
-# Specify environment variable to build the doc without grpahical mode while
+# Specify environment variable to build the doc without graphical mode while
 # keeping examples graphical mode activated.
 os.environ["PYAEDT_NON_GRAPHICAL"] = "1"
 

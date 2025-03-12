@@ -1,5 +1,5 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
+requires = ["flit_core >=3.2,<3.11"]
 build-backend = "flit_core.buildapi"
 
 [project]
@@ -8,7 +8,7 @@ name = "ansys-magnet-segmentation-toolkit"
 dynamic = ["version"]
 description = "Toolkit used for automating the segmentation and skew of interior permanent magnet (IPM) and surface permanent magnet (SPM) motors using Ansys Electronics Desktop (AEDT)"
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"},
@@ -43,8 +43,9 @@ name = "ansys.aedt.toolkits.magnet_segmentation"
 
 [project.urls]
 Source = "https://github.com/ansys/magnet-segmentation-toolkit.git"
-Tracker = "https://github.com/ansys/magnet-segmentation-toolkit.git/issues"
-Homepage = "https://github.com/ansys/magnet-segmentation-toolkit.git"
+Issues = "https://github.com/ansys/magnet-segmentation-toolkit.git/issues"
+Documentation = "https://magnet.segmentation.toolkit.docs.pyansys.com/"
+Releases = "https://github.com/ansys/magnet-segmentation-toolkit/releases"
 
 
 [tool.black]
@@ -54,12 +55,14 @@ line-length = 120
 profile = "black"
 force_sort_within_sections = true
 line_length = 120
-default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["ansys.aedt"]
-relative_files = true
+source = ["ansys.aedt.toolkits.magnet_segmentation"]
+omit = [
+    # Omit UI testing
+    "src/ansys/aedt/toolkits/magnet_segmentation/ui/*",
+]
 
 [tool.coverage.report]
 show_missing = true
