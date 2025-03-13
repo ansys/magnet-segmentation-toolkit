@@ -24,4 +24,4 @@
 ToolkitBackend dedicated to magnet segmentation.
 """
 
-__version__ = "0.7.dev0"
+__version__ = "0.6.0"
