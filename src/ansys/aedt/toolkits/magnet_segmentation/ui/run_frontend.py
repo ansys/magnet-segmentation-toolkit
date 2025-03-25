@@ -112,6 +112,7 @@ class ApplicationWindow(QMainWindow, Frontend):
         # Home menu
         self.home_menu = HomeMenu(self)
         self.home_menu.setup()
+        self.ui.left_menu.clicked.connect(self.home_menu_clicked)
 
         # Segmentation menu
         self.segmentation_menu = SegmentationMenu(self)
@@ -140,6 +141,25 @@ class ApplicationWindow(QMainWindow, Frontend):
 
         # Home page as first page
         self.ui.set_page(self.ui.load_pages.home_page)
+
+    def home_menu_clicked(self):
+        selected_menu = self.ui.get_selected_menu()
+        menu_name = selected_menu.objectName()
+        self.ui.left_menu.select_only_one(selected_menu.objectName())
+        if menu_name == "home_menu":
+            selected_menu.set_active(True)
+            self.ui.set_page(self.ui.load_pages.home_page)
+
+            is_left_visible = self.ui.is_left_column_visible()
+
+            self.ui.set_left_column_menu(
+                menu=self.ui.left_column.menus.menu_home,
+                title="Home",
+                icon_path=self.ui.images_load.icon_path("icon_home.svg"),
+            )
+
+            if not is_left_visible:
+                self.ui.toggle_left_column()
 
     def settings_menu_clicked(self):
         selected_menu = self.ui.get_selected_menu()
