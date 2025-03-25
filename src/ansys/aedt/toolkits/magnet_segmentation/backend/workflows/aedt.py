@@ -296,7 +296,9 @@ class AEDTWorkflow(AEDTCommon):
 
         try:
             self.aedtapp.post.create_report(expressions="SolidLoss", plot_name="Losses", primary_sweep_variable="Time")
-            data = self.aedtapp.post.get_solution_data(expressions="SolidLoss", primary_sweep_variable="Time")
+            data = self.aedtapp.post.get_solution_data(
+                expressions="SolidLoss", primary_sweep_variable="Time", domain="Sweep"
+            )
             avg = Quantity(
                 expression=sum(data.data_magnitude()) / len(data.data_magnitude()), unit=data.units_data["SolidLoss"]
             )
