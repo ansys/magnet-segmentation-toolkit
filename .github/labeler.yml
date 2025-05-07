@@ -16,4 +16,3 @@ testing:
   - any-glob-to-any-file:
     - "tests/conftest.py"
     - "tests/tests_aedt/conftest.py"
-    - "tests/tests_aedt_common/conftest.py"
