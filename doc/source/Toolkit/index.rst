@@ -15,7 +15,7 @@ Segmentation Toolkit:
   .. warning::
       Both segmentation and skew of a 3D motor have requirements on the AEDT
       active project. Ensure that the active design meets these requirements:
-    
+
       - For segmentation, ``SymmetryFactor`` and ``HalfAxial`` design settings must be defined.
       - For skew, ``Shaft`` must be the name of the shaft.
 

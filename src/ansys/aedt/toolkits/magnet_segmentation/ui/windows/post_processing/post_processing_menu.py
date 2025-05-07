@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QLabel
 from PySide6.QtWidgets import QWidget
 from PySide6.QtWidgets import QPushButton
 
-from windows.post_processing.post_processing_page import Ui_PostProcessing
-from windows.post_processing.post_processing_column import Ui_LeftColumn
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.post_processing.post_processing_page import Ui_PostProcessing
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.post_processing.post_processing_column import Ui_LeftColumn
 
 # toolkit PySide6 Widgets
 from ansys.aedt.toolkits.common.ui.utils.widgets import PyLabel
