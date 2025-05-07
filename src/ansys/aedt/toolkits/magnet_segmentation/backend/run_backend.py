@@ -1,6 +1,7 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
-# SPDX-License-Identifier: MIT
+# -*- coding: utf-8 -*-
 #
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import sys
+
+# isort: off
+
+from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
+
 from ansys.aedt.toolkits.common.backend.multithreading_server import MultithreadingServer
 from ansys.aedt.toolkits.common.backend.rest_api import app
 from ansys.aedt.toolkits.common.backend.rest_api import jsonify
 from ansys.aedt.toolkits.common.backend.rest_api import logger
-from api import ToolkitBackend
+
+# from flask import request
+
+# isort: on
 
 toolkit_api = ToolkitBackend()
+
+if len(sys.argv) == 3:
+    toolkit_api.properties.url = sys.argv[1]
+    toolkit_api.properties.port = int(sys.argv[2])
 
 
 # ToolkitBackend entrypoints
@@ -104,7 +118,14 @@ def get_magnet_loss():
         return jsonify("Failure: Magnet loss calculation was unsuccessful."), 500
 
 
-if __name__ == "__main__":
+def run_backend(port=0):
+    """Run the server."""
     app.debug = toolkit_api.properties.debug
     server = MultithreadingServer()
-    server.run(host=toolkit_api.properties.url, port=toolkit_api.properties.port, app=app)
+    if port == 0:
+        port = toolkit_api.properties.port
+    server.run(host=toolkit_api.properties.url, port=port, app=app)
+
+
+if __name__ == "__main__":
+    run_backend()

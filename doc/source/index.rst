@@ -52,6 +52,7 @@ from the AEDT UI or launch it directly from a Python console.
    Toolkit/index
    examples/index
    Contributing
+   changelog
 
 Indices and tables
 ==================

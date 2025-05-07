@@ -3,8 +3,8 @@ from PySide6.QtWidgets import QLabel
 from PySide6.QtWidgets import QGridLayout
 from PySide6.QtWidgets import QWidget
 
-from windows.help.help_column import Ui_LeftColumn
-from windows.help.help_page import Ui_help
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.help.help_column import Ui_LeftColumn
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.help.help_page import Ui_help
 
 import tempfile
 from ansys.aedt.toolkits.magnet_segmentation import __version__
@@ -16,7 +16,7 @@ ABOUT_TEXT = f"""<h2>Magnet Segmentation Toolkit {__version__}</h2>
 <p>The graphical user interface (GUI) components are licensed under <a href='https://www.gnu.org/licenses/lgpl-3.0.en.html'>LGPL v3.0</a>.</p> 
 <p>Except for the GUI components, your use of this software is governed by the MIT License. In addition, this package allows you to access a software that is licensed under separate terms ("Separately Licensed Software"). If you choose to install such Separately Licensed Software, you acknowledge that you are responsible for complying with any associated terms and conditions.</p>
 <p>Copyright 2023 - 2024 ANSYS, Inc. All rights reserved.</p>
-<p>If you have any questions or issues, please open an issue in <a href='{ISSUE_TRACKER_URL}'>pyaedt-toolkits-antenna Issues</a> page.</p>
+<p>If you have any questions or issues, please open an issue in <a href='{ISSUE_TRACKER_URL}'>pyaedt-toolkits-magnet-segmentation Issues</a> page.</p>
 <p>Alternatively, you can contact us at <a href='mailto:pyansys.core@ansys.com'>pyansys.core@ansys.com</a>.</p>
 """
 

@@ -3,8 +3,8 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QLabel
 from PySide6.QtWidgets import QGridLayout
 from PySide6.QtWidgets import QWidget
-from windows.plot_design.plot_design_column import Ui_LeftColumn
-from windows.plot_design.plot_design_page import Ui_Plot_Design
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.plot_design.plot_design_column import Ui_LeftColumn
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.plot_design.plot_design_page import Ui_Plot_Design
 
 import tempfile
 from pyvistaqt import BackgroundPlotter
