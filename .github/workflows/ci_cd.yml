@@ -283,7 +283,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           whitelist-license-check: 'jeepney'
 
-  tests_windows_aedt:
+  tests_windows:
     name: "Windows Tests AEDT"
     strategy:
       matrix:
@@ -349,7 +349,7 @@ jobs:
   build-library:
     name: "Build library artifacts"
     runs-on: ubuntu-latest
-    needs: [ doc-build, tests_windows, tests_linux ]
+    needs: [ doc-build, tests_windows ]
     steps:
       - uses: ansys/actions/build-library@v9
         with:
