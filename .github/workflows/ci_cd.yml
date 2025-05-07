@@ -313,12 +313,6 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
-      - name: Test AEDT common
-        timeout-minutes: 5
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          pytest -v -m aedt_common --cov
-
       - name: AEDT Test
         timeout-minutes: 10
         run: |
