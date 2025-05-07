@@ -12,7 +12,7 @@ see these topics:
 
 #. On the **Settings** tab, specify settings for either creating an AEDT session or
    connecting to an existing AEDT session and click **Connect to AEDT**.
-   
+
    .. image:: ../_static/settings_tab.png
      :width: 800
      :alt: Settings tab

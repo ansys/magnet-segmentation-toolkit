@@ -1,8 +1,18 @@
 documentation:
-- doc/source/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - "doc/source/*"
+    - "README.md"
+
 maintenance:
-- .github/**/*
-- .flake8
-- pyproject.toml
-dependencies:
-- requirements/*
+- changed-files:
+  - any-glob-to-any-file:
+    - ".github/**/*"
+    - ".flake8"
+    - "pyproject.toml"
+
+testing:
+- changed-files:
+  - any-glob-to-any-file:
+    - "tests/conftest.py"
+    - "tests/tests_aedt/conftest.py"

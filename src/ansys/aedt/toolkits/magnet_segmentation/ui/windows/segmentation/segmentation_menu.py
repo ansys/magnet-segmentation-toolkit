@@ -9,8 +9,8 @@ from PySide6.QtWidgets import QWidget
 # toolkit PySide6 Widgets
 from ansys.aedt.toolkits.common.ui.utils.widgets import PyLabel
 from ansys.aedt.core.generic.general_methods import _to_boolean
-from windows.segmentation.segmentation_column import Ui_LeftColumn
-from windows.segmentation.segmentation_page import Ui_Segmentation
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.segmentation.segmentation_column import Ui_LeftColumn
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.segmentation.segmentation_page import Ui_Segmentation
 
 
 class SegmentationThread(QThread):
