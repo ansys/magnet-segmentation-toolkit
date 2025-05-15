@@ -155,7 +155,8 @@ class AEDTWorkflow(AEDTCommon):
             [face.delete() for face in magnet_segments[magnet.name]]
             self.aedtapp.assign_insulating(faces, "{}_segments".format(magnet.name))
             if isinstance(cs, CoordinateSystem):
-                self._update_cs(cs)
+                # self._update_cs(cs)
+                cs.change_cs_mode(2)
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
         segments = self.aedtapp.modeler.get_objects_in_group("Insulating")
@@ -221,14 +222,16 @@ class AEDTWorkflow(AEDTCommon):
             # rotate objects and apply skew
             for rotor_object in rotor_objects:
                 if rotor_skew_ang != 0:
-                    touching_objects = [self.aedtapp.modeler.objects_by_name[o] for o in rotor_object.touching_objects]
-                    touching_magnets = list(set(touching_objects).intersection(magnets))
+                    # IPM
+                    # touching_objects = [self.aedtapp.modeler.objects_by_name[o] for o in
+                    # rotor_object.touching_objects]
+                    # touching_magnets = list(set(touching_objects).intersection(magnets))
                     obj_in_bb = self.aedtapp.modeler.objects_in_bounding_box(
                         rotor_object.bounding_box, check_lines=False, check_sheets=False
                     )
-                    if not touching_magnets:
-                        touching_magnets = list(set(obj_in_bb).intersection(magnets))
-                    for obj in touching_magnets:
+                    # if not touching_magnets:
+                    magnets_in_rotor_object = list(set(obj_in_bb).intersection(magnets))
+                    for obj in magnets_in_rotor_object:
                         magnet_cs = [
                             cs
                             for cs in self.aedtapp.modeler.coordinate_systems
@@ -241,28 +244,39 @@ class AEDTWorkflow(AEDTCommon):
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
                     for obj in obj_in_bb:
                         obj.rotate(axis="Z", angle=rotor_skew_ang)
-                    rotor_object.rotate(axis="Z", angle=rotor_skew_ang)
+                    # rotor_object.rotate(axis="Z", angle=rotor_skew_ang)
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
                     if independent and dependent:
-                        split = self.aedtapp.modeler.split(assignment=rotor_object, sides="Both", tool=indep.id)
+                        split = self.aedtapp.modeler.split(assignment=obj_in_bb, sides="Both", tool=indep.id)
                         if [s for s in split if s not in self.aedtapp.modeler.objects_by_name]:
                             self.aedtapp.odesign.Undo()
-                        split = self.aedtapp.modeler.split(assignment=rotor_object, sides="Both", tool=dep.id)
-                        split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split]
+                        split_objects = self.aedtapp.modeler.split(assignment=obj_in_bb, sides="Both", tool=dep.id)
+                        split_objects = split_objects[1:]
+                        split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split_objects]
                         # Get object with minimum volume
-                        min_vol_object = min(split_objects, key=lambda x: x.volume).volume
+                        # min_vol_object = min(split_objects, key=lambda x: x.volume).volume
                         # Get object whose volume is equal to min_vol_object
-                        obj_rotate = [obj for obj in split_objects if round(obj.volume, 4) == round(min_vol_object, 4)][
-                            0
-                        ]
+                        # obj_rotate = [obj for obj in split_objects if round(obj.volume, 4) ==
+                        # round(min_vol_object, 4)][
+                        #     0
+                        # ]
                         # duplicate around z axis (-360/symmetry_multiplier)
                         self.aedtapp.modeler.rotate(
-                            obj_rotate, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
+                            split_objects, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
                         )
-                        self.aedtapp.modeler.unite([split_objects[0], split_objects[1]])
+                        self.aedtapp.modeler.unite([rotor_object, split_objects[0]])
                 rotor_skew_ang += decompose_variable_value(self.properties.skew_angle)[0]
 
+            # Delete and reassign the band to include all objects that have been moved in skew
+            band = [bound for bound in self.aedtapp.boundaries if bound.type == "Band"]
+            band_name = band[0].properties["Assignment"]
+            band_angular_velocity = band[0].props["Angular Velocity"]
+            band_init_pos = band[0].props["InitPos"]
+            self.aedtapp.omodelsetup.DeleteMotionSetup([band[0].name])
+            self.aedtapp.assign_rotate_motion(
+                self.aedtapp.modeler[band_name], angular_velocity=band_angular_velocity, start_position=band_init_pos
+            )
             self.release_aedt(False, False)
             return True
         except:
