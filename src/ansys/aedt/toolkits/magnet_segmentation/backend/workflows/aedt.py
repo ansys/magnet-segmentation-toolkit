@@ -27,7 +27,6 @@ from ansys.aedt.core.application.variables import decompose_variable_value
 from ansys.aedt.core.generic.numbers import Quantity
 from ansys.aedt.core.modeler.cad.modeler import CoordinateSystem
 from ansys.aedt.core.modeler.cad.modeler import FaceCoordinateSystem
-from ansys.aedt.core.modeler.geometry_operators import GeometryOperators as go
 from ansys.aedt.toolkits.common.backend.api import AEDTCommon
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties
@@ -223,14 +222,17 @@ class AEDTWorkflow(AEDTCommon):
             for rotor_object in rotor_objects:
                 if rotor_skew_ang != 0:
                     # IPM
-                    # touching_objects = [self.aedtapp.modeler.objects_by_name[o] for o in
-                    # rotor_object.touching_objects]
-                    # touching_magnets = list(set(touching_objects).intersection(magnets))
                     obj_in_bb = self.aedtapp.modeler.objects_in_bounding_box(
                         rotor_object.bounding_box, check_lines=False, check_sheets=False
                     )
-                    # if not touching_magnets:
                     magnets_in_rotor_object = list(set(obj_in_bb).intersection(magnets))
+
+                    # SPM
+                    # if magnets_in_rotor_object is empty it means that the magnets are not in the bounding box
+                    # of the rotor object -> SPM.
+                    if not magnets_in_rotor_object:
+                        magnets_in_rotor_object = self._get_magnets_per_slice(magnets, rotor_object)
+
                     for obj in magnets_in_rotor_object:
                         magnet_cs = [
                             cs
@@ -244,7 +246,6 @@ class AEDTWorkflow(AEDTCommon):
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
                     for obj in obj_in_bb:
                         obj.rotate(axis="Z", angle=rotor_skew_ang)
-                    # rotor_object.rotate(axis="Z", angle=rotor_skew_ang)
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
                     if independent and dependent:
@@ -254,14 +255,6 @@ class AEDTWorkflow(AEDTCommon):
                         split_objects = self.aedtapp.modeler.split(assignment=obj_in_bb, sides="Both", tool=dep.id)
                         split_objects = split_objects[1:]
                         split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split_objects]
-                        # Get object with minimum volume
-                        # min_vol_object = min(split_objects, key=lambda x: x.volume).volume
-                        # Get object whose volume is equal to min_vol_object
-                        # obj_rotate = [obj for obj in split_objects if round(obj.volume, 4) ==
-                        # round(min_vol_object, 4)][
-                        #     0
-                        # ]
-                        # duplicate around z axis (-360/symmetry_multiplier)
                         self.aedtapp.modeler.rotate(
                             split_objects, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
                         )
@@ -346,42 +339,6 @@ class AEDTWorkflow(AEDTCommon):
                 rotor_pockets.append(obj)
         return rotor_pockets
 
-    def _update_cs(self, cs):
-        """Update the coordinate system to Euler ZYZ mode.
-
-        Parameters
-        ----------
-        cs : :class:`ansys.aedt.core.modeler.Modeler.CoordinateSystem`
-            Coordinate system.
-
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed.
-        """
-        try:
-            x_pointing = [
-                decompose_variable_value(cs.props["XAxisXvec"])[0],
-                decompose_variable_value(cs.props["XAxisYvec"])[0],
-                decompose_variable_value(cs.props["XAxisZvec"])[0],
-            ]
-            y_pointing = [
-                decompose_variable_value(cs.props["YAxisXvec"])[0],
-                decompose_variable_value(cs.props["YAxisYvec"])[0],
-                decompose_variable_value(cs.props["YAxisZvec"])[0],
-            ]
-            x, y, z = go.pointing_to_axis(x_pointing, y_pointing)
-            phi, theta, psi = go.axis_to_euler_zyz(x, y, z)
-            magnet_angle = go.rad2deg(phi)
-            cs.change_cs_mode(2)
-            cs.props["Phi"] = "{}deg".format(str(magnet_angle))
-            cs.props["Psi"] = "90deg"
-            cs.props["Theta"] = "0deg"
-            cs.update()
-            return True
-        except:
-            return False
-
     # @thread.launch_thread
     def _get_project_materials(self):
         """Get the project materials."""
@@ -404,3 +361,18 @@ class AEDTWorkflow(AEDTCommon):
         self.release_aedt(False, False)
 
         return setup_names
+
+    def _get_magnets_per_slice(self, magnets, rotor_slice):
+        """Get the magnets that touch rotor slice."""
+        self.connect_design()
+
+        top_face_z_id = rotor_slice.top_face_z.id
+        bottom_face_z_id = rotor_slice.bottom_face_z.id
+        face = [face for face in rotor_slice.faces if face.id not in [top_face_z_id, bottom_face_z_id]][0]
+        magnets_in_slice = []
+        for magnet in magnets:
+            magnet_face = max(magnet.faces, key=lambda f: f.area)
+            if magnet_face.center[2] == face.center[2]:
+                magnets_in_slice.append(magnet)
+
+        return magnets_in_slice
