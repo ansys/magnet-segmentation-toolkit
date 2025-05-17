@@ -152,6 +152,7 @@ class AEDTWorkflow(AEDTCommon):
                 obj = self.aedtapp.modeler.create_object_from_face(face.top_face_z)
                 faces.append(obj.top_face_z)
             [face.delete() for face in magnet_segments[magnet.name]]
+            faces.extend([magnet.top_face_z, magnet.bottom_face_z])
             self.aedtapp.assign_insulating(faces, "{}_segments".format(magnet.name))
             if isinstance(cs, CoordinateSystem):
                 # self._update_cs(cs)
