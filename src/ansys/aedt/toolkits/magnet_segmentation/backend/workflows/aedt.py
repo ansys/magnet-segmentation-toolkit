@@ -137,22 +137,23 @@ class AEDTWorkflow(AEDTCommon):
             cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
             magnet.part_coordinate_system = cs.name
             self.aedtapp.modeler.set_working_coordinate_system("Global")
-            objects_segmentation = self.aedtapp.modeler.objects_segmentation(
-                magnet.id,
-                segments=self.properties.magnet_segments_per_slice,
-                apply_mesh_sheets=self.properties.apply_mesh_sheets,
-                mesh_sheets=self.properties.mesh_sheets_number,
-            )
-            if self.properties.apply_mesh_sheets:
-                magnet_segments = objects_segmentation[0]
-                mesh_sheets.extend([s.name for s in objects_segmentation[1][magnet.name]])
-            else:
-                magnet_segments = objects_segmentation
-            # Apply insulation
-            for face in magnet_segments[magnet.name]:
-                obj = self.aedtapp.modeler.create_object_from_face(face.top_face_z)
-                faces.append(obj.top_face_z)
-            [face.delete() for face in magnet_segments[magnet.name]]
+            if self.properties.magnet_segments_per_slice > 1 or not self.properties.magnet_segments_per_slice:
+                objects_segmentation = self.aedtapp.modeler.objects_segmentation(
+                    magnet.id,
+                    segments=self.properties.magnet_segments_per_slice,
+                    apply_mesh_sheets=self.properties.apply_mesh_sheets,
+                    mesh_sheets=self.properties.mesh_sheets_number,
+                )
+                if self.properties.apply_mesh_sheets:
+                    magnet_segments = objects_segmentation[0]
+                    mesh_sheets.extend([s.name for s in objects_segmentation[1][magnet.name]])
+                else:
+                    magnet_segments = objects_segmentation
+                # Apply insulation
+                for face in magnet_segments[magnet.name]:
+                    obj = self.aedtapp.modeler.create_object_from_face(face.top_face_z)
+                    faces.append(obj.top_face_z)
+                [face.delete() for face in magnet_segments[magnet.name]]
             faces.extend([magnet.top_face_z, magnet.bottom_face_z])
             self.aedtapp.assign_insulating(faces, "{}_segments".format(magnet.name))
             if isinstance(cs, CoordinateSystem):
@@ -162,7 +163,8 @@ class AEDTWorkflow(AEDTCommon):
         segments = self.aedtapp.modeler.get_objects_in_group("Insulating")
 
         self.properties.objects.extend([m.name for m in magnets])
-        self.properties.objects.extend(segments)
+        if segments:
+            self.properties.objects.extend(segments)
         self.set_properties(self.properties.model_dump())
 
         self.aedtapp.save_project()
@@ -226,12 +228,14 @@ class AEDTWorkflow(AEDTCommon):
                         rotor_object.bounding_box, check_lines=False, check_sheets=False
                     )
                     magnets_in_rotor_object = list(set(obj_in_bb).intersection(magnets))
+                    objects_to_rotate = obj_in_bb
 
                     # SPM
                     # if magnets_in_rotor_object is empty it means that the magnets are not in the bounding box
                     # of the rotor object -> SPM.
                     if not magnets_in_rotor_object:
                         magnets_in_rotor_object = self._get_magnets_per_slice(magnets, rotor_object)
+                        objects_to_rotate = magnets_in_rotor_object
 
                     for obj in magnets_in_rotor_object:
                         magnet_cs = [
@@ -244,7 +248,7 @@ class AEDTWorkflow(AEDTCommon):
                         elif isinstance(magnet_cs, FaceCoordinateSystem):
                             magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
                         self.aedtapp.modeler.set_working_coordinate_system("Global")
-                    for obj in obj_in_bb:
+                    for obj in objects_to_rotate:
                         obj.rotate(axis="Z", angle=rotor_skew_ang)
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
@@ -290,6 +294,7 @@ class AEDTWorkflow(AEDTCommon):
             self.release_aedt(False, False)
             return True
         else:
+            # change_validation_settings ?
             return False
 
     def get_magnet_loss(self):
@@ -364,8 +369,6 @@ class AEDTWorkflow(AEDTCommon):
 
     def _get_magnets_per_slice(self, magnets, rotor_slice):
         """Get the magnets that touch rotor slice."""
-        self.connect_design()
-
         top_face_z_id = rotor_slice.top_face_z.id
         bottom_face_z_id = rotor_slice.bottom_face_z.id
         face = [face for face in rotor_slice.faces if face.id not in [top_face_z_id, bottom_face_z_id]][0]
