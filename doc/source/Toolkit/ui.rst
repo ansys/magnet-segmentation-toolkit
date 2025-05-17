@@ -38,7 +38,7 @@ see these topics:
      :alt: Post-processing tab
 
 #. Click on **Get Magnet Loss** to automatically compute Magnet Loss in AEDT.
-   The report will be automatically generated in AEDT.
+   The report is automatically generated in AEDT.
 
 #. Click on the **Design menu** to visualize within the toolkit the segmented magnets.
 
