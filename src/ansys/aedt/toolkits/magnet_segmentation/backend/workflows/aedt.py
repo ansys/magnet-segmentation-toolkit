@@ -148,6 +148,7 @@ class AEDTWorkflow(AEDTCommon):
                 mesh_sheets.extend([s.name for s in objects_segmentation[1][magnet.name]])
             else:
                 magnet_segments = objects_segmentation
+            # Apply insulation
             for face in magnet_segments[magnet.name]:
                 obj = self.aedtapp.modeler.create_object_from_face(face.top_face_z)
                 faces.append(obj.top_face_z)
@@ -155,7 +156,6 @@ class AEDTWorkflow(AEDTCommon):
             faces.extend([magnet.top_face_z, magnet.bottom_face_z])
             self.aedtapp.assign_insulating(faces, "{}_segments".format(magnet.name))
             if isinstance(cs, CoordinateSystem):
-                # self._update_cs(cs)
                 cs.change_cs_mode(2)
 
         magnets = self.aedtapp.modeler.get_objects_by_material(self.properties.magnets_material)
@@ -163,7 +163,6 @@ class AEDTWorkflow(AEDTCommon):
 
         self.properties.objects.extend([m.name for m in magnets])
         self.properties.objects.extend(segments)
-        # self.properties.objects.extend(mesh_sheets)
         self.set_properties(self.properties.model_dump())
 
         self.aedtapp.save_project()
