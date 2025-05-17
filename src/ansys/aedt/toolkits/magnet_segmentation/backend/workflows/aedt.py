@@ -289,13 +289,13 @@ class AEDTWorkflow(AEDTCommon):
         """
         self.connect_design()
 
+        if not self.aedtapp.validate_simple():
+            self.aedtapp.change_validation_settings(ignore_unclassified=True, skip_intersections=True)
         if self.aedtapp.validate_simple():
             self.aedtapp.analyze_setup(self.properties.setup_to_analyze, use_auto_settings=False)
             self.release_aedt(False, False)
             return True
-        else:
-            # change_validation_settings ?
-            return False
+        return False
 
     def get_magnet_loss(self):
         """Get magnet loss.
