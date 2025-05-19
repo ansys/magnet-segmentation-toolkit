@@ -28,6 +28,8 @@ import sys
 from ansys.aedt.toolkits.common.ui.models import UIProperties
 from ansys.aedt.toolkits.common.ui.models import general_settings
 
+import ansys.aedt.toolkits.magnet_segmentation
+
 if sys.version_info >= (3, 11):
     import tomllib
 else:
@@ -39,8 +41,18 @@ class Properties(UIProperties, validate_assignment=True):
 
 
 frontend_properties = {}
-if os.path.exists(os.path.join(os.path.dirname(__file__), "frontend_properties.toml")):
-    with open(os.path.join(os.path.dirname(__file__), "frontend_properties.toml"), mode="rb") as file_handler:
+
+installation_folder = os.path.dirname(ansys.aedt.toolkits.magnet_segmentation.__file__)
+
+if "PYAEDT_TOOLKIT_CONFIG_DIR" in os.environ:
+    local_dir = os.path.abspath(os.environ["PYAEDT_TOOLKIT_CONFIG_DIR"])
+    frontend_config = os.path.join(local_dir, "frontend_properties.toml")
+    if os.path.isfile(frontend_config):
+        with open(frontend_config, mode="rb") as file_handler:
+            frontend_properties = tomllib.load(file_handler)
+
+if not frontend_properties and os.path.isfile(os.path.join(installation_folder, "ui/frontend_properties.toml")):
+    with open(os.path.join(installation_folder, "ui/frontend_properties.toml"), mode="rb") as file_handler:
         frontend_properties = tomllib.load(file_handler)
 
 toolkit_property = {}
