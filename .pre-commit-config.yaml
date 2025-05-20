@@ -11,6 +11,8 @@ exclude: |
         tests/input_data/.* |
         examples/input_files/.* |
         src/ansys/aedt/toolkits/magnet_segmentation/ui/windows/.*
+        doc/source/conf.py |
+        README.rst
     )
 
 repos:
