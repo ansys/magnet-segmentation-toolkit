@@ -240,7 +240,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
            name: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ matrix.os }}
-           path: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ env.OS_VERSION_PROCESSED }}_${{ env.APPLICATION_VERSION }}.zip
+           path: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ env.OS_VERSION_PROCESSED }}.zip
 
   doc-style:
     name: "Documentation style"
