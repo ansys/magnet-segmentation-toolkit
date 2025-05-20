@@ -332,7 +332,9 @@ jobs:
         if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
         uses: codecov/codecov-action@v5
         with:
-          file: .cov/total.xml
+          name: windows-codecov-tests
+          files: .cov/windows-coverage.xml
+          flags: windows_tests
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
