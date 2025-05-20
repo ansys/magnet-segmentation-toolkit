@@ -8,7 +8,7 @@ ci:
 exclude: |
     (?x)(
         tests/input_data/.* |
-        src/ansys/aedt/toolkits/magnet_segmentation/ui/windows/.*
+        src/ansys/aedt/toolkits/magnet_segmentation/ui/windows/.* |
         doc/source/conf.py |
         README.rst
     )
