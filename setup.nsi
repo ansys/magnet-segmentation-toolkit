@@ -4,7 +4,7 @@
 !define LICENSE_FILE "LICENSE"
 !define PRODUCT_NAME "Magnet Segmentation Toolkit"
 !define /file PRODUCT_VERSION "installer\VERSION"
-!define OUTFILE_NAME "Magnet-Segmentation-Toolkit-v${PRODUCT_VERSION}.exe"
+!define OUTFILE_NAME "Magnet-Segmentation-Toolkit-Installer-windows.exe"
 
 Name "${PRODUCT_NAME}"
 OutFile "dist\${OUTFILE_NAME}"

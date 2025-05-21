@@ -198,6 +198,23 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 
+# Removing check on repo lines of code as using line numbers as anchor is not working
+linkcheck_ignore = [
+    "https://github.com/ansys/magnet-segmentation-toolkit/blob/main/src/ansys/aedt/toolkits/magnet_segmentation/ui/"
+    "actions.py#L165",
+    "https://github.com/ansys/magnet-segmentation-toolkit/blob/main/src/ansys/aedt/toolkits/magnet_segmentation/ui/"
+    "actions.py#L143",
+]
+
+# Add replace in RST files
+github_releases_dl_url = "https://github.com/ansys/magnet-segmentation-toolkit/releases/download"
+installer = "Magnet-Segmentation-Toolkit-Installer"
+rst_epilog = f"""
+.. |github_release_url| replace:: https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v{release}
+.. |github_windows_installer| replace:: {github_releases_dl_url}/v{release}/{installer}.exe
+.. |github_ubuntu_22_installer| replace:: {github_releases_dl_url}/v{release}/{installer}-ubuntu_22_04.zip
+.. |github_ubuntu_24_installer| replace:: {github_releases_dl_url}/v{release}/{installer}-ubuntu_24_04.zip
+"""
 
 # static path
 html_static_path = ["_static"]

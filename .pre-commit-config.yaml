@@ -7,10 +7,10 @@ ci:
 
 exclude: |
     (?x)(
-        src/ansys/aedt/toolkits/magnet_segmentation/ui/common/frontend_ui.py |
         tests/input_data/.* |
-        examples/input_files/.* |
-        src/ansys/aedt/toolkits/magnet_segmentation/ui/windows/.*
+        src/ansys/aedt/toolkits/magnet_segmentation/ui/windows/.* |
+        doc/source/conf.py |
+        README.rst
     )
 
 repos:
@@ -72,7 +72,7 @@ repos:
   rev: v0.4.4
   hooks:
     - id: add-license-headers
-      files: '(src|examples|tests|installer)/.*\.(py)'
+      files: '(src|tests|installer)/.*\.(py)'
       args:
       - --custom_template=mit_license.jinja2
       - --start_year=2023

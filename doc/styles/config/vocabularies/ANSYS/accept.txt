@@ -21,3 +21,13 @@ rst
 UI
 ui
 url
+html
+[Mm]akefile
+Powershell
+pytest
+[Pp]yinstaller
+[Pp]ytools
+run_toolkit
+uv
+venv
+walkthrough

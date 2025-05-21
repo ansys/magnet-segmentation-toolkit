@@ -24,6 +24,8 @@
 import os
 import sys
 
+from ansys.aedt.toolkits.magnet_segmentation import __version__
+
 # isort: off
 
 # Default user interface properties
@@ -68,6 +70,8 @@ properties.high_resolution = (
 )
 if properties.high_resolution:
     os.environ["QT_SCALE_FACTOR"] = "2"
+
+properties.version = __version__
 
 
 class ApplicationWindow(QMainWindow, Frontend):
