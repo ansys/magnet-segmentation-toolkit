@@ -137,7 +137,7 @@ class AEDTWorkflow(AEDTCommon):
             cs = self.aedtapp.modeler.duplicate_coordinate_system_to_global(magnet.part_coordinate_system)
             magnet.part_coordinate_system = cs.name
             self.aedtapp.modeler.set_working_coordinate_system("Global")
-            if self.properties.magnet_segments_per_slice > 1 or not self.properties.magnet_segments_per_slice:
+            if self.properties.magnet_segments_per_slice > 1:
                 objects_segmentation = self.aedtapp.modeler.objects_segmentation(
                     magnet.id,
                     segments=self.properties.magnet_segments_per_slice,
@@ -237,7 +237,13 @@ class AEDTWorkflow(AEDTCommon):
                         magnets_in_rotor_object = self._get_magnets_per_slice(magnets, rotor_object)
                         objects_to_rotate = magnets_in_rotor_object
 
+                    sheets_to_rotate = []
                     for obj in magnets_in_rotor_object:
+                        insulation = [
+                            sheet for sheet in self.aedtapp.modeler.sheet_objects if obj.name in sheet.touching_objects
+                        ]
+                        if insulation:
+                            sheets_to_rotate.extend(insulation)
                         magnet_cs = [
                             cs
                             for cs in self.aedtapp.modeler.coordinate_systems
@@ -247,8 +253,8 @@ class AEDTWorkflow(AEDTCommon):
                             magnet_cs.props["Phi"] = "{}+{}deg".format(magnet_cs.props["Phi"], rotor_skew_ang)
                         elif isinstance(magnet_cs, FaceCoordinateSystem):
                             magnet_cs.props["ZRotationAngle"] = "{}deg".format(rotor_skew_ang)
-                        self.aedtapp.modeler.set_working_coordinate_system("Global")
-                    for obj in objects_to_rotate:
+                    self.aedtapp.modeler.set_working_coordinate_system("Global")
+                    for obj in objects_to_rotate + sheets_to_rotate:
                         obj.rotate(axis="Z", angle=rotor_skew_ang)
 
                     # It means that indep. and dep. boundaries exist -> symmetry factor != 1
@@ -257,12 +263,27 @@ class AEDTWorkflow(AEDTCommon):
                         if [s for s in split if s not in self.aedtapp.modeler.objects_by_name]:
                             self.aedtapp.odesign.Undo()
                         split_objects = self.aedtapp.modeler.split(assignment=obj_in_bb, sides="Both", tool=dep.id)
-                        split_objects = split_objects[1:]
-                        split_objects = [self.aedtapp.modeler.objects_by_name[obj] for obj in split_objects]
+                        split_objects_with_rotor = [
+                            self.aedtapp.modeler.objects_by_name[obj] for obj in split_objects[1:]
+                        ]
+                        if split_objects_with_rotor[1:]:
+                            split_objects_without_rotor = split_objects_with_rotor[1:]
+                            insulation_faces = []
+                            # remove rotor object from split objects to assign insulation
+                            for obj in split_objects_without_rotor:
+                                # re-apply insulation only to top and bottom faces of the split magnet
+                                # this does not re-apply insulation on magnet segments
+                                # because it is difficult to detect which sheets are magnet segments or mesh sheets
+                                if obj in self.aedtapp.modeler.sheet_objects:
+                                    # insulation_faces.append(obj.faces[0])
+                                    pass
+                                else:
+                                    insulation_faces.extend([obj.top_face_z, obj.bottom_face_z])
+                            self.aedtapp.assign_insulating(insulation_faces)
                         self.aedtapp.modeler.rotate(
-                            split_objects, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
+                            split_objects_with_rotor, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
                         )
-                        self.aedtapp.modeler.unite([rotor_object, split_objects[0]])
+                        self.aedtapp.modeler.unite([rotor_object, split_objects_with_rotor[0]])
                 rotor_skew_ang += decompose_variable_value(self.properties.skew_angle)[0]
 
             # Delete and reassign the band to include all objects that have been moved in skew
@@ -270,9 +291,13 @@ class AEDTWorkflow(AEDTCommon):
             band_name = band[0].properties["Assignment"]
             band_angular_velocity = band[0].props["Angular Velocity"]
             band_init_pos = band[0].props["InitPos"]
+            rotate_limit = band[0].props["HasRotateLimit"]
             self.aedtapp.omodelsetup.DeleteMotionSetup([band[0].name])
             self.aedtapp.assign_rotate_motion(
-                self.aedtapp.modeler[band_name], angular_velocity=band_angular_velocity, start_position=band_init_pos
+                self.aedtapp.modeler[band_name],
+                angular_velocity=band_angular_velocity,
+                start_position=band_init_pos,
+                has_rotation_limits=rotate_limit,
             )
             self.release_aedt(False, False)
             return True
