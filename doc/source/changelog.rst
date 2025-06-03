@@ -9,6 +9,44 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.8.0 <https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v0.8.0>`_ - June 03, 2025
+===================================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - improve skew
+          - `#251 <https://github.com/ansysmagnet-segmentation-toolkit/pull/251>`_
+
+        * - rotate insulation sheet + update cicd pypi
+          - `#258 <https://github.com/ansysmagnet-segmentation-toolkit/pull/258>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - update CHANGELOG for v0.7.0
+          - `#249 <https://github.com/ansysmagnet-segmentation-toolkit/pull/249>`_
+
+        * - Update v0.8.dev0
+          - `#250 <https://github.com/ansysmagnet-segmentation-toolkit/pull/250>`_
+
+        * - update cicd and add linux tests
+          - `#254 <https://github.com/ansysmagnet-segmentation-toolkit/pull/254>`_
+
+        * - add codecov.yml
+          - `#256 <https://github.com/ansysmagnet-segmentation-toolkit/pull/256>`_
+
+
 `0.7.0 <https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v0.7.0>`_ - May 08, 2025
 ==================================================================================================
 
