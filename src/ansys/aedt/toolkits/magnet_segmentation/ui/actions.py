@@ -239,20 +239,17 @@ class Frontend(FrontendGeneric):
         except requests.exceptions.RequestException:
             logger.error("Magnet loss call failed.")
 
-    def get_materials(self):
+    def get_materials_action(self):
         try:
-            thread_response = self.wait_thread(60)
-            if thread_response:
-                response = requests.get(self.url + "/project_materials")
-                if response.ok:
-                    msg = "Load materials call successful."
-                    logger.info(msg)
-                    return response.json()
-                else:
-                    msg = "Load materials call failed."
-                    logger.error(msg)
-                    return False
-            # else toolkit busy
+            response = requests.get(self.url + "/project_materials")
+            if response.ok:
+                msg = "Load materials call successful."
+                logger.info(msg)
+                return response.json()
+            else:
+                msg = "Load materials call failed."
+                logger.error(msg)
+                return False
 
         except requests.exceptions.RequestException:
             logger.error("Load materials call failed.")
