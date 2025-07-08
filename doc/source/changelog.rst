@@ -9,6 +9,32 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.8.2 <https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v0.8.2>`_ - July 08, 2025
+===================================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Populate props
+          - `#268 <https://github.com/ansysmagnet-segmentation-toolkit/pull/268>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update changelog for v0.8.1
+          - `#265 <https://github.com/ansysmagnet-segmentation-toolkit/pull/265>`_
+
+
 `0.8.1 <https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v0.8.1>`_ - June 13, 2025
 ===================================================================================================
 
