@@ -21,6 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from pathlib import Path
+import sys
+
+# isort: off
+sys.path.append(str(Path(__file__).parent))
+
+# isort: on
+
 from ansys.aedt.toolkits.magnet_segmentation.backend.workflows.aedt import AEDTWorkflow
 
 
@@ -38,5 +46,4 @@ class ToolkitBackend(AEDTWorkflow):
     """
 
     def __init__(self):
-        # AEDTCommon.__init__(self, properties)
-        super().__init__()
+        AEDTWorkflow.__init__(self)
