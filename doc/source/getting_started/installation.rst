@@ -12,9 +12,9 @@ The following installers are available for different operating systems:
    :header-rows: 1
    :widths: 60 40
 
-   * - `Installer Link <|https://github.com/ansys/magnet-segmentation-toolkit/releases|>`_
+   * - `Installer Link <|github_release_url|>`_
      - Operating System
-   * - `Download <|https://github.com/ansys/magnet-segmentation-toolkit/releases/download/v0.8.2/Magnet-Segmentation-Toolkit-Installer-windows.exe|>`_
+   * - `Download <|github_windows_installer|>`_
      - Windows
    * - `Download <|github_ubuntu_22_installer|>`_
      - Ubuntu 22.04
