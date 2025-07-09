@@ -328,7 +328,7 @@ class SegmentationMenu(object):
         backend_properties = self.ui.app.get_properties()
         materials = []
         if backend_properties.get("active_project") and backend_properties.get("active_design"):
-            materials = self.main_window.get_materials()
+            materials = self.main_window.get_materials_action()
         if materials:
             for mat in materials:
                 self.magnets_material.addItem(mat)
