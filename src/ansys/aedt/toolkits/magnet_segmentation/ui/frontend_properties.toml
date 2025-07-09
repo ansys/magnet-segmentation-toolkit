@@ -6,7 +6,7 @@
 "app_name" = "Magnet Segmentation Wizard"
 "main_title" = "Magnet Segmentation Toolkit"
 "welcome_message" = "Welcome to the magnet segmentation toolkit"
-"version" = "v0.8.1"
+"version" = "v0.8.2"
 "copyright" = "By: gmalinve"
 "year" = 2023
 "theme" = "ansys_dark.json"
