@@ -1,0 +1,6 @@
+get\_losses\_from\_reports
+==========================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.get_losses_from_reports

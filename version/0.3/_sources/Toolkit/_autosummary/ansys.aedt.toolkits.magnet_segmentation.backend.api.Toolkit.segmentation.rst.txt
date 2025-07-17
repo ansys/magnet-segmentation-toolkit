@@ -1,0 +1,6 @@
+segmentation
+============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: Toolkit.segmentation

@@ -1,0 +1,6 @@
+init\_motorcad
+==============
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.init_motorcad

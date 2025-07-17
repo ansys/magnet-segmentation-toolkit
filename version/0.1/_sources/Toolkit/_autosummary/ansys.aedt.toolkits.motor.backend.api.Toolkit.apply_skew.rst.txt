@@ -1,0 +1,6 @@
+apply\_skew
+===========
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.apply_skew

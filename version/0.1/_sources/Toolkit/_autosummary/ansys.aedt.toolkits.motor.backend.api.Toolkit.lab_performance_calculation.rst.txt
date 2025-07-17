@@ -1,0 +1,6 @@
+lab\_performance\_calculation
+=============================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.lab_performance_calculation

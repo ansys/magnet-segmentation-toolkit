@@ -1,0 +1,6 @@
+validate\_and\_analyze
+======================
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: ToolkitBackend.validate_and_analyze
