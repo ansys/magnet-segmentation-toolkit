@@ -78,6 +78,7 @@ jobs:
         labels: testing
 
   commenter:
+    name: Suggest labels if none assigned
     runs-on: ubuntu-latest
     steps:
     - name: Suggest to add labels
