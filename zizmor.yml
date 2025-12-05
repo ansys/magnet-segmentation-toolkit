@@ -1,5 +1,0 @@
-rules:
-  bot-conditions:
-    ignore:
-      # Ignore line 67 in ci_cd.yml (potential spoofable bot condition detected in block-dependabot job)
-      - ci_cd.yml:67
