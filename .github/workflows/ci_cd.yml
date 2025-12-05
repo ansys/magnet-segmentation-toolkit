@@ -23,6 +23,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {} # Disable default permissions
+
 jobs:
 
   update-changelog:
@@ -30,15 +32,27 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Needed to create PR for changelog
+      pull-requests: write # Needed to create PR for changelog
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-changelog@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
           use-upper-case: true
+
+  actions-security:
+    name: "Check actions security"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: ansys/actions/check-actions-security@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
 
   # NOTE: We do not allow dependabot to trigger the CI/CD pipeline automatically.
   # This is to mitigate supply chain attacks, where a malicious dependency update
@@ -49,7 +63,7 @@ jobs:
     name: "Block dependabot (on dependabot PR)"
     runs-on: ubuntu-latest
     steps:
-      - name: Exit if dependabot triggered the workflow
+      - name: Exit if dependabot triggered the workflow # zizmor: ignore[bot-conditions] : Standard fix prevents any PR from dependabot to be possibly merged.
         if: github.triggering_actor == 'dependabot[bot]'
         run: |
           echo "::warning::Dependabot is not allowed to trigger this workflow. Please review carefully the changes before running the workflow manually."
@@ -75,10 +89,12 @@ jobs:
     name: Check the title of the PR (if needed)
     runs-on: ubuntu-latest
     needs: [block-pyansys-ci-bot]
+    permissions:
+      pull-requests: read # Needed to check the title of the PR
     steps:
       - name: Check the title of the pull request
         if: github.event_name == 'pull_request'
-        uses: ansys/actions/check-pr-title@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+        uses: ansys/actions/check-pr-title@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           use-upper-case: true
@@ -92,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [pr-title]
     steps:
-      - uses: ansys/actions/code-style@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/code-style@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -103,6 +119,8 @@ jobs:
     needs: [code-style]
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
@@ -156,6 +174,8 @@ jobs:
     needs: [code-style]
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
@@ -226,12 +246,14 @@ jobs:
           fpm -v $version --fpm-options-file installer/linux/debian/fpm-options-debian
 
       - name: Create zip file
+        env:
+          MATRIX_OS: ${{ matrix.os }}
         run: |
           cp installer/linux/debian/installer.sh installer.sh
           cp installer/linux/debian/postInstallScript.sh postInstallScript.sh
           chmod +x installer.sh postInstallScript.sh magnet_segmentation_toolkit.deb
           version=$(cat ./installer/VERSION)
-          os_version_processed=$(echo "${{ matrix.os }}" | sed 's/\./_/g')
+          os_version_processed=$(echo "${MATRIX_OS}" | sed 's/\./_/g')
           zip_name="Magnet-Segmentation-Toolkit-Installer-ubuntu_${os_version_processed}.zip"
           echo "OS_VERSION_PROCESSED=${os_version_processed}" >> $GITHUB_ENV
           echo "APPLICATION_VERSION=v${version}" >> $GITHUB_ENV
@@ -246,8 +268,10 @@ jobs:
     name: "Documentation style"
     runs-on: ubuntu-latest
     needs: [pr-title]
+    permissions:
+      contents: read
     steps:
-      - uses: ansys/actions/doc-style@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-style@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           vale-version: "3.4.1"
@@ -259,7 +283,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Build documentation
-        uses: ansys/actions/doc-build@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+        uses: ansys/actions/doc-build@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -276,7 +300,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [ code-style ]
     steps:
-      - uses: ansys/actions/build-wheelhouse@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/build-wheelhouse@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           operating-system: ${{ matrix.os }}
@@ -289,6 +313,8 @@ jobs:
     needs: [ smoke-tests ]
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
@@ -347,6 +373,8 @@ jobs:
       ANS_NODEPCHECK: '1'
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
@@ -369,9 +397,11 @@ jobs:
           pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pytest-azurepipelines
 
       - name: AEDT Test
+        env:
+          ANSYSEM: ${{ env.ANSYSEM_ROOT251 }}
         timeout-minutes: 10
         run: |
-          export LD_LIBRARY_PATH=${{ env.ANSYSEM_ROOT251 }}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=${ANSYSEM}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
           source .venv_linux/bin/activate
           pytest -v -m aedt
 
@@ -381,7 +411,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ doc-build, tests_windows ]
     steps:
-      - uses: ansys/actions/build-library@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/build-library@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -394,8 +424,8 @@ jobs:
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
-      id-token: write
-      contents: write
+      id-token: write # Needed for trusted publishing OIDC
+      contents: write # Needed for releasing to GitHub
     steps:
       - name: Download the library artifacts from build-library step
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -412,7 +442,7 @@ jobs:
           skip-existing: false
 
       - name: Release to GitHub
-        uses: ansys/actions/release-github@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+        uses: ansys/actions/release-github@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -447,8 +477,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-library
     if: github.event_name == 'push'
+    permissions:
+      contents: write # Needed to update files on the gh-pages branch
     steps:
-      - uses: ansys/actions/doc-deploy-dev@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-dev@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -460,8 +492,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    permissions:
+      contents: write # Needed to update files on the gh-pages branch
     steps:
-      - uses: ansys/actions/doc-deploy-stable@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-stable@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
