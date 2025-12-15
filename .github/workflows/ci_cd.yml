@@ -84,7 +84,7 @@ jobs:
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          auditing-level: 'high'  
+          auditing-level: 'high'
 
   pr-title:
     name: Check the title of the PR (if needed)
