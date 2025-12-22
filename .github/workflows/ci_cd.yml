@@ -33,7 +33,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-changelog@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
@@ -87,22 +87,62 @@ jobs:
         shell: bash
         run: echo "::notice::Skipping PR title check for non-PR events"
 
+  vulnerabilities:
+    name: "Vulnerabilities"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit
+        run: |
+          bandit -r src -f json -o bandit-result.json
+
+      - name: Install Safety
+        run: pip install safety
+
+      - name: Run Safety
+        run: |
+          # Ignore vulnerability: https://data.safetycli.com/v/67599/97c
+          safety check -o bare --continue-on-error -i 67599 --save-json safety.json
+
   code-style:
     name: "Code style"
     runs-on: ubuntu-latest
-    needs: [pr-title]
+    permissions:
+      contents: read
+    needs: vulnerabilities
     steps:
-      - uses: ansys/actions/code-style@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/code-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          use-python-cache: false
+            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+            use-python-cache: false
+
+      - uses: ansys/actions/check-actions-security@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
 
   build-application-windows:
     name: "Build Application - Windows"
     runs-on: windows-latest
     needs: [code-style]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
@@ -155,7 +195,9 @@ jobs:
     runs-on: ubuntu-${{ matrix.os }}
     needs: [code-style]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
@@ -245,21 +287,24 @@ jobs:
   doc-style:
     name: "Documentation style"
     runs-on: ubuntu-latest
-    needs: [pr-title]
+    needs: vulnerabilities
+    permissions:
+      contents: read
+      pull-requests: read # Needed for vale to access the content to check
     steps:
-      - uses: ansys/actions/doc-style@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          vale-version: "3.4.1"
 
   doc-build:
     name: "Build documentation"
     runs-on: [self-hosted, pyaedt, toolkits, Windows]
-    needs: [ doc-style ]
+    needs: [doc-style]
     timeout-minutes: 30
+    permissions:
+      contents: read
     steps:
-      - name: Build documentation
-        uses: ansys/actions/doc-build@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-build@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -281,14 +326,16 @@ jobs:
           library-name: ${{ env.LIBRARY_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
-          whitelist-license-check: 'jeepney'
+          whitelist-license-check: 'fpdf2 PySide6 PySide6_Addons PySide6_Essentials shiboken6'
 
   tests_windows:
     name: "Windows Tests AEDT"
     runs-on: [ self-hosted, pyaedt, toolkits, Windows ]
     needs: [ smoke-tests ]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
@@ -342,11 +389,15 @@ jobs:
     name: "Linux Tests"
     runs-on: [ self-hosted, pyaedt, toolkits, Linux ]
     needs: [ smoke-tests ]
+    permissions:
+      contents: read
     env:
       ANSYSEM_ROOT251: '/opt/AnsysEM/v251/AnsysEM'
       ANS_NODEPCHECK: '1'
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
@@ -380,11 +431,16 @@ jobs:
     name: "Build library artifacts"
     runs-on: ubuntu-latest
     needs: [ doc-build, tests_windows ]
+    permissions:
+      attestations: write # Required to create and publish package attestations (SLSA provenance)
+      contents: read
+      id-token: write # Required for OIDC token generation (for provenance signing)
     steps:
-      - uses: ansys/actions/build-library@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/build-library@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          attest-provenance: true
 
   release:
     name: "Release"
@@ -412,10 +468,11 @@ jobs:
           skip-existing: false
 
       - name: Release to GitHub
-        uses: ansys/actions/release-github@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+        uses: ansys/actions/release-github@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          add-artifact-attestation-notes: true
           generate_release_notes: false
 
       - name: "Download all artifacts that got generated in the CI/CD"
@@ -460,8 +517,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    permissions:
+      contents: write # Needed to update files on the gh-pages branch
     steps:
-      - uses: ansys/actions/doc-deploy-stable@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-stable@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
