@@ -43,7 +43,6 @@ class ToolkitBackend(AEDTWorkflow):
     >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
     >>> toolkit = ToolkitBackend()
     >>> toolkit.launch_aedt()
-    >>> toolkit.connect_design()
     """
 
     def __init__(self):
