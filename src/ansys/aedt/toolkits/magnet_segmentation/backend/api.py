@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -43,6 +43,7 @@ class ToolkitBackend(AEDTWorkflow):
     >>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
     >>> toolkit = ToolkitBackend()
     >>> toolkit.launch_aedt()
+    >>> toolkit.connect_design()
     """
 
     def __init__(self):
