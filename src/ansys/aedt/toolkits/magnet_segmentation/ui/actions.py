@@ -27,6 +27,9 @@ from ansys.aedt.toolkits.common.ui.logger_handler import logger
 # import os.path
 import requests
 
+"""Default timeout for requests in seconds."""
+DEFAULT_REQUESTS_TIMEOUT = 120
+
 
 class Frontend(FrontendGeneric):
     def __init__(self):
@@ -123,7 +126,7 @@ class Frontend(FrontendGeneric):
 
         self.set_properties(be_properties)
         try:
-            segmentation_response = requests.post(self.url + "/apply_segmentation")
+            segmentation_response = requests.post(self.url + "/apply_segmentation", timeout=DEFAULT_REQUESTS_TIMEOUT)
             if segmentation_response.ok:
                 # self.find_design_names()
                 # self.skew.setEnabled(True)
@@ -163,7 +166,7 @@ class Frontend(FrontendGeneric):
 
         if be_properties["skew_angle"]:
             try:
-                response = requests.post(self.url + "/apply_skew")
+                response = requests.post(self.url + "/apply_skew", timeout=DEFAULT_REQUESTS_TIMEOUT)
                 if response.ok:
                     msg = "Apply skew call successful."
                     logger.info(msg)
@@ -195,7 +198,7 @@ class Frontend(FrontendGeneric):
         self.set_properties(be_properties)
 
         try:
-            response = requests.post(self.url + "/validate_analyze")
+            response = requests.post(self.url + "/validate_analyze", timeout=DEFAULT_REQUESTS_TIMEOUT)
             if response.ok:
                 msg = "Validate and analyze call successful"
                 logger.info(msg)
@@ -227,7 +230,7 @@ class Frontend(FrontendGeneric):
         self.set_properties(be_properties)
 
         try:
-            response = requests.get(self.url + "/magnet_loss")
+            response = requests.get(self.url + "/magnet_loss", timeout=DEFAULT_REQUESTS_TIMEOUT)
             if response.ok:
                 msg = "Magnet loss call successful."
                 logger.info(msg)
@@ -241,7 +244,7 @@ class Frontend(FrontendGeneric):
 
     def get_materials_action(self):
         try:
-            response = requests.get(self.url + "/project_materials")
+            response = requests.get(self.url + "/project_materials", timeout=DEFAULT_REQUESTS_TIMEOUT)
             if response.ok:
                 msg = "Load materials call successful."
                 logger.info(msg)
@@ -256,7 +259,7 @@ class Frontend(FrontendGeneric):
 
     def get_design_setups(self):
         try:
-            response = requests.get(self.url + "/design_setups")
+            response = requests.get(self.url + "/design_setups", timeout=DEFAULT_REQUESTS_TIMEOUT)
             if response.ok:
                 msg = "Get design setups call successful."
                 logger.info(msg)
