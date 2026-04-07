@@ -6,6 +6,7 @@
 
 ## Individual Contributors
 
+* [Edouard Coussoux](https://github.com/ecoussoux-ansys)
 * [Jack Davies](https://github.com/jgsdavies)
 * [Jorge Martínez](https://github.com/jorgepiloto)
 * [Kathy Pippert](https://github.com/PipKat)
