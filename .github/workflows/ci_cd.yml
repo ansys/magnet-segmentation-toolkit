@@ -284,12 +284,14 @@ jobs:
           fpm -v $version --fpm-options-file installer/linux/debian/fpm-options-debian
 
       - name: Create zip file
+        env:
+          OS_NAME: ${{ matrix.os }}
         run: |
           cp installer/linux/debian/installer.sh installer.sh
           cp installer/linux/debian/postInstallScript.sh postInstallScript.sh
           chmod +x installer.sh postInstallScript.sh magnet_segmentation_toolkit.deb
           version=$(cat ./installer/VERSION)
-          os_version_processed=$(echo "${{ matrix.os }}" | sed 's/\./_/g')
+          os_version_processed="${OS_NAME//./_}"
           zip_name="Magnet-Segmentation-Toolkit-Installer-ubuntu_${os_version_processed}.zip"
           echo "OS_VERSION_PROCESSED=${os_version_processed}" >> $GITHUB_ENV
           echo "APPLICATION_VERSION=v${version}" >> $GITHUB_ENV
@@ -408,7 +410,7 @@ jobs:
     permissions:
       contents: read
     env:
-      ANSYSEM_ROOT251: '/opt/AnsysEM/v251/AnsysEM'
+      ANSYSEM_ROOT252: '/usr/ansys_inc/v252/AnsysEM'
       ANS_NODEPCHECK: '1'
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -438,7 +440,7 @@ jobs:
       - name: AEDT Test
         timeout-minutes: 10
         run: |
-          export LD_LIBRARY_PATH=${{ env.ANSYSEM_ROOT251 }}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=${{ ANSYSEM_ROOT252 }}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
           source .venv_linux/bin/activate
           pytest -v -m aedt
 
