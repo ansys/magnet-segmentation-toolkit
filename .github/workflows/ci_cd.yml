@@ -18,6 +18,7 @@ env:
   DOCUMENTATION_CNAME: 'magnet.segmentation.toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-magnet-segmentation-toolkit'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  ANSYSEM_ROOT252: '/usr/ansys_inc/v252/AnsysEM'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -437,11 +438,9 @@ jobs:
           pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pytest-azurepipelines
 
       - name: AEDT Test
-        env:
-          ANSYSEM_ROOT252: '/usr/ansys_inc/v252/AnsysEM'
         timeout-minutes: 10
         run: |
-          export LD_LIBRARY_PATH=${{ ANSYSEM_ROOT252 }}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=${{ env.ANSYSEM_ROOT252 }}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
           source .venv_linux/bin/activate
           pytest -v -m aedt
 
