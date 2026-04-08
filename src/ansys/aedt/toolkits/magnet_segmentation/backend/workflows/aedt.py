@@ -24,7 +24,7 @@
 from operator import attrgetter
 
 from ansys.aedt.core.application.variables import decompose_variable_value
-from ansys.aedt.core.generic.numbers import Quantity
+from ansys.aedt.core.generic.numbers_utils import Quantity
 from ansys.aedt.core.modeler.cad.modeler import CoordinateSystem
 from ansys.aedt.core.modeler.cad.modeler import FaceCoordinateSystem
 from ansys.aedt.toolkits.common.backend.api import AEDTCommon
