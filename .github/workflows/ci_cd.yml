@@ -107,7 +107,6 @@ jobs:
   vulnerabilities:
     name: "Vulnerabilities"
     runs-on: ubuntu-latest
-    needs: update-changelog
     permissions:
       contents: read   # Required to read repository content for vulnerability scanning
     steps:
