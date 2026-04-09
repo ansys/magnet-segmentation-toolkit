@@ -424,7 +424,6 @@ jobs:
       - name: AEDT Test
         timeout-minutes: 10
         run: |
-          export LD_LIBRARY_PATH=${ANSYSEM_ROOT252}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
           source .venv_linux/bin/activate
           pytest -v -m aedt
 
