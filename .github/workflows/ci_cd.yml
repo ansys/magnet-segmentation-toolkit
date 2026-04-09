@@ -35,7 +35,7 @@ jobs:
       contents: write # Needed to create PR for changelog
       pull-requests: write # Needed to create PR for changelog
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
+      - uses: ansys/actions/doc-deploy-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
