@@ -50,7 +50,7 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 # Constants
 PROJECT_NAME = "e9_eMobility_IPM_3D"
 PROJECT_NAME_SEGMENTED = "e9_eMobility_IPM_3D_segmented"
-PROJECT_NAME_SKEWED = "e9_eMobility_IPM_3D_skewed"
+PROJECT_NAME_TO_ANALYZE = "toolkit_tran"
 PROJECT_NAME_ANALYZED = "e9_eMobility_IPM_3D_analyzed"
 DESIGN_NAME = "e9"
 AEDT_DEFAULT_VERSION = "2025.2"
@@ -122,15 +122,15 @@ def aedtapp_segmented(common_temp_dir):
 
 
 @pytest.fixture(scope="class")
-def aedtapp_skewed(common_temp_dir):
-    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_SKEWED}.aedt")
+def aedtapp_to_analyze(common_temp_dir):
+    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_TO_ANALYZE}.aedt")
     toolkit = ToolkitBackend()
     new_properties = {
         "aedt_version": config["desktop_version"],
         "non_graphical": config["non_graphical"],
         "active_project": aedt_file,
         "active_design": DESIGN_NAME,
-        "design_list": {PROJECT_NAME_SKEWED: [DESIGN_NAME]},
+        "design_list": {PROJECT_NAME_TO_ANALYZE: [DESIGN_NAME]},
         "use_grpc": config["use_grpc"],
     }
     toolkit.set_properties(new_properties)

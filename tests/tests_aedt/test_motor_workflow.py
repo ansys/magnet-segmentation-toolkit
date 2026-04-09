@@ -95,8 +95,8 @@ class TestAEDTMotorWorkflow:
         assert aedtapp_segmented.set_properties(properties)
         assert aedtapp_segmented.apply_skew()
 
-    def test_08_validate_and_analyze(self, aedtapp_skewed):
-        assert aedtapp_skewed.validate_and_analyze()
+    def test_08_validate_and_analyze(self, aedtapp_to_analyze):
+        assert aedtapp_to_analyze.validate_and_analyze()
 
     def test_09_get_magnet_loss(self, aedtapp_analyzed):
         magnet_loss = aedtapp_analyzed.get_magnet_loss()

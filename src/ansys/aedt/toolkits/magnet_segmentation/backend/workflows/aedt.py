@@ -281,7 +281,7 @@ class AEDTWorkflow(AEDTCommon):
                                     insulation_faces.extend([obj.top_face_z, obj.bottom_face_z])
                             self.aedtapp.assign_insulating(insulation_faces)
                         self.aedtapp.modeler.rotate(
-                            split_objects_with_rotor, self.aedtapp.AXIS.Z, -360 / self.aedtapp.symmetry_multiplier
+                            split_objects_with_rotor, "Z", -360 / self.aedtapp.symmetry_multiplier
                         )
                         self.aedtapp.modeler.unite([rotor_object, split_objects_with_rotor[0]])
                 rotor_skew_ang += decompose_variable_value(self.properties.skew_angle)[0]
@@ -338,7 +338,8 @@ class AEDTWorkflow(AEDTCommon):
                 expressions="SolidLoss", primary_sweep_variable="Time", domain="Sweep"
             )
             avg = Quantity(
-                expression=sum(data.data_magnitude()) / len(data.data_magnitude()), unit=data.units_data["SolidLoss"]
+                expression=sum(data.primary_sweep_values.tolist()) / len(data.primary_sweep_values.tolist()),
+                unit=data.units_data["SolidLoss"],
             )
             avg_w = avg.to("W")
             self.release_aedt(False, False)
