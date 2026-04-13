@@ -53,8 +53,12 @@ def get_ui():
     return ui
 
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties as backend_properties
-from ansys.aedt.toolkits.magnet_segmentation.ui.models import properties as frontend_properties
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import (
+    properties as backend_properties,
+)
+from ansys.aedt.toolkits.magnet_segmentation.ui.models import (
+    properties as frontend_properties,
+)
 from ansys.aedt.toolkits.magnet_segmentation.ui.splash import show_splash_screen
 
 # # Set environment variables

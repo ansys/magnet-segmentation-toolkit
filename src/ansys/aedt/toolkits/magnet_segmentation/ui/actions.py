@@ -21,11 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
-from ansys.aedt.toolkits.common.ui.logger_handler import logger
-
 # import os.path
 import requests
+from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
+from ansys.aedt.toolkits.common.ui.logger_handler import logger
 
 """Default timeout for requests in seconds."""
 DEFAULT_REQUESTS_TIMEOUT = 120

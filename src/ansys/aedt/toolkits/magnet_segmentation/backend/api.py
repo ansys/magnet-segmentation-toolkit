@@ -21,8 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # isort: off
 sys.path.append(str(Path(__file__).parent))
