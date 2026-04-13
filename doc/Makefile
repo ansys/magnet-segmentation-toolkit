@@ -20,7 +20,7 @@ help:
 		@echo "Removing pypandoc to avoid conflicts with pypandoc-binary needed for CI/CD"; \
 		pip uninstall --yes pypandoc; \
 		@echo "Installing pypandoc-binary"; \
-		pip install pypandoc-binary==1.13; \
+		pip install pypandoc-binary==1.15; \
 	fi
 
 # Catch-all target: route all unknown targets to Sphinx using the new

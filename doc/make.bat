@@ -20,7 +20,7 @@ if NOT "%is_pypandoc_binary_installed%" == "pypandoc_binary" if "%ON_CI%" == "tr
 	@ECHO ON
 	echo "Installing pypandoc-binary"
 	@ECHO OFF
-	pip install pypandoc-binary==1.13)
+	pip install pypandoc-binary==1.15)
 REM End of CICD dedicated setup
 
 if "%1" == "" goto help
