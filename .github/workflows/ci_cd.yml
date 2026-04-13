@@ -19,7 +19,7 @@ env:
   LIBRARY_NAME: 'ansys-magnet-segmentation-toolkit'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   ON_CI: 'true'
-  
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
