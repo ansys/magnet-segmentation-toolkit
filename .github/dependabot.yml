@@ -33,6 +33,19 @@ updates:
       day: "saturday"
       time: "06:00"
       timezone: "Europe/Paris"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    cooldown:
+      default-days: 7
+      include:
+        - "*"  # Include all dependencies in cooldown
+      exclude:
+        - "ansys/actions"
     reviewers:
       - "gmalinve"
     assignees:

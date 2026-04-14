@@ -295,10 +295,10 @@ jobs:
         contents: read
         pull-requests: read # Needed for vale to access the content to check
     steps:
-        - uses: ansys/actions/doc-style@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            vale-version: "3.4.1"
+      - uses: ansys/actions/doc-style@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          vale-version: "3.4.1"
 
   doc-build:
     name: "Build documentation"
