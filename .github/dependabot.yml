@@ -26,13 +26,6 @@ updates:
     commit-message:
       prefix: "BUILD(pip)"
 
-  - package-ecosystem: "github-actions" # zizmor: ignore[dependabot-cooldown] cooldown feature is not available for github actions yet.
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "06:00"
-      timezone: "Europe/Paris"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
