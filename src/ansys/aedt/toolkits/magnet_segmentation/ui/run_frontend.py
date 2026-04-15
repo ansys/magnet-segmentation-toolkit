@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,9 +33,6 @@ from ansys.aedt.toolkits.magnet_segmentation.ui.models import properties
 
 # isort: on
 
-# PySide6 Widgets
-from PySide6.QtWidgets import QApplication
-from PySide6.QtWidgets import QMainWindow
 from ansys.aedt.toolkits.common.ui.common_windows.home_menu import HomeMenu
 from ansys.aedt.toolkits.common.ui.common_windows.settings_column import SettingsMenu
 
@@ -43,16 +40,28 @@ from ansys.aedt.toolkits.common.ui.common_windows.settings_column import Setting
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
 
 # Common windows
-from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWindowLayout
+from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import (
+    MainWindowLayout,
+)
+
+# PySide6 Widgets
+from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QMainWindow
 
 # Toolkit frontend API
 from ansys.aedt.toolkits.magnet_segmentation.ui.actions import Frontend
 from ansys.aedt.toolkits.magnet_segmentation.ui.windows.help.help_menu import HelpMenu
 
 # New windows
-from ansys.aedt.toolkits.magnet_segmentation.ui.windows.plot_design.plot_design_menu import PlotDesignMenu
-from ansys.aedt.toolkits.magnet_segmentation.ui.windows.post_processing.post_processing_menu import PostProcessingMenu
-from ansys.aedt.toolkits.magnet_segmentation.ui.windows.segmentation.segmentation_menu import SegmentationMenu
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.plot_design.plot_design_menu import (
+    PlotDesignMenu,
+)
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.post_processing.post_processing_menu import (
+    PostProcessingMenu,
+)
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.segmentation.segmentation_menu import (
+    SegmentationMenu,
+)
 
 # Backend URL and port
 if len(sys.argv) == 3:
