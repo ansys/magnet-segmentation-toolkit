@@ -18,10 +18,14 @@ env:
   DOCUMENTATION_CNAME: 'magnet.segmentation.toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-magnet-segmentation-toolkit'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  ON_CI: 'true'
 
 concurrency:
+
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions: {} # Disable default permissions
 
 jobs:
 
@@ -30,10 +34,10 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Needed to create PR for changelog
+      pull-requests: write # Needed to create PR for changelog
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
@@ -49,11 +53,24 @@ jobs:
     name: "Block dependabot (on dependabot PR)"
     runs-on: ubuntu-latest
     steps:
-      - name: Exit if dependabot triggered the workflow
+      - name: Exit if dependabot triggered the workflow # zizmor: ignore[bot-conditions] safe ignore because we exit if dependabot is the triggering actor
         if: github.triggering_actor == 'dependabot[bot]'
         run: |
           echo "::warning::Dependabot is not allowed to trigger this workflow. Please review carefully the changes before running the workflow manually."
           exit 1
+
+  actions-security:
+    name: "Check actions security"
+    needs: [block-pyansys-ci-bot]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: ansys/actions/check-actions-security@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
 
   # NOTE: We do not allow pyansys-ci-bot to trigger the CI/CD pipeline automatically
   # on dependabot's PR. This is to mitigate supply chain attacks, where a malicious
@@ -75,10 +92,12 @@ jobs:
     name: Check the title of the PR (if needed)
     runs-on: ubuntu-latest
     needs: [block-pyansys-ci-bot]
+    permissions:
+      pull-requests: read # Needed to check the title of the PR
     steps:
       - name: Check the title of the pull request
         if: github.event_name == 'pull_request'
-        uses: ansys/actions/check-pr-title@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+        uses: ansys/actions/check-pr-title@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           use-upper-case: true
@@ -87,24 +106,43 @@ jobs:
         shell: bash
         run: echo "::notice::Skipping PR title check for non-PR events"
 
+  vulnerabilities:
+    name: "Vulnerabilities"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read   # Required to read repository content for vulnerability scanning
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-package-name: ${{ env.LIBRARY_NAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+          extra-targets: 'freeze'
+
   code-style:
     name: "Code style"
     runs-on: ubuntu-latest
-    needs: [pr-title]
+    permissions:
+      contents: read
+    needs: vulnerabilities
     steps:
-      - uses: ansys/actions/code-style@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/code-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
+
 
   build-application-windows:
     name: "Build Application - Windows"
     runs-on: windows-latest
     needs: [code-style]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -124,8 +162,10 @@ jobs:
       - name: Debug build directory
         run: Get-ChildItem -Path build -Recurse | ForEach-Object { $_.FullName }
 
-      - name: Print NSIS version
-        run: makensis -VERSION
+      - name: Check NSIS version
+        shell: pwsh
+        run: |
+            & "C:\Program Files (x86)\NSIS\makensis.exe" /VERSION
 
       - name: Run NSIS
         shell: pwsh
@@ -136,15 +176,17 @@ jobs:
           if (!(Test-Path -Path "setup.nsi")) {
             Write-Error "setup.nsi not found"
           }
-          makensis setup.nsi
+          & "C:\Program Files (x86)\NSIS\makensis.exe" setup.nsi
 
       - name: List output
-        run: ls -R dist
+        shell: pwsh
+        run: Get-ChildItem -Recurse dist
 
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: Magnet-Segmentation-Toolkit-Installer-windows
           path: dist/*.exe
+          if-no-files-found: error
 
   build-application-linux-debian:
     strategy:
@@ -155,9 +197,11 @@ jobs:
     runs-on: ubuntu-${{ matrix.os }}
     needs: [code-style]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -226,18 +270,20 @@ jobs:
           fpm -v $version --fpm-options-file installer/linux/debian/fpm-options-debian
 
       - name: Create zip file
+        env:
+          OS_NAME: ${{ matrix.os }}
         run: |
           cp installer/linux/debian/installer.sh installer.sh
           cp installer/linux/debian/postInstallScript.sh postInstallScript.sh
           chmod +x installer.sh postInstallScript.sh magnet_segmentation_toolkit.deb
           version=$(cat ./installer/VERSION)
-          os_version_processed=$(echo "${{ matrix.os }}" | sed 's/\./_/g')
+          os_version_processed="${OS_NAME//./_}"
           zip_name="Magnet-Segmentation-Toolkit-Installer-ubuntu_${os_version_processed}.zip"
           echo "OS_VERSION_PROCESSED=${os_version_processed}" >> $GITHUB_ENV
           echo "APPLICATION_VERSION=v${version}" >> $GITHUB_ENV
           zip -r $zip_name magnet_segmentation_toolkit.deb installer.sh postInstallScript.sh
 
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
            name: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ matrix.os }}
            path: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ env.OS_VERSION_PROCESSED }}.zip
@@ -245,21 +291,25 @@ jobs:
   doc-style:
     name: "Documentation style"
     runs-on: ubuntu-latest
-    needs: [pr-title]
+    needs: vulnerabilities
+    permissions:
+        contents: read
+        pull-requests: read # Needed for vale to access the content to check
     steps:
-      - uses: ansys/actions/doc-style@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-style@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           vale-version: "3.4.1"
 
   doc-build:
     name: "Build documentation"
-    runs-on: [self-hosted, pyaedt, toolkits, Windows]
-    needs: [ doc-style ]
-    timeout-minutes: 30
+    runs-on: [self-hosted, Windows, pyaedt-toolkit]
+    needs: [doc-style]
+    timeout-minutes: 60
+    permissions:
+      contents: read
     steps:
-      - name: Build documentation
-        uses: ansys/actions/doc-build@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-build@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -276,22 +326,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [ code-style ]
     steps:
-      - uses: ansys/actions/build-wheelhouse@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/build-wheelhouse@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
-          whitelist-license-check: 'jeepney'
+          whitelist-license-check: 'jeepney fpdf2 PySide6 PySide6_Addons PySide6_Essentials shiboken6'
 
   tests_windows:
     name: "Windows Tests AEDT"
-    runs-on: [ self-hosted, pyaedt, toolkits, Windows ]
+    runs-on: [self-hosted, Windows, pyaedt-toolkit]
     needs: [ smoke-tests ]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -323,14 +375,14 @@ jobs:
 
       - name: "Upload coverage results"
         if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION  }}
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           path: .cov/total-html
           name: html-total-coverage
 
       - name: "Upload coverage report to codecov"
         if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
-        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           name: windows-codecov-tests
           files: .cov/windows-coverage.xml
@@ -340,16 +392,20 @@ jobs:
 
   tests_linux:
     name: "Linux Tests"
-    runs-on: [ self-hosted, pyaedt, toolkits, Linux ]
+    runs-on: [self-hosted, Linux, pyaedt-toolkit]
     needs: [ smoke-tests ]
+    permissions:
+      contents: read
     env:
-      ANSYSEM_ROOT251: '/opt/AnsysEM/v251/AnsysEM'
+      ANSYSEM_ROOT261: '/usr/ansys_inc/v261/AnsysEM'
       ANS_NODEPCHECK: '1'
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -371,7 +427,6 @@ jobs:
       - name: AEDT Test
         timeout-minutes: 10
         run: |
-          export LD_LIBRARY_PATH=${{ env.ANSYSEM_ROOT251 }}/common/mono/Linux64/lib64:$LD_LIBRARY_PATH
           source .venv_linux/bin/activate
           pytest -v -m aedt
 
@@ -380,11 +435,16 @@ jobs:
     name: "Build library artifacts"
     runs-on: ubuntu-latest
     needs: [ doc-build, tests_windows ]
+    permissions:
+      attestations: write # Required to create and publish package attestations (SLSA provenance)
+      contents: read
+      id-token: write # Required for OIDC token generation (for provenance signing)
     steps:
-      - uses: ansys/actions/build-library@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/build-library@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          attest-provenance: true
 
   release:
     name: "Release"
@@ -394,11 +454,11 @@ jobs:
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
-      id-token: write
-      contents: write
+      id-token: write # Needed for trusted publishing OIDC
+      contents: write # Needed for releasing to GitHub
     steps:
       - name: Download the library artifacts from build-library step
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ env.LIBRARY_NAME }}-artifacts
           path: ${{ env.LIBRARY_NAME }}-artifacts
@@ -412,31 +472,32 @@ jobs:
           skip-existing: false
 
       - name: Release to GitHub
-        uses: ansys/actions/release-github@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+        uses: ansys/actions/release-github@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          add-artifact-attestation-notes: true
           generate_release_notes: false
 
       - name: "Download all artifacts that got generated in the CI/CD"
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: /tmp/artifacts
 
       - name: List artifacts
         run: ls -R /tmp/artifacts
 
-      - uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+      - uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           files: |
             /tmp/artifacts/Magnet-Segmentation-Toolkit-Installer-windows/*.exe
 
-      - uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+      - uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           files: |
             /tmp/artifacts/Magnet-Segmentation-Toolkit-Installer-ubuntu_22.04/*.zip
 
-      - uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+      - uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           files: |
             /tmp/artifacts/Magnet-Segmentation-Toolkit-Installer-ubuntu_24.04/*.zip
@@ -447,8 +508,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-library
     if: github.event_name == 'push'
+    permissions:
+      contents: write # Needed to update files on the gh-pages branch
     steps:
-      - uses: ansys/actions/doc-deploy-dev@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-dev@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -460,8 +523,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    permissions:
+      contents: write # Needed to update files on the gh-pages branch
     steps:
-      - uses: ansys/actions/doc-deploy-stable@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
+      - uses: ansys/actions/doc-deploy-stable@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
