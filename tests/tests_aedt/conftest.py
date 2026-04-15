@@ -53,7 +53,7 @@ PROJECT_NAME_SEGMENTED = "e9_eMobility_IPM_3D_segmented"
 PROJECT_NAME_TO_ANALYZE = "toolkit_tran"
 PROJECT_NAME_ANALYZED = "e9_eMobility_IPM_3D_analyzed"
 DESIGN_NAME = "e9"
-AEDT_DEFAULT_VERSION = "2026.1"
+AEDT_DEFAULT_VERSION = "2025.2"
 
 config = {
     "desktop_version": AEDT_DEFAULT_VERSION,
