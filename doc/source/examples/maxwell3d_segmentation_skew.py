@@ -50,7 +50,7 @@ properties = toolkit.get_properties()
 #
 # Initialize a dictionary of properties.
 
-properties["aedt_version"] = "2025.2"
+properties["aedt_version"] = "2026.1"
 properties["active_project"] = AEDT_PROJECT
 properties["active_design"] = active_design
 properties["design_list"] = {AEDT_PROJECT: [active_design]}

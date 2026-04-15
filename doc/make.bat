@@ -54,7 +54,10 @@ echo Building PDF pages
 cd "%BUILDDIR%\latex"
 for %%f in (*.tex) do (
 xelatex "%%f" --interaction=nonstopmode)
-echo "Build finished. The PDF pages are in %BUILDDIR%."
+if NOT EXIST ansys-magnet-segmentation-toolkit.pdf (
+    echo. "No PDF file was generated."
+    exit /b 1)
+echo "Build finished. The PDF pages are in %BUILDDIR%"
 goto end
 
 :help

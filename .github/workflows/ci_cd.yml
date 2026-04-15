@@ -304,6 +304,7 @@ jobs:
     name: "Build documentation"
     runs-on: [self-hosted, Windows, pyaedt-toolkit]
     needs: [doc-style]
+    timeout-minutes: 60
     permissions:
       contents: read
     steps:
