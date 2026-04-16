@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Check the title of the pull request
         if: github.event_name == 'pull_request'
-        uses: ansys/actions/check-pr-title@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
+        uses: ansys/actions/check-pr-title@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           use-upper-case: true
@@ -127,7 +127,7 @@ jobs:
       contents: read
     needs: vulnerabilities
     steps:
-      - uses: ansys/actions/code-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
+      - uses: ansys/actions/code-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.12
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -464,7 +464,7 @@ jobs:
           path: ${{ env.LIBRARY_NAME }}-artifacts
 
       - name: Release to PyPI using trusted publisher
-        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.14.0
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
@@ -511,7 +511,7 @@ jobs:
     permissions:
       contents: write # Needed to update files on the gh-pages branch
     steps:
-      - uses: ansys/actions/doc-deploy-dev@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
+      - uses: ansys/actions/doc-deploy-dev@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.12
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
