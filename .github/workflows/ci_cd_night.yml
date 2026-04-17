@@ -1,0 +1,325 @@
+name: night
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  MAIN_PYTHON_VERSION: '3.12'
+  DOCUMENTATION_CNAME: 'magnet.segmentation.toolkit.docs.pyansys.com'
+  LIBRARY_NAME: 'ansys-magnet-segmentation-toolkit'
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  ON_CI: 'true'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {} # Disable default permissions
+
+jobs:
+  vulnerabilities:
+    name: "Vulnerabilities"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read   # Required to read repository content for vulnerability scanning
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-package-name: ${{ env.LIBRARY_NAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+          extra-targets: 'freeze'
+
+  doc-build:
+    name: "Build documentation"
+    runs-on: [ self-hosted, Windows, pyaedt-toolkit ]
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: ansys/actions/doc-build@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          use-python-cache: false
+          add-pdf-html-docs-as-assets: true
+          check-links: false
+
+  build-application-windows:
+    name: "Build Application - Windows"
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Install Dependencies
+        run: pip install .[freeze]
+
+      - name: Extract version
+        run: |
+          python installer/extract_version.py
+
+      - name: Freeze application
+        run: pyinstaller frozen.spec
+
+      - name: Install NSIS
+        run: choco install nsis -y
+
+      - name: Debug build directory
+        run: Get-ChildItem -Path build -Recurse | ForEach-Object { $_.FullName }
+
+      - name: Check NSIS version
+        shell: pwsh
+        run: |
+          & "C:\Program Files (x86)\NSIS\makensis.exe" /VERSION
+
+      - name: Run NSIS
+        shell: pwsh
+        if: always()
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = "Stop"
+          if (!(Test-Path -Path "setup.nsi")) {
+            Write-Error "setup.nsi not found"
+          }
+          & "C:\Program Files (x86)\NSIS\makensis.exe" setup.nsi
+
+      - name: List output
+        shell: pwsh
+        run: Get-ChildItem -Recurse dist
+
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: Magnet-Segmentation-Toolkit-Installer-windows
+          path: dist/*.exe
+          if-no-files-found: error
+
+  build-application-linux-debian:
+    strategy:
+      matrix:
+        os: [ "24.04", "22.04" ]
+      fail-fast: false
+    name: "Build Application - Ubuntu ${{ matrix.os }}"
+    runs-on: ubuntu-${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Install Linux Dependencies
+        run: |
+          sudo apt update
+          sudo apt install aptitude -y;
+          sudo aptitude install libfontconfig1-dev \
+            libfreetype6-dev \
+            libx11-dev \
+            libx11-xcb-dev \
+            libxext-dev \
+            libxfixes-dev \
+            libxi-dev \
+            libxrender-dev \
+            libxcb1-dev \
+            libxcb-glx0-dev \
+            libxcb-keysyms1-dev \
+            libxcb-image0-dev \
+            libxcb-shm0-dev \
+            libxcb-icccm4-dev \
+            libxcb-sync-dev \
+            libxcb-xfixes0-dev \
+            libxcb-shape0-dev \
+            libxcb-randr0-dev \
+            libxcb-render-util0-dev \
+            libxcb-cursor-dev \
+            libxcb-util-dev \
+            libxcb-xkb-dev \
+            libxcb-xinerama0-dev \
+            libxkbcommon-dev \
+            libxkbcommon-x11-dev \
+            -y
+          sudo apt install ruby -y
+          sudo gem install fpm
+
+      - name: Install Python Dependencies
+        run: pip install .[freeze]
+
+      - name: Extract version
+        run: |
+          set -e
+          python installer/extract_version.py
+
+      - name: Freeze application
+        env:
+          ADD_PYTHON_BINARIES: true
+        run: pyinstaller frozen.spec
+
+      - name: Setup and Copy Linux files for packaging
+        run: |
+          mkdir -p package/opt
+          mkdir -p package/share/applications
+          mkdir -p package/share/icons
+          cp -r dist/magnet_segmentation_toolkit package/opt/magnet_segmentation_toolkit
+          cp installer/assets/splash_icon.svg package/share/icons/splash_icon.svg
+          cp installer/linux/debian/magnet_segmentation_toolkit_prebuild.desktop package/share/applications
+          find package/opt/magnet_segmentation_toolkit -type f -exec chmod 644 -- {} +
+          find package/opt/magnet_segmentation_toolkit -type d -exec chmod 755 -- {} +
+          find package/share -type f -exec chmod 644 -- {} +
+          chmod +x package/opt/magnet_segmentation_toolkit/magnet_segmentation_toolkit
+          chmod +x package/opt/magnet_segmentation_toolkit/_internal/assets/uninstaller_ubuntu.sh
+          version=v`cat ./installer/VERSION`
+          echo "APPLICATION_VERSION=$version" >> $GITHUB_ENV
+          set -x  # Debug mode
+          fpm -v $version --fpm-options-file installer/linux/debian/fpm-options-debian
+
+      - name: Create zip file
+        env:
+          OS_NAME: ${{ matrix.os }}
+        run: |
+          cp installer/linux/debian/installer.sh installer.sh
+          cp installer/linux/debian/postInstallScript.sh postInstallScript.sh
+          chmod +x installer.sh postInstallScript.sh magnet_segmentation_toolkit.deb
+          version=$(cat ./installer/VERSION)
+          os_version_processed="${OS_NAME//./_}"
+          zip_name="Magnet-Segmentation-Toolkit-Installer-ubuntu_${os_version_processed}.zip"
+          echo "OS_VERSION_PROCESSED=${os_version_processed}" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION=v${version}" >> $GITHUB_ENV
+          zip -r $zip_name magnet_segmentation_toolkit.deb installer.sh postInstallScript.sh
+
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ matrix.os }}
+          path: Magnet-Segmentation-Toolkit-Installer-ubuntu_${{ env.OS_VERSION_PROCESSED }}.zip
+
+  tests_windows:
+    name: "Windows Tests AEDT"
+    runs-on: [ self-hosted, Windows, pyaedt-toolkit ]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+        env:
+          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+
+      - name: AEDT Test
+        timeout-minutes: 10
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v -m aedt --cov --cov-append
+
+      - name: "Combine coverage files"
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m coverage html -d .cov\total-html
+          python -m coverage xml -o .cov\total.xml
+
+      - name: "Upload coverage results"
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION  }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          path: .cov/total-html
+          name: html-total-coverage
+
+      - name: "Upload coverage report to codecov"
+        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+        with:
+          name: windows-codecov-tests
+          files: .cov/windows-coverage.xml
+          flags: windows_tests
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  tests_linux:
+    name: "Linux Tests"
+    runs-on: [ self-hosted, Linux, pyaedt-toolkit ]
+    permissions:
+      contents: read
+    env:
+      ANSYSEM_ROOT261: '/usr/ansys_inc/v261/AnsysEM'
+      ANS_NODEPCHECK: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv_linux
+
+      - name: Install packages for testing
+        run: |
+          source .venv_linux/bin/activate
+          python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pip -U
+          python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org wheel setuptools -U
+          python -c "import sys; print(sys.executable)"
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+          pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pytest-azurepipelines
+
+      - name: AEDT Test
+        timeout-minutes: 10
+        run: |
+          source .venv_linux/bin/activate
+          pytest -v -m aedt
+
+  build-library:
+    name: "Build library artifacts"
+    runs-on: ubuntu-latest
+    needs: [ doc-build, tests_windows ]
+    permissions:
+      attestations: write # Required to create and publish package attestations (SLSA provenance)
+      contents: read
+      id-token: write # Required for OIDC token generation (for provenance signing)
+    steps:
+      - uses: ansys/actions/build-library@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+        with:
+          library-name: ${{ env.LIBRARY_NAME }}
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          attest-provenance: true
+
+  doc-deploy-dev:
+    name: "Deploy development documentation"
+    runs-on: ubuntu-latest
+    needs: build-library
+    if: github.event_name == 'push'
+    permissions:
+      contents: write # Needed to update files on the gh-pages branch
+    steps:
+      - uses: ansys/actions/doc-deploy-dev@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25  # v10.2.12
+        with:
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
