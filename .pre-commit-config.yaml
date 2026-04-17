@@ -22,7 +22,7 @@ repos:
     - id: ruff-format
 
 - repo: https://github.com/psf/black
-  rev: 25.1.0  # IF VERSION CHANGES --> MODIFY "blacken-docs" MANUALLY AS WELL!!
+  rev: 25.1.0
   hooks:
     - id: black
       args:
