@@ -22,6 +22,7 @@
 # SOFTWARE.
 
 """Data classes used to store data related to UI settings."""
+
 import os
 import sys
 
