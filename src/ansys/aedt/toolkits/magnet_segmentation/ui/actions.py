@@ -133,7 +133,7 @@ class Frontend(FrontendGeneric):
                 logger.info(msg)
                 return True
             else:
-                msg = f"Apply segmentation call failed"
+                msg = "Apply segmentation call failed"
                 logger.error(msg)
                 return False
         except requests.exceptions.RequestException:

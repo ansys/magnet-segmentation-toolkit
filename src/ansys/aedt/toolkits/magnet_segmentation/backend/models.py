@@ -26,6 +26,7 @@
 The settings include common AEDT toolkit settings and settings associated
 to motor workflows in AEDT.
 """
+
 import os
 import sys
 
