@@ -44,15 +44,10 @@ jobs:
       pull-requests: read # Needed to check the title of the PR
     steps:
       - name: Check the title of the pull request
-        if: github.event_name == 'pull_request'
         uses: ansys/actions/check-pr-title@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           use-upper-case: true
-      - name: Check the title of the pull request
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: echo "::notice::Skipping PR title check for non-PR events"
 
   labeler:
     name: "Labels"
@@ -411,13 +406,8 @@ jobs:
       - name: Install packages for testing
         run: |
           source .venv_linux/bin/activate
-          python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pip -U
-          python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org wheel setuptools -U
-          python -c "import sys; print(sys.executable)"
-          python -m pip install --upgrade pip
-          pip install --upgrade build wheel
+          python -m pip install pip -U
           pip install .[tests]
-          pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pytest-azurepipelines
 
       - name: AEDT Test
         timeout-minutes: 10

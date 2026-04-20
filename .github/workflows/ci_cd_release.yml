@@ -22,7 +22,8 @@ jobs:
   update-changelog:
     name: "Update CHANGELOG (on release)"
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    runs-on: ubuntu-latest
+name: "Update CHANGELOG"
+runs-on: ubuntu-latest
     permissions:
       contents: write # Needed to create PR for changelog
       pull-requests: write # Needed to create PR for changelog
