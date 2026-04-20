@@ -21,9 +21,8 @@ permissions: {} # Disable default permissions
 jobs:
   update-changelog:
     name: "Update CHANGELOG (on release)"
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-name: "Update CHANGELOG"
-runs-on: ubuntu-latest
+    if: contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
     permissions:
       contents: write # Needed to create PR for changelog
       pull-requests: write # Needed to create PR for changelog
@@ -434,7 +433,6 @@ runs-on: ubuntu-latest
     name: "Deploy stable documentation"
     runs-on: ubuntu-latest
     needs: release
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     permissions:
       contents: write # Needed to update files on the gh-pages branch
     steps:
