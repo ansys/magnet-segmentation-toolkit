@@ -418,15 +418,7 @@ jobs:
         with:
           files: |
             /tmp/artifacts/Magnet-Segmentation-Toolkit-Installer-windows/*.exe
-
-      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
-        with:
-          files: |
             /tmp/artifacts/Magnet-Segmentation-Toolkit-Installer-ubuntu_22.04/*.zip
-
-      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
-        with:
-          files: |
             /tmp/artifacts/Magnet-Segmentation-Toolkit-Installer-ubuntu_24.04/*.zip
 
   doc-deploy-stable:

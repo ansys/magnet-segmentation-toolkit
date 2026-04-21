@@ -7,10 +7,10 @@
 #
 # Perform required imports.
 
+# +
+
 import shutil
 import tempfile
-
-# +
 from pathlib import Path
 
 from ansys.aedt.toolkits.common.utils import download_file
