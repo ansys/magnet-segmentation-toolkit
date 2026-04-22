@@ -8,9 +8,10 @@
 # Perform required imports.
 
 # +
-import os
+
 import shutil
 import tempfile
+from pathlib import Path
 
 from ansys.aedt.toolkits.common.utils import download_file
 
@@ -26,10 +27,10 @@ from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 # +
 URL_BASE = "https://raw.githubusercontent.com/ansys/example-data/master/toolkits/magnet_segmentation/"
 AEDT_PROJECT = "e9_eMobility_IPM_3D"
-URL = os.path.join(URL_BASE, AEDT_PROJECT + ".aedt")
+URL = str(Path(URL_BASE) / (AEDT_PROJECT + ".aedt"))
 
 temp_dir = tempfile.TemporaryDirectory(suffix=".ansys")
-active_project = os.path.join(temp_dir.name, AEDT_PROJECT + ".aedt")
+active_project = str(Path(temp_dir.name) / (AEDT_PROJECT + ".aedt"))
 download_file(URL, active_project)
 active_design = "e9_eMobility_IPM_3D_test"
 # -
