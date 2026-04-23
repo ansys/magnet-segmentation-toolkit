@@ -9,6 +9,50 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.9.0 <https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v0.9.0>`_ - April 23, 2026
+====================================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Fix vtk-osmesa install step
+          - `#283 <https://github.com/ansysmagnet-segmentation-toolkit/pull/283>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update changelog for v0.8.5
+          - `#276 <https://github.com/ansysmagnet-segmentation-toolkit/pull/276>`_
+
+        * - Update missing or outdated files
+          - `#286 <https://github.com/ansysmagnet-segmentation-toolkit/pull/286>`_
+
+        * - Pin versions of actions in GitHub workflow files with SHA
+          - `#288 <https://github.com/ansysmagnet-segmentation-toolkit/pull/288>`_
+
+        * - Add dependabot cooldown settings
+          - `#296 <https://github.com/ansysmagnet-segmentation-toolkit/pull/296>`_
+
+        * - Updates
+          - `#297 <https://github.com/ansysmagnet-segmentation-toolkit/pull/297>`_
+
+        * - Bump actions versions
+          - `#303 <https://github.com/ansysmagnet-segmentation-toolkit/pull/303>`_
+
+        * - Upload new ci_cd yml files
+          - `#305 <https://github.com/ansysmagnet-segmentation-toolkit/pull/305>`_
+
+
 `0.8.5 <https://github.com/ansys/magnet-segmentation-toolkit/releases/tag/v0.8.5>`_ - July 17, 2025
 ===================================================================================================
 
