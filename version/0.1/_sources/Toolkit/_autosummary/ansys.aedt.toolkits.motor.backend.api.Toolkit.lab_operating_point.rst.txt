@@ -1,0 +1,6 @@
+lab\_operating\_point
+=====================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.lab_operating_point

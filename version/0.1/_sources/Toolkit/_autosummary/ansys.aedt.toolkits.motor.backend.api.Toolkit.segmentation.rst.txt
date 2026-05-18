@@ -1,0 +1,6 @@
+segmentation
+============
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.segmentation

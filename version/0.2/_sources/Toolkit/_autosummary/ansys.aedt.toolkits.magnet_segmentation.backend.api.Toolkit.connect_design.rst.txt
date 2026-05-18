@@ -1,0 +1,6 @@
+connect\_design
+===============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: Toolkit.connect_design

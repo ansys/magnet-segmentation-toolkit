@@ -1,0 +1,64 @@
+﻿AEDTCommonToolkit
+=================
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+
+.. autoclass:: AEDTCommonToolkit
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      AEDTCommonToolkit.aedt_connected
+      
+      
+      AEDTCommonToolkit.aedt_sessions
+      
+      
+      AEDTCommonToolkit.connect_aedt
+      
+      
+      AEDTCommonToolkit.connect_design
+      
+      
+      AEDTCommonToolkit.get_design_names
+      
+      
+      AEDTCommonToolkit.get_properties
+      
+      
+      AEDTCommonToolkit.get_thread_status
+      
+      
+      AEDTCommonToolkit.installed_aedt_version
+      
+      
+      AEDTCommonToolkit.launch_aedt
+      
+      
+      AEDTCommonToolkit.open_project
+      
+      
+      AEDTCommonToolkit.release_aedt
+      
+      
+      AEDTCommonToolkit.save_project
+      
+      
+      AEDTCommonToolkit.set_properties
+      
+      
+      AEDTCommonToolkit.wait_to_be_idle
+      
+   
+   
+
+   
+   
+   

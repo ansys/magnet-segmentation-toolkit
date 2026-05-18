@@ -1,0 +1,6 @@
+launch\_aedt
+============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: Toolkit.launch_aedt
