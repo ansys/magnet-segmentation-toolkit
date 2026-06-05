@@ -5,7 +5,8 @@ on:
       - "v*.*.*"
 
 env:
-  MAIN_PYTHON_VERSION: '3.12'
+  MAIN_PYTHON_VERSION: '3.14'
+  TESTS_PYTHON_VERSIONS: '3.10'
   DOCUMENTATION_CNAME: 'magnet.segmentation.toolkit.docs.pyansys.com'
   LIBRARY_NAME: 'ansys-magnet-segmentation-toolkit'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -88,6 +89,7 @@ jobs:
           use-python-cache: false
           add-pdf-html-docs-as-assets: true
           check-links: false
+          group-dependencies-name: 'doc'
 
   smoke-tests:
     name: "Build and Smoke tests"
@@ -95,7 +97,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest, ubuntu-latest ]
-        python-version: [ '3.10', '3.11', '3.12', '3.13' ]
+        python-version: [ '3.10', '3.11', '3.12', '3.13', '3.14' ]
     runs-on: ${{ matrix.os }}
     needs: [actions-security]
     steps:
@@ -104,7 +106,7 @@ jobs:
           library-name: ${{ env.LIBRARY_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
-          whitelist-license-check: 'jeepney fpdf2 PySide6 PySide6_Addons PySide6_Essentials shiboken6'
+          whitelist-license-check: 'fpdf2 PySide6 PySide6_Addons PySide6_Essentials shiboken6'
 
   build-application-windows:
     name: "Build Application - Windows"
@@ -273,7 +275,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ env.TESTS_PYTHON_VERSIONS }}
 
       - name: Create Python venv
         run: |
@@ -285,7 +287,7 @@ jobs:
           .\.venv\Scripts\Activate.ps1
           python -m pip install --upgrade pip
           pip install --upgrade build wheel
-          pip install .[tests]
+          pip install --group tests .
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
@@ -302,14 +304,12 @@ jobs:
           python -m coverage xml -o .cov\total.xml
 
       - name: "Upload coverage results"
-        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION  }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           path: .cov/total-html
           name: html-total-coverage
 
       - name: "Upload coverage report to codecov"
-        if: ${{ matrix.python-version == env.MAIN_PYTHON_VERSION }}
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           name: windows-codecov-tests
@@ -335,7 +335,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ env.TESTS_PYTHON_VERSIONS }}
 
       - name: Create Python venv
         run: |
@@ -349,7 +349,7 @@ jobs:
           python -c "import sys; print(sys.executable)"
           python -m pip install --upgrade pip
           pip install --upgrade build wheel
-          pip install .[tests]
+          pip install --group tests .
           pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pytest-azurepipelines
 
       - name: AEDT Test
