@@ -8,15 +8,12 @@
 # Perform required imports.
 
 # +
-
 import shutil
 import tempfile
-from pathlib import Path
 
 from ansys.tools.common.example_download import download_manager
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
-
 # -
 
 # ## Initialize temporary folder and project settings
