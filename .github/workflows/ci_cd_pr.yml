@@ -339,19 +339,14 @@ jobs:
         with:
           python-version: ${{ env.TESTS_PYTHON_VERSIONS }}
 
-      - name: Create Python venv
-        run: |
-          python -m venv .venv
-          .\.venv\Scripts\Activate.ps1
+      - name: Set up uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: false
+          prune-cache: true
 
       - name: Install packages for testing
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          python -m pip install --upgrade pip
-          pip install --upgrade build wheel
-          pip install --group tests .
-        env:
-          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+        run: uv sync --frozen --group tests --no-dev
 
       - name: AEDT Test
         timeout-minutes: 10
@@ -399,20 +394,19 @@ jobs:
         with:
           python-version: ${{ env.TESTS_PYTHON_VERSIONS }}
 
-      - name: Create Python venv
-        run: |
-          python -m venv .venv_linux
+      - name: Set up uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: false
+          prune-cache: true
 
       - name: Install packages for testing
-        run: |
-          source .venv_linux/bin/activate
-          python -m pip install pip -U
-          pip install --group tests .
+        run: uv sync --frozen --group tests --no-dev
 
       - name: AEDT Test
         timeout-minutes: 10
         run: |
-          source .venv_linux/bin/activate
+          source .venv/bin/activate
           pytest -v -m aedt
 
   build-library:

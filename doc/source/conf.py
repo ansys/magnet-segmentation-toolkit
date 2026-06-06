@@ -255,30 +255,6 @@ nbsphinx_custom_formats = {
 
 exclude_patterns = ["_build", "sphinx_boogergreen_theme_1", "Thumbs.db", ".DS_Store", "*.txt", "conf.py"]
 
-# if os.name != "posix":
-#     extensions.append("sphinx_gallery.gen_gallery")
-
-#     sphinx_gallery_conf = {
-#         # # convert rst to md for ipynb
-#         "pypandoc": True,
-#         # path to your examples scripts
-#         "examples_dirs": ["../../examples/"],
-#         # path where to save gallery generated examples
-#         "gallery_dirs": ["examples"],
-#         # Pattern to search for examples files
-#         "filename_pattern": r"\.py",
-#         # Remove the "Download all examples" button from the top level gallery
-#         "download_all_examples": False,
-#         # Sort gallery examples by file name instead of number of lines (default)
-#         "within_subsection_order": FileNameSortKey,
-#         # directory where function granular galleries are stored
-#         "backreferences_dir": None,
-#         # Modules for which function level galleries are created.  In
-#         "doc_module": "ansys-legacy",
-#         "ignore_pattern": "flycheck*",
-#         "thumbnail_size": (350, 350),
-#     }
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
