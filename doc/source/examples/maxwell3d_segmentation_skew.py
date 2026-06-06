@@ -14,6 +14,7 @@ import tempfile
 from ansys.tools.common.example_download import download_manager
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
+
 # -
 
 # ## Initialize temporary folder and project settings
