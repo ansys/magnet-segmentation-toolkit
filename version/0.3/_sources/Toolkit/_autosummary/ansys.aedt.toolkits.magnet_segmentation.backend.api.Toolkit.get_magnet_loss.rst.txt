@@ -1,0 +1,6 @@
+get\_magnet\_loss
+=================
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: Toolkit.get_magnet_loss

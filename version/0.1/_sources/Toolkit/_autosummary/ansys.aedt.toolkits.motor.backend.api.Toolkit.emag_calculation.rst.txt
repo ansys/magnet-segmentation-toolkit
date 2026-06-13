@@ -1,0 +1,6 @@
+emag\_calculation
+=================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.emag_calculation

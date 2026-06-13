@@ -1,0 +1,6 @@
+open\_project
+=============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+
+.. automethod:: AEDTCommonToolkit.open_project
