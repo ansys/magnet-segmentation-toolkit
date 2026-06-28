@@ -58,10 +58,8 @@ doc = [
     "sphinx-autobuild",
     "sphinx-copybutton",
     "sphinx_design",
-    "pyvista[jupyter]",
 ]
 tests = [
-    "flask",
     "pytest",
     "pytest-cov",
     "pytest-qt",
