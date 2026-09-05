@@ -1,0 +1,6 @@
+apply\_skew
+===========
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: Toolkit.apply_skew

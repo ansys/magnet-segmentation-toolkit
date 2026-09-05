@@ -1,0 +1,6 @@
+launch\_aedt
+============
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.api_generic
+
+.. automethod:: ToolkitGeneric.launch_aedt

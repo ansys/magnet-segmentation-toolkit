@@ -1,0 +1,6 @@
+get\_thread\_status
+===================
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+
+.. automethod:: AEDTCommonToolkit.get_thread_status

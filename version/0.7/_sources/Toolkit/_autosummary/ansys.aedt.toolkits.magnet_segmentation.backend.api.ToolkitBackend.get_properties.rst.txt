@@ -1,0 +1,6 @@
+get\_properties
+===============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: ToolkitBackend.get_properties
