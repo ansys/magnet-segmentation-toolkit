@@ -1,0 +1,6 @@
+close\_motorcad
+===============
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.close_motorcad

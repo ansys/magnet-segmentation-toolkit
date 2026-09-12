@@ -1,0 +1,6 @@
+export\_settings
+================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.export_settings
