@@ -1,0 +1,6 @@
+load\_mcad\_file
+================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.load_mcad_file

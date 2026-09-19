@@ -1,0 +1,6 @@
+thermal\_calculation
+====================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.thermal_calculation
