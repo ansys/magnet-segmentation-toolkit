@@ -1,0 +1,109 @@
+﻿Toolkit
+=======
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. autoclass:: Toolkit
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Toolkit.aedt_connected
+      
+      
+      Toolkit.aedt_sessions
+      
+      
+      Toolkit.analyze_model
+      
+      
+      Toolkit.apply_skew
+      
+      
+      Toolkit.build_lab_model
+      
+      
+      Toolkit.close_motorcad
+      
+      
+      Toolkit.connect_aedt
+      
+      
+      Toolkit.connect_design
+      
+      
+      Toolkit.emag_calculation
+      
+      
+      Toolkit.export_settings
+      
+      
+      Toolkit.get_design_names
+      
+      
+      Toolkit.get_losses_from_reports
+      
+      
+      Toolkit.get_properties
+      
+      
+      Toolkit.get_thread_status
+      
+      
+      Toolkit.init_motorcad
+      
+      
+      Toolkit.installed_aedt_version
+      
+      
+      Toolkit.lab_operating_point
+      
+      
+      Toolkit.lab_performance_calculation
+      
+      
+      Toolkit.launch_aedt
+      
+      
+      Toolkit.load_mcad_file
+      
+      
+      Toolkit.open_project
+      
+      
+      Toolkit.release_aedt
+      
+      
+      Toolkit.save
+      
+      
+      Toolkit.save_project
+      
+      
+      Toolkit.segmentation
+      
+      
+      Toolkit.set_emag_model
+      
+      
+      Toolkit.set_properties
+      
+      
+      Toolkit.set_thermal
+      
+      
+      Toolkit.thermal_calculation
+      
+   
+   
+
+   
+   
+   
