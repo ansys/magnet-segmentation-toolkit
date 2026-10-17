@@ -1,0 +1,76 @@
+﻿Toolkit
+=======
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. autoclass:: Toolkit
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Toolkit.aedt_connected
+      
+      
+      Toolkit.aedt_sessions
+      
+      
+      Toolkit.apply_skew
+      
+      
+      Toolkit.connect_aedt
+      
+      
+      Toolkit.connect_design
+      
+      
+      Toolkit.get_design_names
+      
+      
+      Toolkit.get_magnet_loss
+      
+      
+      Toolkit.get_properties
+      
+      
+      Toolkit.get_thread_status
+      
+      
+      Toolkit.installed_aedt_version
+      
+      
+      Toolkit.launch_aedt
+      
+      
+      Toolkit.open_project
+      
+      
+      Toolkit.release_aedt
+      
+      
+      Toolkit.save_project
+      
+      
+      Toolkit.segmentation
+      
+      
+      Toolkit.set_properties
+      
+      
+      Toolkit.validate_and_analyze
+      
+      
+      Toolkit.wait_to_be_idle
+      
+   
+   
+
+   
+   
+   

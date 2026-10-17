@@ -1,0 +1,6 @@
+set\_emag\_model
+================
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.api
+
+.. automethod:: Toolkit.set_emag_model
