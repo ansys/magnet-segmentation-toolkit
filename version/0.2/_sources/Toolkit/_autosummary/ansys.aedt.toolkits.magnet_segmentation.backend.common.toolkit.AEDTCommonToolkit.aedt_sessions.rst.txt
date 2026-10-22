@@ -1,0 +1,6 @@
+aedt\_sessions
+==============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+
+.. automethod:: AEDTCommonToolkit.aedt_sessions

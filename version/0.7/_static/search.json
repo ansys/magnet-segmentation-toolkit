@@ -1,0 +1,583 @@
+[
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.export_aedt_model",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.export_aedt_model.html#export_aedt_model",
+        "title": "export_aedt_model",
+        "section": "export_aedt_model",
+        "text": "Export the model in the OBJ format and then encode the file if the encode parameter is enabled.\nList of objects to export. The default is None, in which case\nevery model object except 3D, vacuum, and air objects are exported.\nFull path of the exported OBJ file.\nThe default is None, in which case the file is exported in the working directory.\nWhether to export the model as a single object. The default is True.\nIf False, the model is exported as a list of objects for each object.\nWhether to export air and vacuum objects. The default is False.\nWhether to encode the file. The default is True.\nList of exported OBJ files or encoded data.\nexport_aedt_model\nencode\npython:list\noptional\nNone\npython:str\noptional\nNone\noptional\nTrue\nFalse\noptional\nFalse\noptional\nTrue\npython:list\npython:dict"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.export_aedt_model",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.export_aedt_model.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.export_aedt_model",
+        "title": "export_aedt_model > export_aedt_model > export_aedt_model",
+        "section": "export_aedt_model > export_aedt_model",
+        "text": "ToolkitBackend.export_aedt_model(obj_list=None, export_path=None, export_as_single_objects=True, air_objects=False, encode=True)\n\nExport the model in the OBJ format and then encode the file if the encode parameter is enabled.\n\nParameters\n\nobj_list\n\npython:list, optional\n\nList of objects to export. The default is None, in which case\nevery model object except 3D, vacuum, and air objects are exported.\n\nexport_path\n\npython:str, optional\n\nFull path of the exported OBJ file.\nThe default is None, in which case the file is exported in the working directory.\n\nexport_as_single_objects\n\nbool, optional\n\nWhether to export the model as a single object. The default is True.\nIf False, the model is exported as a list of objects for each object.\n\nair_objects\n\nbool, optional\n\nWhether to export air and vacuum objects. The default is False.\n\nencode\n\nbool, optional\n\nWhether to encode the file. The default is True.\n\nReturns\n\npython:list or python:dict\n\nList of exported OBJ files or encoded data.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "getting_started/user_guide",
+        "href": "getting_started/user_guide.html#user-guide",
+        "title": "User guide",
+        "section": "User guide",
+        "text": "You have multiple options for installing and launching the Magnet Segmentation Toolkit:\nYou can install the toolkit directly in AEDT using an installation script and then launch it as a wizard.\nFor more information, see install-toolkit-AEDT.\nYou can install the toolkit from a Python console and then launch the Magnet Segmentation Toolkit.\nFor more information, see install_toolkit_console_ui.\nYou can install the toolkit from a Python console and then use the toolkit’s APIs.\nFor more information, see install_toolkit_console_api.\nUser guide"
+    },
+    {
+        "objectID": "getting_started/user_guide",
+        "href": "getting_started/user_guide.html#install-toolkit-in-aedt-and-launch-the-magnet-segmentation-toolkit",
+        "title": "User guide > Install toolkit in AEDT and launch the Magnet Segmentation Toolkit",
+        "section": "Install toolkit in AEDT and launch the Magnet Segmentation Toolkit",
+        "text": "You can install the Magnet Segmentation Toolkit directly in AEDT using the base\ninterpreter from the AEDT installation.\nFrom Install from a Python file,\nfollow the steps to install PyAEDT inside AEDT.\nIn AEDT, select Tools > Toolkit > PyAEDT > Console to load the PyAEDT console:\nIn the PyAEDT console, run these commands to add the Magnet Segmentation Toolkit as a wizard (toolkit UI) in AEDT:\nIn the AEDT toolbar, click the MagnetSegmentationWizard button to open this wizard in AEDT:\nThe wizard is connected directly to the AEDT session. For wizard usage information, see ../Toolkit/ui.\nInstall toolkit in AEDT and launch the Magnet Segmentation Toolkit"
+    },
+    {
+        "objectID": "getting_started/user_guide",
+        "href": "getting_started/user_guide.html#install-toolkit-from-python-console-and-launch-the-magnet-segmentation-toolkit",
+        "title": "User guide > Install toolkit from Python console and launch the Magnet Segmentation Toolkit",
+        "section": "Install toolkit from Python console and launch the Magnet Segmentation Toolkit",
+        "text": "You can install the Magnet Segmentation Toolkit in a specific Python environment from the AEDT console.\nIf you have an existing virtual environment, skip step 1.\nIf you have already installed the toolkit in your virtual environment, skip step 2.\nCreate a fresh-clean Python environment and activate it:\nInstall the toolkit from the GitHub repository:\nLaunch the Magnet Segmentation Toolkit Wizard:\nOn the AEDT Settings tab, create an AEDT session or connect to an existing one:\nFor wizard usage information, see ../Toolkit/ui.\nInstall toolkit from Python console and launch the Magnet Segmentation Toolkit"
+    },
+    {
+        "objectID": "getting_started/user_guide",
+        "href": "getting_started/user_guide.html#install-toolkit-from-python-console-and-use-the-toolkits-apis",
+        "title": "User guide > Install toolkit from Python console and use the toolkit’s APIs",
+        "section": "Install toolkit from Python console and use the toolkit’s APIs",
+        "text": "You can install the toolkit in a specific Python environment and use the toolkit’s APIs.\nThe code example included in this topic shows how to use the APIs at the model level\nand toolkit level.\nIf you have an existing virtual environment, skip step 1.\nIf you have already installed the toolkit in your virtual environment, skip step 2.\nCreate a fresh-clean Python environment and activate it:\nInstall the toolkit from the GitHub repository:\nOpen a Python console in your virtual environment:\nFrom the command line, use the toolkit to perform segmentation and skew.\nUse the toolkit’s APIs to import the toolkit, launch AEDT,\nopen a 3D motor model, and then segment and skew this model in Maxwell 3D:\nFor descriptions of the APIs available for the Magnet Segmentation Toolkit, see ../Toolkit/index.\nInstall toolkit from Python console and use the toolkit’s APIs"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.serialize_obj_base64",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.serialize_obj_base64.html#serialize_obj_base64",
+        "title": "serialize_obj_base64",
+        "section": "serialize_obj_base64",
+        "text": "Encode a bytes-like object.\nPath to the file to serialize.\nEncoded data.\nserialize_obj_base64\npython:str\nbytes"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.serialize_obj_base64",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.serialize_obj_base64.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.serialize_obj_base64",
+        "title": "serialize_obj_base64 > serialize_obj_base64 > serialize_obj_base64",
+        "section": "serialize_obj_base64 > serialize_obj_base64",
+        "text": "static ToolkitBackend.serialize_obj_base64(file_path)\n\nEncode a bytes-like object.\n\nParameters\n\nfile_path\n\npython:str\n\nPath to the file to serialize.\n\nReturns\n\nbytes\n\nEncoded data.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.aedt_sessions",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.aedt_sessions.html#aedt_sessions",
+        "title": "aedt_sessions",
+        "section": "aedt_sessions",
+        "text": "Get information for the active AEDT sessions.\nDictionary of AEDT process IDs (PIDS) {AEDT PID: port}.\nIf the PID corresponds to a COM session, the port is set to -1.\naedt_sessions\npython:dict\n-1"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.aedt_sessions",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.aedt_sessions.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.aedt_sessions",
+        "title": "aedt_sessions > aedt_sessions > aedt_sessions",
+        "section": "aedt_sessions > aedt_sessions",
+        "text": "ToolkitBackend.aedt_sessions() -> Dict[int, int]\n\nGet information for the active AEDT sessions.\n\nReturns\n\npython:dict\n\nDictionary of AEDT process IDs (PIDS) {AEDT PID: port}.\nIf the PID corresponds to a COM session, the port is set to -1.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import Common\n>>> toolkit_api = Common()\n>>> toolkit_api.aedt_sessions()\n{pid1: grpc_port1, pid2: grpc_port2}\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_thread_status",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_thread_status.html#get_thread_status",
+        "title": "get_thread_status",
+        "section": "get_thread_status",
+        "text": "Get the toolkit thread status.\nTrue when active, False when inactive.\nget_thread_status\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_thread_status",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_thread_status.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_thread_status",
+        "title": "get_thread_status > get_thread_status > get_thread_status",
+        "section": "get_thread_status > get_thread_status",
+        "text": "ToolkitBackend.get_thread_status() -> ToolkitThreadStatus\n\nGet the toolkit thread status.\n\nReturns\n\nbool\n\nTrue when active, False when inactive.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import Common\n>>> toolkit_api = Common()\n>>> toolkit_api.get_thread_status()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/api",
+        "href": "Toolkit/api.html#toolkit-api",
+        "title": "Toolkit API",
+        "section": "Toolkit API",
+        "text": "The Toolkit API contains the ToolkitBackend class, which provides methods for\ncontrolling the toolkit workflow. In addition to methods for creating an AEDT\nsession or connecting to an existing AEDT session, this API provides methods for\nautomating the segmentation and skew of a 3D motor.\nBoth segmentation and skew of a 3D motor have requirements on the AEDT\nactive project. Ensure that the active design meets these requirements:\nFor segmentation, SymmetryFactor and HalfAxial design settings must be defined.\nFor skew, Shaft must be the name of the shaft.\nToolkitBackend()\nProvides methods for controlling the toolkit workflow.\nThis code shows how to use the ToolkitBackend class:\nToolkit API\nToolkitBackend\nSymmetryFactor\nHalfAxial\nShaft\nToolkitBackend\nToolkitBackend"
+    },
+    {
+        "objectID": "Contributing",
+        "href": "Contributing.html#contribute",
+        "title": "Contribute",
+        "section": "Contribute",
+        "text": "Overall guidance on contributing to a PyAnsys repository appears in\nContributing\nin the PyAnsys developer’s guide. Ensure that you are thoroughly familiar\nwith this guide before attempting to contribute to PyAEDT or its toolkits.\nThe following contribution information is specific to the Magnet Segmentation\nToolkit.\nContribute"
+    },
+    {
+        "objectID": "Contributing",
+        "href": "Contributing.html#clone-the-repository",
+        "title": "Contribute > Clone the repository",
+        "section": "Clone the repository",
+        "text": "To clone and install the latest version of the Magnet Segmentation Toolkit in\ndevelopment mode, run these commands:\nClone the repository"
+    },
+    {
+        "objectID": "Contributing",
+        "href": "Contributing.html#post-issues",
+        "title": "Contribute > Post issues",
+        "section": "Post issues",
+        "text": "Use the Magnet Segmentation Toolkit Issues page\nto create issues to report bugs and request new features.\nPost issues"
+    },
+    {
+        "objectID": "Contributing",
+        "href": "Contributing.html#view-documentation",
+        "title": "Contribute > View documentation",
+        "section": "View documentation",
+        "text": "Documentation for the latest stable release is hosted at Magnet Segmentation Toolkit Documentation.\nIn the upper right corner of the documentation’s title bar, there is an option for switching from viewing\nthe documentation for the latest stable release to viewing the documentation for the development version\nor previously released versions.\nView documentation"
+    },
+    {
+        "objectID": "Contributing",
+        "href": "Contributing.html#adhere-to-code-style",
+        "title": "Contribute > Adhere to code style",
+        "section": "Adhere to code style",
+        "text": "The Magnet Segmentation Toolkit is compliant with PyAnsys code style. It uses the tool\npre-commit to check the code style.\nYou can install and activate this tool with these commands:\nYou can also install this as a pre-commit hook with this command:\nThis way, it’s not possible for you to push code that fails the style checks:\nAdhere to code style"
+    },
+    {
+        "objectID": "Contributing",
+        "href": "Contributing.html#maximum-line-length",
+        "title": "Contribute > Maximum line length",
+        "section": "Maximum line length",
+        "text": "Best practice is to keep the line length at or below 120 characters for code\nand comments. Lines longer than this might not display properly on some terminals\nand tools or might be difficult to follow.\nMaximum line length"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.set_properties",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.set_properties.html#set_properties",
+        "title": "set_properties",
+        "section": "set_properties",
+        "text": "Assign the passed data to the internal data model.\nDictionary containing the properties to update.\nTuple indicating the success status and a message.\nset_properties\npython:dict\npython:tuple\npython:str"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.set_properties",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.set_properties.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.set_properties",
+        "title": "set_properties > set_properties > set_properties",
+        "section": "set_properties > set_properties",
+        "text": "ToolkitBackend.set_properties(data: Dict[str, Any])\n\nAssign the passed data to the internal data model.\n\nParameters\n\ndata\n\npython:dict\n\nDictionary containing the properties to update.\n\nReturns\n\npython:tuple[bool, python:str]\n\nTuple indicating the success status and a message.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import Common\n>>> toolkit_api = Common()\n>>> value2 = 2\n>>> toolkit_api.set_properties({\"property1\": \"value1\", \"property2\": value2})\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.release_aedt",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.release_aedt.html#release_aedt",
+        "title": "release_aedt",
+        "section": "release_aedt",
+        "text": "Release AEDT.\nWhether to close the AEDT projects that are open in the session.\nThe default is True.\nWhether to close the active AEDT session on exiting AEDT.\nThe default is True.\nTrue when successful, False when failed.\nrelease_aedt\noptional\nTrue\noptional\nTrue\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.release_aedt",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.release_aedt.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.release_aedt",
+        "title": "release_aedt > release_aedt > release_aedt",
+        "section": "release_aedt > release_aedt",
+        "text": "ToolkitBackend.release_aedt(close_projects=False, close_on_exit=False)\n\nRelease AEDT.\n\nParameters\n\nclose_projects\n\nbool, optional\n\nWhether to close the AEDT projects that are open in the session.\nThe default is True.\n\nclose_on_exit\n\nbool, optional\n\nWhether to close the active AEDT session on exiting AEDT.\nThe default is True.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.release_aedt(True, True)\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.is_aedt_connected",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.is_aedt_connected.html#is_aedt_connected",
+        "title": "is_aedt_connected",
+        "section": "is_aedt_connected",
+        "text": "Check if AEDT is connected.\nTuple indicating the connection status and a message.\nis_aedt_connected\npython:tuple\npython:str"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.is_aedt_connected",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.is_aedt_connected.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.is_aedt_connected",
+        "title": "is_aedt_connected > is_aedt_connected > is_aedt_connected",
+        "section": "is_aedt_connected > is_aedt_connected",
+        "text": "ToolkitBackend.is_aedt_connected() -> Tuple[bool, str]\n\nCheck if AEDT is connected.\n\nReturns\n\npython:tuple[bool, python:str]\n\nTuple indicating the connection status and a message.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.connect_aedt()\n>>> toolkit_api.is_aedt_connected()\n(True, \"toolkit connected to process <process_id> on Grpc <grpc_port>\")\n>>> toolkit_api.release_aedt()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#maxwell-3d-segmentation",
+        "title": "Maxwell 3D segmentation",
+        "section": "Maxwell 3D segmentation",
+        "text": "This example shows how to use the Magnet Segmentation Toolkit to segment your AEDT motor model.\nMaxwell 3D segmentation"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#perform-required-imports",
+        "title": "Maxwell 3D segmentation > Perform required imports",
+        "section": "Perform required imports",
+        "text": "Perform required imports.\nPerform required imports"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#initialize-temporary-folder-and-project-settings",
+        "title": "Maxwell 3D segmentation > Initialize temporary folder and project settings",
+        "section": "Initialize temporary folder and project settings",
+        "text": "Initialize a temporary folder to copy the input file into and specify project settings.\nInitialize temporary folder and project settings"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#initialize-toolkit",
+        "title": "Maxwell 3D segmentation > Initialize toolkit",
+        "section": "Initialize toolkit",
+        "text": "Initialize the toolkit.\nInitialize toolkit"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#get-toolkit-properties",
+        "title": "Maxwell 3D segmentation > Get toolkit properties",
+        "section": "Get toolkit properties",
+        "text": "Get the toolkit properties.\nGet toolkit properties"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#initialize-properties",
+        "title": "Maxwell 3D segmentation > Initialize properties",
+        "section": "Initialize properties",
+        "text": "Initialize a dictionary of properties.\nInitialize properties"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#set-non-graphical-mode",
+        "title": "Maxwell 3D segmentation > Set non-graphical mode",
+        "section": "Set non-graphical mode",
+        "text": "Set non-graphical mode. The default value is False.\nSet non-graphical mode\nFalse"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#set-properties",
+        "title": "Maxwell 3D segmentation > Set properties",
+        "section": "Set properties",
+        "text": "Set properties.\nSet properties"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#initialize-aedt",
+        "title": "Maxwell 3D segmentation > Initialize AEDT",
+        "section": "Initialize AEDT",
+        "text": "Launch a new AEDT session.\nInitialize AEDT"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#open-project",
+        "title": "Maxwell 3D segmentation > Open project",
+        "section": "Open project",
+        "text": "Open the project.\nOpen project"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#connect-design",
+        "title": "Maxwell 3D segmentation > Connect design",
+        "section": "Connect design",
+        "text": "Connect or create a new design.\nConnect design"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#apply-segmentation",
+        "title": "Maxwell 3D segmentation > Apply segmentation",
+        "section": "Apply segmentation",
+        "text": "Apply segmentation and assign the relative coordinate system.\nApply segmentation"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#apply-skew-angle",
+        "title": "Maxwell 3D segmentation > Apply skew angle",
+        "section": "Apply skew angle",
+        "text": "Apply the skew angle to rotor slices.\nApply skew angle"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#validate-and-analyze-design",
+        "title": "Maxwell 3D segmentation > Validate and analyze design",
+        "section": "Validate and analyze design",
+        "text": "Uncomment the line to validate and analyze the design.\ntoolkit.validate_and_analyze()\nValidate and analyze design"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#create-magnet-loss-report",
+        "title": "Maxwell 3D segmentation > Create magnet loss report",
+        "section": "Create magnet loss report",
+        "text": "Uncomment the lines to create magnet loss report and compute average value.\nmagnet_loss = toolkit.get_magnet_loss() print(f”Average magnet loss: {magnet_loss} W”)\nCreate magnet loss report"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#save-and-release-aedt",
+        "title": "Maxwell 3D segmentation > Save and release AEDT",
+        "section": "Save and release AEDT",
+        "text": "Save and release AEDT.\ntoolkit.save_project()\nSave and release AEDT"
+    },
+    {
+        "objectID": "examples/maxwell3d_segmentation_skew",
+        "href": "examples/maxwell3d_segmentation_skew.html#remove-temporary-folder",
+        "title": "Maxwell 3D segmentation > Remove temporary folder",
+        "section": "Remove temporary folder",
+        "text": "Remove the temporary folder.\nRemove temporary folder"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.wait_to_be_idle",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.wait_to_be_idle.html#wait_to_be_idle",
+        "title": "wait_to_be_idle",
+        "section": "wait_to_be_idle",
+        "text": "Wait for the thread to be idle and ready to accept a new task.\nTime out in seconds. The default is 60.\nwait_to_be_idle\npython:int\noptional\n60"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.wait_to_be_idle",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.wait_to_be_idle.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.wait_to_be_idle",
+        "title": "wait_to_be_idle > wait_to_be_idle > wait_to_be_idle",
+        "section": "wait_to_be_idle > wait_to_be_idle",
+        "text": "ToolkitBackend.wait_to_be_idle(timeout: int = 60) -> bool\n\nWait for the thread to be idle and ready to accept a new task.\n\nParameters\n\ntimeout\n\npython:int, optional\n\nTime out in seconds. The default is 60.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.get_design_names()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#magnet-segmentation-toolkit-documentation-070",
+        "title": "Magnet Segmentation Toolkit documentation 0.7.0",
+        "section": "Magnet Segmentation Toolkit documentation 0.7.0",
+        "text": "The Magnet Segmentation Toolkit is a Python wrapper for automating the segmentation\nand skew of inner rotor interior permanent magnet (IPM) and surface permanent magnet (SPM)\nmotors using Ansys Electronics Desktop (AEDT). You can launch this toolkit\nfrom the AEDT UI or launch it directly from a Python console.\nLearn more about the Magnet Segmentation Toolkit and how to install it.\nUnderstand how to use the Magnet Segmentation Toolkit Wizard.\nUnderstand the APIs available for the Magnet Segmentation Toolkit.\nExplore example that shows how to use the Magnet Segmentation Toolkit to\nperform many different types of operations.\nLearn how to contribute to the Magnet Segmentation Toolkit codebase or documentation.\nMagnet Segmentation Toolkit documentation 0.7.0"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#indices-and-tables",
+        "title": "Magnet Segmentation Toolkit documentation 0.7.0 > Indices and tables",
+        "section": "Indices and tables",
+        "text": "genindex\nmodindex\nsearch\nIndices and tables"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.open_project",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.open_project.html#open_project",
+        "title": "open_project",
+        "section": "open_project",
+        "text": "Open an AEDT project.\nFull path to the project.\nTrue when successful, False when failed.\nopen_project\npython:str\noptional\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.open_project",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.open_project.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.open_project",
+        "title": "open_project > open_project > open_project",
+        "section": "open_project > open_project",
+        "text": "ToolkitBackend.open_project(project_name=None)\n\nOpen an AEDT project.\n\nParameters\n\nproject_name\n\npython:str, optional\n\nFull path to the project.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.open_project(\"path/to/file\")\n>>> toolkit_api.release_aedt()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "changelog",
+        "href": "changelog.html#release-notes",
+        "title": "Release notes",
+        "section": "Release notes",
+        "text": "This document contains the release notes for the project.\nRelease notes"
+    },
+    {
+        "objectID": "changelog",
+        "href": "changelog.html#070---may-08-2025",
+        "title": "Release notes > 0.7.0 - May 08, 2025",
+        "section": "0.7.0 - May 08, 2025",
+        "text": "Update CONTRIBUTORS.md with the latest contributors\n#243\nFix release artifacts\n#248\nCreate installer\n#245\n0.7.0 - May 08, 2025\nCONTRIBUTORS.md"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.installed_aedt_version",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.installed_aedt_version.html#installed_aedt_version",
+        "title": "installed_aedt_version",
+        "section": "installed_aedt_version",
+        "text": "Get the installed AEDT versions.\nList of installed AEDT versions.\ninstalled_aedt_version\npython:list"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.installed_aedt_version",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.installed_aedt_version.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.installed_aedt_version",
+        "title": "installed_aedt_version > installed_aedt_version > installed_aedt_version",
+        "section": "installed_aedt_version > installed_aedt_version",
+        "text": "static ToolkitBackend.installed_aedt_version() -> List\n\nGet the installed AEDT versions.\n\nReturns\n\npython:list\n\nList of installed AEDT versions.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import Common\n>>> toolkit_api = Common()\n>>> toolkit_api.installed_aedt_version()\n[\"2024.2\", \"2025.1\"]\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_thread",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_thread.html#launch_thread",
+        "title": "launch_thread",
+        "section": "launch_thread",
+        "text": "Launch the thread.\nlaunch_thread"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_thread",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_thread.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_thread",
+        "title": "launch_thread > launch_thread > launch_thread",
+        "section": "launch_thread > launch_thread",
+        "text": "ToolkitBackend.launch_thread(process, *args) -> ThreadManager\n\nLaunch the thread.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "getting_started/installation",
+        "href": "getting_started/installation.html#installation",
+        "title": "Installation",
+        "section": "Installation",
+        "text": "The Magnet Segmentation Toolkit can be installed like any other open source package.\nYou can either install both the backend and user interface (UI) methods or install only the backend methods.\nTo install both the backend and UI methods, run this command:\nIf you only need the common API, install only the backend methods with this\ncommand:\nTo install the toolkit offline, you can use a wheelhouse.\nOn the Releases page, you can find the wheelhouses for\nspecific release in its asserts and download the wheelhouse.\nYou can then install the toolkit with this command:\nYou can also install the toolkit using the toolkit manager. For more information,\nsee the toolkit manager (TBD).\nInstallation"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_properties",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_properties.html#get_properties",
+        "title": "get_properties",
+        "section": "get_properties",
+        "text": "Get the toolkit properties.\nDictionary containing the toolkit properties.\nget_properties\npython:dict"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_properties",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_properties.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_properties",
+        "title": "get_properties > get_properties > get_properties",
+        "section": "get_properties > get_properties",
+        "text": "ToolkitBackend.get_properties() -> Dict[str, str]\n\nGet the toolkit properties.\n\nReturns\n\npython:dict\n\nDictionary containing the toolkit properties.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import Common\n>>> toolkit_api = Common()\n>>> toolkit_api.get_properties()\n{\"property1\": value1, \"property2\": value2}\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_aedt",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_aedt.html#connect_aedt",
+        "title": "connect_aedt",
+        "section": "connect_aedt",
+        "text": "Connect to an existing AEDT session.\nTrue when successful, False when failed.\nconnect_aedt\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_aedt",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_aedt.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_aedt",
+        "title": "connect_aedt > connect_aedt > connect_aedt",
+        "section": "connect_aedt > connect_aedt",
+        "text": "ToolkitBackend.connect_aedt() -> bool\n\nConnect to an existing AEDT session.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.connect_aedt()\n>>> toolkit_api.release_aedt()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_aedt",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_aedt.html#launch_aedt",
+        "title": "launch_aedt",
+        "section": "launch_aedt",
+        "text": "Launch AEDT.\nThis method is launched in a thread if gRPC is enabled. AEDT is released once it is opened.\nTrue when successful, False when failed.\nlaunch_aedt\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_aedt",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_aedt.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.launch_aedt",
+        "title": "launch_aedt > launch_aedt > launch_aedt",
+        "section": "launch_aedt > launch_aedt",
+        "text": "ToolkitBackend.launch_aedt() -> bool\n\nLaunch AEDT.\n\nThis method is launched in a thread if gRPC is enabled. AEDT is released once it is opened.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.save_project",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.save_project.html#save_project",
+        "title": "save_project",
+        "section": "save_project",
+        "text": "Save the project.\nThis method uses the properties to get the project path. This method is launched in a thread.\nPath of the AEDT project. The default value is None, in which\ncase the current file is overwritten.\nRelease PyAEDT object. The default value is True.\nReturns True if the connection is successful, False otherwise.\nsave_project\npython:str\noptional\nNone\noptional\nTrue\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.save_project",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.save_project.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.save_project",
+        "title": "save_project > save_project > save_project",
+        "section": "save_project > save_project",
+        "text": "ToolkitBackend.save_project(project_path=None, release_aedt=True)\n\nSave the project.\n\nThis method uses the properties to get the project path. This method is launched in a thread.\n\nParameters\n\nproject_path\n\npython:str, optional\n\nPath of the AEDT project. The default value is None, in which\ncase the current file is overwritten.\n\nrelease_aedt\n\nbool, optional\n\nRelease PyAEDT object. The default value is True.\n\nReturns\n\nbool\n\nReturns True if the connection is successful, False otherwise.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.connect_aedt()\n>>> toolkit_api.save_project()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "getting_started/index",
+        "href": "getting_started/index.html#getting-started",
+        "title": "Getting started",
+        "section": "Getting started",
+        "text": "This section explains how to install the AEDT Magnet Segmentation Toolkit.\nLearn how to install the AEDT Magnet Segmentation Toolkit.\nLearn more about the Magnet Segmentation wizard and how to use it.\nGetting started"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_project_name",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_project_name.html#get_project_name",
+        "title": "get_project_name",
+        "section": "get_project_name",
+        "text": "Get the project name from the project path.\nProject name.\nget_project_name\npython:str"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_project_name",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_project_name.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_project_name",
+        "title": "get_project_name > get_project_name > get_project_name",
+        "section": "get_project_name > get_project_name",
+        "text": "static ToolkitBackend.get_project_name(project_path) -> str\n\nGet the project name from the project path.\n\nReturns\n\npython:str\n\nProject name.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.segmentation",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.segmentation.html#segmentation",
+        "title": "segmentation",
+        "section": "segmentation",
+        "text": "Apply object segmentation.\nThis method automatically segments the rotor, rotor pockets, and magnets.\nThis method only works if the AEDT active project has\nSymmetryFactor and HalfAxial design settings defined.\nTrue when successful, False when failed.\nsegmentation\nSymmetryFactor\nHalfAxial\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.segmentation",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.segmentation.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.segmentation",
+        "title": "segmentation > segmentation > segmentation",
+        "section": "segmentation > segmentation",
+        "text": "ToolkitBackend.segmentation()\n\nApply object segmentation.\n\nThis method automatically segments the rotor, rotor pockets, and magnets.\n\nThis method only works if the AEDT active project has\nSymmetryFactor and HalfAxial design settings defined.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/ui",
+        "href": "Toolkit/ui.html#ui-reference",
+        "title": "UI reference",
+        "section": "UI reference",
+        "text": "This section describes how to use the Magnet Segmentation Toolkit Wizard, which requires an installed\nand licensed copy of AEDT. It assumes that you have already launched the wizard from\neither the AEDT menu or AEDT console. For toolkit installation and wizard launching information,\nsee these topics:\ninstall-toolkit-AEDT\ninstall_toolkit_console_ui\nOn the Settings tab, specify settings for either creating an AEDT session or\nconnecting to an existing AEDT session and click Connect to AEDT.\nChoose project and design from the drop-down list in the Home menu.\nClick on the Segmentation menu to specify segmentation settings.\nAt the bottom of the tab, click Perform Segmentation and then Apply Skew.\nClick on the Post-processing menu to select the desired setup to validate and analyze.\nClick on Get Magnet Loss to automatically compute Magnet Loss in AEDT.\nThe report will be automatically generated in AEDT.\nClick on the Design menu to visualize within the toolkit the segmented magnets.\nThe wizard has a progress circle and a logger box where you can see the status of\nevery operation. Every operation must wait for the previous operation to release the toolkit.\nUI reference"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.validate_and_analyze",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.validate_and_analyze.html#validate_and_analyze",
+        "title": "validate_and_analyze",
+        "section": "validate_and_analyze",
+        "text": "Validate and analyze the design.\nTrue when successful, False when failed.\nvalidate_and_analyze\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.validate_and_analyze",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.validate_and_analyze.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.validate_and_analyze",
+        "title": "validate_and_analyze > validate_and_analyze > validate_and_analyze",
+        "section": "validate_and_analyze > validate_and_analyze",
+        "text": "ToolkitBackend.validate_and_analyze()\n\nValidate and analyze the design.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.apply_skew",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.apply_skew.html#apply_skew",
+        "title": "apply_skew",
+        "section": "apply_skew",
+        "text": "Apply skew to rotor slices.\nThis method only works if the active AEDT project contains a shaft\nnamed Shaft.\nTrue when successful, False when failed.\napply_skew\nShaft\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.apply_skew",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.apply_skew.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.apply_skew",
+        "title": "apply_skew > apply_skew > apply_skew",
+        "section": "apply_skew > apply_skew",
+        "text": "ToolkitBackend.apply_skew()\n\nApply skew to rotor slices.\n\nThis method only works if the active AEDT project contains a shaft\nnamed Shaft.\n\nReturns\n\nbool\n\nTrue when successful, False when failed.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.html#toolkitbackend",
+        "title": "ToolkitBackend",
+        "section": "ToolkitBackend",
+        "text": "Provides methods for controlling the toolkit workflow.\nThis class provides methods for creating an AEDT session, connecting to an existing\nAEDT session, and automating the segmentation and skew of a 3D motor model.\nToolkitBackend.aedt_sessions()\nGet information for the active AEDT sessions.\nToolkitBackend.apply_skew()\nApply skew to rotor slices.\nToolkitBackend.connect_aedt()\nConnect to an existing AEDT session.\nToolkitBackend.connect_design([app_name])\nConnect to an application design.\nToolkitBackend.export_aedt_model([obj_list, ...])\nExport the model in the OBJ format and then encode the file if the encode parameter is enabled.\nToolkitBackend.get_design_names()\nGet the design names for a specific project.\nToolkitBackend.get_magnet_loss()\nGet magnet loss.\nToolkitBackend.get_project_name(project_path)\nGet the project name from the project path.\nToolkitBackend.get_properties()\nGet the toolkit properties.\nToolkitBackend.get_thread_status()\nGet the toolkit thread status.\nToolkitBackend.installed_aedt_version()\nGet the installed AEDT versions.\nToolkitBackend.is_aedt_connected()\nCheck if AEDT is connected.\nToolkitBackend.launch_aedt()\nLaunch AEDT.\nToolkitBackend.launch_thread(process, *args)\nLaunch the thread.\nToolkitBackend.open_project([project_name])\nOpen an AEDT project.\nToolkitBackend.release_aedt([...])\nRelease AEDT.\nToolkitBackend.save_project([project_path, ...])\nSave the project.\nToolkitBackend.segmentation()\nApply object segmentation.\nToolkitBackend.serialize_obj_base64(file_path)\nEncode a bytes-like object.\nToolkitBackend.set_properties(data)\nAssign the passed data to the internal data model.\nToolkitBackend.validate_and_analyze()\nValidate and analyze the design.\nToolkitBackend.wait_to_be_idle([timeout])\nWait for the thread to be idle and ready to accept a new task.\nToolkitBackend\nToolkitBackend.aedt_sessions\nToolkitBackend.apply_skew\nToolkitBackend.connect_aedt\nToolkitBackend.connect_design\nToolkitBackend.export_aedt_model\nencode\nToolkitBackend.get_design_names\nToolkitBackend.get_magnet_loss\nToolkitBackend.get_project_name\nToolkitBackend.get_properties\nToolkitBackend.get_thread_status\nToolkitBackend.installed_aedt_version\nToolkitBackend.is_aedt_connected\nToolkitBackend.launch_aedt\nToolkitBackend.launch_thread\nToolkitBackend.open_project\nToolkitBackend.release_aedt\nToolkitBackend.save_project\nToolkitBackend.segmentation\nToolkitBackend.serialize_obj_base64\nToolkitBackend.set_properties\nToolkitBackend.validate_and_analyze\nToolkitBackend.wait_to_be_idle"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend",
+        "title": "ToolkitBackend > ToolkitBackend > ToolkitBackend",
+        "section": "ToolkitBackend > ToolkitBackend",
+        "text": "class ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend\n\nProvides methods for controlling the toolkit workflow.\n\nThis class provides methods for creating an AEDT session, connecting to an existing\nAEDT session, and automating the segmentation and skew of a 3D motor model.\n\nExamples\n\n>>> from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend\n>>> toolkit = ToolkitBackend()\n>>> toolkit.launch_aedt()\n\n!! processed by numpydoc !!\n\nMethods\n\n\n\n\n\n\n\nToolkitBackend.aedt_sessions()\n\nGet information for the active AEDT sessions.\n\nToolkitBackend.apply_skew()\n\nApply skew to rotor slices.\n\nToolkitBackend.connect_aedt()\n\nConnect to an existing AEDT session.\n\nToolkitBackend.connect_design([app_name])\n\nConnect to an application design.\n\nToolkitBackend.export_aedt_model([obj_list, ...])\n\nExport the model in the OBJ format and then encode the file if the encode parameter is enabled.\n\nToolkitBackend.get_design_names()\n\nGet the design names for a specific project.\n\nToolkitBackend.get_magnet_loss()\n\nGet magnet loss.\n\nToolkitBackend.get_project_name(project_path)\n\nGet the project name from the project path.\n\nToolkitBackend.get_properties()\n\nGet the toolkit properties.\n\nToolkitBackend.get_thread_status()\n\nGet the toolkit thread status.\n\nToolkitBackend.installed_aedt_version()\n\nGet the installed AEDT versions.\n\nToolkitBackend.is_aedt_connected()\n\nCheck if AEDT is connected.\n\nToolkitBackend.launch_aedt()\n\nLaunch AEDT.\n\nToolkitBackend.launch_thread(process, *args)\n\nLaunch the thread.\n\nToolkitBackend.open_project([project_name])\n\nOpen an AEDT project.\n\nToolkitBackend.release_aedt([...])\n\nRelease AEDT.\n\nToolkitBackend.save_project([project_path, ...])\n\nSave the project.\n\nToolkitBackend.segmentation()\n\nApply object segmentation.\n\nToolkitBackend.serialize_obj_base64(file_path)\n\nEncode a bytes-like object.\n\nToolkitBackend.set_properties(data)\n\nAssign the passed data to the internal data model.\n\nToolkitBackend.validate_and_analyze()\n\nValidate and analyze the design.\n\nToolkitBackend.wait_to_be_idle([timeout])\n\nWait for the thread to be idle and ready to accept a new task.\n\n"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_magnet_loss",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_magnet_loss.html#get_magnet_loss",
+        "title": "get_magnet_loss",
+        "section": "get_magnet_loss",
+        "text": "Get magnet loss.\ndictionary containing the average magnet loss value when successful, False when failed.\nget_magnet_loss\npython:dict\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_magnet_loss",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_magnet_loss.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_magnet_loss",
+        "title": "get_magnet_loss > get_magnet_loss > get_magnet_loss",
+        "section": "get_magnet_loss > get_magnet_loss",
+        "text": "ToolkitBackend.get_magnet_loss()\n\nGet magnet loss.\n\nReturns\n\npython:dict\n\ndictionary containing the average magnet loss value when successful, False when failed.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_design_names",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_design_names.html#get_design_names",
+        "title": "get_design_names",
+        "section": "get_design_names",
+        "text": "Get the design names for a specific project.\nThe first design name returned is the active design.\nList of design names.\nget_design_names\npython:list"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_design_names",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_design_names.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.get_design_names",
+        "title": "get_design_names > get_design_names > get_design_names",
+        "section": "get_design_names > get_design_names",
+        "text": "ToolkitBackend.get_design_names() -> List[str]\n\nGet the design names for a specific project.\n\nThe first design name returned is the active design.\n\nReturns\n\npython:list\n\nList of design names.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.get_design_names()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_design",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_design.html#connect_design",
+        "title": "connect_design",
+        "section": "connect_design",
+        "text": "Connect to an application design.\nIf a design exists, this method uses the active project and design. If a design does not exist,\nthis method creates a design of the specified type. If no application is specified, the default is \"HFSS\".\nAEDT application name. Options are:\n\"Circuit\"\n\"EMIT\"\n\"HFSS\"\n\"HFSS3DLayout\"\n\"Icepak\"\n\"Maxwell2D\"\n\"Maxwell3D\"\n\"Q2D\"\n\"Q3D\"\n\"Rmxprt\"\n\"TwinBuilder\"\n\"Mechanical\"\nReturns True if the connection to a design is successful, False otherwise.\nconnect_design\n\"HFSS\"\npython:str\n\"Circuit\"\n\"EMIT\"\n\"HFSS\"\n\"HFSS3DLayout\"\n\"Icepak\"\n\"Maxwell2D\"\n\"Maxwell3D\"\n\"Q2D\"\n\"Q3D\"\n\"Rmxprt\"\n\"TwinBuilder\"\n\"Mechanical\"\nTrue\nFalse"
+    },
+    {
+        "objectID": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_design",
+        "href": "Toolkit/_autosummary/ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_design.html#ansys.aedt.toolkits.magnet_segmentation.backend.api.ToolkitBackend.connect_design",
+        "title": "connect_design > connect_design > connect_design",
+        "section": "connect_design > connect_design",
+        "text": "ToolkitBackend.connect_design(app_name: str | None = None)\n\nConnect to an application design.\n\nIf a design exists, this method uses the active project and design. If a design does not exist,\nthis method creates a design of the specified type. If no application is specified, the default is \"HFSS\".\n\nParameters\n\napp_name\n\npython:str\n\nAEDT application name. Options are:\n\n\"Circuit\"\n\n\"EMIT\"\n\n\"HFSS\"\n\n\"HFSS3DLayout\"\n\n\"Icepak\"\n\n\"Maxwell2D\"\n\n\"Maxwell3D\"\n\n\"Q2D\"\n\n\"Q3D\"\n\n\"Rmxprt\"\n\n\"TwinBuilder\"\n\n\"Mechanical\"\n\nReturns\n\nbool\n\nReturns True if the connection to a design is successful, False otherwise.\n\nExamples\n\n>>> from ansys.aedt.toolkits.common.backend.api import AEDTCommon\n>>> toolkit_api = AEDTCommon()\n>>> toolkit_api.launch_aedt()\n>>> toolkit_api.wait_to_be_idle()\n>>> toolkit_api.connect_design()\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "examples/index",
+        "href": "examples/index.html#examples",
+        "title": "Examples",
+        "section": "Examples",
+        "text": "End-to-end example show how you can use the Magnet Segmentation Toolkit.\nExamples"
+    },
+    {
+        "objectID": "Toolkit/index",
+        "href": "Toolkit/index.html#api-reference",
+        "title": "API reference",
+        "section": "API reference",
+        "text": "This section provides descriptions of the available API for the Magnet\nSegmentation Toolkit:\nToolkit API: Contains the ToolkitBackend class, which provides methods for\ncontrolling the toolkit workflow. In addition to methods for creating an AEDT\nsession or connecting to an existing AEDT session, this API provides methods\nfor automating the segmentation and skew of a 3D motor.\nBoth segmentation and skew of a 3D motor have requirements on the AEDT\nactive project. Ensure that the active design meets these requirements:\nFor segmentation, SymmetryFactor and HalfAxial design settings must be defined.\nFor skew, Shaft must be the name of the shaft.\nAPI reference\nToolkitBackend\nSymmetryFactor\nHalfAxial\nShaft"
+    }
+]
