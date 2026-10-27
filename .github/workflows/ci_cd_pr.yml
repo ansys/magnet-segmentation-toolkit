@@ -204,7 +204,7 @@ jobs:
           python installer/extract_version.py
 
       - name: Freeze application
-        run: pyinstaller frozen.spec
+        run: uv run --no-sync pyinstaller frozen.spec
 
       - name: Install NSIS
         run: choco install nsis -y
@@ -312,7 +312,7 @@ jobs:
       - name: Freeze application
         env:
           ADD_PYTHON_BINARIES: true
-        run: pyinstaller frozen.spec
+        run: uv run --no-sync pyinstaller frozen.spec
 
       - name: Setup and Copy Linux files for packaging
         run: |
