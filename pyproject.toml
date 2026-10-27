@@ -28,9 +28,6 @@ classifiers = [
 
 dependencies = [
     "ansys-aedt-toolkits-common[all]",
-    # TODO: Remove the ansys-tools-common dependency once a new release of the
-    # toolkit commons contains it.
-    "ansys-tools-common",
 ]
 
 [project.optional-dependencies]
