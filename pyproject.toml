@@ -28,9 +28,6 @@ classifiers = [
 
 dependencies = [
     "ansys-aedt-toolkits-common[all]",
-    # TODO: Remove the ansys-tools-common dependency once a new release of the
-    # toolkit commons contains it.
-    "ansys-tools-common",
 ]
 
 [project.optional-dependencies]
@@ -40,9 +37,9 @@ freeze = [
 
 [dependency-groups]
 dev = [
-  "prek==0.4.5",
   { include-group = "doc" },
   { include-group = "tests" },
+  { include-group = "quality" },
 ]
 doc = [
     "ansys-sphinx-theme>=1.8.2",
@@ -64,6 +61,11 @@ tests = [
     "pytest-cov",
     "pytest-qt",
 ]
+quality = [
+  "prek",
+  "ruff",
+  "ty",
+]
 
 [tool.flit.module]
 name = "ansys.aedt.toolkits.magnet_segmentation"
@@ -74,6 +76,23 @@ Issues = "https://github.com/ansys/magnet-segmentation-toolkit.git/issues"
 Documentation = "https://magnet.segmentation.toolkit.docs.pyansys.com/"
 Releases = "https://github.com/ansys/magnet-segmentation-toolkit/releases"
 Changelog = "https://github.com/ansys/magnet-segmentation-toolkit/blob/main/doc/source/changelog.rst"
+
+[tool.uv]
+default-groups = []
+exclude-newer = "1 week"
+
+[tool.uv.exclude-newer-package]
+ansys-pythonnet = false
+ansys-sphinx-theme = false
+ansys-tools-common = false
+ansys-tools-visualization-interface = false
+pyedb = false
+# NOTE: Temporary override to allow the certifi release fixing the eMudhra/emSign CA incident
+# (GHSA-6q48-6c7w-9gw2) despite the rolling exclude-newer window.
+# TODO: Remove this line after 2026-10-26, once "1 week" covers certifi 2026.10.19, then run `uv lock`.
+certifi = false
+prek = false
+grpcio = false
 
 [tool.ruff]
 line-length = 120
