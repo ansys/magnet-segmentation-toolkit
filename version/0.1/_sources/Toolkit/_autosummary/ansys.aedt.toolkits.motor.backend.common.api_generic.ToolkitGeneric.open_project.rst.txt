@@ -1,0 +1,6 @@
+open\_project
+=============
+
+.. currentmodule:: ansys.aedt.toolkits.motor.backend.common.api_generic
+
+.. automethod:: ToolkitGeneric.open_project
