@@ -1,0 +1,6 @@
+save\_project
+=============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: ToolkitBackend.save_project
