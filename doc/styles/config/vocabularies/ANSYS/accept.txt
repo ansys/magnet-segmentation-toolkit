@@ -28,6 +28,8 @@ pytest
 [Pp]yinstaller
 [Pp]ytools
 run_toolkit
+Synopsys
+synopsys
 uv
 venv
 walkthrough
