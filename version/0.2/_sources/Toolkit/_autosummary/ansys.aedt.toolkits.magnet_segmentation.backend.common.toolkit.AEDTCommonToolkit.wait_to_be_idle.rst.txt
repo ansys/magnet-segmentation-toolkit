@@ -1,0 +1,6 @@
+wait\_to\_be\_idle
+==================
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+
+.. automethod:: AEDTCommonToolkit.wait_to_be_idle
