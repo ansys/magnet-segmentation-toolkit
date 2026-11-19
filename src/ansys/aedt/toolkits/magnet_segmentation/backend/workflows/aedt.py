@@ -302,7 +302,7 @@ class AEDTWorkflow(AEDTCommon):
             )
             self.release_aedt(False, False)
             return True
-        except:
+        except Exception:
             return False
 
     def validate_and_analyze(self):
@@ -345,7 +345,7 @@ class AEDTWorkflow(AEDTCommon):
             avg_w = avg.to("W")
             self.release_aedt(False, False)
             return str(avg_w)
-        except:
+        except Exception:
             return False
 
     def _get_rotor_pockets(self, vacuum_objects):

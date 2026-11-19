@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""
-Modules extending the toolkit workflow.
-By default it focuses on aedt.
+"""Modules extending the toolkit workflow.
+
+By default, it focuses on AEDT.
 """
