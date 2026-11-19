@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
@@ -22,9 +23,9 @@
 # SOFTWARE.
 
 # import os.path
-import requests
 from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
+import requests
 
 """Default timeout for requests in seconds."""
 DEFAULT_REQUESTS_TIMEOUT = 120
