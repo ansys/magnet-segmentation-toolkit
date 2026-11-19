@@ -27,7 +27,7 @@ AEDT_PROJECT = "e9_eMobility_IPM_3D"
 
 temp_dir = tempfile.TemporaryDirectory(suffix=".ansys")
 active_design = "e9_eMobility_IPM_3D_test"
-active_project = download_manager.download_file("e9_eMobility_IPM_3D.aedt", "toolkits/common", temp_folder)
+active_project = download_manager.download_file("e9_eMobility_IPM_3D.aedt", "toolkits/common", temp_dir.name)
 # -
 
 # ## Initialize toolkit

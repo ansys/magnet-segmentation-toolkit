@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +25,7 @@
 """Data classes used to store data related to UI settings."""
 
 import os
+from pathlib import Path
 import sys
 
 from ansys.aedt.toolkits.common.ui.models import UIProperties
@@ -43,17 +45,18 @@ class Properties(UIProperties, validate_assignment=True):
 
 frontend_properties = {}
 
-installation_folder = os.path.dirname(ansys.aedt.toolkits.magnet_segmentation.__file__)
+installation_folder = Path(ansys.aedt.toolkits.magnet_segmentation.__file__).parent
 
 if "PYAEDT_TOOLKIT_CONFIG_DIR" in os.environ:
-    local_dir = os.path.abspath(os.environ["PYAEDT_TOOLKIT_CONFIG_DIR"])
-    frontend_config = os.path.join(local_dir, "frontend_properties.toml")
-    if os.path.isfile(frontend_config):
-        with open(frontend_config, mode="rb") as file_handler:
+    local_dir = Path(os.environ["PYAEDT_TOOLKIT_CONFIG_DIR"]).resolve()
+    frontend_config = local_dir / "frontend_properties.toml"
+    if frontend_config.is_file():
+        with frontend_config.open(mode="rb") as file_handler:
             frontend_properties = tomllib.load(file_handler)
 
-if not frontend_properties and os.path.isfile(os.path.join(installation_folder, "ui/frontend_properties.toml")):
-    with open(os.path.join(installation_folder, "ui/frontend_properties.toml"), mode="rb") as file_handler:
+bundled_config = installation_folder / "ui" / "frontend_properties.toml"
+if not frontend_properties and bundled_config.is_file():
+    with bundled_config.open(mode="rb") as file_handler:
         frontend_properties = tomllib.load(file_handler)
 
 toolkit_property = {}

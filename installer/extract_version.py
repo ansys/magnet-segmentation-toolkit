@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
-#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
+from pathlib import Path
 import re
 
 try:
-    THIS_PATH = os.path.dirname(__file__)
+    THIS_PATH = Path(__file__).parent
 except NameError:
-    THIS_PATH = os.getcwd()
+    THIS_PATH = Path.cwd()
 
-with open("src/ansys/aedt/toolkits/magnet_segmentation/__init__.py", "r") as f:
+with Path("src/ansys/aedt/toolkits/magnet_segmentation/__init__.py").open("r") as f:
     content = f.read()
 
 match = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', content)
 if match:
-    with open(os.path.join(THIS_PATH, "VERSION"), "w") as v:
+    with (THIS_PATH / "VERSION").open("w") as v:
         v.write(match.group(1))

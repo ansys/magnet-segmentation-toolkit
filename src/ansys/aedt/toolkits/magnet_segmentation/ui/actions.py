@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,9 +23,11 @@
 # SOFTWARE.
 
 # import os.path
-import requests
+from pathlib import Path
+
 from ansys.aedt.toolkits.common.ui.actions_generic import FrontendGeneric
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
+import requests
 
 """Default timeout for requests in seconds."""
 DEFAULT_REQUESTS_TIMEOUT = 120
@@ -40,24 +43,24 @@ class Frontend(FrontendGeneric):
         An AEDT file is compatible with the segmentation call if it has defined
         design settings 'SymmetryFactor' and 'HalfAxial'.
         """
-        SYMMETRY_FACTOR_BEGIN = "VariableProp('SymmetryFactor'"
-        HALF_AXIAL_BEGIN = "VariableProp('HalfAxial'"
-        found_data = {target: False for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]}
+        symmetry_factor_begin = "VariableProp('SymmetryFactor'"
+        half_axial_begin = "VariableProp('HalfAxial'"
+        found_data = {target: False for target in [symmetry_factor_begin, half_axial_begin]}
 
         be_properties = self.get_properties()
         if not be_properties.active_project:
             return
         else:
-            with open(be_properties.active_project, "r") as file:
+            with Path(be_properties.active_project).open("r") as file:
                 lines = file.readlines()
             lines = [line.strip() for line in lines]
         be_properties = self.get_properties()
-        with open(be_properties.active_project, "r") as file:
+        with Path(be_properties.active_project).open("r") as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
 
         for line in lines:
-            for target in [SYMMETRY_FACTOR_BEGIN, HALF_AXIAL_BEGIN]:
+            for target in [symmetry_factor_begin, half_axial_begin]:
                 if line.lstrip().startswith(target):
                     found_data[target] = True
 
@@ -74,15 +77,15 @@ class Frontend(FrontendGeneric):
         An AEDT file is compatible with the skew call if the name of the shaft
         is 'Shaft'.
         """
-        SHAFT_LINES = ["$begin 'GeometryPart'", "$begin 'Attributes'", "Name='Shaft'"]
+        shaft_lines = ["$begin 'GeometryPart'", "$begin 'Attributes'", "Name='Shaft'"]
 
         be_properties = self.get_properties()
-        with open(be_properties.active_project, "r") as file:
+        with Path(be_properties.active_project).open("r") as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
 
-        for i in range(len(lines) - len(SHAFT_LINES) + 1):
-            if lines[i : i + len(SHAFT_LINES)] == SHAFT_LINES:
+        for i in range(len(lines) - len(shaft_lines) + 1):
+            if lines[i : i + len(shaft_lines)] == shaft_lines:
                 logger.debug("Selected AEDT file is compatible with skew call")
                 return True
 
