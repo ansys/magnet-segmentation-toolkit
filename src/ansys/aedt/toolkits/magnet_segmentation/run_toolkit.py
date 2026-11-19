@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
@@ -53,12 +54,8 @@ def get_ui():
     return ui
 
 
-from ansys.aedt.toolkits.magnet_segmentation.backend.models import (
-    properties as backend_properties,
-)
-from ansys.aedt.toolkits.magnet_segmentation.ui.models import (
-    properties as frontend_properties,
-)
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties as backend_properties
+from ansys.aedt.toolkits.magnet_segmentation.ui.models import properties as frontend_properties
 from ansys.aedt.toolkits.magnet_segmentation.ui.splash import show_splash_screen
 
 # # Set environment variables

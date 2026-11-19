@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
@@ -42,8 +43,8 @@ directory as this module. An example of the contents of local_config.json
 import json
 import os
 
-import pytest
 from ansys.aedt.core import settings
+import pytest
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
