@@ -16,7 +16,7 @@ exclude: |
 repos:
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: 7c55798a78262d14b2074abf623d8a992ebb70d4  # frozen: v0.16.2
+  rev: 7c55798a78262d14b2074abf623d8a992ebb70d4  # frozen: v0.17.4
   hooks:
     - id: ruff-check
     - id: ruff-format
@@ -37,7 +37,7 @@ repos:
 
 # Validate GitHub workflow files
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: f805888065fdb6162e1f800e50bb9460cbd223d6  # frozen: 0.38.2
+  rev: f805888065fdb6162e1f800e50bb9460cbd223d6  # frozen: 0.39.0
   hooks:
     - id: check-github-workflows
 
@@ -54,7 +54,7 @@ repos:
     - id: check-pre-commit-ci-config
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: ad4e7598809ad98cde5aaf52d80040c7ac56e7cf  # frozen: v0.8.0
+  rev: ad4e7598809ad98cde5aaf52d80040c7ac56e7cf  # frozen: v0.8.1
   hooks:
     - id: add-license-headers
       files: '(src|tests|installer)/.*\.(py)'
