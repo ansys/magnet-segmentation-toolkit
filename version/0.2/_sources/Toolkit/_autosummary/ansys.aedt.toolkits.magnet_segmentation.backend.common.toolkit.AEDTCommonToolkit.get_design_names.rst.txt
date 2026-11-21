@@ -1,0 +1,6 @@
+get\_design\_names
+==================
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.common.toolkit
+
+.. automethod:: AEDTCommonToolkit.get_design_names
