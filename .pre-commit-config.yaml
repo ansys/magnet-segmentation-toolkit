@@ -23,7 +23,7 @@ repos:
         - --line-length=120
 
 - repo: https://github.com/pycqa/isort
-  rev: a333737ed43df02b18e6c95477ea1b285b3de15a  # frozen: 8.0.1
+  rev: 9f905615631c545f5aea2516508109350d1d2f7d  # frozen: 9.0.2
   hooks:
     - id: isort
       name: isort (python)
