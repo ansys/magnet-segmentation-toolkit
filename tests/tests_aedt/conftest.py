@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""
-AEDT Motor Test Configuration Module
-------------------------------------
+"""Configure AEDT motor tests.
 
-Description
-===========
-This module contains the configuration and fixture for the pytest-based tests for AEDT.
+This module contains configuration and fixtures for pytest-based tests for AEDT.
 
 The default configuration can be changed by placing a file called local_config.json in the same
 directory as this module. An example of the contents of local_config.json
@@ -40,10 +37,10 @@ directory as this module. An example of the contents of local_config.json
 """
 
 import json
-import os
+from pathlib import Path
 
-import pytest
 from ansys.aedt.core import settings
+import pytest
 
 from ansys.aedt.toolkits.magnet_segmentation.backend.api import ToolkitBackend
 
@@ -62,10 +59,10 @@ config = {
 }
 
 # Check for the local config file, override defaults if found
-local_path = os.path.dirname(os.path.realpath(__file__))
-local_config_file = os.path.join(local_path, "local_config.json")
-if os.path.exists(local_config_file):
-    with open(local_config_file) as f:
+local_path = Path(__file__).resolve().parent
+local_config_file = local_path / "local_config.json"
+if local_config_file.exists():
+    with local_config_file.open() as f:
         local_config = json.load(f)
     config.update(local_config)
 
@@ -77,7 +74,7 @@ settings.non_graphical = config["non_graphical"]
 
 @pytest.fixture(scope="class")
 def aedtapp(common_temp_dir):
-    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME}.aedt")
+    aedt_file = str(common_temp_dir / "input_data" / f"{PROJECT_NAME}.aedt")
     toolkit = ToolkitBackend()
     new_properties = {
         "aedt_version": config["desktop_version"],
@@ -100,7 +97,7 @@ def aedtapp(common_temp_dir):
 
 @pytest.fixture(scope="class")
 def aedtapp_segmented(common_temp_dir):
-    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_SEGMENTED}.aedt")
+    aedt_file = str(common_temp_dir / "input_data" / f"{PROJECT_NAME_SEGMENTED}.aedt")
     toolkit = ToolkitBackend()
     new_properties = {
         "aedt_version": config["desktop_version"],
@@ -123,7 +120,7 @@ def aedtapp_segmented(common_temp_dir):
 
 @pytest.fixture(scope="class")
 def aedtapp_to_analyze(common_temp_dir):
-    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_TO_ANALYZE}.aedt")
+    aedt_file = str(common_temp_dir / "input_data" / f"{PROJECT_NAME_TO_ANALYZE}.aedt")
     toolkit = ToolkitBackend()
     new_properties = {
         "aedt_version": config["desktop_version"],
@@ -146,7 +143,7 @@ def aedtapp_to_analyze(common_temp_dir):
 
 @pytest.fixture(scope="class")
 def aedtapp_analyzed(common_temp_dir):
-    aedt_file = os.path.join(common_temp_dir, "input_data", f"{PROJECT_NAME_ANALYZED}.aedtz")
+    aedt_file = str(common_temp_dir / "input_data" / f"{PROJECT_NAME_ANALYZED}.aedtz")
     toolkit = ToolkitBackend()
     new_properties = {
         "aedt_version": config["desktop_version"],

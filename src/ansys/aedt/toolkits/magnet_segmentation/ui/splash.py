@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os.path
+from pathlib import Path
 import sys
 
 from PySide6.QtCore import Qt
@@ -39,7 +40,7 @@ def show_splash_screen():
         splash_dim = 800
     else:
         splash_dim = 600
-    splash_pix = QPixmap(os.path.join(os.path.dirname(__file__), "splash.png"))
+    splash_pix = QPixmap(Path(__file__).parent / "splash.png")
     scaled_pix = splash_pix.scaled(splash_dim, splash_dim, Qt.KeepAspectRatio, Qt.SmoothTransformation)
     splash = QSplashScreen(scaled_pix, Qt.WindowStaysOnTopHint)
     splash.setWindowFlag(Qt.FramelessWindowHint)

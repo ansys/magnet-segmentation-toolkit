@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +36,10 @@ from ansys.aedt.toolkits.common.utils import is_server_running
 from ansys.aedt.toolkits.common.utils import process_desktop_properties
 from ansys.aedt.toolkits.common.utils import wait_for_server
 
+from ansys.aedt.toolkits.magnet_segmentation.backend.models import properties as backend_properties
+from ansys.aedt.toolkits.magnet_segmentation.ui.models import properties as frontend_properties
+from ansys.aedt.toolkits.magnet_segmentation.ui.splash import show_splash_screen
+
 backend = None
 ui = None
 
@@ -52,14 +57,6 @@ def get_ui():
         ui = importlib.import_module("ansys.aedt.toolkits.magnet_segmentation.ui.run_frontend")
     return ui
 
-
-from ansys.aedt.toolkits.magnet_segmentation.backend.models import (
-    properties as backend_properties,
-)
-from ansys.aedt.toolkits.magnet_segmentation.ui.models import (
-    properties as frontend_properties,
-)
-from ansys.aedt.toolkits.magnet_segmentation.ui.splash import show_splash_screen
 
 # # Set environment variables
 # os.environ["AEDT_TOOLKIT_HIGH_RESOLUTION"] = "False"

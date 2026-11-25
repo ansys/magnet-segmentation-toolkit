@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -301,7 +302,7 @@ class AEDTWorkflow(AEDTCommon):
             )
             self.release_aedt(False, False)
             return True
-        except:
+        except Exception:
             return False
 
     def validate_and_analyze(self):
@@ -344,7 +345,7 @@ class AEDTWorkflow(AEDTCommon):
             avg_w = avg.to("W")
             self.release_aedt(False, False)
             return str(avg_w)
-        except:
+        except Exception:
             return False
 
     def _get_rotor_pockets(self, vacuum_objects):

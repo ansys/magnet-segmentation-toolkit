@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" """
+"""Test fixtures for the magnet segmentation toolkit."""
 
-import os
-import shutil
 from pathlib import Path
+import shutil
 
 import pytest
 
@@ -33,8 +33,8 @@ import pytest
 @pytest.fixture(scope="session")
 def common_temp_dir(tmp_path_factory):
     tmp_dir = tmp_path_factory.mktemp("test_motor_workflows", numbered=True)
-    src_folder = os.path.join(Path(__file__).parent, "input_data")
-    shutil.copytree(src_folder, os.path.join(tmp_dir, "input_data"))
+    src_folder = Path(__file__).parent / "input_data"
+    shutil.copytree(src_folder, tmp_dir / "input_data")
 
     yield tmp_dir
 

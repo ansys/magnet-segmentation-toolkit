@@ -7,16 +7,18 @@ updates:
       day: "saturday"
       time: "06:00"
       timezone: "Europe/Paris"
-      direct-dependencies:
+    # A dependency is placed in the FIRST group whose patterns match it,
+    # so the catch-all "transitive" group must stay last.
+    groups:
+      runtime:
         applies-to: version-updates
         patterns:
           - "ansys-aedt-toolkits-common"
           - "pyinstaller"
-      dev-dependencies:
+      doc:
         applies-to: version-updates
         patterns:
-          # Documentation
-          - "ansys-sphinx-theme>=1.8.2"
+          - "ansys-sphinx-theme"
           - "ipython"
           - "ipywidgets"
           - "jupyterlab"
@@ -25,21 +27,22 @@ updates:
           - "numpydoc"
           - "pypandoc"
           - "recommonmark"
-          - "Sphinx"
-          - "sphinx-autobuild"
-          - "sphinx-copybutton"
-          - "sphinx_design"
-          # Lint / Format
+          - "sphinx*" # Sphinx, sphinx-autobuild, sphinx-copybutton, sphinx_design
+      tests:
+        applies-to: version-updates
+        patterns:
+          - "pytest*" # pytest, pytest-cov, pytest-qt
+      quality:
+        applies-to: version-updates
+        patterns:
           - "prek"
-          # Test
-          - "pytest"
-          - "pytest-cov"
-          - "pytest-qt"
-      transitive-dependencies:
+          - "ruff"
+          - "ty"
+      transitive:
         applies-to: version-updates
         patterns:
           - "*"
-      security-updates:
+      security:
         applies-to: security-updates
         patterns:
           - "*"
@@ -54,44 +57,10 @@ updates:
     labels:
       - "maintenance"
       - "dependencies"
-      - dependency-name: "ipython"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "ipywidgets"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "jupyterlab"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "jupytext"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "nbsphinx"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "numpydoc"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pypandoc"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "recommonmark"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "Sphinx"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "sphinx-autobuild"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "sphinx-copybutton"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "sphinx_design"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "prek"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pytest"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pytest-cov"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pytest-qt"
-        update-types: ["version-update:semver-patch"]
     commit-message:
       prefix: "BUILD(uv)"
 
   - package-ecosystem: "github-actions"
-    cooldown:
-      default-days: 10 # Fallback cooldown if no specific rule applies
     directory: "/"
     schedule:
       interval: "weekly"
@@ -161,21 +130,5 @@ updates:
     labels:
       - "maintenance"
       - "dependencies"
-      - dependency-name: "https://github.com/adamchainz/blacken-docs"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/codespell-project/codespell"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/pre-commit/pre-commit-hooks"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/pre-commit-ci/pre-commit-ci-config"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/psf/black"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/PyCQA/flake8"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/pycqa/isort"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "https://github.com/python-jsonschema/check-jsonschema"
-        update-types: ["version-update:semver-patch"]
     commit-message:
       prefix: "BUILD(pre-commit)"

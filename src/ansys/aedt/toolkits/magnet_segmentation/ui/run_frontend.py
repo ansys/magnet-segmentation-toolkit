@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +41,7 @@ from ansys.aedt.toolkits.common.ui.common_windows.settings_column import Setting
 from ansys.aedt.toolkits.common.ui.logger_handler import logger
 
 # Common windows
-from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import (
-    MainWindowLayout,
-)
+from ansys.aedt.toolkits.common.ui.main_window.main_window_layout import MainWindowLayout
 
 # PySide6 Widgets
 from PySide6.QtWidgets import QApplication
@@ -53,15 +52,9 @@ from ansys.aedt.toolkits.magnet_segmentation.ui.actions import Frontend
 from ansys.aedt.toolkits.magnet_segmentation.ui.windows.help.help_menu import HelpMenu
 
 # New windows
-from ansys.aedt.toolkits.magnet_segmentation.ui.windows.plot_design.plot_design_menu import (
-    PlotDesignMenu,
-)
-from ansys.aedt.toolkits.magnet_segmentation.ui.windows.post_processing.post_processing_menu import (
-    PostProcessingMenu,
-)
-from ansys.aedt.toolkits.magnet_segmentation.ui.windows.segmentation.segmentation_menu import (
-    SegmentationMenu,
-)
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.plot_design.plot_design_menu import PlotDesignMenu
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.post_processing.post_processing_menu import PostProcessingMenu
+from ansys.aedt.toolkits.magnet_segmentation.ui.windows.segmentation.segmentation_menu import SegmentationMenu
 
 # Backend URL and port
 if len(sys.argv) == 3:

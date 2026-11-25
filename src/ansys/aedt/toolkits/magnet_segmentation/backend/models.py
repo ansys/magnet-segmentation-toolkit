@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +28,7 @@ The settings include common AEDT toolkit settings and settings associated
 to motor workflows in AEDT.
 """
 
-import os
+from pathlib import Path
 import sys
 
 from ansys.aedt.toolkits.common.backend.models import CommonProperties
@@ -61,9 +62,9 @@ class Properties(CommonProperties, AEDTProperties, validate_assignment=True):
 
 
 backend_properties = {}
-if os.path.expanduser(os.path.join(os.path.dirname(__file__), "aedt_properties.toml")):
-    with open(os.path.join(os.path.dirname(__file__), "aedt_properties.toml"), mode="rb") as file_handler:
-        backend_properties = tomllib.load(file_handler)
+backend_properties_file = Path(__file__).parent / "aedt_properties.toml"
+with backend_properties_file.open(mode="rb") as file_handler:
+    backend_properties = tomllib.load(file_handler)
 
 toolkit_property = {}
 if backend_properties:
