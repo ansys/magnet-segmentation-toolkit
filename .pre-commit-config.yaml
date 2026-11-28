@@ -16,7 +16,7 @@ exclude: |
 repos:
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: ef6cf06c079dd6b299dfc720b0f14400c9d168e1  # frozen: v0.17.5
+  rev: 9026c9127e153371d7a78dfcb0c45ae2046a3d10  # frozen: v0.17.6
   hooks:
     - id: ruff-check
     - id: ruff-format
@@ -45,7 +45,7 @@ repos:
   rev: fda77690955e9b63c6687d8806bafd56a526e45f  # frozen: 1.20.0
   hooks:
     - id: blacken-docs
-      additional_dependencies: [black==26.5.1]
+      additional_dependencies: [black==26.10.1]
 
 # This validates our pre-commit.ci configuration
 - repo: https://github.com/pre-commit-ci/pre-commit-ci-config
@@ -54,7 +54,7 @@ repos:
     - id: check-pre-commit-ci-config
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: dbcd0a4ad0060f78ac3c7d53d342f510edc48eab  # frozen: v0.8.1
+  rev: 5e97ca56e2fd5940a745fcba5b1fa6569198267f  # frozen: v0.8.3
   hooks:
     - id: add-license-headers
       files: '(src|tests|installer)/.*\.(py)'
