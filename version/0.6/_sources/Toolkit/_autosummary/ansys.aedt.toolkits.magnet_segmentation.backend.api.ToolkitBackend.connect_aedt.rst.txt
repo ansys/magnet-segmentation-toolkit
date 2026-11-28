@@ -1,0 +1,6 @@
+connect\_aedt
+=============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: ToolkitBackend.connect_aedt

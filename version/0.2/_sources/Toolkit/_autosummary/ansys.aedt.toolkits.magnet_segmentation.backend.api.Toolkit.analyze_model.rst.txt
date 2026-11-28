@@ -1,0 +1,6 @@
+analyze\_model
+==============
+
+.. currentmodule:: ansys.aedt.toolkits.magnet_segmentation.backend.api
+
+.. automethod:: Toolkit.analyze_model
